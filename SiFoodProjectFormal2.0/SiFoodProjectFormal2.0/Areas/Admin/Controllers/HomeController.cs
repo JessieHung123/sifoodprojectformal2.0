@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace sifoodprojectformal.Areas.BackPlatform.Controllers
+namespace sifoodprojectformal.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class HomeController : Controller

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace sifoodprojectformal.Areas.DriversPlatform.Controllers
+namespace sifoodprojectformal.Areas.Drivers.Controllers
 {
     [Area("Drivers")]
     public class HomeController : Controller

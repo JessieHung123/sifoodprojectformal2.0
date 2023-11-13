@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace sifoodprojectformal.Areas.UsersPlateform.Controllers
+namespace sifoodprojectformal.Areas.Users.Controllers
 {
     [Area("Users")]
     public class TransactionController : Controller
