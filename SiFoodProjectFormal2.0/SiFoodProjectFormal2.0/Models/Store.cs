@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace SiFoodProjectFormal2._0.Models;
+
+public partial class Store
+{
+    public string StoreId { get; set; } = null!;
+
+    public string StoreName { get; set; } = null!;
+
+    public string ContactName { get; set; } = null!;
+
+    public string TaxId { get; set; } = null!;
+
+    public string Email { get; set; } = null!;
+
+    public string Phone { get; set; } = null!;
+
+    public string City { get; set; } = null!;
+
+    public string Region { get; set; } = null!;
+
+    public string Address { get; set; } = null!;
+
+    public string Description { get; set; } = null!;
+
+    public byte[]? PasswordHash { get; set; }
+
+    public byte[]? PasswordSalt { get; set; }
+
+    public DateTime EnrollDate { get; set; }
+
+    public decimal Latitude { get; set; }
+
+    public decimal Longitude { get; set; }
+
+    public string OpeningTime { get; set; } = null!;
+
+    public string OpeningDay { get; set; } = null!;
+
+    public string? PhotosPath { get; set; }
+
+    public string? LogoPath { get; set; }
+
+    public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+}
