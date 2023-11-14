@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SiFoodProjectFormal2._0</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SiFoodProjectFormal2._0.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+            <a href="index.html" class="navbar-brand d-flex align-items-center">
+                <h1 class="m-0">
+                    <i class="fa fa-building text-primary me-3"></i>Sifood
+                    <img src="~/assets/images//logo/SiFood_logo BGclear.png" alt="Site Logo" style="height:70px; width: 90px" class="navbar-brand" href="@Url.Action("Index", "Home")   />
+                    <img src="~/assets/images/logo/freshcart-logo.svg" alt="eCommerce HTML Template">
+                </h1>
+            </a>
+            <button type="button"
+                    class="navbar-toggler"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-3 py-lg-0">
+                    <a href="index.html" class="nav-item nav-link active" asp-area="" asp-controller="Home" asp-action="Index">首頁</a>
+                    <a href="about.html" class="nav-item nav-link" asp-area="" asp-controller="RealTimeOrders" asp-action="RealTimeOrder">及時訂單</a>
+                    <a href="about.html" class="nav-item nav-link" asp-area="" asp-controller="HistoryOrders" asp-action="HistoryOrders">歷史訂單</a>
+                    <a href="service.html" class="nav-item nav-link" asp-area="" asp-controller="ProductManage" asp-action="ProductManage">商品管理</a>
+                    <a href="service.html" class="nav-item nav-link" asp-area="" asp-controller="InfoModify" asp-action="InfoModify">資料修改</a>
+                    <a href="service.html" class="nav-item nav-link" asp-area="" asp-controller="CustomerComments" asp-action="CustomerComments">客戶評價</a>
+                    <a href="service.html" class="nav-item nav-link" asp-area="" asp-controller="Questions" asp-action="Questions">常見問題</a>
+                    <a class="nav-link" href="../index.html" asp-area="" asp-controller="Logout" asp-action="Logout"><i class="feather-icon icon-log-out me-2 "></i>Log out</a>
+                </div>
+            </div>
+
+    </header>
+    <div class="container">
+
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - sifoodprojectformal - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
+
