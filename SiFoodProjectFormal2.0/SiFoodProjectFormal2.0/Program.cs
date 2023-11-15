@@ -34,7 +34,7 @@ namespace SiFoodProjectFormal2._0
 
             
             app.MapControllerRoute(
-                name: "Areas",
+                name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Main}/{id?}");
 
             app.MapControllerRoute(
