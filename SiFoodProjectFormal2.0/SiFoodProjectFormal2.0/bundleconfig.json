@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "wwwroot/assets/css/theme.min.css",
+    "inputFiles": [
+      "wwwroot/assets/css/theme.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/slickcdn.min.js",
+    "inputFiles": [
+      "wwwroot/slickcdn.js"
+    ]
+  }
+]
