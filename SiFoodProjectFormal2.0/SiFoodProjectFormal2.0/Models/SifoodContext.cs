@@ -41,7 +41,6 @@ public partial class SifoodContext : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
-  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Cart>(entity =>
