@@ -1,5 +1,197 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    Layout = "~/Areas/Users/Views/Shared/_Layout.cshtml";
 }
+@{
+    ViewData["Title"] = "地圖探索";
+}
+
+<section class="container">
+    <div class="container p-5 row">
+
+        <!-- col -->
+        <aside class="col-lg-3 col-md-4 ">
+            <div class="offcanvas offcanvas-start offcanvas-collapse w-md-50 " tabindex="-1" id="offcanvasCategory" aria-labelledby="offcanvasCategoryLabel">
+
+                <div class="offcanvas-header d-lg-none">
+                    <h5 class="offcanvas-title" id="offcanvasCategoryLabel">Filter</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body ps-lg-2 pt-lg-0">
+                    <div class="mb-8">
+                        <!-- title -->
+                        <h5 class="mb-3">依地區探索</h5>
+                        <!-- nav -->
+                        <ul class="nav nav-category" id="categoryCollapseMenu">
+                            <li class="nav-item border-bottom w-100 ">
+                                <a href="#" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#categoryFlushOne" aria-expanded="false" aria-controls="categoryFlushOne">臺北市<i class="feather-icon icon-chevron-right"></i></a>
+                                <!-- accordion collapse -->
+                                <div id="categoryFlushOne" class="accordion-collapse collapse" data-bs-parent="#categoryCollapseMenu">
+                                    <div>
+                                        <!-- nav -->
+
+                                        <ul class="nav flex-column ms-3">
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Milk</a></li>
+
+
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Milk Drinks</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Curd &amp; Yogurt</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Eggs</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Bread</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Buns &amp; Bakery</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Butter &amp; More</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Cheese</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Paneer &amp; Tofu</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Cream &amp; Whitener</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Condensed Milk</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Vegan Drinks</a></li>
+                                        </ul>
+
+
+
+                                    </div>
+                                </div>
+
+                            </li>
+                            <!-- nav item -->
+                            <li class="nav-item border-bottom w-100 ">
+                                <a href="#" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                    新北市 <i class="feather-icon icon-chevron-right"></i>
+                                </a>
+
+                                <!-- collapse -->
+                                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#categoryCollapseMenu">
+                                    <div>
+
+
+
+                                        <ul class="nav flex-column ms-3">
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Chips &amp; Crisps</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Nachos</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Popcorn</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Bhujia &amp; Mixtures</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Namkeen Snacks</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Healthy Snacks</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Cakes &amp; Rolls</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Energy Bars</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Papad &amp; Fryums</a></li>
+                                            <!-- nav item -->
+                                            <li class="nav-item"><a href="#!" class="nav-link">Rusks &amp; Wafers</a></li>
+                                        </ul>
+
+
+                                    </div>
+                                </div>
+
+                            </li>
+
+
+                        </ul>
+                    </div>
+                    <div class="mb-8">
+                        <!-- title -->
+                        <h5 class="mb-3">依種類探索</h5>
+                        <!-- nav -->
+                        <ul class="nav nav-category">
+                            <li class="nav-item border-bottom w-100 ">
+                                <a href="#" class="nav-link collapsed" style="color:#6c757d;font-weight: bold">
+                                    便當
+                                </a>
+
+                            </li>
+
+                            <li class="nav-item border-bottom w-100 ">
+                                <a href="#" class="nav-link collapsed" style="color:#6c757d;font-weight: bold">
+                                    甜點麵包
+                                </a>
+                            </li>
+                            <li class="nav-item border-bottom w-100 ">
+                                <a href="#" class="nav-link collapsed" style="color:#6c757d;font-weight: bold">
+                                    生鮮
+                                </a>
+                            </li>
+                            <li class="nav-item border-bottom w-100 ">
+                                <a href="#" class="nav-link collapsed" style="color:#6c757d;font-weight: bold">
+                                    異國料理
+                                </a>
+                            </li>
+                            <li class="nav-item border-bottom w-100 ">
+                                <a href="#" class="nav-link collapsed" style="color:#6c757d;font-weight: bold">
+                                    素食
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                    <div class="mb-8">
+
+                        <h5 class="mb-3">店家狀態</h5>
+
+                        <!-- form check -->
+                        <div class="form-check mb-2">
+                            <!-- input -->
+                            <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" value="" id="DealShare">
+                            <label class="form-check-label" style="color:#6c757d;font-weight: bold" for="DealShare">
+                                營業中
+                            </label>
+                        </div>
+                        <!-- form check -->
+                        <div class="form-check mb-2">
+                            <!-- input -->
+                            <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" value="" id="Dmart">
+                            <label class="form-check-label" style="color:#6c757d;font-weight: bold" for="Dmart">
+                                尚有剩食庫存
+                            </label>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="mb-8 position-relative">
+                        <h5 class="mb-3">探索你的周遭</h5>
+                        <!-- Banner Design -->
+                        <!-- Banner Content -->
+                        <div class="position-absolute p-5 py-8">
+
+
+                            <a href="#" class="btn btn-dark">GO<i class="feather-icon icon-arrow-right ms-1"></i></a>
+                        </div>
+                        <!-- Banner Content -->
+                        <!-- Banner Image -->
+                        <!-- img --><img src="~/images/mapsmall.jpg" class="img-fluid rounded " />
+                        <!-- Banner Image -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <section class="col-lg-9 col-md12 mb-6 mb-md-0">
+
+            <iframe class="" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2351.0128540975843!2d121.51699940515874!3d25.045626105324782!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a9729f13e59d%3A0x8398ab0c37b6418!2z5Y-w5YyX6LuK56uZ!5e0!3m2!1szh-TW!2stw!4v1699677604545!5m2!1szh-TW!2stw" style="width:100%;height:75%;border:5px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+        </section>
+
+    </div>
+
+</section>
