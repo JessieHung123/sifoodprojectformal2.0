@@ -24,4 +24,11 @@
     <Folder Include="wwwroot\assets\libs\tiny-slider\dist\sourcemaps\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Areas\Stores\Views\Shared\_Layout.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
