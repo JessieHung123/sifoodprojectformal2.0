@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\assets\images\logo\SiFood_logo_BGclear.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13">
@@ -18,11 +22,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ViewModels\Admin\" />
+    <Folder Include="ViewModels\Stores\" />
+    <Folder Include="ViewModels\Drivers\" />
+    <Folder Include="ViewModels\Users\" />
     <Folder Include="wwwroot\assets\libs\flatpickr\dist\types\" />
     <Folder Include="wwwroot\assets\libs\flatpickr\dist\utils\" />
     <Folder Include="wwwroot\assets\libs\rater-js\example\" />
     <Folder Include="wwwroot\assets\libs\rater-js\test\" />
     <Folder Include="wwwroot\assets\libs\tiny-slider\dist\sourcemaps\" />
+    <Folder Include="wwwroot\images\Admin\" />
+    <Folder Include="wwwroot\images\Stores\" />
   </ItemGroup>
 
   <ItemGroup>
