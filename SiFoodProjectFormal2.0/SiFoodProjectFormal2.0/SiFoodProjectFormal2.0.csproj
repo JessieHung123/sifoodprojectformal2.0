@@ -8,6 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Users\Views\OrderDetails\**" />
+    <Content Remove="Areas\Users\Views\OrderDetails\**" />
+    <EmbeddedResource Remove="Areas\Users\Views\OrderDetails\**" />
+    <None Remove="Areas\Users\Views\OrderDetails\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Users\Controllers\OrderDetailsController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\assets\images\logo\SiFood_logo_BGclear.png" />
   </ItemGroup>
 
