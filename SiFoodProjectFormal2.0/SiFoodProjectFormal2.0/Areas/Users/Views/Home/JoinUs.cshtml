@@ -89,7 +89,7 @@
 
 
                     <!-- form -->
-                    <form class="row">
+                    <form asp-action="JoinUs" method="post" class="row">
 
                         <!-- input -->
 
@@ -181,7 +181,7 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="phone">聯絡電話<span class="text-danger">*</span></label>
-                            <input asp-for="Phone" class="form-control" id="phone" placeholder="請輸入聯絡電話" />
+                            <input asp-for="Phone" class="form-control" id="phone" placeholder="0912345678" />
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
 
@@ -193,15 +193,16 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="openingDay">營業日<span class="text-danger">*</span></label>
-                            <input asp-for="OpeningDay" class="form-control" id="openingDay" placeholder="請輸入營業日" />
+                            <input asp-for="OpeningDay" class="form-control" id="openingDay" placeholder="例:星期一" />
                             <span asp-validation-for="OpeningDay" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="openingTime">營業時間<span class="text-danger">*</span></label>
-                            <input asp-for="OpeningTime" class="form-control" id="openingTime" placeholder="請輸入營業時間" />
+                            <input asp-for="OpeningTime" class="form-control" id="openingTime" type="time" placeholder="請輸入營業時間" />
                             <span asp-validation-for="OpeningTime" class="text-danger"></span>
                         </div>
+
 
                         <div class="col-md-12 mb-3">
                             <label class="form-label" for="address">店家地址<span class="text-danger">*</span></label>
@@ -241,7 +242,7 @@
                             <div class="mb-4 d-flex">
                                 <div class="position-relative">
                                     <img class="image  icon-shape icon-xxxl bg-light rounded-4"
-                                        src="~/assets/images/icons/bakery.svg" alt="Image">
+                                        src="~/images/users/elly/uploadstorephoto.svg" alt="Image">
 
                                     <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
                                         <input type="file" class="file-input ">
@@ -275,6 +276,7 @@
                                                 <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
                                                     <input type="file" class="file-input ">
                                                     <span class="icon-shape icon-sm rounded-circle bg-white">
+
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                                                             fill="currentColor" class="bi bi-pencil-fill text-muted"
                                                             viewBox="0 0 16 16">
@@ -408,35 +410,35 @@
                                                     type="button">瀏覽檔案位置</button></div>
                                         </form>
                                     </div>*@
+<div class="col-md-6 mb-3">
+                    <!-- btn -->
+                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-2">送出申請</button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">已成功送出申請!</h5>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                               請稍待一至二天審核，謝謝~
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                     </form>
 
                 </div> 
 
 
-                <div class="col-md-6 mb-3">
-                    <!-- btn -->
-                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-2">送出申請</button>
-                </div>
-
-                <!-- Modal -->
-<div class="modal fade" id="exampleModal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">已成功送出申請!</h5>
-                </button>
-            </div>
-            <div class="modal-body">
-               請稍待一至二天審核，謝謝~
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+                
 
             </div>
         </div>
@@ -458,11 +460,17 @@
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
     <script src="../assets/libs/quill/dist/quill.min.js"></script>
-@*     <script src="~/assets/libs/prismjs/prism.js"></script>
+@*  <script src="~/assets/libs/prismjs/prism.js"></script>
     <script src="~/assets/libs/prismjs/components/prism-scss.min.js"></script>
     <script src="~/assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
     <script src="~/assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script> *@
     <script src="~/assets/js/vendors/sidebarMenu.js"></script>
     <script src="~/assets/libs/dropzone/dist/min/dropzone.min.js"></script>
+
+
+      <!-- jQuery驗證 -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 }
