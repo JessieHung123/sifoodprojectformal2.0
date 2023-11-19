@@ -35,7 +35,7 @@
 
 
 <!-- section -->
-<section class="mb-lg-14 mb-8 mt-8" id="app">
+<div class="mb-lg-14 mb-8 mt-8" id="app">
     <div class="container">
 
         <!-- row -->
@@ -46,11 +46,12 @@
                     <!-- text -->
                     <h1 class="fw-bold mb-0" style="font-size:50px">結帳</h1>
                     <br />
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" @@click="">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked @@click="chooseDeliver">
                     <label class="form-check-label text-dark" for="homeRadio" style="font-size:20px">
                         外送
                     </label>
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio2">
+                    &nbsp
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio2" @@click="chooseTakeout">
                     <label class="form-check-label text-dark" for="homeRadio2" style="font-size:20px">
                         自取
                     </label>
@@ -64,7 +65,7 @@
 
         <!-- row -->
         <div class="row">
-            <template v-if="">
+            <template v-if="this.checkRadio==false">
                 <div class="col-lg-7 col-md-12">
                     <!-- accordion -->
                     <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -120,10 +121,9 @@
                         </div>
                         <!-- accordion item -->
                         <div class="accordion-item py-4">
-                            <a href="#" class="text-inherit h5 collapsed">
-                                <i class="feather-icon icon-clock me-2 text-muted"></i>預定送達時間
-                            </a>
-                            <br />
+                            <h5>
+                                <i class="feather-icon icon-clock me-2 text-muted"></i>預定取貨時間
+                            </h5>
                             <input type="text" class="border border-1" style="width:350px" />
                         </div>
                         <!-- accordion item -->
@@ -190,14 +190,13 @@
                     <!-- accordion -->
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <!-- accordion item -->
-                        <div class="accordion-item py-4">
-                        </div>
+                        
                         <!-- accordion item -->
                         <div class="accordion-item py-4">
-                            <a href="#" class="text-inherit h5 collapsed">
+                            <h5>
                                 <i class="feather-icon icon-clock me-2 text-muted"></i>預定取貨時間
-                            </a>
-                            <br />
+                            </h5>
+                            
                             <input type="text" class="border border-1" style="width:350px" />
                         </div>
                         <!-- accordion item -->
@@ -386,7 +385,7 @@
             </div>
         </div>
     </div>
-</section>
+</div>
 
 @section Scripts {
     <!-- Javascript-->
@@ -397,7 +396,7 @@
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
-    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script> @* 引用這種方式的cdn *@
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
@@ -405,9 +404,9 @@
 
         var vueApp = {
             data() {
-
-
-
+                return {
+                    checkRadio: false
+                }
             },
             mounted() {
 
@@ -415,9 +414,12 @@
 
             },
             methods: {
-
-
-
+                chooseTakeout: function () {
+                    this.checkRadio = true
+                },
+                chooseDeliver: function(){
+                    this.checkRadio = false
+                },
             },
         }
         var Checkapp = Vue.createApp(vueApp).mount("#app")
