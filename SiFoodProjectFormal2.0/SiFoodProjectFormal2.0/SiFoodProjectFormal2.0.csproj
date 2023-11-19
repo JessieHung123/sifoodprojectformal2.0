@@ -32,7 +32,6 @@
     <Folder Include="wwwroot\assets\libs\rater-js\test\" />
     <Folder Include="wwwroot\assets\libs\tiny-slider\dist\sourcemaps\" />
     <Folder Include="wwwroot\images\Admin\" />
-    <Folder Include="wwwroot\images\Stores\" />
   </ItemGroup>
 
   <ItemGroup>
