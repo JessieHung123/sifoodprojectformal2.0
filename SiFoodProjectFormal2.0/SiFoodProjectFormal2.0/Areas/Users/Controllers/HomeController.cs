@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SiFoodProjectFormal2._0.ViewModels.Users;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -29,6 +30,19 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public IActionResult JoinUs()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        //Address>now only one input
+        public IActionResult JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")]JoinUsViewModel joinUsViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("JoinUs");
+            }
+           return View(joinUsViewModel);
         }
         public IActionResult Products()
         {
