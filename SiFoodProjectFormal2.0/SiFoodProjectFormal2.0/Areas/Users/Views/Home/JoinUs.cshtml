@@ -455,19 +455,35 @@
                                             <div class="dz-default dz-message"><button class="dz-button"
                                                     type="button">瀏覽檔案位置</button></div>
                                         </form>
-                                    </div>
+                                    </div>*@
 
                     </form>
 
-                </div> *@
+                </div> 
 
 
                 <div class="col-md-6 mb-3">
                     <!-- btn -->
-                    <button type="submit" class="btn btn-primary">送出申請</button>
+                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-2">送出申請</button>
                 </div>
 
-
+                <!-- Modal -->
+<div class="modal fade" id="exampleModal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">已成功送出申請!</h5>
+                </button>
+            </div>
+            <div class="modal-body">
+               請稍待一至二天審核，謝謝~
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
             </div>
