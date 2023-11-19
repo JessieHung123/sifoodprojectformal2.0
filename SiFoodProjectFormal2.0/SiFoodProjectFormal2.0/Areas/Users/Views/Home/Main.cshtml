@@ -1,4 +1,6 @@
-﻿@{
+﻿@using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
+@model IEnumerable<StoreVM>
+@{
     Layout = "~/Areas/Users/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,9 +13,9 @@
 }
 <div>
 
-    
 
-    <div class="container">
+
+    <div class="container" id="main">
         <section>
 
             <div class="slider slider-nav responsive row  mx-auto p-3 " style="display:flex;justify-content: space-around">
@@ -54,7 +56,7 @@
                             <!-- nav -->
                             <ul class="nav nav-category" id="categoryCollapseMenu">
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a href="#" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#categoryFlushOne" aria-expanded="false" aria-controls="categoryFlushOne">臺北市<i class="feather-icon icon-chevron-right"></i></a>
+                                    <a v-on:click="filterbylocation" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#categoryFlushOne" aria-expanded="false" aria-controls="categoryFlushOne">臺北市<i class="feather-icon icon-chevron-right"></i></a>
                                     <!-- accordion collapse -->
                                     <div id="categoryFlushOne" class="accordion-collapse collapse" data-bs-parent="#categoryCollapseMenu">
                                         <div>
@@ -64,29 +66,6 @@
                                                 <!-- nav item -->
                                                 <li class="nav-item"><a href="#!" class="nav-link">Milk</a></li>
 
-
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Milk Drinks</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Curd &amp; Yogurt</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Eggs</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Bread</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Buns &amp; Bakery</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Butter &amp; More</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Cheese</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Paneer &amp; Tofu</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Cream &amp; Whitener</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Condensed Milk</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Vegan Drinks</a></li>
                                             </ul>
 
 
@@ -97,40 +76,17 @@
                                 </li>
                                 <!-- nav item -->
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a href="#" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                    <a v-on:click="filterbylocation" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                                         新北市 <i class="feather-icon icon-chevron-right"></i>
                                     </a>
 
                                     <!-- collapse -->
                                     <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#categoryCollapseMenu">
                                         <div>
-
-
-
                                             <ul class="nav flex-column ms-3">
                                                 <!-- nav item -->
                                                 <li class="nav-item"><a href="#!" class="nav-link">Chips &amp; Crisps</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Nachos</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Popcorn</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Bhujia &amp; Mixtures</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Namkeen Snacks</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Healthy Snacks</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Cakes &amp; Rolls</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Energy Bars</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Papad &amp; Fryums</a></li>
-                                                <!-- nav item -->
-                                                <li class="nav-item"><a href="#!" class="nav-link">Rusks &amp; Wafers</a></li>
                                             </ul>
-
-
                                         </div>
                                     </div>
 
@@ -145,33 +101,27 @@
                             <!-- nav -->
                             <ul class="nav nav-category ">
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a href="#!" class="nav-link" style="color:#6c757d;font-weight: bold">
-                                        便當
-                                    </a>
+                                    <a v-on:click="filtercategory"  class="nav-link " style="color:#6c757d;font-weight: bold">生鮮</a>
+                                </li>
+                                <li class="nav-item border-bottom w-100 ">
+                                    <a v-on:click="filtercategory" class="nav-link " style="color:#6c757d;font-weight: bold">飲料</a>
+                                </li>
+                                <li class="nav-item border-bottom w-100 ">
+                                    <div v-on:click="filtercategory" class="nav-link" style="color:#6c757d;font-weight: bold">甜點麵包</div>
+                                </li>
+                                <li class="nav-item border-bottom w-100 ">
+                                    <div v-on:click="filtercategory" class="nav-link" style="color:#6c757d;font-weight: bold">便當</div>
 
                                 </li>
-
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a href="#!!" class="nav-link" style="color:#6c757d;font-weight: bold">
-                                        甜點麵包
-                                    </a>
+                                    <a v-on:click="filtercategory" class="nav-link" style="color:#6c757d;font-weight: bold">素食</a>
                                 </li>
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a href="#!!!" class="nav-link " style="color:#6c757d;font-weight: bold">
-                                        生鮮
-                                    </a>
+                                    <a v-on:click="filtercategory" class="nav-link " style="color:#6c757d;font-weight: bold">異國料理</a>
                                 </li>
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a href="#" class="nav-link " style="color:#6c757d;font-weight: bold">
-                                        異國料理
-                                    </a>
+                                    <a v-on:click="filtercategory" class="nav-link " style="color:#6c757d;font-weight: bold">其他</a>
                                 </li>
-                                <li class="nav-item border-bottom w-100 ">
-                                    <a href="#" class="nav-link" style="color:#6c757d;font-weight: bold">
-                                        素食
-                                    </a>
-                                </li>
-
 
                             </ul>
                         </div>
@@ -182,8 +132,8 @@
                             <!-- form check -->
                             <div class="form-check mb-2">
                                 <!-- input -->
-                                <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" value="" id="DealShare">
-                                <label class="form-check-label" style="color:#6c757d;font-weight: bold" for="DealShare">
+                                <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" id="isOpen" value="false" v-model="isStoreActive">
+                                <label class="form-check-label" style="color:#6c757d;font-weight: bold" for="isOpen">
                                     營業中
                                 </label>
                             </div>
@@ -223,29 +173,28 @@
                 <!-- list icon -->
                 <div class="d-lg-flex justify-content-between align-items-center">
                     <div class="mb-3 mb-lg-0">
-                        <p class="mb-0"> <span class="text-dark">24 </span> Products found </p>
+                        <p class="mb-0"> <span class="text-dark">{{storeCount}}</span> Stores found </p>
                     </div>
 
                 </div>
+
                 <!-- row -->
                 <div class="row g-4 row-cols-xl-3 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
-
+                    <!--店家showstart-->
                     <!-- col -->
-                    <div class="col">
+                    <div class="col" v-for="(item,index) in stores" :key="index">
                         <!-- card -->
                         <div class="card h-100 card-product">
+
                             <div class="card-body">
 
                                 <!-- badge -->
                                 <div class="text-center position-relative ">
                                     <div class=" position-absolute top-0 start-0">
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted small">4.5(149)</span>
+                                        <span class="badge bg-danger">庫存:{{item.inventory}}</span>
                                     </div>
                                     <a href="shop-single.html">
-                                        <!-- img --><img src="~/assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" class="mb-3 img-fluid">
+                                        <!-- img --><img :src="item.logoPath" class="mb-3 img-fluid" />
                                     </a>
 
                                 </div>
@@ -253,20 +202,24 @@
                                 <div class=" mb-1">
                                     <a href="#!" class="text-decoration-none text-muted">
                                         <h5>
-                                            Snack &amp;
-                                            Munchies
+                                            {{item.storeName}}
                                         </h5>
                                     </a>
                                 </div>
 
                                 <div>
 
-                                    <h6 class="text-inherit text-muted ">這裡是店家描述jkkjhkjhkjhkjhkjhkjhjkhkjhjkhlhhklhkjk</h6>
+                                    <h6 class="text-inherit text-muted ">{{item.description}}</h6>
                                 </div>
                                 <!-- price -->
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <div>
-                                        <span class="text-dark">$18</span>
+
+                                        <small class="text-warning">
+                                            <i class="bi bi-star-fill"></i>
+
+                                        </small> <span class="text-muted">{{item.commentRank}} ({{item.commentCount}})</span>
+
                                     </div>
                                     <!-- btn -->
                                     <div>
@@ -277,440 +230,13 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
-                    <!-- col -->
-                    <div class="col">
-                        <!-- card -->
-                        <div class="card h-100 card-product">
-                            <div class="card-body">
-
-                                <!-- badge -->
-                                <div class="text-center position-relative ">
-                                    <div class=" position-absolute top-0 start-0">
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted small">4.5(149)</span>
-                                    </div>
-                                    <a href="shop-single.html">
-                                        <!-- img --><img src="~/assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" class="mb-3 img-fluid">
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class=" mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <h5>
-                                            Snack &amp;
-                                            Munchies
-                                        </h5>
-                                    </a>
-                                </div>
-
-                                <div>
-
-                                    <h6 class="text-inherit text-muted ">這裡是店家描述jkkjhkjhkjhkjhkjhkjhjkhkjhjkhlhhklhkjk</h6>
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-                                        <span class="text-dark">$18</span>
-                                    </div>
-                                    <!-- btn -->
-                                    <div>
-                                        <a href="#!" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col">
-                        <!-- card -->
-                        <div class="card h-100 card-product">
-                            <div class="card-body">
-
-                                <!-- badge -->
-                                <div class="text-center position-relative ">
-                                    <div class=" position-absolute top-0 start-0">
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted small">4.5(149)</span>
-                                    </div>
-                                    <a href="shop-single.html">
-                                        <!-- img --><img src="~/assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" class="mb-3 img-fluid">
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class=" mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <h5>
-                                            Snack &amp;
-                                            Munchies
-                                        </h5>
-                                    </a>
-                                </div>
-
-                                <div>
-
-                                    <h6 class="text-inherit text-muted ">這裡是店家描述jkkjhkjhkjhkjhkjhkjhjkhkjhjkhlhhklhkjk</h6>
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-                                        <span class="text-dark">$18</span>
-                                    </div>
-                                    <!-- btn -->
-                                    <div>
-                                        <a href="#!" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col">
-                        <!-- card -->
-                        <div class="card h-100 card-product">
-                            <div class="card-body">
-
-                                <!-- badge -->
-                                <div class="text-center position-relative ">
-                                    <div class=" position-absolute top-0 start-0">
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted small">4.5(149)</span>
-                                    </div>
-                                    <a href="shop-single.html">
-                                        <!-- img --><img src="~/assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" class="mb-3 img-fluid">
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class=" mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <h5>
-                                            Snack &amp;
-                                            Munchies
-                                        </h5>
-                                    </a>
-                                </div>
-
-                                <div>
-
-                                    <h6 class="text-inherit text-muted ">這裡是店家描述jkkjhkjhkjhkjhkjhkjhjkhkjhjkhlhhklhkjk</h6>
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-                                        <span class="text-dark">$18</span>
-                                    </div>
-                                    <!-- btn -->
-                                    <div>
-                                        <a href="#!" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col">
-                        <!-- card -->
-                        <div class="card h-100 card-product">
-                            <div class="card-body">
-
-                                <!-- badge -->
-                                <div class="text-center position-relative ">
-                                    <div class=" position-absolute top-0 start-0">
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted small">4.5(149)</span>
-                                    </div>
-                                    <a href="shop-single.html">
-                                        <!-- img --><img src="~/assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" class="mb-3 img-fluid">
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class=" mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <h5>
-                                            Snack &amp;
-                                            Munchies
-                                        </h5>
-                                    </a>
-                                </div>
-
-                                <div>
-
-                                    <h6 class="text-inherit text-muted ">這裡是店家描述jkkjhkjhkjhkjhkjhkjhjkhkjhjkhlhhklhkjk</h6>
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-                                        <span class="text-dark">$18</span>
-                                    </div>
-                                    <!-- btn -->
-                                    <div>
-                                        <a href="#!" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col">
-                        <!-- card -->
-                        <div class="card h-100 card-product">
-                            <div class="card-body">
-
-                                <!-- badge -->
-                                <div class="text-center position-relative ">
-                                    <div class=" position-absolute top-0 start-0">
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted small">4.5(149)</span>
-                                    </div>
-                                    <a href="shop-single.html">
-                                        <!-- img --><img src="~/assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" class="mb-3 img-fluid">
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class=" mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <h5>
-                                            Snack &amp;
-                                            Munchies
-                                        </h5>
-                                    </a>
-                                </div>
-
-                                <div>
-
-                                    <h6 class="text-inherit text-muted ">這裡是店家描述jkkjhkjhkjhkjhkjhkjhjkhkjhjkhlhhklhkjk</h6>
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-                                        <span class="text-dark">$18</span>
-                                    </div>
-                                    <!-- btn -->
-                                    <div>
-                                        <a href="#!" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col">
-                        <!-- card -->
-                        <div class="card h-100 card-product">
-                            <div class="card-body">
-
-                                <!-- badge -->
-                                <div class="text-center position-relative ">
-                                    <div class=" position-absolute top-0 start-0">
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted small">4.5(149)</span>
-                                    </div>
-                                    <a href="shop-single.html">
-                                        <!-- img --><img src="~/assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" class="mb-3 img-fluid">
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class=" mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <h5>
-                                            Snack &amp;
-                                            Munchies
-                                        </h5>
-                                    </a>
-                                </div>
-
-                                <div>
-
-                                    <h6 class="text-inherit text-muted ">這裡是店家描述jkkjhkjhkjhkjhkjhkjhjkhkjhjkhlhhklhkjk</h6>
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-                                        <span class="text-dark">$18</span>
-                                    </div>
-                                    <!-- btn -->
-                                    <div>
-                                        <a href="#!" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col">
-                        <!-- card -->
-                        <div class="card h-100 card-product">
-                            <div class="card-body">
-
-                                <!-- badge -->
-                                <div class="text-center position-relative ">
-                                    <div class=" position-absolute top-0 start-0">
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted small">4.5(149)</span>
-                                    </div>
-                                    <a href="shop-single.html">
-                                        <!-- img --><img src="~/assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" class="mb-3 img-fluid">
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class=" mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <h5>
-                                            Snack &amp;
-                                            Munchies
-                                        </h5>
-                                    </a>
-                                </div>
-
-                                <div>
-
-                                    <h6 class="text-inherit text-muted ">這裡是店家描述jkkjhkjhkjhkjhkjhkjhjkhkjhjkhlhhklhkjk</h6>
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-                                        <span class="text-dark">$18</span>
-                                    </div>
-                                    <!-- btn -->
-                                    <div>
-                                        <a href="#!" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col">
-                        <!-- card -->
-                        <div class="card h-100 card-product">
-                            <div class="card-body">
-
-                                <!-- badge -->
-                                <div class="text-center position-relative ">
-                                    <div class=" position-absolute top-0 start-0">
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted small">4.5(149)</span>
-                                    </div>
-                                    <a href="shop-single.html">
-                                        <!-- img --><img src="~/assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" class="mb-3 img-fluid">
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class=" mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <h5>
-                                            Snack &amp;
-                                            Munchies
-                                        </h5>
-                                    </a>
-                                </div>
-
-                                <div>
-
-                                    <h6 class="text-inherit text-muted ">這裡是店家描述jkkjhkjhkjhkjhkjhkjhjkhkjhjkhlhhklhkjk</h6>
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-                                        <span class="text-dark">$18</span>
-                                    </div>
-                                    <!-- btn -->
-                                    <div>
-                                        <a href="#!" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col">
-                        <!-- card -->
-                        <div class="card h-100 card-product">
-                            <div class="card-body">
-
-                                <!-- badge -->
-                                <div class="text-center position-relative ">
-                                    <div class=" position-absolute top-0 start-0">
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted small">4.5(149)</span>
-                                    </div>
-                                    <a href="shop-single.html">
-                                        <!-- img --><img src="~/assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" class="mb-3 img-fluid">
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class=" mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <h5>
-                                            Snack &amp;
-                                            Munchies
-                                        </h5>
-                                    </a>
-                                </div>
-
-                                <div>
-
-                                    <h6 class="text-inherit text-muted ">這裡是店家描述jkkjhkjhkjhkjhkjhkjhjkhkjhjkhlhhklhkjk</h6>
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-                                        <span class="text-dark">$18</span>
-                                    </div>
-                                    <!-- btn -->
-                                    <div>
-                                        <a href="#!" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!--店家showend-->
                 </div>
+
+
+
                 <!-- row -->
                 <div class="row mt-8">
                     <div class="col">
@@ -724,7 +250,6 @@
                                 </li>
                                 <li class="page-item "><a class="page-link  mx-1 active" href="#">1</a></li>
                                 <li class="page-item"><a class="page-link mx-1 text-body" href="#">2</a></li>
-
                                 <li class="page-item"><a class="page-link mx-1 text-body" href="#">...</a></li>
                                 <li class="page-item"><a class="page-link mx-1 text-body" href="#">12</a></li>
                                 <li class="page-item">
@@ -743,8 +268,74 @@
 </div>
 @section Scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <script>
+        var baseAddress = "https://localhost:7042";
+
+        const storeApp = Vue.createApp({
+            data: function () {
+                return {
+                    isStoreActive: false,
+                    stores: [],
+                    storeCount: "",
+                }
+            },
+            computed: {
+                filterStores:function() {
+                    // var x = this.filterActiveTime(this.stores);
+                    // var r = this.filterArea(x);
+                    // // var c= this.filtercategory(r)
+                    // return r;
+                    alert("re");
+                }
+            },
+            mounted: function () {
+                let _this = this;
+                _this.getStoreapi();
+
+            },
+            methods: {
+                filterActiveTime(stores) {
+                    if (this.isStoreActive) {
+                        return stores.filter(s => s.commentRank > 2)
+                    }
+                    return stores
+                },
+                filterArea(stores) {
+                    return stores
+                },
+                filtercategory: function (e) {
+                   
+                },
+                getStoreapi() {
+                    let _this = this;
+                    fetch(`${baseAddress}/odata/Storeapi/Main2`, { method: "GET" })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // alert(JSON.stringify(data));
+                            _this.stores = data;
+                            _this.storeCount = _this.stores.length;
+                        }).catch(error => {
+                            alert(error);
+                        });
+
+                },
+                
+                
+
+                
+            }
+        }).mount("#main")
+
+    </script>
     <script src="~/slickcdn.min.js"></script>
     <script>
+        var baseAddress = "https://localhost:7042";
 
         $('.slider-nav').slick({
             infiinte: true,
@@ -783,8 +374,8 @@
         });
 
 
-
     </script>
+
 
 
 }
