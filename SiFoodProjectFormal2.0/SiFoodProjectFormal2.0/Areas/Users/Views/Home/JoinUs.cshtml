@@ -1,4 +1,7 @@
-﻿<!-- 引用Layout -->
+﻿@using SiFoodProjectFormal2._0.ViewModels.Users;
+@model JoinUsViewModel
+
+<!-- 引用Layout -->
 @{
     Layout = "_Layout";
 }
@@ -37,6 +40,14 @@
         gtag('config', 'G-M8S4MT3EYG');
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    var myDropzone = new Dropzone(".profile-dropzone", {
+        // 其他配置選項
+    });
+});
+    </script>
+
     <!-- 自己加的CSS，改最後按鈕的位置 -->
     <style>
         /* 這裡加入自定義樣式 */
@@ -73,18 +84,42 @@
                             <P class="lead mb-0">如審核成功，將寄出審核成功信件至信箱;</P>
                             <P class="lead mb-0">未審核成功，我們也將會寄出信件告知，謝謝~</P>
                         </div>
+
+
+
+
                         <!-- form -->
                         <form class="row">
+                            
                             <!-- input -->
-                            <div class="col-md-6 mb-3">
+                            
+                            @*<div class="col-md-6 mb-3">
                                 <label class="form-label" for="fname"> 聯絡人姓名<span class="text-danger">*</span></label>
                                 <input type="text" id="fname" class="form-control" name="fname" placeholder="請輸入一位負責聯繫的人員姓名" required>
+                            </div>  
+                            <!-- 這段改寫成下面那段--> 
+                            *@
+
+                           <div class="col-md-6 mb-3">
+                                <label class="form-label" for="contactName">聯絡人姓名<span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.ContactName, new { @class = "form-control", id = "contactName", placeholder = "請輸入一位負責聯繫的人員姓名" })
+                                @Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <!-- input -->
+
+                            <!-- input -->
+                            @*<div class="col-md-6 mb-3">                              
                                 <label class="form-label" for="lname"> 平台顯示店名<span class="text-danger">*</span></label>
                                 <input type="text" id="lname" class="form-control" name="lname" placeholder="請輸入您在惜食平台要顯示的店名名稱" required>
+                            </div> 
+                            <!-- 這段改寫成下面那段-->
+                            *@
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="storeName">店名<span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.StoreName, new { @class = "form-control", id = "storeName", placeholder = "請輸入您在惜食平台要顯示的店名名稱" })
+                                @Html.ValidationMessageFor(model => model.StoreName, "", new { @class = "text-danger" })
                             </div>
+
 
                             <!-- <div class="col-md-12 mb-3"> -->
                             <!-- input -->
@@ -92,6 +127,7 @@
                             <!-- <input type="text" id="title" name="title" class="form-control" placeholder="Your Title" required> -->
                             <!-- </div> -->
 
+                            @*
                             <div class="col-md-6 mb-3">
                                 <!-- input -->
                                 <label class="form-label" for="phone"> 聯絡電話<span class="text-danger">*</span></label>
@@ -100,7 +136,7 @@
 
                             <div class="col-md-6 mb-3">
                                 <!-- input -->
-                                <label class="form-label" for="taxID">統編<span class="text-danger">*</span></label>
+                                <label class="form-label" for="taxID">公司統編<span class="text-danger">*</span></label>
                                 <input type="text" id="" name="" class="form-control" placeholder="請輸入統編" required>
                             </div>
 
@@ -134,30 +170,108 @@
                                 <textarea rows="3" id="comments" class="form-control" placeholder="請輸入150字內的店家介紹"></textarea>
                             </div>
 
+                            *@
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="phone">聯絡電話<span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", id = "phone", placeholder = "請輸入聯絡電話" })
+                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="taxID">公司統編<span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.TaxId, new { @class = "form-control", id = "taxID", placeholder = "請輸入統編" })
+                                @Html.ValidationMessageFor(model => model.TaxId, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="openingDay">營業日<span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.OpeningDay, new { @class = "form-control", id = "openingDay", placeholder = "請輸入營業日" })
+                                @Html.ValidationMessageFor(model => model.OpeningDay, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="openingTime">營業時間<span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.OpeningTime, new { @class = "form-control", id = "openingTime", placeholder = "請輸入營業時間" })
+                                @Html.ValidationMessageFor(model => model.OpeningTime, "", new { @class = "text-danger" })
+                            </div>
+
                             <div class="col-md-12 mb-3">
+                                <label class="form-label" for="address">店家地址<span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.Address, new { @class = "form-control", id = "address", placeholder = "請輸入完整地址" })
+                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="emailContact">註冊信箱<span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", id = "emailContact", type = "email", placeholder = "請輸入email信箱地址" })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="comments">店家介紹<span class="text-danger">*</span></label>
+                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", id = "comments", placeholder = "請輸入150字內的店家介紹", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+
+
+                            @*<div class="col-md-12 mb-3">
                                 <!-- input -->
                                 <label class="form-label" for="comments">備註</label>
                                 <textarea rows="3" id="comments" class="form-control" placeholder="我想說..."></textarea>
-                            </div>
+                            </div>*@
 
-                            <div class="col-md-12 mb-3">
-
-
-                                <!-- form control -->
-
-                                <div class="border-bottom py-4 mb-4">
-                                    <h5>上傳附件</h5>
-                                    <p></p>
-                                    <!-- form -->
-                                    <form action="#" class="dropzone profile-dropzone dz-clickable">
-                                        <div class="dz-default dz-message"><button class="dz-button" type="button">瀏覽檔案位置</button></div>
-                                    </form>
-                                </div>
-
-                            </div>
-
+                            
                             <!-- form control -->
 
+
+
+                                                                <h4 class="mb-5 h5">Category Image</h4>
+                                    <div class="mb-4 d-flex">
+                                        <div class="position-relative" >
+                                            <img class="image  icon-shape icon-xxxl bg-light rounded-4" src="~/assets/images/icons/bakery.svg" alt="Image">
+
+                                            <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
+                                                <input type="file" class="file-input ">
+                                                <span class="icon-shape icon-sm rounded-circle bg-white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil-fill text-muted" viewBox="0 0 16 16">
+                                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                                  </svg>
+                                                </span>
+                                              </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                            <div class="border-bottom py-4 mb-4">
+				 <h5>Add a photo or video</h5>
+		 <p>Shoppers find images and videos more helpful than text alone.</p>
+		 <div id="my-dropzone" class="dropzone mt-4 border-dashed rounded-2 min-h-0"></div>
+	</div>
+
+                            <div class="border-bottom py-4 mb-4">
+                                <h5>上傳您的店家照片3-1</h5>
+                                <p>32x32</p>
+                                <!-- form -->
+                                <form action="#" class="dropzone profile-dropzone dz-clickable">
+                                    <div class="dz-default dz-message"><button class="dz-button" type="button">瀏覽檔案位置</button></div>
+                                </form>
+                            </div>
+
+
+                             <div class="border-bottom py-4 mb-4">
+				 <h5>Add a photo or video</h5>
+		 <p>Shoppers find images and videos more helpful than text alone.</p>
+		 <div id="my-dropzone" class="dropzone mt-4 border-dashed rounded-2 min-h-0"></div>
+	</div>
+
+
+
+
+                            <!-- form control -->
+                 
                             <div class="border-bottom py-4 mb-4">
                                 <h5>上傳您的品牌LOGO</h5>
                                 <p>16x16</p>
@@ -169,7 +283,6 @@
 
 
                             <!-- form control -->
-
                             <div class="border-bottom py-4 mb-4">
                                 <h5>上傳您的店家照片3-1</h5>
                                 <p>32x32</p>
@@ -180,8 +293,6 @@
                             </div>
 
                             <!-- form control -->
-                            <!-- form control -->
-
                             <div class="border-bottom py-4 mb-4">
                                 <h5>上傳您的店家照片3-2</h5>
                                 <p>32x32</p>
@@ -201,6 +312,7 @@
                                     <div class="dz-default dz-message"><button class="dz-button" type="button">瀏覽檔案位置</button></div>
                                 </form>
                             </div>
+                        
                         </form>
 
                     </div>
@@ -233,9 +345,11 @@
 
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
-    <script src="../~/assets/libs/prismjs/prism.js"></script>
-    <script src="../~/assets/libs/prismjs/components/prism-scss.min.js"></script>
-    <script src="../~/assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
-    <script src="../~/assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
-    <script src="../~/assets/js/vendors/sidebarMenu.js"></script>
+    <script src="~/assets/libs/prismjs/prism.js"></script>
+    <script src="~/assets/libs/prismjs/components/prism-scss.min.js"></script>
+    <script src="~/assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="~/assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+    <script src="~/assets/js/vendors/sidebarMenu.js"></script>
+    
+
 }
