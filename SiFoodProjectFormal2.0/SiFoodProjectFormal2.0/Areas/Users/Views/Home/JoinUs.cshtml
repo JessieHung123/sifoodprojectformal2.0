@@ -103,15 +103,10 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="contactName">聯絡人姓名<span class="text-danger">*</span></label>
-                            @Html.TextBoxFor(model => model.ContactName, new
-                                {
-                                    @class = "form-control",
-                                    id =
-                                     "contactName",
-                                    placeholder = "請輸入一位負責聯繫的人員姓名"
-                                })
-                            @Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
+                            <input asp-for="ContactName" class="form-control" id="contactName" placeholder="請輸入一位負責聯繫的人員姓名" />
+                            <span asp-validation-for="ContactName" class="text-danger"></span>
                         </div>
+
 
                         <!-- input -->
                         @*<div class="col-md-6 mb-3">
@@ -124,14 +119,10 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="storeName">店名<span class="text-danger">*</span></label>
-                            @Html.TextBoxFor(model => model.StoreName, new
-                                {
-                                    @class = "form-control",
-                                    id = "storeName",
-                                    placeholder = "請輸入您在惜食平台要顯示的店名名稱"
-                                })
-                            @Html.ValidationMessageFor(model => model.StoreName, "", new { @class = "text-danger" })
+                            <input asp-for="StoreName" class="form-control" id="storeName" placeholder="請輸入您在惜食平台要顯示的店名名稱" />
+                            <span asp-validation-for="StoreName" class="text-danger"></span>
                         </div>
+
 
 
                         <!-- <div class="col-md-12 mb-3"> -->
@@ -190,85 +181,46 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="phone">聯絡電話<span class="text-danger">*</span></label>
-                            @Html.TextBoxFor(model => model.Phone, new
-                                {
-                                    @class = "form-control",
-                                    id = "phone",
-                                    placeholder = "請輸入聯絡電話"
-                                })
-                            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                            <input asp-for="Phone" class="form-control" id="phone" placeholder="請輸入聯絡電話" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="taxID">公司統編<span class="text-danger">*</span></label>
-                            @Html.TextBoxFor(model => model.TaxId, new
-                                {
-                                    @class = "form-control",
-                                    id = "taxID",
-                                    placeholder = "請輸入統編"
-                                })
-                            @Html.ValidationMessageFor(model => model.TaxId, "", new { @class = "text-danger" })
+                            <input asp-for="TaxId" class="form-control" id="taxID" placeholder="請輸入統編" />
+                            <span asp-validation-for="TaxId" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="openingDay">營業日<span class="text-danger">*</span></label>
-                            @Html.TextBoxFor(model => model.OpeningDay, new
-                                {
-                                    @class = "form-control",
-                                    id =
-                                     "openingDay",
-                                    placeholder = "請輸入營業日"
-                                })
-                            @Html.ValidationMessageFor(model => model.OpeningDay, "", new { @class = "text-danger" })
+                            <input asp-for="OpeningDay" class="form-control" id="openingDay" placeholder="請輸入營業日" />
+                            <span asp-validation-for="OpeningDay" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="openingTime">營業時間<span class="text-danger">*</span></label>
-                            @Html.TextBoxFor(model => model.OpeningTime, new
-                                {
-                                    @class = "form-control",
-                                    id =
-                                     "openingTime",
-                                    placeholder = "請輸入營業時間"
-                                })
-                            @Html.ValidationMessageFor(model => model.OpeningTime, "", new { @class = "text-danger" })
+                            <input asp-for="OpeningTime" class="form-control" id="openingTime" placeholder="請輸入營業時間" />
+                            <span asp-validation-for="OpeningTime" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-12 mb-3">
                             <label class="form-label" for="address">店家地址<span class="text-danger">*</span></label>
-                            @Html.TextBoxFor(model => model.Address, new
-                                {
-                                    @class = "form-control",
-                                    id = "address",
-                                    placeholder = "請輸入完整地址"
-                                })
-                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            <input asp-for="Address" class="form-control" id="address" placeholder="請輸入完整地址" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-12 mb-3">
                             <label class="form-label" for="emailContact">註冊信箱<span class="text-danger">*</span></label>
-                            @Html.TextBoxFor(model => model.Email, new
-                                {
-                                    @class = "form-control",
-                                    id = "emailContact",
-                                    type = "email",
-                                    placeholder = "請輸入email信箱地址"
-                                })
-                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            <input asp-for="Email" class="form-control" id="emailContact" type="email" placeholder="請輸入email信箱地址" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-12 mb-3">
                             <label class="form-label" for="comments">店家介紹<span class="text-danger">*</span></label>
-                            @Html.TextAreaFor(model => model.Description, new
-                                {
-                                    @class = "form-control",
-                                    id =
-                                     "comments",
-                                    placeholder = "請輸入150字內的店家介紹",
-                                    rows = 3
-                                })
-                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            <textarea asp-for="Description" class="form-control" id="comments" placeholder="請輸入150字內的店家介紹" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
+
 
 
                         @*<div class="col-md-12 mb-3">
