@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="partials\Class.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\assets\images\logo\SiFood_logo_BGclear.png" />
   </ItemGroup>
 

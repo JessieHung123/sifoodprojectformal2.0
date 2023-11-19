@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
-namespace SiFoodProjectFormal2.Models
-{
+namespace SiFoodProjectFormal2._0.Partials;
+
+
     public partial class SifoodContext:DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -17,4 +20,4 @@ namespace SiFoodProjectFormal2.Models
             }
         }
     }
-}
+
