@@ -13,6 +13,7 @@ namespace SiFoodProjectFormal2._0
             builder.Services.AddDbContext<SifoodContext>(options => {
                 options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Sifood"));
             });
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
