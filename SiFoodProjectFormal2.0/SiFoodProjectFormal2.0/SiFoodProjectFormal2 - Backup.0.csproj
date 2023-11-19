@@ -22,10 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="ViewModels\Admin\" />
     <Folder Include="ViewModels\Stores\" />
     <Folder Include="ViewModels\Drivers\" />
+    <Folder Include="ViewModels\Users\" />
     <Folder Include="wwwroot\assets\libs\flatpickr\dist\types\" />
     <Folder Include="wwwroot\assets\libs\flatpickr\dist\utils\" />
     <Folder Include="wwwroot\assets\libs\rater-js\example\" />
