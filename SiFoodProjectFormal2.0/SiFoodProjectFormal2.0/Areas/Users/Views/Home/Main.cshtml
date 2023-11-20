@@ -56,7 +56,7 @@
                             <!-- nav -->
                             <ul class="nav nav-category" id="categoryCollapseMenu">
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a v-on:click="filterbylocation" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#categoryFlushOne" aria-expanded="false" aria-controls="categoryFlushOne">臺北市<i class="feather-icon icon-chevron-right"></i></a>
+                                    <a v-on:click="filterArea" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#categoryFlushOne" aria-expanded="false" aria-controls="categoryFlushOne">臺北市<i class="feather-icon icon-chevron-right"></i></a>
                                     <!-- accordion collapse -->
                                     <div id="categoryFlushOne" class="accordion-collapse collapse" data-bs-parent="#categoryCollapseMenu">
                                         <div>
@@ -76,7 +76,7 @@
                                 </li>
                                 <!-- nav item -->
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a v-on:click="filterbylocation" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                    <a v-on:click="filterArea" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                                         新北市 <i class="feather-icon icon-chevron-right"></i>
                                     </a>
 
@@ -101,26 +101,26 @@
                             <!-- nav -->
                             <ul class="nav nav-category ">
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a v-on:click="filtercategory"  class="nav-link " style="color:#6c757d;font-weight: bold">生鮮</a>
+                                    <a  v-model="isCategory" class="nav-link " style="color:#6c757d;font-weight: bold">生鮮</a>
                                 </li>
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a v-on:click="filtercategory" class="nav-link " style="color:#6c757d;font-weight: bold">飲料</a>
+                                    <a  v-model="isCategory" class="nav-link " style="color:#6c757d;font-weight: bold">飲料</a>
                                 </li>
                                 <li class="nav-item border-bottom w-100 ">
-                                    <div v-on:click="filtercategory" class="nav-link" style="color:#6c757d;font-weight: bold">甜點麵包</div>
+                                    <a  v-model="isCategory" class="nav-link" style="color:#6c757d;font-weight: bold">甜點麵包</a>
                                 </li>
                                 <li class="nav-item border-bottom w-100 ">
-                                    <div v-on:click="filtercategory" class="nav-link" style="color:#6c757d;font-weight: bold">便當</div>
+                                    <a  v-model="isCategory" class="nav-link" style="color:#6c757d;font-weight: bold">便當</a>
 
                                 </li>
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a v-on:click="filtercategory" class="nav-link" style="color:#6c757d;font-weight: bold">素食</a>
+                                    <a  v-model="isCategory" class="nav-link" style="color:#6c757d;font-weight: bold">素食</a>
                                 </li>
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a v-on:click="filtercategory" class="nav-link " style="color:#6c757d;font-weight: bold">異國料理</a>
+                                    <a  v-model="isCategory" class="nav-link " style="color:#6c757d;font-weight: bold">異國料理</a>
                                 </li>
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a v-on:click="filtercategory" class="nav-link " style="color:#6c757d;font-weight: bold">其他</a>
+                                    <a  v-model="isCategory" class="nav-link " style="color:#6c757d;font-weight: bold">其他</a>
                                 </li>
 
                             </ul>
@@ -182,7 +182,7 @@
                 <div class="row g-4 row-cols-xl-3 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
                     <!--店家showstart-->
                     <!-- col -->
-                    <div class="col" v-for="(item,index) in stores" :key="index">
+                    <div class="col" v-for="(item,index) in showStores" :key="index">
                         <!-- card -->
                         <div class="card h-100 card-product">
 
@@ -278,16 +278,25 @@
                     isStoreActive: false,
                     stores: [],
                     storeCount: "",
+                    catestores:[],
+                    isCategory: null,
+                 
+
                 }
             },
             computed: {
-                filterStores:function() {
-                    // var x = this.filterActiveTime(this.stores);
+                showStores: function () {
+                    var x = this.filterActiveTime(this.stores);
                     // var r = this.filterArea(x);
-                    // // var c= this.filtercategory(r)
-                    // return r;
-                    alert("re");
-                }
+
+                   var c = this.filtercategory(x);
+                    return c;
+                    alert(c);
+                },
+                // filterStores: function () {
+                //     return _this.stores.filter(s => s.categoryName.indexOf(this.search) !== -1);
+                // },
+
             },
             mounted: function () {
                 let _this = this;
@@ -297,16 +306,28 @@
             methods: {
                 filterActiveTime(stores) {
                     if (this.isStoreActive) {
-                        return stores.filter(s => s.commentRank > 2)
+                        return stores.filter(s => s.commentRank >=5);
                     }
-                    return stores
+                    return stores;
                 },
                 filterArea(stores) {
-                    return stores
+                    // let area[,]=
+                    return stores;
                 },
-                filtercategory: function (e) {
-                   
+                filtercategory(stores){
+                    let _this = this;
+                    
+                    if (this.isCategory == '便當') { alert(JSON.stringify(_this.stores.filter(s => s.categoryName.indexOf("便當") !== -1))); }
+                    if (this.isCategory == '生鮮') { return _this.stores.filter(s => s.categoryName.indexOf("生鮮") !== -1); _this.storeCount = _this.stores.length; }
+                    if (this.isCategory == '飲料') { return _this.stores.filter(s => s.categoryName.indexOf("飲料") !== -1); _this.storeCount = _this.stores.length; alert(_this.catestores); }
+                    if (this.isCategory == '甜點麵包') { return _this.stores.filter(s => s.categoryName.indexOf("甜點麵包") !== -1); _this.storeCount = _this.stores.length; }
+                    // if (isCategory == '便當') { return _this.stores.filter(s => s.categoryName.indexOf("便當") !== -1); _this.storeCount = _this.stores.length; alert(_this.catestores); }
+                    if (this.isCategory == '素食') { return _this.stores.filter(s => s.categoryName.indexOf("素食") !== -1); _this.storeCount = _this.stores.length; }
+                    if (this.isCategory == '異國料理') { return _this.stores.filter(s => s.categoryName.indexOf("異國料理") !== -1); _this.storeCount = _this.stores.length; }
+                    if (this.isCategory == '其他') { return _this.stores.filter(s => s.categoryName.indexOf("其他") !== -1); _this.storeCount = _this.stores.length; }
+                    else { return _this.stores; }
                 },
+
                 getStoreapi() {
                     let _this = this;
                     fetch(`${baseAddress}/odata/Storeapi/Main2`, { method: "GET" })
@@ -318,6 +339,7 @@
                         })
                         .then(data => {
                             // alert(JSON.stringify(data));
+                            
                             _this.stores = data;
                             _this.storeCount = _this.stores.length;
                         }).catch(error => {
@@ -325,12 +347,12 @@
                         });
 
                 },
-                
-                
 
-                
+
+
+
             }
-        }).mount("#main")
+        }).mount("#main");
 
     </script>
     <script src="~/slickcdn.min.js"></script>

@@ -72,7 +72,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             Array[] CategoryName;
             return _context.Stores.AsNoTracking().Include(x => x.Products).ThenInclude(x=>x.Category).Include(x => x.Orders)
                 .ThenInclude(x => x.Comment)
-                .Select(z => new
+                .Select(z => new 
                 {
                     StoreId = z.StoreId,
                     StoreName = z.StoreName,
