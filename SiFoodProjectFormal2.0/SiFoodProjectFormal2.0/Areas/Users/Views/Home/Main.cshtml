@@ -204,10 +204,15 @@
 
                                     </div>
                                     <!-- btn -->
-                                    <div>
-                                        <a href="#!" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-heart"></i>
-                                        </a>
+                                    <div @@click="toggle">
+                                        <button class="btn btn-primary btn-sm" v-if="noHeart">
+                                            <i class="bi bi-heart" ></i> @* 空心 *@
+                                            
+                                        </button>
+                                        <button class="btn btn-primary btn-sm" v-else>
+
+                                            <i class="bi bi-heart-fill" style="color: red;"></i> @* 實心 *@
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -253,14 +258,14 @@
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
         var baseAddress = "https://localhost:7042";
-
+        // var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         const storeApp = Vue.createApp({
             data: function () {
                 return {
                     isStoreActive: false,
                     stores: [],
                     storeCount: "",
-
+                    noHeart:true,
                     selectedConditions: [
                         { label: "生鮮", keyword: "生鮮", active: false },
                         { label: "飲料", keyword: "飲料", active: false },
@@ -280,12 +285,13 @@
                     return c;
 
                 },
+                
 
             },
             mounted: function () {
                 let _this = this;
                 _this.getStoreapi();
-
+                _this.getFavoriteStore();
             },
 
             methods: {
@@ -340,9 +346,12 @@
                         })
                         .then(data => {
                             // alert(JSON.stringify(data));
+                            data.forEach(store => {
+                                store.commentRank = store.commentCount > 0 ? store.commentRank / store.commentCount : 0;
+                            });
 
                             _this.stores = data;
-                            _this.storeCount = _this.stores.length;
+                            
                         }).catch(error => {
                             alert(error);
                         });
@@ -359,25 +368,35 @@
                             return response.json();
                         })
                         .then(data => {
-                            // alert(JSON.stringify(data));
+                            alert(JSON.stringify(data));
+                            //data的指定店家要變紅心
                             //class 讓愛心樣式變化
                         }).catch(error => {
                             alert(error);
                         });
                 },
+                toggle() { 
+                
+                    this.noHeart = !this.noHeart;
+                },
                 //加入收藏店家
                 addToFavorite() {
+                    // let isLogin=
                     let _this = this;
+                    // if (!isLogin) return alert("未登入，無法加入收藏!");
 
+                    let favoriteData = {
+                        userId:"U001",//暫定>>變數:登入者
+                        storeId:model.storeId,
+                    }
                     //如果U001加過，愛心為實心 空心
                     fetch(`${baseAddress}/odata/Storeapi/AddToFavorite`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(cartData)
+                        body: JSON.stringify(favoriteData)
                     }).then(response => {
                         if (response.ok) {
                             alert("商品已加入購物車!");
-
 
                         }
                     });

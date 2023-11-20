@@ -72,7 +72,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             Array[] CategoryName;
             return _context.Stores.AsNoTracking().Include(x => x.Products).ThenInclude(x=>x.Category).Include(x => x.Orders)
                 .ThenInclude(x => x.Comment)
-                .Select(z => new 
+                .Select(z => new StoreVM
                 {
                     StoreId = z.StoreId,
                     StoreName = z.StoreName,
@@ -90,8 +90,9 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     CategoryName =z.Products.Select(x=>x.Category.CategoryName).ToArray().Distinct(),
                 }).ToList();
         }
+
         //找到店家是否已被收藏
-        [HttpPost]
+        [HttpGet]
         public async Task<string[]> GetFavoriteStoreId(Favorite favorite)
         {
             Sifood3Context _context = new Sifood3Context();

@@ -12,12 +12,12 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 
         public string Description { get; set; } = null!;
         public string? LogoPath { get; set; } = null!;
-
+        [DisplayFormat(DataFormatString = "{0:N2}")]
         public decimal? CommentRank { get; set; }
 
         public int CommentCount { get; set; } 
 
-        public string CategoryName { get; set; } = null!;
+        public IEnumerable<string> CategoryName { get; set; } = null!;
 
         public string City { get; set; } = null!;
 
