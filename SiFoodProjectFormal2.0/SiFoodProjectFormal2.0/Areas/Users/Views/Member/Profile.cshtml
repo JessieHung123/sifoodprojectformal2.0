@@ -1,4 +1,6 @@
-﻿<!-- 引用Layout -->
+﻿@model SiFoodProjectFormal2._0.ViewModels.Users.ProfileViewModel;
+
+<!-- 引用Layout -->
 @{
     Layout = "_Layout";
 }
@@ -8,7 +10,7 @@
     ViewData["Title"] = "會員資料修改";
 }
 
-<!-- Title -->
+<!-- Style -->
 @section Styles{
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
@@ -206,80 +208,88 @@
                     </div> *@
                     <!-- partial end -->
 
-                    <div class="col-lg-9 col-md-8 col-12">
-                        <div class="py-6 p-md-6 p-lg-10">
-                            <div class="mb-6">
-                                <!-- heading -->
-                                <h2 class="mb-0">帳號設定</h2>
-                            </div>
-                            <div>
-                                <!-- heading -->
-                                <h5 class="mb-4">個人資料</h5>
-                                <div class="row">
-                                    <div class="col-lg-5">
-                                        <!-- form -->
-                                        <form>
-                                            <!-- input -->
-                                            <div class="mb-3">
-                                                <label class="form-label">姓名</label>
-                                                <input type="text" class="form-control" placeholder="林小白">
-                                            </div>
-                                            <!-- input -->
-                                            <div class="mb-3">
-                                                <label class="form-label">Email</label>
-                                                <input type="email" class="form-control" placeholder="example@gmail.com">
-                                            </div>
-                                            <!-- input -->
-                                            <div class="mb-5">
-                                                <label class="form-label">電話</label>
-                                                <input type="text" class="form-control" placeholder="09XXXXXXXX">
-                                            </div>
+<div class="col-lg-9 col-md-8 col-12">
+    <div class="py-6 p-md-6 p-lg-10">
+        <div class="mb-6">
+            <h2 class="mb-0">帳號設定</h2>
+        </div>
 
-                                            <!-- input -->
-                                            <div class="mb-5">
-                                                <label class="form-label">生日</label>
-                                                <input type="text" class="form-control" placeholder="yyyy/mm/dd">
-                                            </div>
-
-                                            <!-- button -->
-                                            <div class="mb-3">
-                                                <button class="btn btn-primary">儲存資料</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr class="my-10">
-                            <div class="pe-lg-14">
-                                <!-- heading -->
-                                <h5 class="mb-4">密碼</h5>
-                                <form class=" row row-cols-1 row-cols-lg-2">
-                                    <!-- input -->
-                                    <!-- ... 其他部分 ... -->
-                                    <div class="mb-3 col">
-                                        <label class="form-label">現在密碼</label>
-                                        <input type="password" id="current-password" class="form-control" placeholder="**********" disabled>
-                                    </div>
-                                    <div class="mb-3 col">
-                                        <label class="form-label">新密碼</label>
-                                        <input type="password" id="new-password" class="form-control" placeholder="**********" disabled>
-                                    </div>
-                                    <!-- ... 其他部分 ... -->
-                                    <div>
-                                        <p class="mb-4">想要更新密碼嗎?<a href="#" id="reset-password-link"> 按這裡重設密碼</a></p>
-                                    </div>
-
-                                    <!-- button -->
-                                    <div class="mb-3">
-                                        <button class="btn btn-primary">更新密碼</button>
-                                    </div>
-
-
-                                </form>
-
-                            </div>
-
+        <div>
+            <h5 class="mb-4">個人資料</h5>
+            <div class="row">
+                <div class="col-lg-5">
+                    <!-- Profile form -->
+                    <form asp-action="Profile" method="post">
+                        <!-- input for UserName -->
+                        <div class="mb-3">
+                            <label class="form-label" for="fName">姓名</label>
+                            <input asp-for="UserName" class="form-control" placeholder="林小白">
+                            <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
+                        <!-- input for UserEmail -->
+                        <div class="mb-3">
+                            <label class="form-label" for="Email">Email</label>
+                            <input asp-for="UserEmail" type="email" class="form-control" placeholder="example@gmail.com">
+                            <span asp-validation-for="UserEmail" class="text-danger"></span>
+                        </div>
+                        <!-- input for UserPhone -->
+                        <div class="mb-3">
+                            <label class="form-label" for="Phone">電話</label>
+                            <input asp-for="UserPhone" class="form-control" placeholder="09XXXXXXXX">
+                            <span asp-validation-for="UserPhone" class="text-danger"></span>
+                        </div>
+                        <!-- input for UserBirthDate -->
+                        <div class="mb-3">
+                            <label class="form-label" for="BirthDay">生日</label>
+                            <input asp-for="UserBirthDate" type="date" class="form-control" placeholder="yyyy/mm/dd">
+                            <span asp-validation-for="UserBirthDate" class="text-danger"></span>
+                        </div>
+                        <!-- submit button -->
+                         <div class="mt-5 mb-3">
+                            <button type="submit" class="btn btn-primary">儲存資料</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <hr class="my-10">
+
+        <div class="pe-lg-14 mb-15">
+            <h5 class="mb-4">密碼</h5>
+            <form asp-action="ChangePassword" method="post" id="password-change-form">
+                <div class="row row-cols-1 row-cols-lg-2">
+                    <div class="mb-3 col">
+                        <label class="form-label">現在密碼</label>
+                        <input type="password" name="CurrentPassword" id="current-password" class="form-control" placeholder="**********" disabled>
+                    </div>
+                    <div class="mb-3 col">
+                        <label class="form-label">新密碼</label>
+                        <input type="password" name="NewPassword" id="new-password" class="form-control" placeholder="**********" disabled>
+                    </div>
+                    <div class="mb-3 col">
+                    <p class="mb-4">
+                        想要更新密碼嗎?
+                        <a href="#" id="reset-password-link">按這裡重設密碼</a>
+                    </p>
+                    </div>
+                    <div class="mt-2 mb-3 col">
+                        <button class="btn btn-primary mb-4" id="update-password-button" disabled>更新密碼</button>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+                   
+
+                        
 @*                         <hr class="my-10">
                         <div class="ms-10 mb-10">
                             <!-- heading -->
@@ -289,9 +299,8 @@
                             <!-- btn -->
                             <a href="#" class="btn btn-outline-danger">我確定要刪除帳號</a>
                         </div> *@
-                    </div>
+                    
             </div>
-        </div>
         </div>
     </section>
 </main>
@@ -354,6 +363,7 @@
 
 @section Scripts{
     <!-- Javascript-->
+    <script src="~/assets/libs/rater-js/index.js"></script>
     <!-- Libs JS -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -361,16 +371,49 @@
 
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
+    <script src="~/assets/libs/quill/dist/quill.min.js"></script>
+    <script src="~/assets/js/vendors/sidebarMenu.js"></script>
+
+    <!-- jQuery驗證 -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
     <script>
         $(document).ready(function () {
             $('#reset-password-link').click(function (e) {
                 e.preventDefault(); // 阻止鏈接默認動作
 
-                // 啟用密碼輸入欄位
-                $('#new-password, #current-password').prop('disabled', false);
+                // 啟用密碼輸入欄位和更新按鈕
+                $('#current-password, #new-password').prop('disabled', false);
+                $('#update-password-button').prop('disabled', false);
+                $('#current-password').focus();
+            });
+
+            $('#password-change-form').submit(function (e) {
+                e.preventDefault(); // 阻止表單的默認提交行為
+
+                var formData = $(this).serialize(); // 序列化表單數據
+
+                $.ajax({
+                    url: '@Url.Action("ChangePassword", "Member")', // 確保這裡的路徑是正確的
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            alert("密碼修改成功");
+                            window.location.href = '@Url.Action("Profile", "Member")';
+                        } else {
+                            alert("現在密碼錯誤，請重新確認");
+                        }
+                    },
+                    error: function () {
+                        alert("發生錯誤，請稍後再試");
+                    }
+                });
             });
         });
     </script>
+
 
 }
