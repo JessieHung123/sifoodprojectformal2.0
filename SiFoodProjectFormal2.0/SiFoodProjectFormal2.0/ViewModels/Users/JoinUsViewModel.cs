@@ -28,13 +28,13 @@ namespace SiFoodProjectFormal2._0.ViewModels.Users
         [Display(Name = "公司統編")]
         public string TaxId { get; set; }
 
-        [Required(ErrorMessage = "城市未填寫")]
+        [Required(ErrorMessage = "店家所在城市未填寫")]
         [RegularExpression("新北市|臺北市", ErrorMessage = "城市必須是新北市或臺北市")]
-        [Display(Name = "城市")]
+        [Display(Name = "店家地址-市")]
         public string City { get; set; }
 
-        [Required(ErrorMessage = "區域未填寫")]
-        [Display(Name = "區域")]
+        [Required(ErrorMessage = "店家所在區未填寫")]
+        [Display(Name = "店家地址-區")]
         public string Region { get; set; }
 
         [Required(ErrorMessage = "店家地址未填寫")]
@@ -53,5 +53,5 @@ namespace SiFoodProjectFormal2._0.ViewModels.Users
         [Display(Name = "營業日")]
         public string OpeningDay { get; set; }
 
-    }
+        }
 }
