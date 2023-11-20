@@ -40,13 +40,13 @@
         gtag('config', 'G-M8S4MT3EYG');
     </script>
 
-    <script>
+    @* <script>
         document.addEventListener("DOMContentLoaded", function() {
     var myDropzone = new Dropzone(".profile-dropzone", {
         // 其他配置選項
     });
 });
-    </script>
+    </script> *@
 
     @* <!-- 自己加的CSS，改最後按鈕的位置 -->
     <style>
@@ -89,7 +89,7 @@
 
 
                     <!-- form -->
-                    <form asp-action="JoinUs" method="post" class="row">
+                    <form asp-action="JoinUs" method="post" class="row" id="myForm">
 
                         <!-- input -->
 
@@ -412,7 +412,7 @@
                                     </div>*@
 <div class="col-md-6 mb-3">
                     <!-- btn -->
-                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-2">送出申請</button>
+                    <button id="submitButton" type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-2">送出申請</button>
                 </div>
 
                 <!-- Modal -->
@@ -427,7 +427,7 @@
                                請稍待一至二天審核，謝謝~
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >好</button>
                             </div>
                         </div>
                     </div>
@@ -448,6 +448,7 @@
 </main>
 
 @section Scripts{
+    
      <!-- Javascript-->
     <script src="~/assets/libs/rater-js/index.js"></script>
   
@@ -459,18 +460,90 @@
 
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
-    <script src="../assets/libs/quill/dist/quill.min.js"></script>
+    <script src="~/assets/libs/quill/dist/quill.min.js"></script>
 @*  <script src="~/assets/libs/prismjs/prism.js"></script>
     <script src="~/assets/libs/prismjs/components/prism-scss.min.js"></script>
     <script src="~/assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
     <script src="~/assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script> *@
     <script src="~/assets/js/vendors/sidebarMenu.js"></script>
-    <script src="~/assets/libs/dropzone/dist/min/dropzone.min.js"></script>
+@*     <script src="~/assets/libs/dropzone/dist/min/dropzone.min.js"></script> *@
 
 
-      <!-- jQuery驗證 -->
+    <!-- jQuery驗證 -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+<!-- 表單驗證與提交行為 -->
+    <script>
+        $(document).ready(function() {
+            var form = $('#myForm');
+            var submitButton = $('#submitButton'); // 假設您的提交按鈕有一個 ID 為 'submitButton'
+
+            // 初始化表單驗證，但不立即觸發驗證
+            form.validate({
+                onfocusout: false, // 當焦點離開時不驗證
+                onkeyup: false,    // 在鍵入時不驗證
+                onclick: false,    // 在點擊時不驗證
+                ignore: ":hidden", // 忽略隱藏的元素
+                errorPlacement: function(error, element) {
+                    // 可以在這裡自定義錯誤消息的顯示位置
+                }
+            });
+
+            // 監聽表單中的輸入變化
+            form.on('input change', function() {
+                if (!form.data('is-validated')) {
+                    form.validate().settings.ignore = ""; // 開始驗證所有元素
+                    form.data('is-validated', true);
+                }
+                checkForm();
+            });
+
+            // 檢查表單是否有效的函數
+            function checkForm() {
+                if (form.valid()) {
+                    submitButton.prop('disabled', false); // 啟用按鈕
+                } else {
+                    submitButton.prop('disabled', true); // 禁用按鈕
+                }
+            }
+
+            // 處理表單提交
+            form.on('submit', function(e) {
+                e.preventDefault(); // 阻止表單默認提交行為
+                if ($(form).valid()) {
+                    submitButton.disabled = true; // 禁用提交按鈕
+                    var formData = new FormData(this);
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        if(response.ok) {
+                            return response.json(); // 或者 response.text()，取決於服務器的響應
+                        } else {
+                            throw new Error('伺服器響應非 200 OK');
+                        }
+                    })
+                    .then(data => {
+                        console.log(data); // 處理響應數據
+                        $('#exampleModal-2').modal('show'); // 顯示模態窗口
+                    })
+                    .catch(error => {
+                        console.error('錯誤:', error);
+                    })
+                    .finally(() => {
+                        submitButton.disabled = false; // 啟用提交按鈕
+                    });
+                } else {
+                    console.log('表單未通過驗證');
+                    // 在這裡您可以添加一些用戶反饋，比如顯示一個錯誤消息
+                }
+            });
+        });
+</script>
+
 
 }
