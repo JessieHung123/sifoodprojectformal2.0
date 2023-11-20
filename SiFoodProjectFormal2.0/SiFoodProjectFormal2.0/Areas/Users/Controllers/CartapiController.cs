@@ -25,13 +25,13 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         //取得購物車商品
         // GET: api/CartVMapi
         [EnableQuery]
-        [HttpGet]
-        public async Task<IEnumerable<CartVM>> GetCarts()
+        [HttpGet("{id}")]
+        public IEnumerable<CartVM> GetCarts(string id)
         {
 
-            string userId = "U002";
+            id = "U002";//先寫死
             
-            var cart = _context.Carts.Where(c => c.UserId == userId).Select(c => new CartVM
+            var cart = _context.Carts.Where(c => c.UserId == id).Select(c => new CartVM
             {
                 ProductId = c.ProductId,
                 ProductName = _context.Products
@@ -47,24 +47,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
         }
 
-        // GET: api/CartVMapi/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Cart>> GetCart(string id)
-        {
-          if (_context.Carts == null)
-          {
-              return NotFound();
-          }
-            var cart = await _context.Carts.FindAsync(id);
-
-            if (cart == null)
-            {
-                return NotFound();
-            }
-
-            return cart;
-        }
-
+        
         // PUT: api/CartVMapi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

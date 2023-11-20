@@ -90,7 +90,39 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     CategoryName =z.Products.Select(x=>x.Category.CategoryName).ToArray().Distinct(),
                 }).ToList();
         }
+        //找到店家是否已被收藏
+        [HttpPost]
+        public async Task<string[]> GetFavoriteStoreId(Favorite favorite)
+        {
+            Sifood3Context _context = new Sifood3Context();
+            var Userid = "U002";
+            return await _context.Favorites.Where(f=>f.UserId == Userid).Select(f=>f.StoreId).ToArrayAsync();
 
+        }
+
+        [HttpPost]
+        public async Task<bool> AddToFavorite([FromBody] Favorite favorite)
+        {
+            Sifood3Context _context = new Sifood3Context();
+            if (favorite == null) return false;
+            string userId = "U001";
+
+            try
+            {
+                _context.Favorites.Add(new Favorite
+                {
+                    UserId = userId,
+                    StoreId = favorite.StoreId,
+
+                });
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         //[EnableQuery]
         //public async Task<IQueryable<StoreVM>> FilterBy()
         //{
@@ -300,134 +332,5 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         //}
 
 
-
-        //// GET: Users/Storeapi/Details/5
-        //public async Task<ActionResult<StoreVM>> Details(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var storeVM = await _context.Stores
-        //        .FirstOrDefaultAsync(m => m.StoreId == id);
-        //    if (storeVM == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return storeVM;
-        //}
-
-
-
-        //// POST: Users/Storeapi/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult<StoreVM>> Create([Bind("StoreId,StoreName,Description,LogoPath,CommentRank,CommentCount")] StoreVM storeVM)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(storeVM);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return storeVM;
-        //}
-
-        //// GET: Users/Storeapi/Edit/5
-        //public async Task<ActionResult<StoreVM>> Edit(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var storeVM = await _context.StoreVM.FindAsync(id);
-        //    if (storeVM == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return storeVM;
-        //}
-
-        //// POST: Users/Storeapi/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult<StoreVM>> Edit(string id, [Bind("StoreId,StoreName,Description,LogoPath,CommentRank,CommentCount")] StoreVM storeVM)
-        //{
-        //    if (id != storeVM.StoreId)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(storeVM);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!StoreVMExists(storeVM.StoreId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return storeVM;
-        //}
-
-        //// GET: Users/Storeapi/Delete/5
-        //public async Task<ActionResult<StoreVM>> Delete(string id)
-        //{
-        //    if (id == null || _context.StoreVM == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var storeVM = await _context.StoreVM
-        //        .FirstOrDefaultAsync(m => m.StoreId == id);
-        //    if (storeVM == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return storeVM;
-        //}
-
-        //// POST: Users/Storeapi/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(string id)
-        //{
-        //    if (_context.StoreVM == null)
-        //    {
-        //        return Problem("Entity set 'SifoodContext.StoreVM'  is null.");
-        //    }
-        //    var storeVM = await _context.StoreVM.FindAsync(id);
-        //    if (storeVM != null)
-        //    {
-        //        _context.StoreVM.Remove(storeVM);
-        //    }
-
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool StoreVMExists(string id)
-        //{
-        //  return (_context.StoreVM?.Any(e => e.StoreId == id)).GetValueOrDefault();
-        //}
     }
 }

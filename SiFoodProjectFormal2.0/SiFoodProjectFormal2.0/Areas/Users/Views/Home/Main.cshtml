@@ -98,32 +98,14 @@
                         <div class="mb-8">
                             <!-- title -->
                             <h5 class="mb-3">依種類探索</h5>
-                            <!-- nav -->
-                            <ul class="nav nav-category ">
-                                <li class="nav-item border-bottom w-100 ">
-                                    <a  v-model="isCategory" class="nav-link " style="color:#6c757d;font-weight: bold">生鮮</a>
-                                </li>
-                                <li class="nav-item border-bottom w-100 ">
-                                    <a  v-model="isCategory" class="nav-link " style="color:#6c757d;font-weight: bold">飲料</a>
-                                </li>
-                                <li class="nav-item border-bottom w-100 ">
-                                    <a  v-model="isCategory" class="nav-link" style="color:#6c757d;font-weight: bold">甜點麵包</a>
-                                </li>
-                                <li class="nav-item border-bottom w-100 ">
-                                    <a  v-model="isCategory" class="nav-link" style="color:#6c757d;font-weight: bold">便當</a>
 
-                                </li>
-                                <li class="nav-item border-bottom w-100 ">
-                                    <a  v-model="isCategory" class="nav-link" style="color:#6c757d;font-weight: bold">素食</a>
-                                </li>
-                                <li class="nav-item border-bottom w-100 ">
-                                    <a  v-model="isCategory" class="nav-link " style="color:#6c757d;font-weight: bold">異國料理</a>
-                                </li>
-                                <li class="nav-item border-bottom w-100 ">
-                                    <a  v-model="isCategory" class="nav-link " style="color:#6c757d;font-weight: bold">其他</a>
-                                </li>
-
-                            </ul>
+                            <div class="form-check mb-2" v-for="(condition, index) in selectedConditions" :key="index">
+                                <!-- input -->
+                                <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" value="false" v-model="condition.active">
+                                <label class="form-check-label" style="color:#6c757d;font-weight: bold">
+                                    {{ condition.label }}
+                                </label>
+                            </div>
                         </div>
                         <div class="mb-8">
 
@@ -161,7 +143,7 @@
                             </div>
                             <!-- Banner Content -->
                             <!-- Banner Image -->
-                            <!-- img --><img src="~/images/mapsmall.jpg" class="img-fluid rounded " />
+                            <!-- img --><img src="~/images/Users/mapsmall.jpg" class="img-fluid rounded " />
                             <!-- Banner Image -->
                         </div>
                     </div>
@@ -278,24 +260,26 @@
                     isStoreActive: false,
                     stores: [],
                     storeCount: "",
-                    catestores:[],
-                    isCategory: null,
-                 
 
+                    selectedConditions: [
+                        { label: "生鮮", keyword: "生鮮", active: false },
+                        { label: "飲料", keyword: "飲料", active: false },
+                        { label: "甜點麵包", keyword: "甜點麵包", active: false },
+                        { label: "便當", keyword: "便當", active: false },
+                        { label: "素食", keyword: "素食", active: false },
+                        { label: "異國料理", keyword: "異國料理", active: false },
+                        { label: "其他", keyword: "其他", active: false }
+                    ]
                 }
             },
             computed: {
                 showStores: function () {
                     var x = this.filterActiveTime(this.stores);
-                    // var r = this.filterArea(x);
-
-                   var c = this.filtercategory(x);
+                    var c = this.filtercategory(x);
+                    this.storeCount = c.length;
                     return c;
-                    alert(c);
+
                 },
-                // filterStores: function () {
-                //     return _this.stores.filter(s => s.categoryName.indexOf(this.search) !== -1);
-                // },
 
             },
             mounted: function () {
@@ -303,29 +287,46 @@
                 _this.getStoreapi();
 
             },
+
             methods: {
                 filterActiveTime(stores) {
                     if (this.isStoreActive) {
-                        return stores.filter(s => s.commentRank >=5);
+                        let _this = this;
+                        // return stores.filter(s => s.commentRank >=5);
+                        var now = new Date();
+                        var day = now.getDay();
+                        var isWeekday;
+
+                        if (day >= 1 && day <= 5) { isWeekday = true; } else { isWeekday = false; }
+                        var localHours = now.getHours();
+                        var localMinutes = now.getMinutes();
+
+                        if (isWeekday) {
+                            return stores.filter(s => localHours >= parseInt(s.weekdayOpeningTime.slice(0, 2)) && localMinutes >= 0 && localHours < parseInt(s.weekdayClosingTime.slice(0, 2)) && localMinutes >= 0);
+                        } else {
+                            return stores.filter(s => localHours >= parseInt(s.weekendOpeningTime.slice(0, 2)) && localMinutes >= 0 && localHours < parseInt(s.weekendClosingTime.slice(0, 2)) && localMinutes >= 0);
+                        }
                     }
+
                     return stores;
                 },
                 filterArea(stores) {
                     // let area[,]=
                     return stores;
                 },
-                filtercategory(stores){
+                filtercategory(stores) {
                     let _this = this;
-                    
-                    if (this.isCategory == '便當') { alert(JSON.stringify(_this.stores.filter(s => s.categoryName.indexOf("便當") !== -1))); }
-                    if (this.isCategory == '生鮮') { return _this.stores.filter(s => s.categoryName.indexOf("生鮮") !== -1); _this.storeCount = _this.stores.length; }
-                    if (this.isCategory == '飲料') { return _this.stores.filter(s => s.categoryName.indexOf("飲料") !== -1); _this.storeCount = _this.stores.length; alert(_this.catestores); }
-                    if (this.isCategory == '甜點麵包') { return _this.stores.filter(s => s.categoryName.indexOf("甜點麵包") !== -1); _this.storeCount = _this.stores.length; }
-                    // if (isCategory == '便當') { return _this.stores.filter(s => s.categoryName.indexOf("便當") !== -1); _this.storeCount = _this.stores.length; alert(_this.catestores); }
-                    if (this.isCategory == '素食') { return _this.stores.filter(s => s.categoryName.indexOf("素食") !== -1); _this.storeCount = _this.stores.length; }
-                    if (this.isCategory == '異國料理') { return _this.stores.filter(s => s.categoryName.indexOf("異國料理") !== -1); _this.storeCount = _this.stores.length; }
-                    if (this.isCategory == '其他') { return _this.stores.filter(s => s.categoryName.indexOf("其他") !== -1); _this.storeCount = _this.stores.length; }
-                    else { return _this.stores; }
+
+                    const activeConditions = this.selectedConditions.filter(condition => condition.active);
+                    if (activeConditions.length === 0) {
+                        return stores;
+                    }
+                    else {
+                        return stores.filter(store => {
+                            return activeConditions.some(condition => store.categoryName.includes(condition.keyword));
+                        })
+                    };
+
                 },
 
                 getStoreapi() {
@@ -339,7 +340,7 @@
                         })
                         .then(data => {
                             // alert(JSON.stringify(data));
-                            
+
                             _this.stores = data;
                             _this.storeCount = _this.stores.length;
                         }).catch(error => {
@@ -347,12 +348,42 @@
                         });
 
                 },
+                //找到該user收藏店家
+                getFavoriteStore() {
+                    let _this = this;
+                    fetch(`${baseAddress}/odata/Storeapi/GetFavoriteStoreId`, { method: "GET" })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // alert(JSON.stringify(data));
+                            //class 讓愛心樣式變化
+                        }).catch(error => {
+                            alert(error);
+                        });
+                },
+                //加入收藏店家
+                addToFavorite() {
+                    let _this = this;
+
+                    //如果U001加過，愛心為實心 空心
+                    fetch(`${baseAddress}/odata/Storeapi/AddToFavorite`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(cartData)
+                    }).then(response => {
+                        if (response.ok) {
+                            alert("商品已加入購物車!");
 
 
-
-
-            }
-        }).mount("#main");
+                        }
+                    });
+                }
+                }
+            }).mount("#main");
 
     </script>
     <script src="~/slickcdn.min.js"></script>

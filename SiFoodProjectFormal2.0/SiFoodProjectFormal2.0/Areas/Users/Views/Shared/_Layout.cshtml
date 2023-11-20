@@ -335,14 +335,16 @@
 
                 }
             },
-            // mounted: function () {
+            mounted: function () {
 
 
-            // },
+
+
+            },
             methods: {
                 clickcart() {
                     let _this = this;
-                    fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
+                    fetch(`${baseAddress}/api/CartVMapi/GetCarts/U002`, { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
                             alert(data);
@@ -352,8 +354,6 @@
                             alert(error);
                         });
                 }
-
-
             },
             computed: {
 
