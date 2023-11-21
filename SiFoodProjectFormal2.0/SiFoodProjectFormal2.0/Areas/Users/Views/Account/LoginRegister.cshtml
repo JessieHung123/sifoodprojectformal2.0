@@ -122,7 +122,6 @@
                 register() {
                     _this = this
                     var form = new FormData();
-                    form.append("UserId", "U006");
                     form.append("EmailAccount", _this.vueAccount);
                     form.append("Password", _this.vuePassword);
                     axios.post(`/Account/PostAccount`, form, {

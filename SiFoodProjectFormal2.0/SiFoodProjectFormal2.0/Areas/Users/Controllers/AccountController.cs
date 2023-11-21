@@ -59,13 +59,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Account/PostAccount")]
-        public string PostAccount([FromForm] RegisterVM model)
+        public string PostAccount([FromForm] User model)
         {
             User user = new User
             {
-                UserId = model?.UserId,
-                UserEmail = model?.EmailAccount,
-                UserPasswordHash = Encoding.ASCII.GetBytes($"{model.Password}")
+                UserEmail = model.UserEmail,
+                UserPasswordHash = Encoding.ASCII.GetBytes($"{model.UserPasswordHash}")
             };
 
             _context.Users.Add(user);
