@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
-using SiFoodProjectFormal2.Models;
+using SiFoodProjectFormal2._0.ViewModels.Users;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -20,11 +20,30 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             var _address = _context.UserAddresses.Find(id)?.UserDetailAddress;
             ViewBag.ad = _address;
 
-
-
-
             return View();
         }
+
+
+        [HttpPost]
+        public string DeliverOrder(DeliverOrderVM model)
+        {
+
+
+
+
+            return "新增外送訂單成功";
+        }
+
+
+        [HttpPost]
+        public string TakeOutOrder(TakeOutOrderVM model)
+        {
+
+
+
+            return "新增自取訂單成功";
+        }
+
         public IActionResult Payment()
         {
             return View();
