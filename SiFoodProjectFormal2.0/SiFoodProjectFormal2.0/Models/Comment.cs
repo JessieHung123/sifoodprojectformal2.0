@@ -5,8 +5,6 @@ namespace SiFoodProjectFormal2._0.Models;
 
 public partial class Comment
 {
-    public int CommentId { get; set; }
-
     public string OrderId { get; set; } = null!;
 
     public short CommentRank { get; set; }
