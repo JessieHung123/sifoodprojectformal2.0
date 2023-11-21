@@ -24,48 +24,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             _context = context;
         }
 
-        // GET: Users/StoreVMs
-        [EnableQuery]
-        public async Task<IQueryable<StoreVM>> Main()
-        {
-
-            var store = _context.Stores.Select(s => new StoreVM
-            {
-                StoreName = s.StoreName,
-                Description = s.Description,
-                LogoPath = s.LogoPath,
-                CommentCount = _context.Orders.Where(o => o.StoreId == s.StoreId).Join(
-                _context.Orders,
-                store => store.StoreId,
-                order => order.StoreId,
-                (store, order) => order.OrderId
-                )
-                .Join(
-                    _context.Comments,
-                    orderId => orderId,
-                    comment => comment.OrderId,
-                    (orderId, comment) => comment
-                )
-                .Count(),
-                CommentRank = _context.Orders.Where(o => o.StoreId == s.StoreId)
-                .Join(
-                    _context.Comments,
-                    order => order.OrderId,
-                    comment => comment.OrderId,
-                    (order, comment) => (decimal)comment.CommentRank
-                )
-                .Average(),
-                WeekdayOpeningTime = _context.Stores.Select(s => s.OpeningTime).Single().Substring(3, 5),
-                WeekdayClosingTime = _context.Stores.Select(s => s.OpeningTime).Single().Substring(11, 5),
-                WeekendOpeningTime = _context.Stores.Select(s => s.OpeningTime).Single().Substring(20, 5),
-                WeekendClosingTime = _context.Stores.Select(s => s.OpeningTime).Single().Substring(28, 5),
-                //Inventory = ((_context.Products.Where(p => p.StoreId == s.StoreId).Select(p => p.ReleasedQty).Single() - _context.Products.Where(p => p.StoreId == s.StoreId).Select(p => p.OrderedQty).Single()) == null) ? 0 : _context.Products.Where(p => p.StoreId == s.StoreId).Select(p => p.ReleasedQty).Single() - _context.Products.Where(p => p.StoreId == s.StoreId).Select(p => p.OrderedQty).Single(),
-
-            });
-
-            return store;
-        }
-
         [EnableQuery]
         public object Main2()
         {
@@ -92,12 +50,14 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         }
 
         //找到店家是否已被收藏
+
         [HttpGet]
-        public async Task<string[]> GetFavoriteStoreId(Favorite favorite)
+        public async Task<string[]> GetFavoriteStoreId()
         {
             Sifood3Context _context = new Sifood3Context();
-            var Userid = "U002";
-            return await _context.Favorites.Where(f=>f.UserId == Userid).Select(f=>f.StoreId).ToArrayAsync();
+
+            var Userid = "U001";//寫死
+            return await _context.Favorites.Where(f => f.UserId == Userid).Select(f => f.StoreId).ToArrayAsync();
 
         }
 
@@ -106,7 +66,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         {
             Sifood3Context _context = new Sifood3Context();
             if (favorite == null) return false;
-            string userId = "U001";
+            string userId = "U001";//寫死
 
             try
             {
@@ -124,6 +84,31 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 return false;
             }
         }
+
+        [HttpDelete]
+        public async Task<bool> DeleteFavorite([FromBody] Favorite favorite)
+        {
+
+            if (favorite == null) return false;
+            string userId = "U001";//寫死
+            //var userId = XXX.GetUserId();
+            try
+            {
+                var likeItem = await _context.Favorites.FirstOrDefaultAsync(c =>
+                c.UserId == userId && c.StoreId == favorite.StoreId);
+                if (likeItem == null) return false;
+
+                _context.Favorites.Remove(likeItem);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
         //[EnableQuery]
         //public async Task<IQueryable<StoreVM>> FilterBy()
         //{
