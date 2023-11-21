@@ -16,14 +16,14 @@
                                 <h1 class="mb-1 h2 fw-bold">註冊成為Sifood會員</h1>
                                 <p>歡迎加入會員, 一起杜絕浪費!</p>
                             </div>
-                            <form>
+                            <div>
                                 <div class="row g-4">
                                     <div class="col-12">
-                                        <input type="email" name="EmailAccount" class="form-control" id="inputEmail4" placeholder="Email" required="" v-model="vueAccount">
+                                        <input type="email" v-model="vueAccount" class="form-control" id="inputEmail4" placeholder="Email" required="">
                                     </div>
                                     <div class="col-12">
                                         <div class="password-field position-relative">
-                                            <input type="password" name="Password" id="fakePassword" placeholder="Enter Password" class="form-control" required="" v-model="vuePassword">
+                                            <input type="password" v-model="vuePassword" id="fakePassword" placeholder="Enter Password" class="form-control" required="">
                                             <span><i id="passwordToggler" class="bi bi-eye-slash"></i></span>
                                         </div>
                                     </div>
@@ -37,7 +37,7 @@
                                         <button id="registerSubmit" type="submit" class="btn btn-primary" @@click="register">註冊</button>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                 register() {
                     _this = this
                     var form = new FormData();
-                    form.append("UserId", -1)
+                    form.append("UserId", "U006");
                     form.append("EmailAccount", _this.vueAccount);
                     form.append("Password", _this.vuePassword);
                     axios.post(`/Account/PostAccount`, form, {

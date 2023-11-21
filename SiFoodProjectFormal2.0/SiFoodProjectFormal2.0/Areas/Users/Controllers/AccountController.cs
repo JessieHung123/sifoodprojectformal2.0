@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
+using System.Text;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -64,14 +65,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             {
                 UserId = model?.UserId,
                 UserEmail = model?.EmailAccount,
-                UserPasswordHash = model.Password
+                UserPasswordHash = Encoding.ASCII.GetBytes($"{model.Password}")
             };
 
             _context.Users.Add(user);
             _context.SaveChanges();
 
             return "帳號註冊成功";
-
         }
 
 
