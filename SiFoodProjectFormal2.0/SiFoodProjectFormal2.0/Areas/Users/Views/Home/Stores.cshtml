@@ -471,7 +471,7 @@
             </div>
         </div>
         <!-- section -->
-        <section class="mb-lg-14 mb-8 mt-8">
+        <section id="app" class="mb-lg-14 mb-8 mt-8">
             <div class="container">
                 <!-- row -->
                 <div class="row">
@@ -486,21 +486,25 @@
                             </div>
                             <!-- heading -->
                             <div class="mt-4">
-                                <h1 class="mb-1 h4">緯育餐廳</h1>
+                                <h1 class="mb-1 h4">{{stores.storeName}}</h1>
                                 <div class="small text-muted">
                                     <span>海鮮,火鍋</span>
                                 </div>
                                 <!-- Store Address -->
                                 <div>
-                                    台北市中山區南京東路三段219號5樓
+                                    {{stores.address}}
                                 </div>
                                 <!-- Phone Number -->
                                 <div>
-                                    0227120589
+                                    {{stores.phone}}
                                 </div>
                                 <div>
                                     <span>
-                                        <small><a href="#!">Monday-Sunday:11:00-23:00(Open Now)</a></small>
+                                        <small><a href="#!">{{stores.weekdayOpeningTime}}</a></small>
+                                        <br />
+                                        <small><a href="#!">{{stores.weekendOpeningTime}}</a></small>
+                                        <br />
+                                        <small><a href="#!">(Open Now***)</a></small>
                                     </span>
                                 </div>
                                 <!-- rating -->
@@ -512,8 +516,8 @@
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-half"></i>
-                                    </small><span class="ms-2">5.0</span>
-                                    <!-- text --><span class="text-muted ms-1">(3,400 reviews)</span>
+                                    </small><span class="ms-2">{{stores.commentRank}}</span>
+                                    <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
                                     <a href="#" class="btn btn-primary btn-sm"><strong>收藏</strong></a>
@@ -549,91 +553,11 @@
                         </li>
                         </ul> *@
                         <hr />
-                        <div>
+                        <div >
                             <ul class="nav flex-column nav-links">
                                 <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Produce</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Dairy & Eggs</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Beverages</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Meat & Seafood</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Snacks & Candy</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Frozen</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Bakery</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Prepared Foods</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Alcohol</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Dry Goods & Pasta</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Condiments & Sauces</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Canned Goods & Soups</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Breakfast</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Household</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Baking Essentials</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Oils, Vinegars, & Spices</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Health Care</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Personal Care</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Kitchen Supplies</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Floral</a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a href="#!" class="nav-link">Party & Gift Supplies</a>
+                                <li class="nav-item" v-for="item in stores.categoryList">
+                                    <a href="#!" class="nav-link">{{item}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -680,11 +604,11 @@
 
                             <div class="p-8">
                                 <!-- img -->
-                                <img src="~/images/Users/餐廳.jpg" alt="Description of the image" class="img-fluid">
+                                <img :src="stores.photosPath" alt="Description of the image" class="img-fluid">
                             </div>
                             <div class="align-self-center p-8">
                                 <div class="mb-3">
-                                    <h5>正宗日本風味，美味刺激您的味蕾，來體驗日式料理的獨特風味。</h5>
+                                    <h5>{{stores.description}}</h5>
                                 </div>
                                 <div class="position-relative">
                                     <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Search E-Grocery Super Market">
@@ -726,7 +650,7 @@
                         </div>
                         <!-- row -->
                         <div class="row g-4 row-cols-xl-3 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
-                            <div class="col  align-items-stretch">
+                            <div class="col  align-items-stretch" v-for="item in products">
                                 <!-- card -->
                                 <div class="card card-product">
                                     <div class="card-body">
@@ -736,7 +660,7 @@
                                                 <span class="badge bg-danger">Sale</span>
                                             </div>
                                             <a href="#!">
-                                                <!-- img --><img src="~/assets/images/products/product-img-1.jpg"
+                                                <!-- img --><img :src="item.photoPath"
                                                                  alt="Grocery Ecommerce Template"
                                                                  class="mb-3 img-fluid" />
                                             </a>
@@ -768,26 +692,26 @@
                                             </div>
                                         </div>
                                         <div class="text-small mb-1">
-                                            <a href="#!" class="text-decoration-none text-muted"><small>泡麵</small></a>
+                                            <a href="#!" class="text-decoration-none text-muted"><small>{{item.categoryName}}</small></a>
                                         </div>
                                         <h2 class="fs-6">
-                                            <a href="#!" class="text-inherit text-decoration-none">滿漢大餐</a>
+                                            <a href="#!" class="text-inherit text-decoration-none">{{item.productName}}</a>
                                         </h2>
                                         <!-- Remaining Quantity -->
                                         <div class="mb-1">
-                                            <small>剩餘數量: 10</small>
+                                            <small>剩餘數量: {{item.avalibleQty}}</small>
                                         </div>
 
                                         <!-- Estimated Pickup Time -->
                                         <div class="mb-1">
-                                            <small>取貨期限: 2 hours</small>
+                                            <small>取貨期限: {{item.realeasedTime}}</small>
                                         </div>
 
                                         <!-- price -->
                                         <div class="d-flex justify-content-between align-items-center mt-3">
                                             <div>
-                                                <span class="text-dark">$18</span>
-                                                <span class="text-decoration-line-through text-muted">$24</span>
+                                                <span class="text-dark">${{item.unitPrice}}</span>
+                                                <span class="text-decoration-line-through text-muted">$***</span>
                                             </div>
                                             <div>
                                                 <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
@@ -811,7 +735,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col  align-items-stretch">
+@*                             <div class="col  align-items-stretch">
                                 <!-- card -->
                                 <div class="card card-product">
                                     <div class="card-body">
@@ -1541,7 +1465,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+ *@                        </div>
                         <!-- row -->
                         <div class="row mt-8">
                             <div class="col">
@@ -1988,22 +1912,77 @@
     </div>
 
 
+    @section Scripts{
+        <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
 
+        <script>
+            var baseAddress = "https://localhost:7042";
 
-    <!-- Javascript-->
-    <!-- Libs JS -->
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+            const storeApp = Vue.createApp({
+                data: function () {
+                    return {                     
+                        products: [],
+                        stores: [],                    
+                        storeName: "",
+                        comment: [],
+                        // categoryList = []
+                    }
+                },
+                computed: {
+                    
+                },
+                mounted: function () {
+                    let _this = this;
+                    _this.getStoreapi();
 
-    <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js"></script>
-    <script src="~/assets/libs/tiny-slider/dist/min/tiny-slider.js"></script>
-    <script src="~/assets/js/vendors/tns-slider.js"></script>
-    <script src="~/assets/js/vendors/increment-value.js"></script>
-    @* Carousel *@
-    <!-- MDB -->
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+                },
+                methods: {
+                    
+                    getStoreapi() {
+                        let _this = this;
+                        var storeId = "S001"
+                        fetch(`${baseAddress}/api/stores/${storeId}`, { method: "GET" })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                // alert(JSON.stringify(data));
+                               
+                                _this.stores = data[0];
+                                _this.products = data[0].products;
+                                _this.comment = data[0].comment;
+                                // _this.categoryList = data[0].categoryList;
+                                
+                            }).catch(error => {
+                                alert(error);
+                            });
+
+                    },
+                    
+                }
+            }).mount("#app")
+        </script>
+
+        <!-- Javascript-->
+        <!-- Libs JS -->
+        <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+        <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+
+        <!-- Theme JS -->
+        <script src="~/assets/js/theme.min.js"></script>
+        <script src="~/assets/libs/tiny-slider/dist/min/tiny-slider.js"></script>
+        <script src="~/assets/js/vendors/tns-slider.js"></script>
+        <script src="~/assets/js/vendors/increment-value.js"></script>
+        @* Carousel *@
+        <!-- MDB -->
+        <script type="text/javascript"
+                src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+    }
+
+   
 </body>
 </html>
