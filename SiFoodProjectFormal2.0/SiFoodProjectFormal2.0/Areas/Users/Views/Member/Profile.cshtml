@@ -144,6 +144,9 @@
         </div>
     </div>
 </div>
+
+
+
 <main>
     <!-- section -->
     <section>
@@ -220,28 +223,30 @@
                 <div class="col-lg-5">
                     <!-- Profile form -->
                     <form asp-action="Profile" method="post">
+
                         <!-- input for UserName -->
                         <div class="mb-3">
-                            <label class="form-label" for="fName">姓名</label>
-                            <input asp-for="UserName" class="form-control" placeholder="林小白">
+                            <label class="form-label" for="fname">姓名</label>
+                            <input asp-for="UserName" class="form-control" id="fname" placeholder="林小白">
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
+
                         <!-- input for UserEmail -->
                         <div class="mb-3">
-                            <label class="form-label" for="Email">Email</label>
-                            <input asp-for="UserEmail" type="email" class="form-control" placeholder="example@gmail.com">
+                            <label class="form-label" for="email">Email</label>
+                            <input asp-for="UserEmail" type="email" class="form-control" id="email" placeholder="example@gmail.com">
                             <span asp-validation-for="UserEmail" class="text-danger"></span>
                         </div>
                         <!-- input for UserPhone -->
                         <div class="mb-3">
-                            <label class="form-label" for="Phone">電話</label>
-                            <input asp-for="UserPhone" class="form-control" placeholder="09XXXXXXXX">
+                            <label class="form-label" for="phone">電話</label>
+                            <input asp-for="UserPhone" class="form-control" id="phone" placeholder="0912345678">
                             <span asp-validation-for="UserPhone" class="text-danger"></span>
                         </div>
                         <!-- input for UserBirthDate -->
                         <div class="mb-3">
-                            <label class="form-label" for="BirthDay">生日</label>
-                            <input asp-for="UserBirthDate" type="date" class="form-control" placeholder="yyyy/mm/dd">
+                            <label class="form-label" for="birthday">生日</label>
+                            <input asp-for="UserBirthDate" type="date" class="form-control" id="birthday" placeholder="yyyy/mm/dd">
                             <span asp-validation-for="UserBirthDate" class="text-danger"></span>
                         </div>
                         <!-- submit button -->
