@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿<!--測試連線--->
+@model IEnumerable<SiFoodProjectFormal2._0.Models.Product>
+<!--測試連線--->
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -42,7 +46,7 @@
                                  style="background-image: url(~/assets/images/slider/slider-image-1.jpg); background-repeat: no-repeat; background-size: cover; background-position: right;">
                                 <div class="card-body p-lg-12">
                                     <h1>
-                                        歡迎回來! THM103小吃店
+                                        歡迎回來! @ViewBag.StoreName
                                     </h1>
                                     <p>目前狀態:營業中</p>
                                     <a href="#" class="btn btn-primary">
@@ -76,18 +80,25 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>待處理訂單</td>
-                                                            <td>2</td>
+                                                            <td>待確認訂單</td>
+                                                            <td>@ViewBag.status1</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>運送中訂單</td>
-                                                            <td>1</td>
+                                                            <td>待配送訂單</td>
+                                                            <td>@ViewBag.status2</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>待領取訂單</td>
+                                                            <td>@ViewBag.status3</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>配送中訂單</td>
+                                                            <td>@ViewBag.status4</td>
                                                         </tr>
                                                         <tr>
                                                             <td>上架商品數</td>
-                                                            <td>10</td>
+                                                            <td>@ViewBag.SumReleasedQty</td>
                                                         </tr>
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -95,7 +106,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="col-xl-4 col-lg-6 col-12 mb-6">
                             <!-- card -->
@@ -164,6 +174,88 @@
         </div>
     </div>
 
+    <!--測試連線-->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReleasedQty)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderedQty)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhotoPath)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RealeasedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UnitPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SuggestPickUpTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SuggestPickEndTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Store)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReleasedQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderedQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhotoPath)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RealeasedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SuggestPickUpTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SuggestPickEndTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Store.StoreId)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <!--測試連線-->
     <!-- Libs JS -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
