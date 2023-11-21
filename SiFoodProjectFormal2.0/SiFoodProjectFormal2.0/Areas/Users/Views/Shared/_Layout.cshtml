@@ -167,7 +167,7 @@
                         <!-- list group -->
                         <li class="list-group-item py-3 ps-0 border-top">
                             <!-- row -->
-                            <div class="row align-items-center" v-for="item in carts">
+                            <div class="row align-items-center" v-if="carts.length > 0" v-for="item in carts">
 
                                 <div class="col-6 col-md-6 col-lg-7">
                                     <div class="d-flex">
@@ -336,24 +336,32 @@
                 }
             },
             mounted: function () {
+                fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data);
+                        this.carts = data;
 
+                    }).catch(error => {
+                        alert(error);
+                    });
 
 
 
             },
             methods: {
-                clickcart() {
-                    let _this = this;
-                    fetch(`${baseAddress}/api/CartVMapi/GetCarts/U002`, { method: "GET" })
-                        .then(response => response.json())
-                        .then(data => {
-                            alert(data);
-                            _this.carts = data;
+                // clickcart() {
+                //     let _this = this;
+                //     fetch(`${baseAddress}/api/CartVMapi/GetCarts/U002`, { method: "GET" })
+                //         .then(response => response.json())
+                //         .then(data => {
+                //             alert(data);
+                //             _this.carts = data;
 
-                        }).catch(error => {
-                            alert(error);
-                        });
-                }
+                //         }).catch(error => {
+                //             alert(error);
+                //         });
+                // }
             },
             computed: {
 

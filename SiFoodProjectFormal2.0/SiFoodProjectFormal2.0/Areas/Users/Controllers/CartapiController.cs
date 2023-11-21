@@ -25,13 +25,13 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         //取得購物車商品
         // GET: api/CartVMapi
         [EnableQuery]
-        [HttpGet("{id}")]
-        public IEnumerable<CartVM> GetCarts(string id)
+        [HttpGet]
+        public IEnumerable<CartVM> GetCarts()
         {
 
-            id = "U002";//先寫死
+            string GetUserId = "U002";//先寫死
             
-            var cart = _context.Carts.Where(c => c.UserId == id).Select(c => new CartVM
+            var cart = _context.Carts.Where(c => c.UserId == GetUserId).Select(c => new CartVM
             {
                 ProductId = c.ProductId,
                 ProductName = _context.Products
