@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using SiFoodProjectFormal2._0.ViewModels.Users;
 using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
 using System.Text;
+using SiFoodProjectFormal2._0.ViewModels.Users;
+
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -28,11 +29,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         
         public async Task<IActionResult> LoginRegister(LoginVM model)
         {
-            string? account = _context.Users.Select(x => x.UserEmail).FirstOrDefault();
-            byte[]? password = _context.Users.Select(y => y.UserPasswordHash).FirstOrDefault();
+            string[]? account = _context.Users.Select(x => x.UserEmail).ToArray();
+            byte[][]? password = _context.Users.Select(y => y.UserPasswordHash).ToArray();
 
 
-            if (model.Account == account && model.Password == password)
+            if (account.Contains(model.Account) && password.Contains(model.Password))
             {
                 var claims = new List<Claim>()
                 {
@@ -59,16 +60,17 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Account/PostAccount")]
-        public string PostAccount([FromForm] User model)
+        public string PostAccount([FromForm] RegisterVM model)
         {
             User user = new User
             {
-                UserEmail = model.UserEmail,
-                UserPasswordHash = Encoding.ASCII.GetBytes($"{model.UserPasswordHash}")
+                UserEmail = model?.EmailAccount,
+                UserPasswordHash = Encoding.ASCII.GetBytes($"{model?.Password}")
             };
 
             _context.Users.Add(user);
             _context.SaveChanges();
+
 
             return "帳號註冊成功";
         }

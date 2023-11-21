@@ -41,9 +41,9 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=tcp:sifooddbserver.database.windows.net,1433;Initial Catalog=sifood3;Persist Security Info=False;User ID=SQLAdmin;Password=THM103sifood;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=tcp:sifooddbserver.database.windows.net,1433;Initial Catalog=sifood3;Persist Security Info=False;User ID=SQLAdmin;Password=THM103sifood;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -312,6 +312,7 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.UserId)
                 .HasMaxLength(50)
                 .IsUnicode(false)
+                .HasDefaultValueSql("('U'+format(NEXT VALUE FOR [SifoodUserIdSeq],'000'))")
                 .HasColumnName("UserID");
             entity.Property(e => e.TotalOrderAmount).HasColumnType("money");
             entity.Property(e => e.UserBirthDate).HasColumnType("date");
@@ -350,6 +351,7 @@ public partial class Sifood3Context : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserAddresses_Users");
         });
+        modelBuilder.HasSequence<int>("SifoodUserIdSeq").StartsAt(7L);
 
         OnModelCreatingPartial(modelBuilder);
     }
