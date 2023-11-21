@@ -26,7 +26,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         // GET: api/CartVMapi
         [EnableQuery]
         [HttpGet]
-        public IEnumerable<CartVM> GetCarts()
+        public async Task<IEnumerable<CartVM>> GetCarts()
         {
 
             string GetUserId = "U002";//先寫死
@@ -47,85 +47,59 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
         }
 
-        
-        // PUT: api/CartVMapi/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCart(string id, Cart cart)
+        //修改商品數量
+        // PUT: api/CartVMapi/
+        [HttpPut]
+        public async Task<bool> ChangeQty([FromBody] CartVM cartVM)
         {
-            if (id != cart.UserId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(cart).State = EntityState.Modified;
-
-            try
-            {
+            string userId = "U001";//cartVM.UserId寫死
+            Cart? cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId&&c.ProductId == cartVM.ProductId);
+            cart.Quantity = cartVM.Quantity;
+            try {
+                _context.Entry(cart).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+                return true;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CartExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            catch(Exception) { return false; }
+            
 
-            return NoContent();
         }
-
+        //加入購物車:一個user的購物車只能限定一間商店，不然要alert(購物車只能放一間商店，是否要更換店家?)
         // POST: api/CartVMapi
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cart>> PostCart(Cart cart)
+        public async Task<bool> AddToCart([FromBody]CartVM cartVM)
         {
-          if (_context.Carts == null)
-          {
-              return Problem("Entity set 'SifoodContext.Carts'  is null.");
-          }
-            _context.Carts.Add(cart);
+            if (cartVM == null) return false;
+            try {
+                string userId = "U001";//cartVM.UserId寫死
+                Cart? cart = new Cart
+                {
+                    ProductId = cartVM.ProductId,
+                    Quantity = cartVM.Quantity,
+                    UserId = userId,   //cartVM.UserId寫死
+                };
+                _context.Carts.Add(cart);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception){ return false; }
+        }
+        //刪除購物車商品
+        
+        [HttpDelete]
+        public async Task<bool> DeleteCartItem([FromBody] CartVM cartVM)
+        {
+
+            if (cartVM == null) return false;
             try
             {
+                string userId = cartVM.UserId;
+                var cartItem= await _context.Carts.FirstOrDefaultAsync(c=>c.ProductId==cartVM.ProductId&&c.UserId==userId);
+                _context.Carts.Remove(cartItem);
                 await _context.SaveChangesAsync();
+                return true;
             }
-            catch (DbUpdateException)
-            {
-                if (CartExists(cart.UserId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetCart", new { id = cart.UserId }, cart);
-        }
-
-        // DELETE: api/CartVMapi/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCart(string id)
-        {
-            if (_context.Carts == null)
-            {
-                return NotFound();
-            }
-            var cart = await _context.Carts.FindAsync(id);
-            if (cart == null)
-            {
-                return NotFound();
-            }
-
-            _context.Carts.Remove(cart);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception) { return false; }
         }
 
         private bool CartExists(string id)

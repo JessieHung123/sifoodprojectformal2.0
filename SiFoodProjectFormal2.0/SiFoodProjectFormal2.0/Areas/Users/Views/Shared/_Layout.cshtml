@@ -167,7 +167,7 @@
                         <!-- list group -->
                         <li class="list-group-item py-3 ps-0 border-top">
                             <!-- row -->
-                            <div class="row align-items-center" v-if="carts.length > 0" v-for="item in carts">
+                            <div class="row align-items-center" v-for="item in carts" >
 
                                 <div class="col-6 col-md-6 col-lg-7">
                                     <div class="d-flex">
@@ -179,11 +179,11 @@
                                             <a href="./pages/shop-single.html" class="text-inherit">
                                                 <h6 class="mb-1">{{item.productName}}</h6>
                                             </a>
-                                            <h6>{{item.storeName}}</h6>
+                                            <h6 >{{item.storeName}}</h6>
                                             <!-- text -->
                                             <div class="mt-2 small lh-1">
                                                 <div class="text-decoration-none text-inherit">
-                                                    <span class="me-1 align-text-bottom" onclick="removeCartProduct()">
+                                                    <span class="me-1 align-text-bottom" onclick="deleteCartItem(item.productId)">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 text-success">
                                                             <polyline points="3 6 5 6 21 6"></polyline>
                                                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
@@ -203,14 +203,14 @@
                                     <!-- input -->
                                     <div class="input-group input-spinner  ">
                                         <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                        <input type="number" step="1" max="10" value="1" name="quantity" class="quantity-field form-control-sm form-input   ">
-                                        <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
+                                        <input type="number" step="1" max="10" value="1" name="quantity" class="quantity-field form-control-sm form-input">
+                                        @*  <input type="number" step="1" max="10" v-model.lazy="item.quantity" name="quantity" class="quantity-field form-control-sm form-input   ">*@                                        <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
                                     </div>
 
                                 </div>
                                 <!-- price -->
                                 <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                    <span class="fw-bold">$5.00</span>
+                                    <span class="fw-bold">${{item.unitPrice}}</span>
 
                                 </div>
                             </div>
@@ -345,23 +345,49 @@
                     }).catch(error => {
                         alert(error);
                     });
-
+                    // alert友但沒渲染
 
 
             },
             methods: {
-                // clickcart() {
-                //     let _this = this;
-                //     fetch(`${baseAddress}/api/CartVMapi/GetCarts/U002`, { method: "GET" })
-                //         .then(response => response.json())
-                //         .then(data => {
-                //             alert(data);
-                //             _this.carts = data;
+                changeQty(product) {
+                    let cartItemQtyChange = {
+                        productId:model.productId,
+                        quantity:model.quantity,
+                    };
+                    fetch(`${baseAddress}/api/CartVMapi/ChangeQty`,{
+                        method: "PUT", 
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(cartData)
+                    }).then(response =>response.ok)
+                },
+                deleteCartItem(item) {
+                    let _this = this;
+                    let delete={
+                        productId:item.productId,
+                        userId:"U001"//寫死
+                    
+                    };
+                    let checkagain = confirm("確定要刪除嗎?");
+                    if (checkagain == true) {
+                        fetch(`/api/CartVMapi/DeleteCartItem`,
+                            {
+                                method: "DELETE",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(_this.delete)
+                            }).then(response => response.json())
+                            .then(data => {
+                                if (data) {
+                                    alert("商品項目刪除成功!");
+                                }
+                            })
+                            .catch(error => {
+                                alert("商品項目刪除失敗!");
+                            })
+                    };
 
-                //         }).catch(error => {
-                //             alert(error);
-                //         });
-                // }
+                },
+
             },
             computed: {
 
