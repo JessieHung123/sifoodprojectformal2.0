@@ -556,7 +556,7 @@
                         <div >
                             <ul class="nav flex-column nav-links">
                                 <!-- nav item -->
-                                <li class="nav-item" v-for="category in stores.categoryList" v-on:click="filterCategories(category)">
+                                <li class="nav-item" v-for="category in stores.categoryList" v-on:click="categoriesFilter(category)">
                                     <a href="#!" class="nav-link">{{category}}</a>
                                 </li>
                             </ul>
@@ -1942,16 +1942,16 @@
                 },
                 mounted: function () {
                     let _this = this;
-                    _this.getStoreapi();
+                    _this.getStoreInfo();
 
                 },
                 methods: {
-                   
-                    filterCategories(category) {
+
+                    categoriesFilter(category) {
                         this.selectedCategory = category;
                     },
 
-                    getStoreapi() {
+                    getStoreInfo() {
                         let _this = this;
                         var storeId = "S001"
                         fetch(`${baseAddress}/api/stores/${storeId}`, { method: "GET" })
