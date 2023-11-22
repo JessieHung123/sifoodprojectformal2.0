@@ -13,9 +13,7 @@ public partial class OrderDetail
 
     public int Quantity { get; set; }
 
-    public int StatusId { get; set; }
-
     public virtual Order Order { get; set; } = null!;
 
-    public virtual Status Status { get; set; } = null!;
+    public virtual Product Product { get; set; } = null!;
 }
