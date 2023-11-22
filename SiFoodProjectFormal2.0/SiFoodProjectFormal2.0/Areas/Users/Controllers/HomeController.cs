@@ -27,24 +27,51 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return View();
 
         }
-        public IActionResult MemberShip()
-        {
-            return View();
-        }
-        public IActionResult Stores()
-        {
-            return View();
-        }
+
+        // GET: Users/TestStores/Create
+        [HttpGet]
         public IActionResult JoinUs()
         {
             return View();
         }
 
+        // POST: Users/TestStores/Create
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> JoinUs([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,OpeningDay,PhotosPath,LogoPath")] JoinUsViewModel joinus)
+        {
+            if (ModelState.IsValid)
+            {
+                var store = new Store
+                {
+                    // 將joinus 的數據映射到 store 實體
+                    StoreName = joinus.StoreName,
+                    ContactName = joinus.ContactName,
+                    Email = joinus.Email,
+                    Phone = joinus.Phone,
+                    TaxId = joinus.TaxId,
+                    City = joinus.City,
+                    Region = joinus.Region,
+                    Address = joinus.Address,
+                    Description = joinus.Description,
+                    OpeningDay  = joinus.OpeningDay,
+                    OpeningTime = joinus.OpeningTime,
+                    LogoPath = joinus.LogoPath,
+                    PhotosPath = joinus.PhotosPath,
+                };
+
+                _context.Add(store);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(JoinUs));
+            }
+            return View(joinus);
+        }
+
+
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-
-        ////Address>now only one input
-        //public IActionResult JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")]JoinUsViewModel joinUsViewModel)
+         //public IActionResult JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")]JoinUsViewModel joinUsViewModel)
         //{
         //    if (ModelState.IsValid)
         //    {
@@ -53,44 +80,64 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //   return View(joinUsViewModel);
         //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")] JoinUsViewModel joinUsViewModel)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")] JoinUsViewModel joinUsViewModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        // 創建一個新的 Store 實例
+        //        var joinus = new Store
+        //        {
+        //            StoreName = joinUsViewModel.StoreName,
+        //            ContactName = joinUsViewModel.ContactName,
+        //            TaxId = joinUsViewModel.TaxId,
+        //            Email = joinUsViewModel.Email,
+        //            Phone= joinUsViewModel.Phone,
+        //            OpeningDay = joinUsViewModel.OpeningDay,
+        //            OpeningTime = joinUsViewModel.OpeningTime,
+        //            Address = joinUsViewModel.Address,
+        //            Description = joinUsViewModel.Description,
+
+        //        };
+
+        //        // 將 joinus 實例添加到數據庫上下文的 Stores 集合中
+        //        _context.Stores.Add(joinus);
+
+        //        // 保存更改到數據庫
+        //        await _context.SaveChangesAsync();
+
+        //        // 返回 JSON 響應
+        //        return Json(new { success = true, message = "申請已成功提交！" });
+        //    }
+        //    else
+        //    {
+        //        // 返回包含錯誤信息的 JSON 響應
+        //        return Json(new { success = false, message = "表單驗證失敗，請檢查輸入內容。" });
+        //    }
+        //}
+
+
+
+
+        public IActionResult MemberShip()
         {
-            if (ModelState.IsValid)
-            {
-                // 創建一個新的 Store 實例
-                var store = new Store
-                {
-                    StoreName = joinUsViewModel.StoreName,
-                    ContactName = joinUsViewModel.ContactName,
-                    TaxId = joinUsViewModel.TaxId,
-                    Email = joinUsViewModel.Email,
-                    Phone= joinUsViewModel.Phone,
-                    OpeningDay = joinUsViewModel.OpeningDay,
-                    OpeningTime = joinUsViewModel.OpeningTime,
-                    Address = joinUsViewModel.Address,
-                    Description = joinUsViewModel.Description,
-
-                };
-
-                // 將 store 實例添加到數據庫上下文的 Stores 集合中
-                _context.Stores.Add(store);
-
-                // 保存更改到數據庫
-                await _context.SaveChangesAsync();
-
-                // 返回 JSON 響應
-                return Json(new { success = true, message = "申請已成功提交！" });
-            }
-            else
-            {
-                // 返回包含錯誤信息的 JSON 響應
-                return Json(new { success = false, message = "表單驗證失敗，請檢查輸入內容。" });
-            }
+            return View();
         }
+        public IActionResult Stores()
+        {
+            return View();
+        }
+        //public IActionResult JoinUs()
+        //{
+        //    return View();
+        //}
 
-        // 其他動作方法...
+
+
+
+
+
     public IActionResult Products()
         {
             return View();

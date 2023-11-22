@@ -89,7 +89,7 @@
 
 
                     <!-- form -->
-                    <form asp-action="JoinUsCreat" class="row" id="myForm">
+                    <form asp-controller="Home" asp-action="JoinUs" class="row" id="myForm" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <!-- input -->
@@ -103,7 +103,7 @@
                         *@
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label" for="contactName">聯絡人姓名<span class="text-danger">*</span></label>
+                            <label asp-for="ContactName" class="form-label">聯絡人姓名<span class="text-danger">*</span></label>
                             <input asp-for="ContactName" class="form-control"  placeholder="請輸入一位負責聯繫的人員姓名" />
                             <span asp-validation-for="ContactName" class="text-danger"></span>
                         </div>
@@ -119,7 +119,7 @@
                         *@
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label" for="storeName">店名<span class="text-danger">*</span></label>
+                            <label asp-for="StoreName" class="form-label" >店名<span class="text-danger">*</span></label>
                             <input asp-for="StoreName" class="form-control" autocomplete="organization" placeholder="請輸入您在惜食平台欲顯示的店名名稱" />
                             <span asp-validation-for="StoreName" class="text-danger"></span>
                         </div>
@@ -181,58 +181,58 @@
                         *@
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label" for="phone">聯絡電話<span class="text-danger">*</span></label>
-                            <input asp-for="Phone" class="form-control" id="phone" placeholder="0912345678" />
+                            <label asp-for="Phone" class="form-label">聯絡電話<span class="text-danger">*</span></label>
+                            <input asp-for="Phone" class="form-control" placeholder="0912345678" />
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label" for="taxID">公司統編<span class="text-danger">*</span></label>
-                            <input asp-for="TaxId" class="form-control" id="taxID" placeholder="請輸入統編" />
+                            <label asp-for="TaxId" class="form-label">公司統編<span class="text-danger">*</span></label>
+                            <input asp-for="TaxId" class="form-control" placeholder="請輸入統編" />
                             <span asp-validation-for="TaxId" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label" for="openingDay">營業日<span class="text-danger">*</span></label>
-                            <input asp-for="OpeningDay" class="form-control" id="openingDay" placeholder="例:星期一" />
+                            <label asp-for="OpeningDay" class="form-label">營業日<span class="text-danger">*</span></label>
+                            <input asp-for="OpeningDay" class="form-control" placeholder="例:星期一" />
                             <span asp-validation-for="OpeningDay" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label" for="openingTime">營業時間<span class="text-danger">*</span></label>
-                            <input asp-for="OpeningTime" class="form-control" id="openingTime" type="time" placeholder="請輸入營業時間" />
+                            <label asp-for="OpeningTime" class="form-label" >營業時間<span class="text-danger">*</span></label>
+                            <input asp-for="OpeningTime" class="form-control"  type="time" placeholder="請輸入營業時間" />
                             <span asp-validation-for="OpeningTime" class="text-danger"></span>
                         </div>
 
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label" for="city">店家地址-市<span class="text-danger">*</span></label>
+                            <label asp-for="City" class="form-label">店家地址-市<span class="text-danger">*</span></label>
                             <input asp-for="City" class="form-control" autocomplete="address-level2" placeholder="請輸入臺北市或新北市" />
                             <span asp-validation-for="City" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label" for="region">店家地址-區<span class="text-danger">*</span></label>
+                            <label asp-for="Region" class="form-label">店家地址-區<span class="text-danger">*</span></label>
                             <input asp-for="Region" class="form-control" autocomplete="address-level3" placeholder="請輸入區，例:大安區" />
                             <span asp-validation-for="Region" class="text-danger"></span>
                         </div>
 
 
                         <div class="col-md-12 mb-3">
-                            <label class="form-label" for="address">店家地址<span class="text-danger">*</span></label>
+                            <label asp-for="Address" class="form-label">店家地址<span class="text-danger">*</span></label>
                             <input asp-for="Address" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-12 mb-3">
-                            <label class="form-label" for="emailContact">註冊信箱<span class="text-danger">*</span></label>
+                            <label asp-for="Email" class="form-label">註冊信箱<span class="text-danger">*</span></label>
                             <input asp-for="Email" class="form-control" id="emailContact" type="email" placeholder="請輸入email信箱地址" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-12 mb-3">
-                            <label class="form-label" for="comments">店家介紹<span class="text-danger">*</span></label>
-                            <textarea asp-for="Description" class="form-control" id="comments" placeholder="請輸入150字內的店家介紹" rows="3"></textarea>
+                            <label asp-for="Description" class="form-label" >店家介紹<span class="text-danger">*</span></label>
+                            <textarea asp-for="Description" class="form-control" placeholder="請輸入150字內的店家介紹" rows="3"></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
 
@@ -252,14 +252,17 @@
                         <!-- form control -->
 
                         <div class="py-4 mb-4">
-                            <h4 class="mb-5 h5">請上傳您的LOGO</h4>
+                            <label asp-for="LogoPath"><h4 class="mb-5 h5">請上傳您的LOGO</h4></label>
+                            
                             <div class="mb-4 d-flex">
                                 <div class="position-relative">
                                     <img class="image  icon-shape icon-xxxl bg-light rounded-4"
                                         src="~/images/users/elly/uploadstorephoto.svg" alt="Image">
 
                                     <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
-                                        <input type="file" class="file-input ">
+                                        
+                                        <input asp-for="LogoPath" type="file" accept="image/*"class="file-input ">
+                                        <span asp-validation-for="LogoPath" class="text-danger"></span>
                                         <span class="icon-shape icon-sm rounded-circle bg-white">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                                                 fill="currentColor" class="bi bi-pencil-fill text-muted"
@@ -277,8 +280,7 @@
                            
 
                             <div class="border-bottom py-4 mb-4">
-                                <h4 class="mb-5 h5">請上傳您的店家照片</h4>
-
+                                <label asp-for="PhotosPath"><h4 class="mb-5 h5">請上傳您的店家照片</h4></label>
                                 <div class="row">
                                     <!-- 第一個上傳元素 -->
                                     <div class="col-md-4">
@@ -288,7 +290,7 @@
                                                     src="~/assets/images/icons/bakery.svg" alt="Image">
 
                                                 <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
-                                                    <input type="file" class="file-input ">
+                                                    <input asp-for="PhotosPath" type="file" accept="image/*" class="file-input ">
                                                     <span class="icon-shape icon-sm rounded-circle bg-white">
 
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
@@ -313,7 +315,7 @@
                                                     src="~/assets/images/icons/bakery.svg" alt="Image">
 
                                                 <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
-                                                    <input type="file" class="file-input ">
+                                                    <input asp-for="PhotosPath" type="file" accept="image/*" class="file-input ">
                                                     <span class="icon-shape icon-sm rounded-circle bg-white">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                                                             fill="currentColor" class="bi bi-pencil-fill text-muted"
@@ -334,7 +336,7 @@
                                                     src="~/assets/images/icons/bakery.svg" alt="Image">
 
                                                 <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
-                                                    <input type="file" class="file-input ">
+                                                    <input asp-for="PhotosPath" type="file" accept="image/*" class="file-input ">
                                                     <span class="icon-shape icon-sm rounded-circle bg-white">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                                                             fill="currentColor" class="bi bi-pencil-fill text-muted"
@@ -426,9 +428,11 @@
                                     </div>*@
 <div class="col-md-6 mb-3">
                     <!-- btn -->
-                    <button id="submitButton" type="submit" class="btn btn-primary">送出申請</button>
+                    <button id="submitButton" type="submit" value="JoinUs"class="btn btn-primary">送出申請</button>
                 </div>
-
+                            <div>
+                                <a asp-action="Main">返回首頁</a>
+                            </div>
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -508,7 +512,7 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
-
+@* 
 <script>
     $(document).ready(function() {
         var form = $('#myForm');
@@ -558,7 +562,7 @@
             }
         });
     });
-</script>
+</script> *@
 
 
 

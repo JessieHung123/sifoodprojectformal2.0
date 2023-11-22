@@ -285,7 +285,7 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.StoreId)
                 .HasMaxLength(50)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('(''S''+format(NEXT VALUE FOR [SifoodStoreIdSeq],''000''))')")
+                .HasDefaultValueSql("('S'+format(NEXT VALUE FOR [SifoodStoreIdSeq],'000'))")
                 .HasColumnName("StoreID");
             entity.Property(e => e.Address).HasMaxLength(50);
             entity.Property(e => e.City).HasMaxLength(10);
@@ -361,7 +361,7 @@ public partial class Sifood3Context : DbContext
         });
         modelBuilder.HasSequence<int>("SifoodDriverIdSeq").StartsAt(7L);
         modelBuilder.HasSequence<int>("SifoodOrderIdSeq").StartsAt(8L);
-        modelBuilder.HasSequence<int>("SifoodStoreIdSeq");
+        modelBuilder.HasSequence<int>("SifoodStoreIdSeq").StartsAt(6L);
         modelBuilder.HasSequence<int>("SifoodUserIdSeq").StartsAt(5L);
 
         OnModelCreatingPartial(modelBuilder);
