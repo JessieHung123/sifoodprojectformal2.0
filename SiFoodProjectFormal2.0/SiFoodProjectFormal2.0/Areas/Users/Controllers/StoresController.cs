@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
+using SiFoodProjectFormal2._0.ViewModels.Users;
 
 namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 {
@@ -31,32 +32,16 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
         // GET: api/Stores/5
         [HttpGet("{id}")]
-        //public async Task<Store> GetStore(string id)
-        //{
-
-        //    var store = await _context.Stores.FindAsync(id);
-
-        //    if (store == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    return store;
-        //}
-
         public object GetStore(string id)
 
         {
             var store = _context.Stores.AsNoTracking().Include(x => x.Products).Include(x => x.Orders)
                .ThenInclude(x => x.Comment).Where(c => c.StoreId == id);
-            if (store == null)
+            
+            return store.Select(z => new StoreProductsVM
             {
-                return null;
-            }
-            return store.Select(z => new
-               {
-                   StoreId = z.StoreId,
                    StoreName = z.StoreName,
+                   StoreId = z.StoreId,                  
                    Email = z.Email,
                    Phone = z.Phone,
                    Address = z.Address,
@@ -69,7 +54,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                    WeekdayOpeningTime = z.OpeningTime.Substring(0, 16),
                    WeekendOpeningTime = z.OpeningTime.Substring(17, 16),
 
-                   Products = z.Products.Select(p => new
+                   Products = z.Products.Select(p => new ProductsVM
                    {
                        UnitPrice = p.UnitPrice,
                        ProductName = p.ProductName,
@@ -80,9 +65,9 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                        PhotoPath = p.PhotoPath,
                    }),
 
-                   CategoryList =   z.Products.Select(y => y.Category.CategoryName).Distinct().ToList(),
+                   CategoryList =   z.Products.Select(y => y.Category.CategoryName).Distinct().ToArray(),
 
-                   Comment = z.Orders.Select(d => new
+                   Comment = z.Orders.Select(d => new CommentVM
                    {
                        Contents = d.Comment.Contents,
                        CommentRank = d.Comment.CommentRank,
