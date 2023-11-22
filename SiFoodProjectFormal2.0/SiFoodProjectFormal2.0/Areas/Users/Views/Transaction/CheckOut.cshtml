@@ -172,7 +172,7 @@
                                         </div>
                                         <!-- Button -->
                                         <div class="mt-5 d-flex justify-content-end">
-                                            <button class="btn btn-primary ms-2">訂購</button>
+                                            <button class="btn btn-primary ms-2" @@click="CreateDeliverOrder">訂購</button>
                                         </div>
                                     </div>
                                 </div>
@@ -204,13 +204,13 @@
                         <div class="accordion-item py-4">
 
                             <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                <i class="feather-icon icon-shopping-bag me-2 text-muted"></i>商品備註
+                                <i class="feather-icon icon-shopping-bag me-2 text-muted"></i>訂單備註
                                 <!-- collapse -->
                             </a>
                             <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
                                 <div class="mt-5">
                                     <label for="DeliveryInstructions" class="form-label sr-only">備註</label>
-                                    <textarea class="form-control" id="DeliveryInstructions" rows="3" placeholder="寫下您的商品備註"></textarea>
+                                    <textarea class="form-control" id="DeliveryInstructions" rows="3" placeholder="寫下您的訂單備註"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -246,7 +246,7 @@
                                         </div>
                                         <!-- Button -->
                                         <div class="mt-5 d-flex justify-content-end">
-                                            <button class="btn btn-primary ms-2">訂購</button>
+                                            <button class="btn btn-primary ms-2" @@click="CreateTakeOutOrder">訂購</button>
                                         </div>
                                     </div>
                                 </div>
@@ -289,7 +289,7 @@
                             <li class="list-group-item px-4 py-3">
                                 <div class="row align-items-center">
                                     <div class="col-2 col-md-2">
-                                        <img src="../assets/images/products/product-img-2.jpg" alt="Ecommerce" class="img-fluid">
+                                        <img src="~/assets/images/products/product-img-2.jpg" alt="Ecommerce" class="img-fluid">
                                     </div>
                                     <div class="col-5 col-md-5">
                                         <h6 class="mb-0">NutriChoice Digestive</h6>
@@ -308,7 +308,7 @@
                             <li class="list-group-item px-4 py-3">
                                 <div class="row align-items-center">
                                     <div class="col-2 col-md-2">
-                                        <img src="../assets/images/products/product-img-3.jpg" alt="Ecommerce" class="img-fluid">
+                                        <img src="~/assets/images/products/product-img-3.jpg" alt="Ecommerce" class="img-fluid">
                                     </div>
                                     <div class="col-5 col-md-5">
                                         <h6 class="mb-0">Cadbury 5 Star Chocolate</h6>
@@ -327,7 +327,7 @@
                             <li class="list-group-item px-4 py-3">
                                 <div class="row align-items-center">
                                     <div class="col-2 col-md-2">
-                                        <img src="../assets/images/products/product-img-4.jpg" alt="Ecommerce" class="img-fluid">
+                                        <img src="~/assets/images/products/product-img-4.jpg" alt="Ecommerce" class="img-fluid">
                                     </div>
                                     <div class="col-5 col-md-5">
                                         <h6 class="mb-0">Onion Flavour Potato</h6>
@@ -380,6 +380,8 @@
     </div>
 </div>
 
+
+
 @section Scripts {
     <!-- Javascript-->
     <script src="~/assets/libs/flatpickr/dist/flatpickr.min.js"></script>
@@ -404,9 +406,6 @@
 
                 }
             },
-            mounted() {
-
-            },
             methods: {
                 chooseTakeout: function () {
                     this.checkRadio = true 
@@ -414,7 +413,12 @@
                 chooseDeliver: function(){
                     this.checkRadio = false
                 },
+                CreateDeliverOrder: function(){
 
+                },
+                CreateTakeOutOrder: function(){
+
+                },
             },
         }
         var Checkapp = Vue.createApp(vueApp).mount("#app")

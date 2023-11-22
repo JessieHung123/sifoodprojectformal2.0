@@ -13,6 +13,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
+
+
+
         [HttpGet]
 
         public IActionResult Checkout(int id)
@@ -25,7 +28,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
 
         [HttpPost]
-        public string DeliverOrder(DeliverOrderVM model)
+        public string DeliverOrder(CreateOrderVM model)
         {
 
 
@@ -36,7 +39,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
 
         [HttpPost]
-        public string TakeOutOrder(TakeOutOrderVM model)
+        public string TakeOutOrder(CreateOrderVM model)
         {
 
 

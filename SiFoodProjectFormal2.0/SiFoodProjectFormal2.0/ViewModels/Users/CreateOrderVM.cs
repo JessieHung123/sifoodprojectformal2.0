@@ -1,6 +1,6 @@
 ﻿namespace SiFoodProjectFormal2._0.ViewModels.Users
 {
-    public class DeliverOrderVM
+    public class CreateOrderVM
     {
 
     }
