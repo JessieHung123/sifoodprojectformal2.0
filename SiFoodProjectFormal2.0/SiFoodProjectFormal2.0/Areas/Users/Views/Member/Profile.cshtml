@@ -225,7 +225,7 @@
                 <div class="col-lg-5">
 
                                         <!-- Profile form -->
-                                        <form asp-action="Profile" method="post">
+                                        <form asp-controller="Member" asp-action="Profile" method="post" asp-antiforgery="true">
                                             <!-- input for UserName -->
                                             <div class="mb-3">
                                                 <label class="form-label" for="fname">姓名</label>
@@ -261,6 +261,14 @@
                                         </form>
                     <!-- form end -->
 
+                    <!--測試TempData-->
+                                        @if (TempData["SuccessMessage"] != null)
+                                        {
+                                            <div class="alert alert-success">
+                                                @TempData["SuccessMessage"]
+                                            </div>
+                                        }
+
 
                 </div>
             </div>
@@ -273,7 +281,7 @@
                                 <h5 class="mb-4">密碼</h5>
 
                                 <!-- 密碼變更表單 -->
-                                <form asp-action="ChangePassword" method="post" id="password-change-form" asp-antiforgery="true">
+                                <form asp-controller="Member" asp-action="ChangePassword" method="post" id="password-change-form" asp-antiforgery="true">
                                     <div class="row row-cols-1 row-cols-lg-2">
                                         <!-- 現在密碼輸入欄位 -->
                                         <div class="mb-3 col">

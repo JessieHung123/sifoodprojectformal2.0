@@ -16,11 +16,40 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             _context = context;
         }
 
+        //[HttpGet]
+        //public IActionResult Profile()
+        //{
+        //    return View();
+        //}
+
+        //Develop測試版:先從db拿第一個User
         [HttpGet]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            return View();
+            // 從資料庫獲取第一筆用戶記錄
+            var user = await _context.Users.FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                // 創建 ViewModel 並填充資料
+                var viewModel = new ProfileViewModel
+                {
+                    UserName = user.UserName,
+                    UserEmail = user.UserEmail,
+                    UserPhone = user.UserPhone,
+                    UserBirthDate = user.UserBirthDate
+                    // 根據需要填充其他欄位
+                };
+
+                return View(viewModel);
+            }
+
+            // 如果找不到用戶，處理錯誤情況
+            return RedirectToAction("ErrorPage"); // 或其他適當的錯誤處理方式
         }
+        //測試版end
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -28,7 +57,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Json(new { success = false, message = "驗證失敗" });
+                return View(profileViewModel);
             }
 
             var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.UserEmail == profileViewModel.UserEmail);
@@ -60,9 +89,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             //保存更改
             await _context.SaveChangesAsync();
 
-            //返回JSON響應
-            return Json(new { success = true, message = "修改已成功提交！" });
+            // 設置 TempData 成功消息
+            TempData["SuccessMessage"] = "您的個人資料已更新成功！";
+
+            //返回重導向到 Profile 頁面
+            return RedirectToAction("Profile");
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
