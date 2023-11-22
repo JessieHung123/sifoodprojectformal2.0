@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace SiFoodProjectFormal2.Models
+namespace SiFoodProjectFormal2._0.Models
 {
-    public partial class SifoodContext:DbContext
+    public partial class Sifood3Context:DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

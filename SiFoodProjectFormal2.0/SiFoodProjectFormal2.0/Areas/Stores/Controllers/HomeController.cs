@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
-using SiFoodProjectFormal2.Models;
 
 namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 {

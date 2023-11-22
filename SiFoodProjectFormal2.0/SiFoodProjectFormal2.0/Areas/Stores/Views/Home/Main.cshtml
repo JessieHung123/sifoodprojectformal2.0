@@ -255,6 +255,9 @@
             }
         </tbody>
     </table>
+    <div class="text-center">
+        <button id="getStoreInfoAPI" onclick="getStoreInfoAPI()" class="btn btn-primary">getelment</button>
+    </div>
     <!--測試連線-->
     <!-- Libs JS -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
@@ -269,3 +272,38 @@
 </body>
 
 </html>
+
+    @section Scripts
+{
+    <script>
+
+        function getStoreInfoAPI() {
+            alert("ya")
+        }
+
+        // var baseAddress = "https://localhost:7042";
+        // function getStoreInfoAPI() {
+        //     var uri = `${baseAddress}/Stores/Home/main`;
+        //     let _this = this;
+        //     fetch(`uri`, { method: "GET" })
+        //         .then(response => {
+        //             if (response.ok) {
+        //                 throw new Error(`HTTP error! Status: ${response.status}`);
+        //                 return response.json();
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             alert(JSON.stringify(data));
+
+        //         }).catch(error => {
+        //             alert(error);
+        //         });
+
+        // }
+
+    </script>
+
+
+
+}
