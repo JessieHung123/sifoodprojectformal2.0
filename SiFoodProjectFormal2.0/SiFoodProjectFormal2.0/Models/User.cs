@@ -7,11 +7,11 @@ public partial class User
 {
     public string UserId { get; set; } = null!;
 
-    public string UserName { get; set; } = null!;
+    public string? UserName { get; set; }
 
     public string UserEmail { get; set; } = null!;
 
-    public byte[]? UserPasswordHash { get; set; }
+    public byte[] UserPasswordHash { get; set; } = null!;
 
     public string? UserPhone { get; set; }
 
@@ -19,9 +19,9 @@ public partial class User
 
     public decimal? TotalOrderAmount { get; set; }
 
-    public DateTime UserEnrollDate { get; set; }
+    public DateTime? UserEnrollDate { get; set; }
 
-    public DateTime UserLatestLogInDate { get; set; }
+    public DateTime? UserLatestLogInDate { get; set; }
 
     public byte[]? UserPasswordSalt { get; set; }
 
