@@ -148,7 +148,7 @@
 
 
 <main>
-    <!-- section -->
+    <!-- section 左邊sidebar 共用partial -->
     <section>
         <!-- container -->
         <div class="container">
@@ -211,6 +211,8 @@
                     </div> *@
                     <!-- partial end -->
 
+
+
 <div class="col-lg-9 col-md-8 col-12">
     <div class="py-6 p-md-6 p-lg-10">
         <div class="mb-6">
@@ -221,46 +223,57 @@
             <h5 class="mb-4">個人資料</h5>
             <div class="row">
                 <div class="col-lg-5">
-                    <!-- Profile form -->
-                    <form asp-action="Profile" method="post">
 
-                        <!-- input for UserName -->
-                        <div class="mb-3">
-                            <label class="form-label" for="fname">姓名</label>
-                            <input asp-for="UserName" class="form-control" id="fname" placeholder="林小白">
-                            <span asp-validation-for="UserName" class="text-danger"></span>
-                        </div>
+                                        <!-- Profile form -->
+                                        <form asp-action="Profile" method="post">
+                                            <!-- input for UserName -->
+                                            <div class="mb-3">
+                                                <label class="form-label" for="fname">姓名</label>
+                                                <input asp-for="UserName" class="form-control" id="fname" placeholder="林小白" autocomplete="name">
+                                                <span asp-validation-for="UserName" class="text-danger"></span>
+                                            </div>
 
-                        <!-- input for UserEmail -->
-                        <div class="mb-3">
-                            <label class="form-label" for="email">Email</label>
-                            <input asp-for="UserEmail" type="email" class="form-control" id="email" placeholder="example@gmail.com">
-                            <span asp-validation-for="UserEmail" class="text-danger"></span>
-                        </div>
-                        <!-- input for UserPhone -->
-                        <div class="mb-3">
-                            <label class="form-label" for="phone">電話</label>
-                            <input asp-for="UserPhone" class="form-control" id="phone" placeholder="0912345678">
-                            <span asp-validation-for="UserPhone" class="text-danger"></span>
-                        </div>
-                        <!-- input for UserBirthDate -->
-                        <div class="mb-3">
-                            <label class="form-label" for="birthday">生日</label>
-                            <input asp-for="UserBirthDate" type="date" class="form-control" id="birthday" placeholder="yyyy/mm/dd">
-                            <span asp-validation-for="UserBirthDate" class="text-danger"></span>
-                        </div>
-                        <!-- submit button -->
-                         <div class="mt-5 mb-3">
-                            <button type="submit" class="btn btn-primary">儲存資料</button>
-                        </div>
-                    </form>
+                                            <!-- input for UserEmail -->
+                                            <div class="mb-3">
+                                                <label class="form-label" for="email">Email</label>
+                                                <input asp-for="UserEmail" type="email" class="form-control" id="email" placeholder="example@gmail.com" autocomplete="email">
+                                                <span asp-validation-for="UserEmail" class="text-danger"></span>
+                                            </div>
+
+                                            <!-- input for UserPhone -->
+                                            <div class="mb-3">
+                                                <label class="form-label" for="phone">電話</label>
+                                                <input asp-for="UserPhone" class="form-control" id="phone" placeholder="0912345678" autocomplete="tel">
+                                                <span asp-validation-for="UserPhone" class="text-danger"></span>
+                                            </div>
+
+                                            <!-- input for UserBirthDate -->
+                                            <div class="mb-3">
+                                                <label class="form-label" for="birthday">生日</label>
+                                                <input asp-for="UserBirthDate" type="date" class="form-control" id="birthday" placeholder="yyyy/mm/dd" autocomplete="bday">
+                                                <span asp-validation-for="UserBirthDate" class="text-danger"></span>
+                                            </div>
+
+                                            <!-- submit button -->
+                                            <div class="mt-5 mb-3">
+                                                <button type="submit" class="btn btn-primary">儲存資料</button>
+                                            </div>
+                                        </form>
+                    <!-- form end -->
+
+
                 </div>
             </div>
         </div>
         <hr class="my-10">
 
+
+        <!--密碼區-->
         <div class="pe-lg-14 mb-15">
             <h5 class="mb-4">密碼</h5>
+
+
+             <!-- 密碼form  -->
             <form asp-action="ChangePassword" method="post" id="password-change-form">
                 <div class="row row-cols-1 row-cols-lg-2">
                     <div class="mb-3 col">
@@ -282,7 +295,7 @@
                     </div>
                 </div>
             </form>
-            
+                                <!-- form end -->
         </div>
     </div>
 </div>
