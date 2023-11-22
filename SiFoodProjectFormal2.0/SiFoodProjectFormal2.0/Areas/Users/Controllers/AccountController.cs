@@ -6,8 +6,10 @@ using SiFoodProjectFormal2._0.Models;
 using System.Text;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 using Microsoft.Win32;
-using XSystem.Security.Cryptography;
+
 using NuGet.Packaging;
+using System.Net.Mail;
+using System.Net;
 
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
@@ -29,17 +31,18 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
         [HttpPost]
-        
+
         public async Task<IActionResult> LoginRegister(LoginVM model)
         {
             var account = _context.Users.Where(x => x.UserEmail == model.Account).FirstOrDefault();
-            var passwordHash = _context.Users.Where(x => x.UserPasswordHash == model.Password).FirstOrDefault();
+            var RealPassword = Encoding.ASCII.GetBytes($"{model?.Password}");
+            var passwordHash = _context.Users.Where(x => x.UserPasswordHash == RealPassword).FirstOrDefault();
 
             if (account != null && passwordHash != null)
             {
                 var claims = new List<Claim>()
                 {
-                new Claim(ClaimTypes.Name, $"{model.Account}"),
+                new Claim(ClaimTypes.Name, $"{model?.Account}"),
                 new Claim(ClaimTypes.Role, "User"),
                 };
 
@@ -64,17 +67,42 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         [Route("/Account/PostAccount")]
         public string PostAccount([FromForm] RegisterVM model)
         {
-            User user = new User
+            var AllAccount = _context.Users.Select(x => x.UserEmail);
+
+            if (AllAccount.Contains(model.EmailAccount))
             {
-                UserEmail = model?.EmailAccount,
-                UserPasswordHash = Encoding.ASCII.GetBytes($"{model?.Password}")
-            };
+                return "此帳號已被註冊";
+            }
+            else
+            {
+                User user = new User
+                {
+                    UserEmail = model?.EmailAccount,
+                    UserPasswordHash = Encoding.ASCII.GetBytes($"{model?.Password}")
+                };
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
+                _context.Users.Add(user);
+                _context.SaveChanges();
 
+                var client = new SmtpClient();
+                client.Host = "smtp.gmail.com";
+                client.Port = 587; 
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("brad881112@gmail.com", "cttl rkeu vveh ojtv");
 
-            return "帳號註冊成功";
+                var mail = new MailMessage();
+
+                mail.Subject = "Sifood會員驗證信";
+                mail.From = new MailAddress("brad881112@gmail.com", "Sifood官方帳號");
+                mail.To.Add($"{model?.EmailAccount}");
+                mail.Body = "<h1>請點選以下連結進行驗證</h1>";
+                mail.IsBodyHtml = true;
+                mail.BodyEncoding = Encoding.UTF8;
+
+                client.Send(mail);
+
+                return "帳號註冊成功, 即將進入驗證階段";
+            }
         }
 
 
