@@ -274,27 +274,32 @@
 
 
              <!-- 密碼form  -->
-            <form asp-action="ChangePassword" method="post" id="password-change-form">
-                <div class="row row-cols-1 row-cols-lg-2">
-                    <div class="mb-3 col">
-                        <label class="form-label">現在密碼</label>
-                        <input type="password" name="CurrentPassword" id="current-password" class="form-control" placeholder="**********" disabled>
-                    </div>
-                    <div class="mb-3 col">
-                        <label class="form-label">新密碼</label>
-                        <input type="password" name="NewPassword" id="new-password" class="form-control" placeholder="**********" disabled>
-                    </div>
-                    <div class="mb-3 col">
-                    <p class="mb-4">
-                        想要更新密碼嗎?
-                        <a href="#" id="reset-password-link">按這裡重設密碼</a>
-                    </p>
-                    </div>
-                    <div class="mt-2 mb-3 col">
-                        <button class="btn btn-primary mb-4" id="update-password-button" disabled>更新密碼</button>
-                    </div>
-                </div>
-            </form>
+                                <form asp-action="ChangePassword" method="post" id="password-change-form">
+                                    <div class="row row-cols-1 row-cols-lg-2">
+                                        <!-- 當前密碼 -->
+                                        <div class="mb-3 col">
+                                            <label asp-for="CurrentPassword" class="form-label">現在密碼</label>
+                                            <input asp-for="CurrentPassword" class="form-control" />
+                                            <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+                                        </div>
+                                        <!-- 新密碼 -->
+                                        <div class="mb-3 col">
+                                            <label asp-for="NewPassword" class="form-label">新密碼</label>
+                                            <input asp-for="NewPassword" class="form-control" />
+                                            <span asp-validation-for="NewPassword" class="text-danger"></span>
+                                        </div>
+                                        <!-- 確認新密碼 -->
+                                        <div class="mb-3 col">
+                                            <label asp-for="ConfirmPassword" class="form-label">確認新密碼</label>
+                                            <input asp-for="ConfirmPassword" class="form-control" />
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                        <div class="mt-2 mb-3 col">
+                                            <!-- 更新密碼按鈕 -->
+                                            <button class="btn btn-primary mb-4" id="update-password-button">更新密碼</button>
+                                        </div>
+                                    </div>
+                                </form>
                                 <!-- form end -->
         </div>
     </div>
