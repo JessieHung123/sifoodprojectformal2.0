@@ -16,10 +16,10 @@
                         <!-- breadcrumb -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Bakery Biscuits</a></li>
+                                <li class="breadcrumb-item"><a href="#">首頁</a></li>
+                                <li class="breadcrumb-item"><a href="#">{{productData.storeName}}</a></li>
 
-                                <li class="breadcrumb-item active" aria-current="page">Napolitanke Ljesnjak</li>
+                                <li class="breadcrumb-item active" aria-current="page" v-cloak>{{productData.productName}}</li>
                             </ol>
                         </nav>
                     </div>
@@ -30,17 +30,17 @@
             <div class="container">
                 <div class="row">
 
-                    <img class="col-md-6" src="~/assets/images/products/product-single-img-1.jpg" alt="">
+                    <img class="col-md-6" :src="productData.photoPath" alt="">
                     <div class="col-md-6">
                         <div class="ps-lg-10 mt-6 mt-md-0">
                             <!-- content -->
-                            <a href="#!" class="mb-2 d-block">{{storeData.storeName}}</a>
-                            <a href="#!" class="mb-2 d-block">{{storeData.address}}</a>
+                            <a href="#!" class="mb-2 d-block" v-cloak>{{productData.storeName}}</a>
+                            <a href="#!" class="mb-2 d-block" v-cloak>{{productData.address}}</a>
                             <!-- heading -->
-                            <h1 class="mb-1">{{storeData.productName}}</h1>
+                            <h1 class="mb-1" v-cloak>{{productData.productName}}</h1>
 
                             <div class="fs-4">
-                                <!-- price --><span class="fw-bold text-dark">${{storeData.unitPrice}}</span>
+                                <!-- price --><span class="fw-bold text-dark" v-cloak>${{productData.unitPrice}}</span>
                             </div>
                             <!-- hr -->
                             <hr class="my-6">
@@ -74,18 +74,18 @@
                                         <tbody>
                                             <tr>
                                                 <td>領取時間</td>
-                                                <td>{{storeData.suggestPickUpTime}}~{{storeData.suggestPickEndTime}}</td>
+                                                <td v-cloak>{{productData.suggestPickUpTime}}~{{productData.suggestPickEndTime}}</td>
 
                                             </tr>
                                             <tr>
                                                 <td>剩餘庫存</td>
-                                                <td>{{remainingStock}}</td>
+                                                <td v-cloak>{{remainingStock}}</td>
 
                                             </tr>
                                             <tr>
                                                 <td>商品描述</td>
-                                                <td style="word-break: break-all">
-                                                    {{storeData.description}}
+                                                <td style="word-break: break-all" v-cloak>
+                                                    {{productData.description}}
 
                                                 </td>
 
@@ -299,14 +299,17 @@
 </body>
 
 @section Scripts{
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
+        
         var baseAddress ="https://localhost:7042";
         var productApp = Vue.createApp({
             data: function () {
-             return productData:[],
-                    remainingStock: 0
-            
-            
+                return {
+                productData:[],
+                remainingStock: 0,
+
+                }
             },
             mounted: function () {
                 this.getProductApi();
@@ -322,12 +325,14 @@
                     // fetch(`${baseAddress}/odata/Productapi/GetProduct/${productId}`)
                     fetch(`${baseAddress}/odata/Productapi/GetProduct/1`, { method: "GET" })
                         .then(response => response.json())
-                        .then(data => 
-                            this.remainingStock = data.releasedQty - data.orderedQty;
-                            this.productData = data;)
+                        .then(data => { 
+                            // alert(data);
+                            this.remainingStock = data[0].releasedQty - data[0].orderedQty;
+                            this.productData = data[0];
+                        })
                         .catch(error => {
                             alert(error);
-                        }
+                        })
                 },
             
             
