@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
 
+
 namespace SiFoodProjectFormal2._0
 {
     public class Program
@@ -10,7 +11,7 @@ namespace SiFoodProjectFormal2._0
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<SifoodContext>(options => {
+            builder.Services.AddDbContext<Sifood3Context>(options => {
                 options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Sifood"));
             });
             builder.Services.AddControllersWithViews();
