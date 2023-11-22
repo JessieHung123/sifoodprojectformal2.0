@@ -1,5 +1,362 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Codescandy" name="author">
+    <title>Reviews Dashboard - FreshCart </title>
+    <!-- Favicon icon-->
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
+
+
+    <!-- Libs CSS -->
+    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
+    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
+
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="~/assets/css/theme.min.css">
+    <!-- Google tag (gtag.js) -->
+    <!-- End Tag -->
+</head>
+
+
+<body>
+    <!-- main wrapper-->
+    <div class="main-wrapper">
+        <!-- navbar vertical -->
+        <!-- main -->
+        <main class="main-content-wrapper">
+            <div class="container">
+                <div class="row mb-8">
+                    <div class="col-md-12">
+                        <div>
+                            <!-- page header -->
+                            <h2>客戶評論</h2>
+                            <!-- breacrumb -->
+                        </div>
+                    </div>
+                </div>
+                <!-- row -->
+                <div class="row ">
+                    <div class="col-xl-12 col-12 mb-5">
+                        <!-- card -->
+                        <div class="card h-100 card-lg">
+                            <div class="p-6 ">
+                                <div class="row justify-content-between">
+                                    <div class="col-md-4 col-12 mb-2 mb-md-0">
+                                        <!-- form -->
+                                        <form class="d-flex" role="search">
+                                            <input class="form-control" type="search" placeholder="搜尋評論" aria-label="Search">
+                                        </form>
+                                    </div>
+                                    <div class="col-lg-2 col-md-4 col-12">
+                                        <!-- main -->
+                                        <select class="form-select">
+                                            <option selected="">篩選評分</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                            <option value="4">Four</option>
+                                            <option value="5">Five</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- card body -->
+                            <div class="card-body p-0">
+                                <!-- table -->
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
+                                        <thead class="bg-light">
+                                            <tr>
+
+                                                <th>客戶名稱</th>
+                                                <th>評論內容</th>
+                                                <th>評分</th>
+                                                <th>日期</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+
+                                                <td>Barry McKenzie</td>
+
+                                                <td>
+                                                    <span class="text-truncate">Nice &amp; fresh oranges with value for money..</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-light"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    23 Nov,2022
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+
+
+
+                                                <td>Dale Jenkins</td>
+
+                                                <td>
+                                                    <span class="text-truncate">Nice product 👌 quality 👌...</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-light"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    23 Nov,2022
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+
+
+
+                                                <td>Michael Phillips</td>
+
+                                                <td>
+                                                    <span class="text-truncate">Good quality product delivered...</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    23 Nov,2022
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+
+
+
+                                                <td>James Parker</td>
+
+                                                <td>
+                                                    <span class="text-truncate">Excellent Quality by an Indian company..</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    23 Nov,2022
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+
+
+
+                                                <td>William Hansen</td>
+
+                                                <td>
+                                                    <span class="text-truncate">Very expensive. Cheaper at local stores...</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-light"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    23 Nov,2022
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+
+                                                <td>Helen Speller</td>
+
+                                                <td>
+                                                    <span class="text-truncate">Etiam in felis eget eros dictum</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    23 Nov,2022
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+
+
+
+                                                <td>Larry Anderson</td>
+
+                                                <td>
+                                                    <span class="text-truncate">is good but had to wait for a late delivery.</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-light"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    23 Nov,2022
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+
+
+
+                                                <td>William McCulloch</td>
+
+                                                <td>
+                                                    <span class="text-truncate">Very expensive. Cheaper at local stores</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    23 Nov,2022
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+
+
+                                                <td>Louise Brown</td>
+
+                                                <td>
+                                                    <span class="text-truncate">My toddler loved the flavor and enjoys...</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-light"></i></span>
+                                                        <span><i class="bi bi-star-fill text-light"></i></span>
+                                                        <span><i class="bi bi-star-fill text-light"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    23 Nov,2022
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+
+
+
+                                                <td>John Meyer</td>
+
+                                                <td>
+                                                    <span class="text-truncate">Good Product but packaging needs...</span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
+                                                        <span><i class="bi bi-star-fill text-light"></i></span>
+                                                        <span><i class="bi bi-star-fill text-light"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    23 Nov,2022
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <div class="border-top d-md-flex justify-content-between align-items-center p-6">
+                                    <span>Showing 1 to 8 of 12 entries</span>
+                                    <nav class="mt-2 mt-md-0">
+                                        <ul class="pagination mb-0 ">
+                                            <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
+                                            <li class="page-item"><a class="page-link active" href="#!">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#!">Next</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+
+    <!-- Libs JS -->
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/libs/simplebar/dist/simplebar.min.js"></script>
+
+    <!-- Theme JS -->
+    <script src="/assets/js/theme.min.js"></script>
+
+
+    <!-- Visual Studio Browser Link -->
+    <script type="text/javascript" src="/_vs/browserLink" async="async" id="__browserLink_initializationData" data-requestid="2f5a7dd90325443196819a586f019be1" data-requestmappingfromserver="false" data-connecturl="http://localhost:61567/549414066c8c4b829972c6f5055a8617/browserLink"></script>
+    <!-- End Browser Link -->
+
+    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+
+
+    <!-- Visual Studio Browser Link -->
+    <script type="text/javascript" src="/_vs/browserLink" async="async" id="__browserLink_initializationData" data-requestid="3089df0821034d5c9bccdfdb59cbdbac" data-requestmappingfromserver="false" data-connecturl="http://localhost:61567/549414066c8c4b829972c6f5055a8617/browserLink"></script>
+    <!-- End Browser Link -->
+
+    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+</body>
+
+</html>
