@@ -49,21 +49,21 @@
                         <h5 class="offcanvas-title" id="offcanvasCategoryLabel">Filter</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
-                    <div class="offcanvas-body ps-lg-2 pt-lg-0">
+                    <div class="offcanvas-body ps-lg-2 pt-lg-0" >
                         <div class="mb-8">
                             <!-- title -->
                             <h5 class="mb-3">依地區探索</h5>
                             <!-- nav -->
                             <ul class="nav nav-category" id="categoryCollapseMenu">
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a v-on:click="filterArea" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#categoryFlushOne" aria-expanded="false" aria-controls="categoryFlushOne">臺北市<i class="feather-icon icon-chevron-right"></i></a>
+                                    <a v-on:click="CountArrayinTaipei" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#categoryFlushOne" aria-expanded="false" aria-controls="categoryFlushOne">臺北市<i class="feather-icon icon-chevron-right"></i></a>
                                     <!-- accordion collapse -->
                                     <div id="categoryFlushOne" class="accordion-collapse collapse" data-bs-parent="#categoryCollapseMenu">
                                         <div>
                                             <!-- nav -->
                                             <ul class="nav flex-column ms-3" >
                                                 <!-- nav item -->
-                                                <li class="nav-item" v-for="item in ArrayinTaipei" :key="item"><a  class="nav-link">{{item}}</a></li>
+                                                <li class="nav-item" v-for="item in ArrayinTaipei" v-on:click="filterArea"><a class="nav-link" id="region">{{item}}</a></li>
 
                                             </ul>
 
@@ -73,7 +73,7 @@
                                 </li>
                                 <!-- nav item -->
                                 <li class="nav-item border-bottom w-100 ">
-                                    <a v-on:click="filterArea" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                    <a v-on:click="CountArrayinNewTaipei" class="nav-link collapsed" style="color:#6c757d;font-weight: bold" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                                         新北市 <i class="feather-icon icon-chevron-right"></i>
                                     </a>
 
@@ -82,7 +82,7 @@
                                         <div>
                                             <ul class="nav flex-column ms-3" >
                                                 <!-- nav item -->
-                                                <li class="nav-item" v-for="item in ArrayinNewTaipei" :key="item"><a class="nav-link">{{item}}</a></li>
+                                                <li class="nav-item" v-for="item in ArrayinNewTaipei" v-on:click="filterArea"><a class="nav-link" id="region">{{item}}</a></li>
 
                                             </ul>
                                         </div>
@@ -294,17 +294,12 @@
             mounted: function () {
                 let _this = this;
                 _this.getStoreapi();
-                _this.getFavoriteStore();
+                // _this.CountArrayinTaipei();
+                // _this.CountArrayinNewTaipei();
+                
                 
             },
-            created: function () {
-                let _this = this;
-                _this.CountArrayinTaipei();
-                _this.CountArrayinNewTaipei();
-            
-            },
-
-
+          
             methods: {
                 filterActiveTime(stores) {
                     if (this.isStoreActive) {
@@ -332,9 +327,9 @@
                     return stores;
                 },
                 filterArea(stores) {
-                    // if(this.stores.city=="台北市")
-                    // this.stores.region.map()
-                    return stores;
+                    var regionText = $("#region").val();
+                    return this.stores.filter(s => s.region == regionText);
+                     
                 },
                 filtercategory(stores) {
                     let _this = this;
@@ -363,11 +358,13 @@
                         .then(data => {
                             // alert(JSON.stringify(data));
                             data.forEach(store => {
+                                
                                 store.commentRank = store.commentCount > 0 ? store.commentRank / store.commentCount : 0;
+                                
                             });
                             
                             _this.stores = data;
-
+                            _this.getFavoriteStore();
                         }).catch(error => {
                             alert(error);
                         });
@@ -444,20 +441,23 @@
                     });
                 }, 
                 CountArrayinTaipei: function () {
-                    this.ArrayinTaipei = [];
+                    
                     for (var i = 0; i < this.stores.length; i++) {
                         let area = this.stores[i].region;
                         if (this.stores[i].city == "台北市") { if (!this.ArrayinTaipei.includes(area)) { this.ArrayinTaipei.push(area); } }
-                        // if (this.stores[i].city == "新北市") { if (!this.ArrayinNewTaipei.includes(area)){ this.ArrayinNewTaipei.push(area); } }
+                        
                     }
+                    return this.ArrayinTaipei;
                 },
                 CountArrayinNewTaipei: function () {
-                    this.ArrayinNewTaipei = [];
+                    
                     for (var i = 0; i < this.stores.length; i++) {
                         let area = this.stores[i].region;
-                        // if (this.stores[i].city == "台北市") { if (!this.ArrayinTaipei.includes(area)) { this.ArrayinTaipei.push(area); } }
+                   
                         if (this.stores[i].city == "新北市") { if (!this.ArrayinNewTaipei.includes(area)) { this.ArrayinNewTaipei.push(area); } }
                     }
+                    
+                    return this.ArrayinNewTaipei;
                 },
 
 

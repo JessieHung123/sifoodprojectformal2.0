@@ -149,7 +149,7 @@
 
         <!-- Shop Cart -->
 
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" >
             <div class="offcanvas-header border-bottom">
                 <div class="text-start">
                     <h5 id="offcanvasRightLabel" class="mb-0 fs-4">購物車</h5>
@@ -157,17 +157,17 @@
                 </div>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body">
+            <div class="offcanvas-body" id="shoppingCart">
 
                 <div class="">
                     <!-- alert -->
 
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush" >
 
                         <!-- list group -->
-                        <li class="list-group-item py-3 ps-0 border-top">
+                        <li class="list-group-item py-3 ps-0 border-top" >
                             <!-- row -->
-                            <div class="row align-items-center" v-for="item in carts">
+                            <div class="row align-items-center py-2" v-for="item in carts">
 
                                 <div class="col-6 col-md-6 col-lg-7">
                                     <div class="d-flex">
@@ -183,7 +183,7 @@
                                             <!-- text -->
                                             <div class="mt-2 small lh-1">
                                                 <div class="text-decoration-none text-inherit">
-                                                    <span class="me-1 align-text-bottom" onclick="deleteCartItem(item.productId)">
+                                                    <span class="me-1 align-text-bottom" @@click="deleteCartItem(item.productId)">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 text-success">
                                                             <polyline points="3 6 5 6 21 6"></polyline>
                                                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
@@ -197,6 +197,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <!-- input group -->
                                 <div class="col-4 col-md-3 col-lg-3">
                                     <!-- input -->
@@ -214,10 +215,10 @@
 
                                 </div>
                             </div>
-                            <hr />
+                            
                         </li>
 
-
+                        
                     </ul>
 
                     <hr />
@@ -339,7 +340,7 @@
                 fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
                     .then(response => response.json())
                     .then(data => {
-                        alert(data);
+                        // alert(data);
                         this.carts = data;
 
                     }).catch(error => {
@@ -384,6 +385,7 @@
                                 alert("商品項目刪除失敗!");
                             })
                     };
+                    //remove那個元素
 
                 },
 
@@ -391,7 +393,7 @@
             computed: {
 
             }
-        }).mount("#app")
+        }).mount("#shoppingCart")
     </script>
 </body>
 </html>
