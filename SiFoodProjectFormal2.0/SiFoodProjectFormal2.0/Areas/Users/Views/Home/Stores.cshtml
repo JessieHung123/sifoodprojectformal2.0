@@ -556,8 +556,8 @@
                         <div >
                             <ul class="nav flex-column nav-links">
                                 <!-- nav item -->
-                                <li class="nav-item" v-for="item in stores.categoryList">
-                                    <a href="#!" class="nav-link">{{item}}</a>
+                                <li class="nav-item" v-for="category in stores.categoryList" v-on:click="filterCategories(category)">
+                                    <a href="#!" class="nav-link">{{category}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -650,7 +650,7 @@
                         </div>
                         <!-- row -->
                         <div class="row g-4 row-cols-xl-3 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
-                            <div class="col  align-items-stretch" v-for="item in products">
+                            <div class="col  align-items-stretch" v-for="item in filteredProducts">
                                 <!-- card -->
                                 <div class="card card-product">
                                     <div class="card-body">
@@ -1926,10 +1926,19 @@
                         storeName: "",
                         comment: [],
                         // categoryList = []
+                        selectedCategory: null,
                     }
                 },
                 computed: {
                     
+                        filteredProducts() {
+                        if (!this.selectedCategory) {
+                            return this.products; // No category selected, return all products
+                        }
+
+                        return this.products.filter(item => item.categoryName === this.selectedCategory);
+                    },
+                               
                 },
                 mounted: function () {
                     let _this = this;
@@ -1937,7 +1946,11 @@
 
                 },
                 methods: {
-                    
+                   
+                    filterCategories(category) {
+                        this.selectedCategory = category;
+                    },
+
                     getStoreapi() {
                         let _this = this;
                         var storeId = "S001"
