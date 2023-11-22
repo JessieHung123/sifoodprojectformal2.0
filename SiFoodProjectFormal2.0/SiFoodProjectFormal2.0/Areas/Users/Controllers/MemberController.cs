@@ -66,31 +66,45 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword)
+        public async Task<IActionResult> ChangePassword(ProfileViewModel model)
         {
+            // 驗證模型
+            if (!ModelState.IsValid)
+            {
+                // 處理模型驗證錯誤
+                return View("Profile", model);
+            }
+
             // 取得當前用戶
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserEmail == User.Identity.Name);
 
             if (user == null)
             {
-                return Json(new { success = false, message = "用戶未找到" });
+                // 處理找不到用戶的情況
+                ModelState.AddModelError("", "無法找到用戶資料。");
+                return View("Profile", model);
             }
 
             // 驗證當前密碼
-            bool validPassword = PasswordHelper.VerifyPassword(currentPassword, user.UserPasswordHash, user.UserPasswordSalt);
+            bool validPassword = PasswordHelper.VerifyPassword(model.CurrentPassword, user.UserPasswordHash, user.UserPasswordSalt);
             if (!validPassword)
             {
-                return Json(new { success = false, message = "當前密碼不正確" });
+                ModelState.AddModelError("CurrentPassword", "當前密碼不正確");
+                return View("Profile", model);
             }
 
             // 更新用戶的密碼
-            (user.UserPasswordHash, user.UserPasswordSalt) = PasswordHelper.CreatePasswordHash(newPassword);
+            (user.UserPasswordHash, user.UserPasswordSalt) = PasswordHelper.CreatePasswordHash(model.NewPassword);
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return Json(new { success = true, message = "密碼更新成功" });
+            // 密碼更新成功後，你可能想要重導向用戶到個人資料頁面，或顯示一個成功消息
+            TempData["SuccessMessage"] = "密碼更新成功";
+            return RedirectToAction("Profile");
         }
+
+
 
 
         public IActionResult Products()

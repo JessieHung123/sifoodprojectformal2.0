@@ -268,49 +268,45 @@
         <hr class="my-10">
 
 
-        <!--密碼區-->
-        <div class="pe-lg-14 mb-15">
-            <h5 class="mb-4">密碼</h5>
+                            <!-- 密碼區 -->
+                            <div class="pe-lg-14 mb-15">
+                                <h5 class="mb-4">密碼</h5>
 
-
-             <!-- 密碼form  -->
-                                <form asp-action="ChangePassword" method="post" id="password-change-form">
+                                <!-- 密碼變更表單 -->
+                                <form asp-action="ChangePassword" method="post" id="password-change-form" asp-antiforgery="true">
                                     <div class="row row-cols-1 row-cols-lg-2">
-                                        <!-- 當前密碼 -->
+                                        <!-- 現在密碼輸入欄位 -->
                                         <div class="mb-3 col">
-                                            <label asp-for="CurrentPassword" class="form-label">現在密碼</label>
-                                            <input asp-for="CurrentPassword" class="form-control" />
+                                            <label class="form-label" asp-for="CurrentPassword">現在密碼</label>
+                                            <input asp-for="CurrentPassword" type="password" class="form-control" id="current-password" placeholder="**********">
                                             <span asp-validation-for="CurrentPassword" class="text-danger"></span>
                                         </div>
-                                        <!-- 新密碼 -->
+
+                                        <!-- 新密碼輸入欄位 -->
                                         <div class="mb-3 col">
-                                            <label asp-for="NewPassword" class="form-label">新密碼</label>
-                                            <input asp-for="NewPassword" class="form-control" />
+                                            <label class="form-label" asp-for="NewPassword">新密碼</label>
+                                            <input asp-for="NewPassword" type="password" class="form-control" id="new-password" placeholder="**********">
                                             <span asp-validation-for="NewPassword" class="text-danger"></span>
                                         </div>
-                                        <!-- 確認新密碼 -->
-                                        <div class="mb-3 col">
-                                            <label asp-for="ConfirmPassword" class="form-label">確認新密碼</label>
-                                            <input asp-for="ConfirmPassword" class="form-control" />
-                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                        </div>
-                                        <div class="mt-2 mb-3 col">
-                                            <!-- 更新密碼按鈕 -->
-                                            <button class="btn btn-primary mb-4" id="update-password-button">更新密碼</button>
+
+                                        <!-- 更新密碼按鈕 -->
+                                        <div class="mb-3">
+                                            <button type="submit" class="btn btn-primary" id="update-password-button">更新密碼</button>
                                         </div>
                                     </div>
                                 </form>
-                                <!-- form end -->
-        </div>
-    </div>
-</div>
 
+                                <!-- 重設密碼連結 -->
+                                <p class="mb-4">
+                                    想要更新密碼嗎?
+                                    <a href="javascript:void(0)" id="reset-password-link">按這裡重設密碼</a>
+                                </p>
+                            </div>
 
-
-
-
-
-                   
+        <!-- 一般性錯誤消息 -->
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+ 
+                 
 
                         
 @*                         <hr class="my-10">
