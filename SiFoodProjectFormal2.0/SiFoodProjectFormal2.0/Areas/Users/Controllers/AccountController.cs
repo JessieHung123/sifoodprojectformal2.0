@@ -5,6 +5,9 @@ using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
 using System.Text;
 using SiFoodProjectFormal2._0.ViewModels.Users;
+using Microsoft.Win32;
+using XSystem.Security.Cryptography;
+using NuGet.Packaging;
 
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
@@ -29,11 +32,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         
         public async Task<IActionResult> LoginRegister(LoginVM model)
         {
-            string[]? account = _context.Users.Select(x => x.UserEmail).ToArray();
-            byte[][]? password = _context.Users.Select(y => y.UserPasswordHash).ToArray();
+            var account = _context.Users.Where(x => x.UserEmail == model.Account).FirstOrDefault();
+            var passwordHash = _context.Users.Where(x => x.UserPasswordHash == model.Password).FirstOrDefault();
 
-
-            if (account.Contains(model.Account) && password.Contains(model.Password))
+            if (account != null && passwordHash != null)
             {
                 var claims = new List<Claim>()
                 {
