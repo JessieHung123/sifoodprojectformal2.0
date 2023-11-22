@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using SiFoodProjectFormal2._0.Models;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
     [Area("Users")]
     public class HomeController : Controller
     {
+       
         public IActionResult Main()
         {
             return View();
@@ -32,8 +36,19 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
         public IActionResult Products()
         {
+            //ViewBag.ProductName=
+            //    ViewBag.StoreName =
+            //    ViewBag.Address =
+            //    ViewBag.Description =
+            //    ViewBag.UnitPrice =
+            //    ViewBag.PhotoPath =
+            //    ViewBag.SuggestPickUpTime =
+            //    ViewBag.SuggestPickEndTime =
+            //    ViewBag.RemainingStock=
             return View();
         }
+
+        
         public IActionResult RealTimeOrders()
         {
             return View();
