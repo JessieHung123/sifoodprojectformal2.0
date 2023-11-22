@@ -15,9 +15,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
 
-
         [HttpGet]
-
         public IActionResult Checkout(int id)
         {
             var _address = _context.UserAddresses.Find(id)?.UserDetailAddress;
