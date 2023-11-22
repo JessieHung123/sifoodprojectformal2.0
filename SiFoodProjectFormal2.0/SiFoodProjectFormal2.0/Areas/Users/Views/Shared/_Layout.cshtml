@@ -167,7 +167,7 @@
                         <!-- list group -->
                         <li class="list-group-item py-3 ps-0 border-top">
                             <!-- row -->
-                            <div class="row align-items-center" v-for="item in carts" >
+                            <div class="row align-items-center" v-for="item in carts">
 
                                 <div class="col-6 col-md-6 col-lg-7">
                                     <div class="d-flex">
@@ -179,7 +179,7 @@
                                             <a href="./pages/shop-single.html" class="text-inherit">
                                                 <h6 class="mb-1">{{item.productName}}</h6>
                                             </a>
-                                            <h6 >{{item.storeName}}</h6>
+                                            <h6>{{item.storeName}}</h6>
                                             <!-- text -->
                                             <div class="mt-2 small lh-1">
                                                 <div class="text-decoration-none text-inherit">
@@ -345,36 +345,35 @@
                     }).catch(error => {
                         alert(error);
                     });
-                    // alert友但沒渲染
+                // alert友但沒渲染
 
 
             },
             methods: {
                 changeQty(product) {
                     let cartItemQtyChange = {
-                        productId:model.productId,
-                        quantity:model.quantity,
+                        productId: model.productId,
+                        quantity: model.quantity,
                     };
-                    fetch(`${baseAddress}/api/CartVMapi/ChangeQty`,{
-                        method: "PUT", 
+                    fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
+                        method: "PUT",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(cartData)
-                    }).then(response =>response.ok)
+                    }).then(response => response.ok)
                 },
                 deleteCartItem(item) {
                     let _this = this;
-                    let delete={
-                        productId:item.productId,
-                        userId:"U001"//寫死
-                    
-                    };
+                    let deleteItem = {
+                        productId: item.productId,
+                        userId: "U001"
+                    }; /*  //寫死 */
                     let checkagain = confirm("確定要刪除嗎?");
                     if (checkagain == true) {
                         fetch(`/api/CartVMapi/DeleteCartItem`,
                             {
                                 method: "DELETE",
                                 headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(_this.delete)
+                                body: JSON.stringify(deleteItem)
                             }).then(response => response.json())
                             .then(data => {
                                 if (data) {
