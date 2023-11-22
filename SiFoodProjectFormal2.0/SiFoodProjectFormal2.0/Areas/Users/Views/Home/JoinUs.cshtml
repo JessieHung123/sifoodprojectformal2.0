@@ -8,7 +8,7 @@
 
 <!-- Title -->
 @{
-    ViewData["Title"] = "常見問題";
+    ViewData["Title"] = "加入我們";
 }
 
 <!-- CSS -->
@@ -89,7 +89,8 @@
 
 
                     <!-- form -->
-                    <form asp-action="JoinUs" method="post" class="row" id="myForm">
+                    <form asp-action="JoinUsCreat" class="row" id="myForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <!-- input -->
 
@@ -103,7 +104,7 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="contactName">聯絡人姓名<span class="text-danger">*</span></label>
-                            <input asp-for="ContactName" class="form-control" id="contactName" placeholder="請輸入一位負責聯繫的人員姓名" />
+                            <input asp-for="ContactName" class="form-control"  placeholder="請輸入一位負責聯繫的人員姓名" />
                             <span asp-validation-for="ContactName" class="text-danger"></span>
                         </div>
 
@@ -119,7 +120,7 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="storeName">店名<span class="text-danger">*</span></label>
-                            <input asp-for="StoreName" class="form-control" id="storeName" placeholder="請輸入您在惜食平台欲顯示的店名名稱" />
+                            <input asp-for="StoreName" class="form-control" autocomplete="organization" placeholder="請輸入您在惜食平台欲顯示的店名名稱" />
                             <span asp-validation-for="StoreName" class="text-danger"></span>
                         </div>
 
@@ -206,20 +207,20 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="city">店家地址-市<span class="text-danger">*</span></label>
-                            <input asp-for="City" class="form-control" id="city" placeholder="請輸入臺北市或新北市" />
+                            <input asp-for="City" class="form-control" autocomplete="address-level2" placeholder="請輸入臺北市或新北市" />
                             <span asp-validation-for="City" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="region">店家地址-區<span class="text-danger">*</span></label>
-                            <input asp-for="Region" class="form-control" id="city" placeholder="請輸入區，例:大安區" />
+                            <input asp-for="Region" class="form-control" autocomplete="address-level3" placeholder="請輸入區，例:大安區" />
                             <span asp-validation-for="Region" class="text-danger"></span>
                         </div>
 
 
                         <div class="col-md-12 mb-3">
                             <label class="form-label" for="address">店家地址<span class="text-danger">*</span></label>
-                            <input asp-for="Address" class="form-control" id="address" placeholder="例:重慶南路一段122號" />
+                            <input asp-for="Address" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
 
