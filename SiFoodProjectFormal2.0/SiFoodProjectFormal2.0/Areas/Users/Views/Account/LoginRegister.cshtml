@@ -86,7 +86,7 @@
                                     </div>
                                     <div style="height:3px"></div>
                                     <div class="col-12 d-grid">
-                                        <button type="submit" class="btn btn-primary" style="height:43px">登入</button>
+                                        <button type="submit" class="btn btn-primary" style="height:43px" @@click="login">登入</button>
                                     </div>
                                 </div>
                             </form>
@@ -101,9 +101,6 @@
 </div>
 
 
-
-
-
 @section Scripts {
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -113,7 +110,6 @@
     <partial name="_ValidationScriptsPartial" />
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 
     <script>
         var baseAddress = "https//localhost:7042";
@@ -153,7 +149,7 @@
                     }).catch(err => {
                         alert(err);
                     });
-                },  
+                },
             },
         }).mount("#registerApp")
 
