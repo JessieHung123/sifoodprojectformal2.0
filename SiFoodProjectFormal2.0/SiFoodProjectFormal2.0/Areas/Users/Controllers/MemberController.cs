@@ -50,7 +50,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //測試版end
 
 
-
+        //舊版
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Profile([Bind("UserName,UserEmail,UserPhone,UserBirthDate")] ProfileViewModel profileViewModel)
