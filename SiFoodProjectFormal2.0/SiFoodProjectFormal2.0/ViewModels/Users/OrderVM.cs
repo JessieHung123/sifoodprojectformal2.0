@@ -8,7 +8,9 @@
 
         public string Address { get; set; } = null!;
 
-        public string Status { get; set; } 
+        public string Status { get; set; }
+
+        public int StatusId { get; set; }
 
         public string UserName { get; set; }
 

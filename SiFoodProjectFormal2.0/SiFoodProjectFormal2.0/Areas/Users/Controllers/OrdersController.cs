@@ -35,14 +35,16 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpGet("{id}")]
         public object GetOrder(string id)
         {
+            //List<int> StatusIdToCheck = new List<int> {1, 2, 3, 4};
             //var order = await _context.Orders.FindAsync(id);
-            return _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Where(c => c.UserId == id)
+            return _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Where(c => c.UserId == id && c.Status.StatusId!=5 && c.Status.StatusId!=6 && c.Status.StatusId!=7)
                  .Select(z => new OrderVM
                  {
                      OrderId = z.OrderId,
                      OrderDate = z.OrderDate,
                      Address = z.Address,
                      Status = z.Status.StatusName,
+                     StatusId = z.StatusId,
                      UserName = z.User.UserName,
                      UserEmail = z.User.UserEmail,
                      UserPhone = z.User.UserPhone,
