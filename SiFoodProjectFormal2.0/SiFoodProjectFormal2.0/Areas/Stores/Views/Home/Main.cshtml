@@ -23,6 +23,7 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!-- Google tag (gtag.js) -->
     <!-- End Tag -->
 
@@ -30,9 +31,7 @@
 
 <body>
     <!-- main -->
-    <div>
-
-
+    <div class="main">
         <div class="main-wrapper">
             <!-- navbar vertical -->
             <!-- main wrapper -->
@@ -168,95 +167,16 @@
                     </div>
                     <!-- row -->
                     <!-- row -->
+                    {{StoreInfo.productId}}
 
                 </section>
             </main>
         </div>
     </div>
-
+    
     <!--測試連線-->
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ReleasedQty)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OrderedQty)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PhotoPath)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RealeasedTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UnitPrice)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SuggestPickUpTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SuggestPickEndTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Category)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Store)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProductName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ReleasedQty)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrderedQty)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PhotoPath)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RealeasedTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UnitPrice)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SuggestPickUpTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SuggestPickEndTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category.CategoryId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Store.StoreId)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <div class="text-center">
-        <button id="getStoreInfoAPI" onclick="getStoreInfoAPI()" class="btn btn-primary">getelment</button>
+    <div id="main" class="text-center">
+        <button id="getStoreInfoAPI" v-on:click="getStoreInfoAPI" class="btn btn-primary">getelment</button>
     </div>
     <!--測試連線-->
     <!-- Libs JS -->
@@ -270,40 +190,48 @@
     <script src="~/assets/js/vendors/chart.js"></script>
 
 </body>
-
 </html>
-
     @section Scripts
 {
     <script>
+        var baseAddress = "https://localhost:7042";
+        const StoreMainApp = Vue.createApp({
+            data: function () {
+                return {
+                    StoreInfo:[],
+                    ProductId: "",
+                    ProductName:"",
+                    SalesCount: "",
+                }
+            },
+            computed: {
+             },
+            mounted: function () {
+                let _this = this;
+                _this.getStoreInfoAPI();
+            },
+            methods: {
+                getStoreInfoAPI: function () {
+                    let _this = this; /* test */
+                    var uri = `${baseAddress}/Stores/Home/Main2`;
+                    fetch(uri, { method: "GET" })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        })
+                        .then(data => {
+                            // 在這裡處理數據
+                            alert(JSON.stringify(data));
+                            _this.StoreInfo = data[0] /* test */
 
-        function getStoreInfoAPI() {
-            alert("ya")
-        }
-
-        // var baseAddress = "https://localhost:7042";
-        // function getStoreInfoAPI() {
-        //     var uri = `${baseAddress}/Stores/Home/main`;
-        //     let _this = this;
-        //     fetch(`uri`, { method: "GET" })
-        //         .then(response => {
-        //             if (response.ok) {
-        //                 throw new Error(`HTTP error! Status: ${response.status}`);
-        //                 return response.json();
-        //             }
-        //             return response.json();
-        //         })
-        //         .then(data => {
-        //             alert(JSON.stringify(data));
-
-        //         }).catch(error => {
-        //             alert(error);
-        //         });
-
-        // }
-
+                        })
+                        .catch(error => {
+                            alert(error);
+                        });
+                }
+            },
+        }).mount("#main")
     </script>
-
-
-
 }
