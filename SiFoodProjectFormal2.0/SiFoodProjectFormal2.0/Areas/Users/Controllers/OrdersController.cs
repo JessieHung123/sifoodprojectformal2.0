@@ -41,7 +41,9 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                  .Select(z => new OrderVM
                  {
                      OrderId = z.OrderId,
-                     OrderDate = z.OrderDate,
+                     //OrderDate = z.OrderDate,
+                     OrderDate = z.OrderDate.ToString("yyyy-MM-dd"),
+                     OrderTime = z.OrderDate.ToString("HH:mm"),
                      Address = z.Address,
                      Status = z.Status.StatusName,
                      StatusId = z.StatusId,

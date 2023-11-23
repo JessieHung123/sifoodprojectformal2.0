@@ -557,7 +557,7 @@
                                                
                                             </td>
                                             <td class="align-middle border-top-0">
-                                                ${{item.subtotal}}
+                                                ${{item.subtotal+item.shippingFee}}
                                             </td>
                                             @* add eye collapse function *@
                                             <td class="text-muted align-middle border-top-0">
@@ -635,8 +635,8 @@
                                                                                         <h6>訂單資訊</h6>
                                                                                         <p class="mb-1 lh-lg">
                                                                                             訂單編號: <span class="text-dark">{{item.orderId}}</span><br>
-                                                                                            訂購時間: <span class="text-dark">{{item.orderDate}}</span><br>
-                                                                                            訂單金額: <span class="text-dark">{{item.subtotal}}</span>
+                                                                                            訂購時間: <span class="text-dark">{{item.orderDate}} {{item.orderTime}}</span><br>
+                                                                                            訂單金額: <span class="text-dark">${{item.subtotal+item.shippingFee}}</span>
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>
