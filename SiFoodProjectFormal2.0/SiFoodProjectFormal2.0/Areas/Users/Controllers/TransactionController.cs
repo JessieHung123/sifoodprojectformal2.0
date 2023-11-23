@@ -28,10 +28,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         [HttpPost]
         public string DeliverOrder(CreateOrderVM model)
         {
-
-
-
-
             return "新增外送訂單成功";
         }
 
@@ -39,9 +35,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         [HttpPost]
         public string TakeOutOrder(CreateOrderVM model)
         {
-
-
-
             return "新增自取訂單成功";
         }
 
