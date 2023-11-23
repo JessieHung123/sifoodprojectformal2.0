@@ -29,7 +29,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         public async Task<IEnumerable<CartVM>> GetCarts()
         {
 
-            string GetUserId = "U002";//先寫死
+            string GetUserId = "U001";//先寫死
             
             var cart = _context.Carts.Where(c => c.UserId == GetUserId).Select(c => new CartVM
             {
@@ -68,7 +68,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         // POST: api/CartVMapi
         [HttpPost]
         public async Task<bool> AddToCart([FromBody]CartVM cartVM)
-        {
+        {//只能限制加一間>>還沒寫
             if (cartVM == null) return false;
             try {
                 string userId = "U001";//cartVM.UserId寫死
@@ -77,6 +77,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     ProductId = cartVM.ProductId,
                     Quantity = cartVM.Quantity,
                     UserId = userId,   //cartVM.UserId寫死
+                    
                 };
                 _context.Carts.Add(cart);
                 await _context.SaveChangesAsync();

@@ -13,12 +13,14 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         [Range(1,10,ErrorMessage="{0}必須小於{1}")]
         public int Quantity { get; set; }
         [DisplayFormat(DataFormatString ="{0:C2}")]
-        public decimal TotalPrice { get; set; }
+        public decimal? TotalPrice { get; set; }
 
-        public string ProductName { get; set; } = null!;
+        public string? ProductName { get; set; } 
 
-        public decimal UnitPrice { get; set; }
+        public decimal? UnitPrice { get; set; }
+        
+        public string? StoreName { get; set; } 
 
-        public string StoreName { get; set; } = null!;
+        public string? StoreId { get; set; }
     }
 }

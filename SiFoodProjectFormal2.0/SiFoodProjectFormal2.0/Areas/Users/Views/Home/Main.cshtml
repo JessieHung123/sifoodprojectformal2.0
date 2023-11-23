@@ -63,7 +63,7 @@
                                             <!-- nav -->
                                             <ul class="nav flex-column ms-3" >
                                                 <!-- nav item -->
-                                                <li class="nav-item" v-for="item in ArrayinTaipei"><a class="nav-link" id="region" v-on:click="filterArea(item)">{{item}}</a></li>
+                                                <li class="nav-item" v-for="area in ArrayinTaipei"><a class="nav-link clickArea" :id="area" v-on:click="filterArea(area)">{{area}}</a></li>
 
                                             </ul>
 
@@ -82,7 +82,7 @@
                                         <div>
                                             <ul class="nav flex-column ms-3" >
                                                 <!-- nav item -->
-                                                <li class="nav-item" v-for="item in ArrayinNewTaipei"><a class="nav-link" id="region" v-on:click="filterArea(item)">{{item}}</a></li>
+                                                <li class="nav-item" v-for="area in ArrayinNewTaipei"><a class="nav-link clickArea" :id="area" v-on:click="filterArea(area)">{{area}}</a></li>
 
                                             </ul>
                                         </div>
@@ -99,8 +99,8 @@
 
                             <div class="form-check mb-2" v-for="(condition, index) in selectedConditions" :key="index">
                                 <!-- input -->
-                                <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" value="false" v-model="condition.active" id="isCheckBox">
-                                <label class="form-check-label" style="color:#6c757d;font-weight: bold" for="isCheckBox">
+                                <input class="form-check-input isCheckBox" style="color:#6c757d;border: 2px solid" type="checkbox" value="false" v-model="condition.active">
+                                <label class="form-check-label" style="color:#6c757d;font-weight: bold">
                                     {{ condition.label }}
                                 </label>
                             </div>
@@ -112,16 +112,16 @@
                             <!-- form check -->
                             <div class="form-check mb-2">
                                 <!-- input -->
-                                <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" id="isCheckBox" value="false" v-model="isStoreActive">
-                                <label class="form-check-label" style="color:#6c757d;font-weight: bold" for="isCheckBox">
+                                <input class="form-check-input isCheckBox" style="color:#6c757d;border: 2px solid" type="checkbox" value="false" v-model="isStoreActive">
+                                <label class="form-check-label" style="color:#6c757d;font-weight: bold">
                                     營業中
                                 </label>
                             </div>
                             <!-- form check -->
                             <div class="form-check mb-2">
                                 <!-- input -->
-                                <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" value="true" id="isCheckBox">
-                                <label class="form-check-label" style="color:#6c757d;font-weight: bold" for="isCheckBox">
+                                <input class="form-check-input isCheckBox" style="color:#6c757d;border: 2px solid" type="checkbox" value="true" v-model="isRemain">
+                                <label class="form-check-label" style="color:#6c757d;font-weight: bold">
                                     尚有剩食庫存
                                 </label>
                             </div>
@@ -147,107 +147,8 @@
                     </div>
                 </div>
             </aside>
-            <section class="col-lg-9 col-md-12" v-if="area==true">
-
-
-                <!-- list icon -->
-                <div class="d-lg-flex justify-content-between align-items-center">
-                    <div class="mb-3 mb-lg-0">
-                        <p class="mb-0"> <span class="text-dark">{{storeCount}}</span> Stores found </p>
-                    </div>
-
-                </div>
-
-                <!-- row -->
-                <div class="row g-4 row-cols-xl-3 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
-                    <!--店家showstart-->
-                    <!-- col -->
-                    <div class="col" v-for="(item,index) in showStoresByArea" :key="index">
-                        <!-- card -->
-                        <div class="card h-100 card-product">
-
-                            <div class="card-body">
-
-                                <!-- badge -->
-                                <div class="text-center position-relative ">
-                                    <div class=" position-absolute top-0 start-0">
-                                        <span class="badge bg-danger">庫存:{{item.inventory}}</span>
-                                    </div>
-                                    <a href="shop-single.html">
-                                        <!-- img --><img :src="item.logoPath" class="mb-3 img-fluid" />
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class=" mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <h5>
-                                            {{item.storeName}}
-                                        </h5>
-                                    </a>
-                                </div>
-
-                                <div>
-
-                                    <h6 class="text-inherit text-muted ">{{item.description}}</h6>
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-
-                                        <small class="text-warning">
-                                            <i class="bi bi-star-fill"></i>
-
-                                        </small> <span class="text-muted">{{item.commentRank}} ({{item.commentCount}})</span>
-
-                                    </div>
-                                    <!-- btn -->
-                                    <div @@click="toggle(item.storeId)">
-                                        <button class="btn btn-primary btn-sm" v-if="item.noHeart">
-                                            <i class="bi bi-heart"></i> @* 空心 *@
-
-                                        </button>
-                                        <button class="btn btn-primary btn-sm" v-else>
-
-                                            <i class="bi bi-heart-fill" style="color: red;"></i> @* 實心 *@
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <!--店家showend-->
-                </div>
-
-
-
-                <!-- row -->
-                <div class="row mt-8">
-                    <div class="col">
-                        <!-- nav -->
-                        <nav>
-                            <ul class="pagination">
-                                <li class="page-item disabled">
-                                    <a class="page-link  mx-1 " href="#" aria-label="Previous">
-                                        <i class="feather-icon icon-chevron-left"></i>
-                                    </a>
-                                </li>
-                                <li class="page-item "><a class="page-link  mx-1 active" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link mx-1 text-body" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link mx-1 text-body" href="#">...</a></li>
-                                <li class="page-item"><a class="page-link mx-1 text-body" href="#">12</a></li>
-                                <li class="page-item">
-                                    <a class="page-link mx-1 text-body" href="#" aria-label="Next">
-                                        <i class="feather-icon icon-chevron-right"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </section>
-            <section class="col-lg-9 col-md-12" v-if="area==false">
+            <section class="col-lg-9 col-md-12">
+                @* v-if="area==true" *@
 
 
                 <!-- list icon -->
@@ -347,6 +248,7 @@
                     </div>
                 </div>
             </section>
+            
         </div>
     </div>
 
@@ -361,12 +263,11 @@
             data: function () {
                 return {
                     isStoreActive: false,
+                    isRemain:false,
                     stores: [],
                     storeCount: "",
                     ArrayinTaipei: [],
                     ArrayinNewTaipei: [],
-                    area:false,
-                    // noHeart:true,
                     selectedConditions: [
                         { label: "生鮮", active: false },
                         { label: "飲料", active: false },
@@ -376,24 +277,24 @@
                         { label: "異國料理", active: false },
                         { label: "其他", active: false }
                     ],
-                    selectedRegion: "",
-
+                    
                 }
             },
             computed: {
                 showStores: function () {
-                    this.area = false;
-                        var x = this.filterActiveTime(this.stores);
-                        var c = this.filtercategory(x);
+                    
+                    var r = this.filterIsRemaining(this.stores);
+                    var f = this.filterAreatoselect(r);
+                        var a = this.filterActiveTime(f);
+                        var c = this.filtercategory(a);
                         this.storeCount = c.length;
                         return c;
 
                 },
-                showStoresByArea: function () {
+                showStoresByArea: function () { 
                     var c=this.stores.filter(s => s.region == this.selectedRegion);
                     this.storeCount = c.length;
                     return c;
-
                 },
                 
             },
@@ -403,13 +304,20 @@
                 _this.getStoreapi();
  
             },
-          
+            watch: {
+                // isStoreActive(n) {
+                //     if (n == true) { this.area = false; }
+                // },
+                // condition.active(n) {
+                //     if(n == true) { this.area = false; }
+                //         },
+
+            },
             methods: {
                 filterActiveTime(stores) {
                     if (this.isStoreActive) {
-                        this.area = false;
+                        
                         let _this = this;
-                        // return stores.filter(s => s.commentRank >=5);
                         var now = new Date();
                         var day = now.getDay();
                         var isWeekday;
@@ -431,26 +339,32 @@
 
                     return stores;
                 },
-                filterArea(item) {
-                    this.area = true;
-                    // var checkbox = document.getElementById('isCheckBox');
-                    // checkbox.checked = false;
-                    // this.isStoreActive = false;
-                    // this.condition.active = false;
-
-                    // var regionText = item;
-                    // alert(item);
-                    this.selectedRegion = item;
+                filterArea(area) {
+                   
+                    var areas = document.querySelectorAll(".clickArea");
+                    areas.forEach(function (a) {
+                        a.classList.remove("selected");
+                    });
+                    var getArea = document.getElementById(area);
+                    getArea.classList.add("selected");
                     
-                    // return this.stores.filter(s => s.region == regionText);
-                     
                 },
-                
+                filterAreatoselect(stores) {
+                    var area = document.querySelector(".selected");
+                    
+                    if (area != null) { alert(stores.filter(x => x.region == area.textContent));}
+                    return stores;
+                },
+                filterIsRemaining(stores) {
+                    if (this.isRemain) {
+                        return stores.filter(s => s.inventory > 0);
+                    }
+                    return stores;
+                },
 
                 filtercategory(stores) {
                     
-                    this.area = false;
-                    const activeConditions = this.selectedConditions.filter(condition => condition.active);
+                    var activeConditions = this.selectedConditions.filter(condition => condition.active);
                     if (activeConditions.length === 0) {
                         return stores;
                     }
@@ -472,9 +386,7 @@
                             return response.json();
                         })
                         .then(data => {
-                            
                             data.forEach(store => {
-                                
                                 store.commentRank = store.commentCount > 0 ? store.commentRank / store.commentCount : 0;
                             });
                             _this.stores = data;
@@ -570,7 +482,6 @@
                    
                         if (this.stores[i].city == "新北市") { if (!this.ArrayinNewTaipei.includes(area)) { this.ArrayinNewTaipei.push(area); } }
                     }
-                    
                     return this.ArrayinNewTaipei;
                 },
 
