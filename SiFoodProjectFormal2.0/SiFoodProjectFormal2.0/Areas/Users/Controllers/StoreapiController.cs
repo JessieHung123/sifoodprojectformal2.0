@@ -27,8 +27,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [EnableQuery]
         public object Main2()
         {
-            Array[] CategoryName;
-            return _context.Stores.AsNoTracking().Include(x => x.Products).ThenInclude(x=>x.Category).Include(x => x.Orders)
+            
+            return _context.Stores.Include(x => x.Products).ThenInclude(x=>x.Category).Include(x => x.Orders)
                 .ThenInclude(x => x.Comment)
                 .Select(z => new StoreVM
                 {
@@ -45,7 +45,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     WeekendClosingTime = z.OpeningTime.Substring(28, 5),
                     City=z.City,
                     Region=z.Region,
-                    CategoryName =z.Products.Where(x => x.RealeasedTime.Date == DateTime.Now.Date && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x=>x.Category.CategoryName).Distinct(),
+                    CategoryName =z.Products.Where(x => x.RealeasedTime.Date == DateTime.Today && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x=>x.Category.CategoryName).Distinct(),
                 }).ToList();
         }
 

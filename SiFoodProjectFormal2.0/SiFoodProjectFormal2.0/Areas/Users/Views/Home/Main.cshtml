@@ -7,6 +7,11 @@
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css">
+    <style>
+    .selected{
+        text-decoration: underline;
+    }
+    </style>
 }
 @{
     ViewData["Title"] = "HomePage";
@@ -277,24 +282,19 @@
                         { label: "異國料理", active: false },
                         { label: "其他", active: false }
                     ],
-                    
+                    isSelected:false,
                 }
             },
             computed: {
                 showStores: function () {
                     
                     var r = this.filterIsRemaining(this.stores);
-                    var f = this.filterAreatoselect(r);
+                    var f = this.filterAreatoselect(r); //要v-model觸發才會做
                         var a = this.filterActiveTime(f);
                         var c = this.filtercategory(a);
                         this.storeCount = c.length;
                         return c;
 
-                },
-                showStoresByArea: function () { 
-                    var c=this.stores.filter(s => s.region == this.selectedRegion);
-                    this.storeCount = c.length;
-                    return c;
                 },
                 
             },
@@ -340,20 +340,22 @@
                     return stores;
                 },
                 filterArea(area) {
-                   
+
                     var areas = document.querySelectorAll(".clickArea");
-                    areas.forEach(function (a) {
-                        a.classList.remove("selected");
-                    });
                     var getArea = document.getElementById(area);
-                    getArea.classList.add("selected");
+                    if (getArea.classList.contains("selected")) { getArea.classList.remove("selected"); /* return this.stores; */ }
+                    else {
+                        areas.forEach(function (a) { a.classList.remove("selected"); });
+                        getArea.classList.add("selected");
+                        // var area = document.querySelector(".selected");
+                        // return this.stores.filter(x => x.region == area.textContent);
+                    }
                     
                 },
                 filterAreatoselect(stores) {
                     var area = document.querySelector(".selected");
-                    
-                    if (area != null) { alert(stores.filter(x => x.region == area.textContent));}
-                    return stores;
+                    if (area != null) { return stores.filter(x => x.region == area.textContent); }//要寫到下面的框框才會觸發
+                    else { return stores; }
                 },
                 filterIsRemaining(stores) {
                     if (this.isRemain) {
