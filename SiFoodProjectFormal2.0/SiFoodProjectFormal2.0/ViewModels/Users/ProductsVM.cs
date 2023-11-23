@@ -12,6 +12,8 @@
 
         public string? PhotoPath { get; set; }
 
+        public string? SuggestPickUpTime { get; set; }
+
         public DateTime RealeasedTime { get; set; }
 
         public decimal UnitPrice { get; set; }
