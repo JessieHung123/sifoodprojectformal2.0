@@ -109,7 +109,7 @@
                 <div class="col-lg-5">
 
                                         <!-- Profile form -->
-                                        <form asp-controller="Member" asp-action="Profile" method="post" asp-antiforgery="true">
+                                        <form asp-action="Profile" asp-antiforgery="true">
                                             <!-- input for UserName -->
                                             <div class="mb-3">
                                                 <label class="form-label" for="fname">姓名</label>
@@ -140,7 +140,7 @@
 
                                             <!-- submit button -->
                                             <div class="mt-5 mb-3">
-                                                <button type="submit" class="btn btn-primary">儲存資料</button>
+                                                <button type="submit" class="btn btn-primary" value="Save">儲存資料</button>
                                             </div>
                                         </form>
                     <!-- form end -->
@@ -160,7 +160,7 @@
         <hr class="my-10">
 
 
-                            <!-- 密碼區 -->
+@*                             <!-- 密碼區 -->
                             <div class="pe-lg-14 mb-15">
                                 <h5 class="mb-4">密碼</h5>
 
@@ -193,7 +193,7 @@
                                     想要更新密碼嗎?
                                     <a href="javascript:void(0)" id="reset-password-link">按這裡重設密碼</a>
                                 </p>
-                            </div>
+                            </div> *@
 
         <!-- 一般性錯誤消息 -->
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -271,6 +271,9 @@
 </div>
 
 @section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <!-- Javascript-->
     <script src="~/assets/libs/rater-js/index.js"></script>
     <!-- Libs JS -->
