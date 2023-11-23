@@ -1034,27 +1034,27 @@
                     
                         
 
-                    filteredProducts() {
-                        let filteredProducts = this.products;
+                        filteredProducts() {
+                            let filteredProducts = this.products;
 
-                        // Apply filtering based on selected category
-                        if (this.selectedCategory && this.selectedCategory !== "全部") {
-                            filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
-                        }
+                            // Apply filtering based on selected category
+                            if (this.selectedCategory && this.selectedCategory !== "全部") {
+                                filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
+                            }
 
-                        // Apply sorting based on sortingOptions
-                        if (this.sortingOptions === "PriceLowToHigh") {
-                            filteredProducts = filteredProducts.sort((a, b) => a.unitPrice - b.unitPrice);
-                        } else if (this.sortingOptions === "PriceHighToLow") {
-                            filteredProducts = filteredProducts.sort((a, b) => b.unitPrice - a.unitPrice);
-                        } else if (this.sortingOptions === "QtyLowToHigh") {
-                            filteredProducts = filteredProducts.sort((a, b) => a.avalibleQty - b.avalibleQty);
-                        } else if (this.sortingOptions === "QtyHighToLow") {
-                            filteredProducts = filteredProducts.sort((a, b) => b.avalibleQty - a.avalibleQty);
+                            // Apply sorting based on sortingOptions
+                            if (this.sortingOptions === "PriceLowToHigh") {
+                                filteredProducts = filteredProducts.sort((a, b) => a.unitPrice - b.unitPrice);
+                            } else if (this.sortingOptions === "PriceHighToLow") {
+                                filteredProducts = filteredProducts.sort((a, b) => b.unitPrice - a.unitPrice);
+                            } else if (this.sortingOptions === "QtyLowToHigh") {
+                                filteredProducts = filteredProducts.sort((a, b) => a.avalibleQty - b.avalibleQty);
+                            } else if (this.sortingOptions === "QtyHighToLow") {
+                                filteredProducts = filteredProducts.sort((a, b) => b.avalibleQty - a.avalibleQty);
+                            }
+                            this.productsQty = filteredProducts.length;
+                            return filteredProducts;
                         }
-                        this.productsQty = filteredProducts.length;
-                        return filteredProducts;
-                    }
                                
                 },
                 mounted: function () {
