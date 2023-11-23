@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.DTO;
 using SiFoodProjectFormal2._0.Models;
+using SiFoodProjectFormal2._0.ViewModels.Users;
 
 namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 {
@@ -27,8 +28,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpGet]
         public async Task<IEnumerable<Order>> GetOrders()
         {
-           
-               
             return _context.Orders;
         }
 
@@ -36,10 +35,9 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpGet("{id}")]
         public object GetOrder(string id)
         {
-          
             //var order = await _context.Orders.FindAsync(id);
             return _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Where(c => c.UserId == id)
-                 .Select(z => new
+                 .Select(z => new OrderVM
                  {
                      OrderId = z.OrderId,
                      OrderDate = z.OrderDate,
@@ -47,10 +45,10 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                      Status = z.Status.StatusName,
                      UserName = z.User.UserName,
                      UserEmail = z.User.UserEmail,
-                     UserPhone = z.User.UserPhone,    
+                     UserPhone = z.User.UserPhone,
                      PaymentMethodＮame = z.Payment.PaymentMethodＮame,
-                     PaymentTime = z.Payment.PaymentTime,                    
-                     OrderDetails = z.OrderDetails.Select(p => new
+                     PaymentTime = z.Payment.PaymentTime,
+                     OrderDetails = z.OrderDetails.Select(p => new OrderDetailsVM
                      {
                          PhotoPath = p.Product.PhotoPath,
                          ProductName = p.Product.ProductName,
@@ -63,10 +61,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                      TotalQuantity = z.OrderDetails.Sum(p => p.Quantity),
                      DriverFullName = z.Driver.FullName
                  });
-
-
-
-
         }
 
         // PUT: api/Orders/5
@@ -105,10 +99,10 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-          if (_context.Orders == null)
-          {
-              return Problem("Entity set 'Sifood3Context.Orders'  is null.");
-          }
+            if (_context.Orders == null)
+            {
+                return Problem("Entity set 'Sifood3Context.Orders'  is null.");
+            }
             _context.Orders.Add(order);
             try
             {

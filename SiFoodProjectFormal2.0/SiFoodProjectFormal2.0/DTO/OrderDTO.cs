@@ -1,4 +1,5 @@
 ﻿using SiFoodProjectFormal2._0.Models;
+using SiFoodProjectFormal2._0.ViewModels.Users;
 
 namespace SiFoodProjectFormal2._0.DTO
 {
@@ -10,31 +11,26 @@ namespace SiFoodProjectFormal2._0.DTO
 
         public string Address { get; set; } = null!;
 
-        public string StoreId { get; set; } = null!;
 
-        public string DriverId { get; set; } = null!;
+        public string Status { get; set; } = null!;
 
-        public string UserId { get; set; } = null!;
+        public string UserName { get; set; } = null!;
 
-        public string DeliveryMethod { get; set; } = null!;
+        public string UserEmail { get; set; } = null!;
 
-        public decimal ShippingFee { get; set; }
+        public string UserPhone { get; set; } = null!;
 
-        public int StatusId { get; set; }
+        public string PaymentMethodＮame { get; set; } = null!;
 
-        public virtual Comment? Comment { get; set; }
+        public string PaymentTime { get; set; } = null!;
 
-        public virtual Driver Driver { get; set; } = null!;
+        public IEnumerable<OrderDetailsVM> OrderDetails { get; set; }
 
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+        public string DriverFullName { get; set; } = null!;
 
-        public virtual Payment? Payment { get; set; }
+        public decimal Subtotal { get; set; }
 
-        public virtual Status Status { get; set; } = null!;
-
-        public virtual Store Store { get; set; } = null!;
-
-        public virtual User User { get; set; } = null!;
+        public int TotalQuantity { get; set; }
 
     }
 }
