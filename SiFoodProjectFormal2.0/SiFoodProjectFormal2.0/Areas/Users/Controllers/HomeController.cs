@@ -28,14 +28,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         }
 
-        // GET: Users/TestStores/Create
         [HttpGet]
         public IActionResult JoinUs()
         {
             return View();
         }
-
-        // POST: Users/TestStores/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -46,6 +43,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 var store = new Store
                 {
                     // 將joinus 的數據映射到 store 實體
+                    // 賦值
                     StoreName = joinus.StoreName,
                     ContactName = joinus.ContactName,
                     Email = joinus.Email,
@@ -69,9 +67,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
 
+        //之前寫的老版本
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-         //public IActionResult JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")]JoinUsViewModel joinUsViewModel)
+        //public IActionResult JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")]JoinUsViewModel joinUsViewModel)
         //{
         //    if (ModelState.IsValid)
         //    {
@@ -80,6 +79,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //   return View(joinUsViewModel);
         //}
 
+        //之前寫的for AJAX版本
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public async Task<IActionResult> JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")] JoinUsViewModel joinUsViewModel)
@@ -119,7 +119,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
 
 
-
         public IActionResult MemberShip()
         {
             return View();
@@ -132,9 +131,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //{
         //    return View();
         //}
-
-
-
 
 
 
