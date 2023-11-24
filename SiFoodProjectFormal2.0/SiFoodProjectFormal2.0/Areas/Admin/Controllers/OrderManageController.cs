@@ -92,19 +92,38 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         //}
 
         // GET: Admin/OrderManage/Edit/5
-        public async Task<IActionResult> Edit(string? OrderId,int? ProductId)
+        public object Edit(string? OrderId,int? ProductId)
         {
             if (OrderId==null || ProductId ==null || _context.OrderDetails == null)
             {
                 return NotFound();
             }
 
-            var OrderManageViewModel = await _context.OrderDetails.FindAsync(OrderId,ProductId);
-            if (OrderManageViewModel == null)
+            var orderDetail = _context.OrderDetails.Where(x => x.OrderId == OrderId && x.ProductId == ProductId);
+            var orderDetailVM =  orderDetail.Select(o => new OrderManageViewModel
+            {
+                UserName = o.Order.User.UserName,
+                OrderAddress = o.Order.Address,
+                ProductName = o.Product.ProductName,
+                Quantity = o.Quantity,
+                UserPhone = o.Order.User.UserPhone,
+                OrderDetailId = o.OrderDetailId,
+                OrderId = o.OrderId,
+                OrderDate = o.Order.OrderDate,
+                StatusName = o.Order.Status.StatusName,
+                ProductId = o.ProductId,
+                ProductUnitPrice = o.Product.UnitPrice,
+                StoreName = o.Order.Store.StoreName,
+                StorePhone = o.Order.Store.Phone,
+                StoreAddress = o.Order.Store.Address,
+
+            });
+            OrderManageViewModel om = new OrderManageViewModel { };
+            if (orderDetail == null)
             {
                 return NotFound();
             }
-            return View(OrderManageViewModel);
+            return View(orderDetailVM);
         }
 
         // POST: Admin/OrderManage/Edit/5
@@ -112,7 +131,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string OrderId, int ProductId, [Bind("OrderId,ProductId,Quantity")] OrderDetail orderDetail)
+        public async Task<IActionResult> Edit(string OrderId, int ProductId, [Bind("OrderId,ProductId,Quantity")] OrderManageViewModel orderDetail)
         {
             if (OrderId != orderDetail.OrderId || ProductId != orderDetail.ProductId)
             {
