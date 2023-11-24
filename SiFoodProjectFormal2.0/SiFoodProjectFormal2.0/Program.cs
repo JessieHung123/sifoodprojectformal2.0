@@ -27,9 +27,6 @@ namespace SiFoodProjectFormal2._0
 
                 );
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
@@ -41,11 +38,7 @@ namespace SiFoodProjectFormal2._0
                 app.UseHsts();
 
             }
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
