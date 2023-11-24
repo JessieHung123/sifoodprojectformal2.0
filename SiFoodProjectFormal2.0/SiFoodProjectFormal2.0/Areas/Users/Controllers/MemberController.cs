@@ -117,11 +117,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 // 創建 ViewModel 並填充資料
                 var viewModel = new ProfileViewModel
                 {
+                    //填充欄位資料
                     UserName = user.UserName,
                     UserEmail = user.UserEmail,
                     UserPhone = user.UserPhone,
                     UserBirthDate = user.UserBirthDate
-                    // 根據需要填充其他欄位
                 };
 
                 return View(viewModel);
