@@ -42,29 +42,37 @@ public partial class Sifood3Context : DbContext
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
 
-
-
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
+
         modelBuilder.Entity<Cart>(entity =>
         {
-            entity.HasKey(e => new { e.UserId, e.ProductId }).HasName("PK__Cart__51BCD7978DC3971B");
+            entity.HasKey(e => new { e.UserId, e.ProductId, e.StoreId });
 
             entity.ToTable("Cart");
 
-            entity.HasIndex(e => e.ProductId, "IX_Cart_ProductID");
+            entity.HasIndex(e => new { e.UserId, e.ProductId }, "Cart_Store_MustOne").IsUnique();
 
             entity.Property(e => e.UserId)
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("UserID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.StoreId)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("StoreID");
 
             entity.HasOne(d => d.Product).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Cart_Products");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.Carts)
+                .HasForeignKey(d => d.StoreId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Cart_Stores");
 
             entity.HasOne(d => d.User).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.UserId)
@@ -84,7 +92,7 @@ public partial class Sifood3Context : DbContext
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.CommentId).HasName("PK__Comments__C3B4DFAA2641C5EE");
+            entity.HasKey(e => e.OrderId);
 
             entity.Property(e => e.OrderId)
                 .HasMaxLength(50)
@@ -145,12 +153,6 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.FavoriteId)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("FavoriteID");
-                .IsUnicode(false)
-                .HasColumnName("UserID");
-                .IsUnicode(false)
-                .HasColumnName("UserID");
-                .IsUnicode(false)
-                .HasColumnName("UserID");
 
             entity.HasOne(d => d.Store).WithMany(p => p.Favorites)
                 .HasForeignKey(d => d.StoreId)
@@ -207,29 +209,14 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Orders_Users");
+        });
+
+        modelBuilder.Entity<OrderDetail>(entity =>
+        {
             entity.HasKey(e => new { e.OrderId, e.ProductId });
 
-            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__C3905BAF33426597");
-
-            entity.HasIndex(e => e.OrderId, "IX_OrderDetails_OrderID");
-
-            entity.HasIndex(e => e.StatusId, "IX_OrderDetails_StatusID");
-
-            entity.Property(e => e.OrderDetailId).HasColumnName("OrderDetailID");
-            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__C3905BAF33426597");
-
-            entity.HasIndex(e => e.OrderId, "IX_OrderDetails_OrderID");
-
-            entity.HasIndex(e => e.StatusId, "IX_OrderDetails_StatusID");
-
-            entity.Property(e => e.OrderDetailId).HasColumnName("OrderDetailID");
-            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__C3905BAF33426597");
-
-            entity.HasIndex(e => e.OrderId, "IX_OrderDetails_OrderID");
-
-            entity.HasIndex(e => e.StatusId, "IX_OrderDetails_StatusID");
-
-            entity.Property(e => e.OrderDetailId).HasColumnName("OrderDetailID");
             entity.Property(e => e.OrderId)
                 .HasMaxLength(50)
                 .IsUnicode(false)
