@@ -19,7 +19,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="partials\Class.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\assets\images\logo\SiFood_logo_BGclear.png" />
+    <Content Remove="wwwroot\images\Drivers\1699453284197.jpg" />
+    <Content Remove="wwwroot\images\Drivers\23718262.png" />
+    <Content Remove="wwwroot\images\Users\餐廳.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,17 +41,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\" />
     <Folder Include="ViewModels\Admin\" />
-    <Folder Include="ViewModels\Stores\" />
     <Folder Include="ViewModels\Drivers\" />
-    <Folder Include="ViewModels\Users\" />
     <Folder Include="wwwroot\assets\libs\flatpickr\dist\types\" />
     <Folder Include="wwwroot\assets\libs\flatpickr\dist\utils\" />
     <Folder Include="wwwroot\assets\libs\rater-js\example\" />
     <Folder Include="wwwroot\assets\libs\rater-js\test\" />
     <Folder Include="wwwroot\assets\libs\tiny-slider\dist\sourcemaps\" />
     <Folder Include="wwwroot\images\Admin\" />
-    <Folder Include="wwwroot\images\Stores\" />
+    <Folder Include="wwwroot\images\Drivers\" />
   </ItemGroup>
 
   <ItemGroup>
