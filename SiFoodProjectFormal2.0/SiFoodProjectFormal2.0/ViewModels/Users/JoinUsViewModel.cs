@@ -50,8 +50,8 @@ namespace SiFoodProjectFormal2._0.ViewModels.Users
         public string OpeningTime { get; set; }
 
        // [Required(ErrorMessage = "營業日未填寫")]
-        [Display(Name = "營業日")]
-        public string OpeningDay { get; set; }
+        [Display(Name = "公休日")]
+        public string ClosingDay { get; set; }
 
         [Display(Name = "LOGO")]
         public string? LogoPath { get; set; }

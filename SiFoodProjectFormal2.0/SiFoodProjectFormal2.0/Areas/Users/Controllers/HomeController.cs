@@ -53,7 +53,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     Region = joinus.Region,
                     Address = joinus.Address,
                     Description = joinus.Description,
-                    OpeningDay  = joinus.OpeningDay,
+                    ClosingDay = joinus.ClosingDay,
                     OpeningTime = joinus.OpeningTime,
                     LogoPath = joinus.LogoPath,
                     PhotosPath = joinus.PhotosPath,
