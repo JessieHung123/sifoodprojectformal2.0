@@ -1,9 +1,8 @@
-﻿
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <!-- Required meta tags -->
+﻿@section Styles{
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Codescandy" name="author">
+    <title>Orders eCommerce HTML Template - FreshCart </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta content="Codescandy" name="author">
@@ -20,9 +19,11 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
-    <!-- Google tag (gtag.js) -->
-    <!-- End Tag -->
-</head>
+
+}
+@{
+    ViewData["Title"] = "RealTimeOrders";
+}
 
 <body>
 
@@ -442,67 +443,67 @@
     </div>
     <main>
         <!-- section -->
-        <section>
+        <section id="orderApp">
             <div class="container">
                 <!-- row -->
                 <div class="row">
                     <!-- col -->
                     @* <div class="col-12">
-                        <div class="d-flex justify-content-between align-items-center d-md-none py-4">
-                            <!-- heading -->
-                            <h3 class="fs-5 mb-0">Account Setting</h3>
-                            <!-- button -->
-                            <button class="btn btn-outline-gray-400 text-muted d-md-none btn-icon btn-sm ms-3 " type="button"
-                                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasAccount" aria-controls="offcanvasAccount">
-                                <i class="bi bi-text-indent-left fs-3"></i>
-                            </button>
-                        </div>
+                    <div class="d-flex justify-content-between align-items-center d-md-none py-4">
+                    <!-- heading -->
+                    <h3 class="fs-5 mb-0">Account Setting</h3>
+                    <!-- button -->
+                    <button class="btn btn-outline-gray-400 text-muted d-md-none btn-icon btn-sm ms-3 " type="button"
+                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasAccount" aria-controls="offcanvasAccount">
+                    <i class="bi bi-text-indent-left fs-3"></i>
+                    </button>
+                    </div>
                     </div>
                     <!-- col -->
                     <div class="col-lg-3 col-md-4 col-12 border-end  d-none d-md-block">
-                        <div class="pt-10 pe-lg-10">
-                            <!-- nav -->
-                            <ul class="nav flex-column nav-pills nav-pills-dark">
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="account-orders.html">
-                                        <i class="feather-icon icon-shopping-bag me-2"></i>Your Orders
-                                    </a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="account-settings.html">
-                                        <i class="feather-icon icon-settings me-2"></i>Settings
-                                    </a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="account-address.html">
-                                        <i class="feather-icon icon-map-pin me-2"></i>Address
-                                    </a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="account-payment-method.html">
-                                        <i class="feather-icon icon-credit-card me-2"></i>Payment Method
-                                    </a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="account-notification.html">
-                                        <i class="feather-icon icon-bell me-2"></i>Notification
-                                    </a>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <hr>
-                                </li>
-                                <!-- nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link " href="~/index.html"><i class="feather-icon icon-log-out me-2"></i>Log out</a>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="pt-10 pe-lg-10">
+                    <!-- nav -->
+                    <ul class="nav flex-column nav-pills nav-pills-dark">
+                    <!-- nav item -->
+                    <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="account-orders.html">
+                    <i class="feather-icon icon-shopping-bag me-2"></i>Your Orders
+                    </a>
+                    </li>
+                    <!-- nav item -->
+                    <li class="nav-item">
+                    <a class="nav-link" href="account-settings.html">
+                    <i class="feather-icon icon-settings me-2"></i>Settings
+                    </a>
+                    </li>
+                    <!-- nav item -->
+                    <li class="nav-item">
+                    <a class="nav-link" href="account-address.html">
+                    <i class="feather-icon icon-map-pin me-2"></i>Address
+                    </a>
+                    </li>
+                    <!-- nav item -->
+                    <li class="nav-item">
+                    <a class="nav-link" href="account-payment-method.html">
+                    <i class="feather-icon icon-credit-card me-2"></i>Payment Method
+                    </a>
+                    </li>
+                    <!-- nav item -->
+                    <li class="nav-item">
+                    <a class="nav-link" href="account-notification.html">
+                    <i class="feather-icon icon-bell me-2"></i>Notification
+                    </a>
+                    </li>
+                    <!-- nav item -->
+                    <li class="nav-item">
+                    <hr>
+                    </li>
+                    <!-- nav item -->
+                    <li class="nav-item">
+                    <a class="nav-link " href="~/index.html"><i class="feather-icon icon-log-out me-2"></i>Log out</a>
+                    </li>
+                    </ul>
+                    </div>
                     </div> *@
                     <partial name="_MembershipPartial" />
                     <div class="col-lg-9 col-md-8 col-12">
@@ -534,34 +535,47 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody v-for="item in orders">
                                         <!-- Table body -->
                                         <tr>
 
 
                                             <td class="align-middle border-top-0">
-                                                <a href="#" class="text-inherit">#14899</a>
+                                                <a href="#" class="text-inherit">{{item.orderId}}</a>
 
                                             </td>
                                             <td class="align-middle border-top-0">
-                                                March 5, 2023
+                                                {{item.orderDate}}
 
                                             </td>
                                             <td class="align-middle border-top-0">
-                                                1
+                                                {{item.totalQuantity}}
 
                                             </td>
                                             <td class="align-middle border-top-0">
-                                                <span class="badge bg-warning">待取餐</span>
+                                                <template v-if="item.statusId === 1">
+                                                    <span class="badge bg-warning">{{item.status}}</span>
+                                                </template>
+                                                <template v-else-if="item.statusId === 2 ||item.statusId === 3 ">
+                                                    <span class="badge bg-info">{{item.status}}</span>
+                                                </template>                                      
+                                                <template v-else-if="item.statusId === 4">
+                                                    <span class="badge bg-primary">{{item.status}}</span>
+                                                </template>
+                                               
                                             </td>
                                             <td class="align-middle border-top-0">
-                                                $15.00
+                                                ${{item.subtotal+item.shippingFee}}
                                             </td>
                                             @* add eye collapse function *@
                                             <td class="text-muted align-middle border-top-0">
                                                 <!-- Add collapse behavior to the eye button -->
-                                                <a href="#orderDetails1" class="text-inherit" data-bs-toggle="collapse" data-bs-target="#orderDetails1"
-                                                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View">
+                                                <a href="#" class="text-inherit"
+                                                   data-bs-toggle="collapse"
+                                                   :data-bs-target="'#orderDetails' + item.orderId"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-placement="top"
+                                                   data-bs-title="View">
                                                     <i class="feather-icon icon-eye"></i>
                                                 </a>
                                             </td>
@@ -569,7 +583,7 @@
                                         <!-- Add a collapsible row for order details -->
                                         <tr>
                                             <td colspan="8" class="p-0">
-                                                <div class="collapse" id="orderDetails1">
+                                                <div class="collapse" :id="'orderDetails' + item.orderId">
                                                     <!-- Include order details here -->
                                                     <div class="p-3">
                                                         <!-- Order details content goes here -->
@@ -589,7 +603,12 @@
 
                                                                                 <!-- button -->
                                                                                 <div class="ms-md-3">
-                                                                                    <a href="#" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="取消時限: 2分鐘">取消</a>
+                                                                                    <template v-if="item.statusId === 1">
+                                                                                        <a href="#" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="取消時限: 2分鐘">取消</a>
+                                                                                    </template>
+                                                                                    <template v-else>
+                                                                                        <a href="#" class="btn btn-success">完成訂單</a>
+                                                                                    </template>                                                                                 
                                                                                     <a href="#" class="btn btn-secondary">下載明細</a>
                                                                                 </div>
                                                                             </div>
@@ -601,9 +620,9 @@
                                                                                     <div class="mb-6">
                                                                                         <h6>顧客資訊</h6>
                                                                                         <p class="mb-1 lh-lg">
-                                                                                            John Alex<br>
-                                                                                            anderalex@example.com<br>
-                                                                                            +998 99 22123456
+                                                                                            {{item.userName}}<br>
+                                                                                            {{item.userEmail}}<br>
+                                                                                            {{item.userPhone}}
                                                                                         </p>
                                                                                         <a href="#">View Profile</a>
                                                                                     </div>
@@ -613,8 +632,7 @@
                                                                                     <div class="mb-6">
                                                                                         <h6>收件地址</h6>
                                                                                         <p class="mb-1 lh-lg">
-                                                                                            568, Suite Ave.<br>
-                                                                                            Austrlia, 235153
+                                                                                            {{item.address}}
                                                                                         </p>
 
                                                                                     </div>
@@ -624,9 +642,9 @@
                                                                                     <div class="mb-6">
                                                                                         <h6>訂單資訊</h6>
                                                                                         <p class="mb-1 lh-lg">
-                                                                                            Order ID: <span class="text-dark">FC001</span><br>
-                                                                                            Order Date: <span class="text-dark">October 22, 2023</span><br>
-                                                                                            Order Total: <span class="text-dark">$734.28</span>
+                                                                                            訂單編號: <span class="text-dark">{{item.orderId}}</span><br>
+                                                                                            訂購時間: <span class="text-dark">{{item.orderDate}} {{item.orderTime}}</span><br>
+                                                                                            訂單金額: <span class="text-dark">${{item.subtotal+item.shippingFee}}</span>
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>
@@ -641,108 +659,109 @@
                                                                                     <!-- Table Head -->
                                                                                     <thead class="bg-light">
                                                                                         <tr>
-                                                                                            <th>Products</th>
-                                                                                            <th>Price</th>
-                                                                                            <th>Quantity</th>
-                                                                                            <th>Total</th>
+                                                                                            <th>商品</th>
+                                                                                            <th>單價</th>
+                                                                                            <th>數量</th>
+                                                                                            <th>總計</th>
                                                                                         </tr>
                                                                                     </thead>
                                                                                     <!-- tbody -->
                                                                                     <tbody>
-                                                                                        <tr>
+                                                                                        <tr v-for="product in item.orderDetails">
                                                                                             <td>
                                                                                                 <a href="#" class="text-inherit">
                                                                                                     <div class="d-flex align-items-center">
                                                                                                         <div>
-                                                                                                            <img src="~/assets/images/products/product-img-1.jpg" alt=""
+                                                                                                            <img :src="product.photoPath" alt=""
                                                                                                                  class="icon-shape icon-lg">
                                                                                                         </div>
                                                                                                         <div class="ms-lg-4 mt-2 mt-lg-0">
                                                                                                             <h5 class="mb-0 h6">
-                                                                                                                Haldiram's Sev Bhujia
+                                                                                                                {{product.productName}}
                                                                                                             </h5>
 
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </a>
                                                                                             </td>
-                                                                                            <td><span class="text-body">$18.0</span></td>
-                                                                                            <td>1</td>
-                                                                                            <td>$18.00</td>
+                                                                                            <td><span class="text-body">${{product.unitPrice}}</span></td>
+                                                                                            <td>{{product.quantity}}</td>
+                                                                                            <td>${{product.total}}</td>
+                                                                                        </tr>
+                                                                                        @*                                                                                         <tr>
+                                                                                        <td>
+                                                                                        <a href="#" class="text-inherit">
+                                                                                        <div class="d-flex align-items-center">
+                                                                                        <div>
+                                                                                        <img src="~/assets/images/products/product-img-2.jpg" alt=""
+                                                                                        class="icon-shape icon-lg">
+                                                                                        </div>
+                                                                                        <div class="ms-lg-4 mt-2 mt-lg-0">
+                                                                                        <h5 class="mb-0 h6">
+                                                                                        NutriChoice Digestive
+                                                                                        </h5>
+
+                                                                                        </div>
+                                                                                        </div>
+                                                                                        </a>
+                                                                                        </td>
+                                                                                        <td><span class="text-body">$24.0</span></td>
+                                                                                        <td>1</td>
+                                                                                        <td>$24.00</td>
                                                                                         </tr>
                                                                                         <tr>
-                                                                                            <td>
-                                                                                                <a href="#" class="text-inherit">
-                                                                                                    <div class="d-flex align-items-center">
-                                                                                                        <div>
-                                                                                                            <img src="~/assets/images/products/product-img-2.jpg" alt=""
-                                                                                                                 class="icon-shape icon-lg">
-                                                                                                        </div>
-                                                                                                        <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                                                            <h5 class="mb-0 h6">
-                                                                                                                NutriChoice Digestive
-                                                                                                            </h5>
+                                                                                        <td>
+                                                                                        <a href="#" class="text-inherit">
+                                                                                        <div class="d-flex align-items-center">
+                                                                                        <div>
+                                                                                        <img src="~/assets/images/products/product-img-3.jpg" alt=""
+                                                                                        class="icon-shape icon-lg">
+                                                                                        </div>
+                                                                                        <div class="ms-lg-4 mt-2 mt-lg-0">
+                                                                                        <h5 class="mb-0 h6">
+                                                                                        Cadbury 5 Star Chocolate
+                                                                                        </h5>
 
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </a>
-                                                                                            </td>
-                                                                                            <td><span class="text-body">$24.0</span></td>
-                                                                                            <td>1</td>
-                                                                                            <td>$24.00</td>
+                                                                                        </div>
+                                                                                        </div>
+                                                                                        </a>
+                                                                                        </td>
+                                                                                        <td><span class="text-body">$32.0</span></td>
+                                                                                        <td>1</td>
+                                                                                        <td>$32.0</td>
                                                                                         </tr>
                                                                                         <tr>
-                                                                                            <td>
-                                                                                                <a href="#" class="text-inherit">
-                                                                                                    <div class="d-flex align-items-center">
-                                                                                                        <div>
-                                                                                                            <img src="~/assets/images/products/product-img-3.jpg" alt=""
-                                                                                                                 class="icon-shape icon-lg">
-                                                                                                        </div>
-                                                                                                        <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                                                            <h5 class="mb-0 h6">
-                                                                                                                Cadbury 5 Star Chocolate
-                                                                                                            </h5>
+                                                                                        <td>
+                                                                                        <a href="#" class="text-inherit">
+                                                                                        <div class="d-flex align-items-center">
+                                                                                        <div>
+                                                                                        <img src="~/assets/images/products/product-img-4.jpg" alt=""
+                                                                                        class="icon-shape icon-lg">
+                                                                                        </div>
+                                                                                        <div class="ms-lg-4 mt-2 mt-lg-0">
+                                                                                        <h5 class="mb-0 h6">
+                                                                                        Onion Flavour Potato
+                                                                                        </h5>
 
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </a>
-                                                                                            </td>
-                                                                                            <td><span class="text-body">$32.0</span></td>
-                                                                                            <td>1</td>
-                                                                                            <td>$32.0</td>
+                                                                                        </div>
+                                                                                        </div>
+                                                                                        </a>
+                                                                                        </td>
+                                                                                        <td><span class="text-body">$3.0</span></td>
+                                                                                        <td>2</td>
+                                                                                        <td>$6.0</td>
                                                                                         </tr>
-                                                                                        <tr>
-                                                                                            <td>
-                                                                                                <a href="#" class="text-inherit">
-                                                                                                    <div class="d-flex align-items-center">
-                                                                                                        <div>
-                                                                                                            <img src="~/assets/images/products/product-img-4.jpg" alt=""
-                                                                                                                 class="icon-shape icon-lg">
-                                                                                                        </div>
-                                                                                                        <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                                                            <h5 class="mb-0 h6">
-                                                                                                                Onion Flavour Potato
-                                                                                                            </h5>
-
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </a>
-                                                                                            </td>
-                                                                                            <td><span class="text-body">$3.0</span></td>
-                                                                                            <td>2</td>
-                                                                                            <td>$6.0</td>
-                                                                                        </tr>
+                                                                                        *@
                                                                                         <tr>
                                                                                             <td class="border-bottom-0 pb-0"></td>
                                                                                             <td class="border-bottom-0 pb-0"></td>
                                                                                             <td colspan="1" class="fw-medium text-dark ">
                                                                                                 <!-- text -->
-                                                                                                Sub Total :
+                                                                                                小計 :
                                                                                             </td>
                                                                                             <td class="fw-medium text-dark ">
                                                                                                 <!-- text -->
-                                                                                                $80.00
+                                                                                                ${{item.subtotal}}
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -750,11 +769,11 @@
                                                                                             <td class="border-bottom-0 pb-0"></td>
                                                                                             <td colspan="1" class="fw-medium text-dark ">
                                                                                                 <!-- text -->
-                                                                                                Shipping Cost
+                                                                                                運費
                                                                                             </td>
                                                                                             <td class="fw-medium text-dark  ">
                                                                                                 <!-- text -->
-                                                                                                $10.00
+                                                                                                ${{item.shippingFee}}
                                                                                             </td>
                                                                                         </tr>
 
@@ -763,11 +782,11 @@
                                                                                             <td></td>
                                                                                             <td colspan="1" class="fw-semi-bold text-dark ">
                                                                                                 <!-- text -->
-                                                                                                Grand Total
+                                                                                                總額
                                                                                             </td>
                                                                                             <td class="fw-semi-bold text-dark ">
                                                                                                 <!-- text -->
-                                                                                                $90.00
+                                                                                                ${{item.subtotal+item.shippingFee}}
                                                                                             </td>
                                                                                         </tr>
 
@@ -780,11 +799,11 @@
                                                                         <div class="row">
                                                                             <div class="col-md-3 mb-4 mb-lg-0 ">
                                                                                 <h6>付款資訊</h6>
-                                                                                <span class="d-block">Visa xxxx1234</span>
-                                                                                <span class="d-block">2022/12/29 7:17</span>
+                                                                                <span class="d-block">{{item.paymentMethodＮame}}</span>
+                                                                                <span class="d-block">{{item.paymentTime}}</span>
                                                                             </div>
                                                                             <div class="col-md-3 mb-4 mb-lg-0">
-                                                                                <h6>外送員: 馬斯克</h6>
+                                                                                <h6>外送員: {{item.driverFullName}}</h6>
                                                                                 <a href="#" class="btn btn-success btn-sm">聯繫外送員</a>
                                                                             </div>
 
@@ -804,77 +823,77 @@
                                                 </div>
                                             </td>
                                         </tr>
+
+                                        @*                                         <tr>
+
+                                        <td class="align-middle border-top-0">
+                                        <a href="#" class="text-inherit">
+                                        #14658
+                                        </a>
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        July 9, 2023
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        2
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        <span class="badge bg-success">配送中</span>
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        $45.00
+                                        </td>
+                                        <td class="text-muted align-middle border-top-0">
+                                        <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View"><i class="feather-icon icon-eye"></i></a>
+                                        </td>
                                         </tr>
                                         <tr>
 
-                                            <td class="align-middle border-top-0">
-                                                <a href="#" class="text-inherit">
-                                                    #14658
-                                                </a>
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                July 9, 2023
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                2
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                <span class="badge bg-success">配送中</span>
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                $45.00
-                                            </td>
-                                            <td class="text-muted align-middle border-top-0">
-                                                <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View"><i class="feather-icon icon-eye"></i></a>
-                                            </td>
+                                        <td class="align-middle border-top-0">
+                                        <a href="#" class="text-inherit">
+                                        #13746
+                                        </a>
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        March 5, 2023
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        1
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        <span class="badge bg-success">配送中</span>
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        $12.00
+                                        </td>
+                                        <td class="text-muted align-middle border-top-0">
+                                        <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View"><i class="feather-icon icon-eye"></i></a>
+                                        </td>
                                         </tr>
                                         <tr>
 
-                                            <td class="align-middle border-top-0">
-                                                <a href="#" class="text-inherit">
-                                                    #13746
-                                                </a>
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                March 5, 2023
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                1
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                <span class="badge bg-success">配送中</span>
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                $12.00
-                                            </td>
-                                            <td class="text-muted align-middle border-top-0">
-                                                <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View"><i class="feather-icon icon-eye"></i></a>
-                                            </td>
+                                        <td class="align-middle border-top-0">
+                                        <a href="#" class="text-inherit">
+                                        #13566
+                                        </a>
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        July 9, 2023
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        2
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        <span class="badge bg-danger">取消</span>
+                                        </td>
+                                        <td class="align-middle border-top-0">
+                                        $6.00
+                                        </td>
+                                        <td class="text-muted align-middle border-top-0">
+                                        <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View"><i class="feather-icon icon-eye"></i></a>
+                                        </td>
                                         </tr>
-                                        <tr>
-
-                                            <td class="align-middle border-top-0">
-                                                <a href="#" class="text-inherit">
-                                                    #13566
-                                                </a>
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                July 9, 2023
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                2
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                <span class="badge bg-danger">取消</span>
-                                            </td>
-                                            <td class="align-middle border-top-0">
-                                                $6.00
-                                            </td>
-                                            <td class="text-muted align-middle border-top-0">
-                                                <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View"><i class="feather-icon icon-eye"></i></a>
-                                            </td>
-                                        </tr>
-
+                                        *@
                                     </tbody>
                                 </table>
                             </div>
@@ -940,20 +959,67 @@
     </div>
 
 
+    @section Scripts{
+        <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+
+        <script>
+            var baseAddress = "https://localhost:7042";
+
+            const orderApp = Vue.createApp({
+                data: function () {
+                    return {
+                        orders: [],
+                        orderDetails: [],
+                    }
+                },
+                computed: {
+
+                },
+                mounted: function () {
+                    let _this = this;
+                    _this.getOrder();
+
+                },
+                methods: {
+
+                    getOrder() {
+                        let _this = this;
+                        var userId = "U001"
+                        fetch(`${baseAddress}/api/orders/${userId}`, { method: "GET" })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                // alert(JSON.stringify(data));
+
+                                _this.orders = data;
+                                // _this.orderDetails = data[0].orderDetails;
+
+                            }).catch(error => {
+                                alert(error);
+                            });
+
+                    },
+
+                }
+            }).mount("#orderApp")
+        </script>
 
 
-    <!-- Javascript-->
-    <!-- Libs JS -->
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+        <!-- Libs JS -->
+        <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+        <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
-    <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js"></script>
+        <!-- Theme JS -->
+        <script src="~/assets/js/theme.min.js"></script>
 
+    }
 
 
 
 </body>
 
-</html>
