@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SiFoodProjectFormal2._0.Models;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -7,6 +9,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
     {
         public IActionResult Main()
         {
+            
             return View();
         }
         public IActionResult MapFind()
@@ -38,5 +41,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             return View();
         }
+       
+        
     }
 }

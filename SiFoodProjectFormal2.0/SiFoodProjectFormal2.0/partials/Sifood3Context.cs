@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace SiFoodProjectFormal2.Models
+namespace SiFoodProjectFormal2._0.Models
 {
     public partial class Sifood3Context:DbContext
     {
