@@ -13,14 +13,15 @@
                 <h1 class="mb-1 h2 fw-bold text-center">登入惜Food店家平台</h1>
                 <p class="text-center">歡迎回來!請輸入您的帳號。</p>
             </div>
-            <form>
+
+            <form method="post">
                 <div class="row g-3">
                     <div class="col-12">
-                        <input type="email" class="form-control" id="inputEmail4" placeholder="請輸入您的帳號" required>
+                        <input type="email" name="Account" class="form-control"  placeholder="請輸入您的帳號" required>
                     </div>
                     <div class="col-12">
                         <div class="password-field position-relative">
-                            <input type="password" id="fakePassword" placeholder="請輸入您的密碼" class="form-control" required>
+                            <input type="password" name="Password" placeholder="請輸入您的密碼" class="form-control" required>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between">
@@ -36,14 +37,18 @@
                     <div class="text-center">還沒有帳號嗎? <a href="/Signin/signup.html">註冊</a></div>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
+
 @section Scripts{
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="~/assets/js/main.js"></script>
+    <script src="~/assets/js/theme.min.js"></script>
     <script src="~/assets/js/dropdown.js"></script>
     <script src="~/assets/js/vendors/password.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 }
