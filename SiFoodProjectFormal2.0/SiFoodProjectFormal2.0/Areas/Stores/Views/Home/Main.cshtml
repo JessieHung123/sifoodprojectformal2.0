@@ -23,7 +23,6 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!-- Google tag (gtag.js) -->
     <!-- End Tag -->
 
@@ -31,7 +30,7 @@
 
 <body>
     <!-- main -->
-    <div class="main">
+    <div>
         <div class="main-wrapper">
             <!-- navbar vertical -->
             <!-- main wrapper -->
@@ -167,7 +166,9 @@
                     </div>
                     <!-- row -->
                     <!-- row -->
-                    {{StoreInfo.productId}}
+                    <div id="main">
+                        {{StoreInfo.productId}}
+                    </div>
 
                 </section>
             </main>
@@ -180,19 +181,27 @@
     </div>
     <!--測試連線-->
     <!-- Libs JS -->
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+@*     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
     <script src="~/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="~/assets/js/vendors/chart.js"></script>
+    <script src="~/assets/js/vendors/chart.js"></script> *@
 
 </body>
 </html>
     @section Scripts
 {
+    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+    <script src="~/assets/js/theme.min.js"></script>
+    <script src="~/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="~/assets/js/vendors/chart.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
     <script>
         var baseAddress = "https://localhost:7042";
         const StoreMainApp = Vue.createApp({
@@ -224,7 +233,7 @@
                         .then(data => {
                             // 在這裡處理數據
                             alert(JSON.stringify(data));
-                            _this.StoreInfo = data[0] /* test */
+                            _this.StoreInfo = data /* test */
 
                         })
                         .catch(error => {
