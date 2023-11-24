@@ -1,4 +1,5 @@
-﻿@section Styles {
+﻿
+@section Styles {
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
@@ -85,9 +86,10 @@
                                     <div class="row">
                                         <div class="col-lg-6 col-12 mb-4  d-flex align-items-stretch">
                                             <!-- form -->
+                                            {{selectAddress}}
                                             <div class="card card-body p-6 ">
                                                 <div class="form-check mb-4">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="homeRadio3" checked="">
+                                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="homeRadio3" checked="" value="@ViewBag.ad " v-model="selectAddress">
                                                     <label class="form-check-label text-dark" for="homeRadio3">
                                                         地址1
                                                     </label>
@@ -103,7 +105,7 @@
                                             <!-- input -->
                                             <div class="card card-body p-6">
                                                 <div class="form-check mb-4">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="officeRadio">
+                                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="officeRadio" value="Tannersville, Pennsylvania, 18372, USA," v-model="selectAddress">
                                                     <label class="form-check-label text-dark" for="officeRadio">
                                                         地址2
                                                     </label>
@@ -124,7 +126,7 @@
                             <h5>
                                 <i class="feather-icon icon-clock me-2 text-muted"></i>預定送達時間
                             </h5>
-                            <input type="text" class="border border-1" style="width:350px" readonly/>
+                            <input type="text" class="border border-1" style="width:350px" readonly />
                         </div>
                         <!-- accordion item -->
                         <div class="accordion-item py-4">
@@ -191,13 +193,12 @@
                     <!-- accordion -->
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <!-- accordion item -->
-                        
                         <!-- accordion item -->
                         <div class="accordion-item py-4">
                             <h5>
                                 <i class="feather-icon icon-clock me-2 text-muted"></i>預定取貨時間
                             </h5>
-                            
+
                             <input type="text" class="border border-1" style="width:350px" readonly />
                         </div>
                         <!-- accordion item -->
@@ -258,7 +259,7 @@
 
 
 
-            
+
             @*------------------ 固定的訂單明細---------------- *@
 
 
@@ -391,7 +392,7 @@
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
-    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script> 
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
@@ -401,7 +402,7 @@
             data() {
                 return {
                     checkRadio: false,
-
+                    selectAddress: ""
 
 
                 }
@@ -410,13 +411,13 @@
                 chooseTakeout: function () {
                     this.checkRadio = true
                 },
-                chooseDeliver: function(){
+                chooseDeliver: function () {
                     this.checkRadio = false
                 },
-                CreateDeliverOrder: function(){
+                CreateDeliverOrder: function () {
 
                 },
-                CreateTakeOutOrder: function(){
+                CreateTakeOutOrder: function () {
 
                 },
             },

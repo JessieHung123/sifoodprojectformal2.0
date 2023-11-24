@@ -132,7 +132,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Account/OpenUserAccount")]
-        public string OpenUserAccount(EmailVerificationVM model)
+        public string OpenUserAccount([FromForm]EmailVerificationVM model)
         {
             User? LockUser = _context.Users.FirstOrDefault(x => x.UserVerificationCode == model.UserAccountVerificationCode);
             if (LockUser != null)
