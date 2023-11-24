@@ -36,5 +36,4 @@ public partial class Order
     public virtual Store Store { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
-    public string UserAddress { get; internal set; }
 }

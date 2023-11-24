@@ -37,11 +37,13 @@ public partial class Store
 
     public string OpeningTime { get; set; } = null!;
 
-    public string OpeningDay { get; set; } = null!;
+    public string ClosingDay { get; set; } = null!;
 
     public string? PhotosPath { get; set; }
 
     public string? LogoPath { get; set; }
+
+    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
