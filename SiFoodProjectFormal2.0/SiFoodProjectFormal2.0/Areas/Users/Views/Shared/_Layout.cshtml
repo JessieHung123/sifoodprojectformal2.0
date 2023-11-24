@@ -4,36 +4,37 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - sifoodprojectformal2._0</title>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SiFoodProjectFormal2.0.styles.css" asp-append-version="true" />
     <link href="~/assets/libs/slick-carousel/slick/slick.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/slick-carousel/slick/slick-theme.css" asp-append-version="true" rel="stylesheet" />
-    <link href="~/assets/libs/tiny-slider/dist/tiny-slider.css" asp-append-version="true" rel="stylesheet"/>
+    <link href="~/assets/libs/tiny-slider/dist/tiny-slider.css" asp-append-version="true" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://unpkg.com/@@popperjs/core@2/dist/umd/popper.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> 
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 
 
 
     <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico" />
 
 
     <!-- Libs CSS -->
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet"/>
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet"/>
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet"/>
+    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
+    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
 
 
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="~/assets/css/theme.min.css"/>
+    <link rel="stylesheet" href="~/assets/css/theme.min.css" />
+
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header>
-        <div class=" border-bottom ">
+        <div class=" border-bottom " id="app">
             <div class=" py-1 container">
 
                 @await Html.PartialAsync("~/Areas/Users/Views/Shared/_LoginPartial.cshtml")
@@ -148,7 +149,7 @@
 
         <!-- Shop Cart -->
 
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" >
             <div class="offcanvas-header border-bottom">
                 <div class="text-start">
                     <h5 id="offcanvasRightLabel" class="mb-0 fs-4">購物車</h5>
@@ -156,30 +157,33 @@
                 </div>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body">
+            <div class="offcanvas-body" id="shoppingCart">
 
                 <div class="">
                     <!-- alert -->
 
-                    <ul class="list-group list-group-flush">
-                        <!-- list group -->
-                        <li class="list-group-item py-3 ps-0 border-top">
-                            <!-- row -->
-                            <div class="row align-items-center">
+                    <ul class="list-group list-group-flush" >
 
-                                <div class="col-6 col-md-6 col-lg-7">
+                        <!-- list group -->
+                        <li class="list-group-item py-3 ps-0 border-top" >
+                            <!-- row -->
+                            <div class="row align-items-center py-2" v-for="(item,index) in carts" :key="index" :id=item.productId>
+
+                                <div class="col-6 col-md-6 col-lg-7" >
                                     <div class="d-flex">
-                                        <img src="~/assets/images/products/product-img-1.jpg" alt="Ecommerce" class="icon-shape icon-xxl">
+                                        <a href="./pages/shop-single.html" class="text-inherit">
+                                            <img src="{{item.photoPath}}" alt="Ecommerce" class="icon-shape icon-xxl">
+                                        </a>
                                         <div class="ms-3">
                                             <!-- title -->
-                                            <a href="./pages/shop-single.html" class="text-inherit">
-                                                <h6 class="mb-1">Haldiram's Sev Bhujia</h6>
+                                            <a href="./pages/shop-single.html" class="text-inherit">   @* 照片網址帶處李 *@
+                                                <h6 class="mb-1">{{item.productName}}</h6>
                                             </a>
-                                            <h6>店家名稱</h6>
+                                            <h6>{{item.storeName}}</h6>
                                             <!-- text -->
                                             <div class="mt-2 small lh-1">
-                                                <a href="#!" class="text-decoration-none text-inherit">
-                                                    <span class="me-1 align-text-bottom">
+                                                <div class="text-decoration-none text-inherit">
+                                                    <span class="me-1 align-text-bottom" @@click="deleteCartItem(item)">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 text-success">
                                                             <polyline points="3 6 5 6 21 6"></polyline>
                                                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
@@ -188,82 +192,38 @@
                                                             <line x1="14" y1="11" x2="14" y2="17"></line>
                                                         </svg>
                                                     </span><span class="text-muted">Remove</span>
-                                                </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <!-- input group -->
                                 <div class="col-4 col-md-3 col-lg-3">
                                     <!-- input -->
                                     <!-- input -->
                                     <div class="input-group input-spinner  ">
                                         <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                        <input type="number" step="1" max="10" value="1" name="quantity" class="quantity-field form-control-sm form-input   ">
-                                        <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
+                                        <input type="number" step="1" min="1" max="10" v-model:value="item.quantity" name="quantity" class="quantity-field form-control-sm form-input">
+                                        @*  <input type="number" step="1" max="10" v-model.lazy="item.quantity" name="quantity" class="quantity-field form-control-sm form-input   ">*@                                        <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
+                                        
                                     </div>
 
                                 </div>
                                 <!-- price -->
                                 <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                    <span class="fw-bold">$5.00</span>
+                                    <span class="fw-bold">${{item.unitPrice*item.quantity}}</span>
 
                                 </div>
                             </div>
-
+                            
                         </li>
 
-                        <!-- list group -->
-                        <li class="list-group-item py-3 ps-0">
-                            <!-- row -->
-                            <div class="row align-items-center">
-                                <div class="col-6 col-md-6 col-lg-7">
-                                    <div class="d-flex">
-                                        <img src="~/assets/images/products/product-img-4.jpg" alt="Ecommerce" class="icon-shape icon-xxl">
-                                        <div class="ms-3">
-                                            <!-- title -->
-                                            <!-- title -->
-                                            <a href="./pages/shop-single.html" class="text-inherit">
-                                                <h6 class="mb-1">Onion Flavour Potato</h6>
-                                            </a>
-                                            <h6>店家名稱</h6>
-                                            <!-- text -->
-                                            <div class="mt-2 small lh-1">
-                                                <a href="#!" class="text-decoration-none text-inherit">
-                                                    <span class="me-1 align-text-bottom">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 text-success">
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                            </path>
-                                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                        </svg>
-                                                    </span><span class="text-muted">Remove</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- input group -->
-                                <div class="col-4 col-md-3 col-lg-3">
-                                    <!-- input -->
-                                    <!-- input -->
-                                    <div class="input-group input-spinner  ">
-                                        <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                        <input type="number" step="1" max="10" value="1" name="quantity" class="quantity-field form-control-sm form-input   ">
-                                        <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                    </div>
-                                </div>
-                                <!-- price -->
-                                <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                    <span class="fw-bold">$15.00</span>
-
-                                </div>
-                            </div>
-
-                        </li>
+                        
                     </ul>
+
+                    <hr />
+
                     <!-- btn -->
                     <div class="d-flex justify-content-end mt-4">
 
@@ -277,14 +237,10 @@
     </header>
 
     <div class="wrapper container-fluid">
-
-
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
-
     <!-- footer -->
     <footer class="footer" style="padding:unset">
         <div class="row justify-content-between container-fluid">
@@ -359,6 +315,91 @@
     <script src="~/assets/js/vendors/zoom.js" asp-append-version="true"></script>
     <script src="~/assets/js/vendors/increment-value.js"></script>
 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <script>
+
+        var baseAddress = "https://localhost:7042";
+        function removeCartProduct() {
+            // $("p").remove();
+            alert("yes!");
+        }
+        var temp = Vue.createApp({
+            data: function () {
+                return {
+                    ProductName: [],
+                    UnitPrice: [],
+                    StoreName: [],
+                    carts: [],
+                    cartCount:"",
+                }
+            },
+            mounted: function () {
+                fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
+                    .then(response => response.json())
+                    .then(data => {
+                        // alert(data);
+                        this.carts = data;
+                        this.cartCount = this.carts.length;
+                    }).catch(error => {
+                        alert(error);
+                    });
+                
+            },
+            methods: {
+                changeQty(product) {
+                    let cartItemQtyChange = {
+                        productId: model.productId,
+                        quantity: model.quantity,
+                    };
+                    fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(cartData)
+                    }).then(response => response.ok)
+                },
+                deleteCartItem(item) {
+                    let _this = this;
+                    let deleteItem = {
+                        productId: item.productId,
+                        userId: "U001",
+                        storeId: item.storeId,
+                        quantity: item.quantity,
+                        productName:item.productName,
+                        storeName:item.storeName, 
+                    }; /*  //寫死 */
+                    let checkagain = confirm("確定要刪除嗎?");
+                    if (checkagain == true) {
+                        fetch(`${baseAddress}/api/CartVMapi/DeleteCartItem`,
+                            {
+                                method: "DELETE",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(deleteItem)
+                            }).then(response => response.json())
+                            .then(data => {
+                                if (data) {
+                                    alert("商品項目刪除成功!");
+                                    var deleteConfirmItem = document.getElementById(item.productId);
+                                    deleteConfirmItem.remove();
+                                    this.cartCount = this.carts.length;
+                                }
+                            })
+                            .catch(error => {
+                                alert("商品項目刪除失敗!");
+                            })
+                    };
+                    //remove那個元素
+
+                },
+
+            },
+            
+        }).mount("#shoppingCart")
+    </script>
 </body>
 </html>
+
+

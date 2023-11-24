@@ -11,6 +11,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
        
         public IActionResult Main()
         {
+            
             return View();
         }
         public IActionResult MapFind()
@@ -53,5 +54,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             return View();
         }
+       
+        
     }
 }
