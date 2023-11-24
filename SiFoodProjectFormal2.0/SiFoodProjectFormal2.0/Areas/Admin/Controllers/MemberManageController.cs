@@ -20,13 +20,22 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         }
 
         // GET: Admin/MemberManage
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             //return View(await _context.Users.ToListAsync());
 
-            return _context.Users != null ? 
-            View(await _context.Users.ToListAsync()) :
-            Problem("Entity set 'Sifood3Context.Users'  is null.");
+            IQueryable<User> users = _context.Users;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // 如果搜尋字串不為空，則使用 LINQ 過濾 users 變數
+                users = users.Where(u => u.UserName.Contains(searchString) || u.UserEmail.Contains(searchString) || u.UserPhone.Contains(searchString));
+               
+            }
+            return View(await users.ToListAsync());
+
+            //return _context.Users != null ? 
+            //View(await _context.Users.ToListAsync()) :
+            //Problem("Entity set 'Sifood3Context.Users'  is null.");
         }
 
         // GET: Admin/MemberManage/Details/5

@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <div class="d-md-flex justify-content-between align-items-center">
                 <div>
-                    <h2>客戶管理</h2>
+                    <h2>顧客管理</h2>
                     <!-- breacrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
@@ -28,7 +28,7 @@
                     <div class="row justify-content-between">
                         <div class="col-md-4 col-12">
                             <form class="d-flex" role="search">
-                                <input class="form-control" type="search" placeholder="Search Customers" aria-label="Search">
+                                <input class="form-control" type="search" name="searchString" placeholder="Search Customers" aria-label="Search">
                             </form>
                         </div>
 
@@ -41,32 +41,17 @@
                             <thead class="bg-light">
                                 <tr>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.UserName)
+                                        姓名
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.UserEmail)
+                                        信箱
+                                    </th>                                    
+                                    <th>
+                                        電話
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.UserPasswordHash)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserPhone)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserBirthDate)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.TotalOrderAmount)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserEnrollDate)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserLatestLogInDate)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserPasswordSalt)
-                                    </th>
+                                        生日
+                                    </th>                                                                
                                     <th>
                                         功能
                                     </th>
@@ -81,28 +66,13 @@
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UserEmail)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UserPasswordHash)
-                                        </td>
+                                        </td>                                        
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UserPhone)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UserBirthDate)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TotalOrderAmount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UserEnrollDate)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UserLatestLogInDate)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UserPasswordSalt)
-                                        </td>
+                                        </td>                                        
                                         <td>
                                             <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="@("#EditUser-"+item.UserId)" data-url="@Url.Action($"Edit1/{item.UserId}")">
                                                 編輯
