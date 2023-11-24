@@ -1,0 +1,125 @@
+﻿
+@* @model IEnumerable<SiFoodProjectFormal2._0.Models.OrderDetail> *@
+@model IEnumerable<SiFoodProjectFormal2._0.Models.OrderManageViewModel>
+
+
+
+@{
+    ViewData["Title"] = "訂單管理";
+    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
+    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+    <link href="~/assets/css/theme.min.css" rel="stylesheet" />
+}
+
+<div class="text-center">
+    <div class="container ">
+
+        <div>
+            <h2>訂單管理</h2>
+            <!-- breacrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="#">首頁</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">訂單管理</li>
+                </ol>
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+<div class=" p-6 ">
+    <div class="row justify-content-between">
+
+       
+        <div class="col-3 col-md-4 col-12">
+
+           @*  <!-- select -->
+            <form id="orderStatusForm" action="/OrderManage/UpdateOrderStatus" method="post">
+                <label for="orderStatus">訂單狀態</label>
+                <select class="form-select" id="orderStatus" name="orderStatus" onchange="submitForm()">
+                    <option selected disabled>選擇訂單狀態</option>
+                    <option value="Success">已領取</option>
+                    <option value="Pending">進行中</option>
+                    <option value="Cancel">已取消</option>
+                </select>
+                <!-- 隐藏的按钮 -->
+                <button type="submit" style="display: none;"></button>
+            </form>
+
+            <script>
+                function submitForm() {
+                  document.getElementById('orderStatusForm').submit();
+                }
+            </script> *@
+        
+        </div>
+    </div>
+</div>
+
+<table class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
+    <thead class="bg-light">
+        <tr>
+            <th>訂單編號</th>
+            <th>訂單日期</th>
+            <th>客戶姓名</th>
+            <th>商品數量</th>
+            <th>產品編號</th>
+            <th>訂單狀態</th>
+            <th>編輯</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderId)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+             <td>
+                    @Html.DisplayFor(modelItem => item.StatusName)
+             </td>
+            <td>
+                    @* <a asp-action="Create"><button type="button" class="btn btn-primary">新增</button></a> | *@
+                    <a asp-controller="OrderManage" asp-action="Edit" asp-route-OrderId="@item.OrderId" asp-route-ProductId="@item.ProductId"><button type="button" class="btn btn-warning">修改</button></a> |
+                    <a asp-controller="OrderManage" asp-action="Details" asp-route-OrderId="@item.OrderId" asp-route-ProductId="@item.ProductId"><button type="button" class="btn btn-info">明細</button></a> |
+                    <a asp-controller="OrderManage" asp-action="Delete" asp-route-OrderId="@item.OrderId" asp-route-ProductId="@item.ProductId"><button type="button" class="btn btn-danger">刪除</button></a>                          
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div class="border-top d-md-flex justify-content-between align-items-center p-6">
+    @* <span>Showing 1 to 8 of 12 entries</span> *@
+   
+    <nav class="mt-2 mt-md-0">
+        <ul class="pagination mb-0 ">
+            <li class="page-item disabled"><a class="page-link " href="#!">《</a></li>
+            <li class="page-item"><a class="page-link active" href="#!">1</a></li>
+          @*   <li class="page-item"><a class="page-link" href="#!">2</a></li>
+            <li class="page-item"><a class="page-link" href="#!">3</a></li> *@
+            <li class="page-item"><a class="page-link" href="#!">》</a></li>
+        </ul>
+    </nav>
+</div>
+@section Scripts {
+    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+    <script src="~/assets/js/theme.min.js"></script>
+
+}
