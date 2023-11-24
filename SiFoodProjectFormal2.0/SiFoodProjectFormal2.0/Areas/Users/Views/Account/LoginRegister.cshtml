@@ -65,23 +65,19 @@
 
                             <form method="post">
                                 <div class="row g-4">
-                                    <!-- row -->
 
                                     <div class="col-12">
-                                        <!-- input -->
                                         <input type="email" class="form-control" name="Account" placeholder="Email" required="">
                                     </div>
                                     <div class="col-12">
-                                        <!-- input -->
                                         <div class="password-field position-relative">
                                             <input type="password" id="fakePassword3" name="Password" placeholder="Enter Password" class="form-control" required="">
                                             <span><i id="passwordToggler" class="bi bi-eye-slash"></i></span>
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <!-- input -->
                                         <div class="d-flex justify-content-end">
-                                            <div>忘記密碼? <a asp-page="">重設密碼</a></div>
+                                            <div>忘記密碼? <a asp-page="/User/Account/ForgotPassword">重設密碼</a></div>
                                         </div>
                                     </div>
                                     <div style="height:3px"></div>
@@ -138,7 +134,6 @@
                     }).then(response => {
                         alert(response.data);
                         var success = "帳號註冊成功, 即將進入驗證階段";
-                        var fail = "此帳號已被註冊";
                         if (response.data == success) {
                             window.location.href = 'https://localhost:7042/Users/Account/RegisterConfirmation'
                         }

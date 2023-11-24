@@ -159,10 +159,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return View();
 
         }
-        public IActionResult FinishConfirm()
-        {
-            return View();
-        }
         public IActionResult ForgotPassword()
         {
             return View();
