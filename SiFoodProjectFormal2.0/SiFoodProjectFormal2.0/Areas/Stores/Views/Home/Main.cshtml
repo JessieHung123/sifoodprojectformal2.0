@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿<!--測試連線--->
+@model IEnumerable<SiFoodProjectFormal2._0.Models.Product>
+<!--測試連線--->
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -27,8 +31,6 @@
 <body>
     <!-- main -->
     <div>
-
-
         <div class="main-wrapper">
             <!-- navbar vertical -->
             <!-- main wrapper -->
@@ -42,7 +44,7 @@
                                  style="background-image: url(~/assets/images/slider/slider-image-1.jpg); background-repeat: no-repeat; background-size: cover; background-position: right;">
                                 <div class="card-body p-lg-12">
                                     <h1>
-                                        歡迎回來! THM103小吃店
+                                        歡迎回來! @ViewBag.StoreName
                                     </h1>
                                     <p>目前狀態:營業中</p>
                                     <a href="#" class="btn btn-primary">
@@ -76,18 +78,25 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>待處理訂單</td>
-                                                            <td>2</td>
+                                                            <td>待確認訂單</td>
+                                                            <td>@ViewBag.status1</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>運送中訂單</td>
-                                                            <td>1</td>
+                                                            <td>待配送訂單</td>
+                                                            <td>@ViewBag.status2</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>待領取訂單</td>
+                                                            <td>@ViewBag.status3</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>配送中訂單</td>
+                                                            <td>@ViewBag.status4</td>
                                                         </tr>
                                                         <tr>
                                                             <td>上架商品數</td>
-                                                            <td>10</td>
+                                                            <td>@ViewBag.SumReleasedQty</td>
                                                         </tr>
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -95,7 +104,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="col-xl-4 col-lg-6 col-12 mb-6">
                             <!-- card -->
@@ -158,22 +166,81 @@
                     </div>
                     <!-- row -->
                     <!-- row -->
+                    <div id="main">
+                        {{StoreInfo.productId}}
+                    </div>
 
                 </section>
             </main>
         </div>
     </div>
-
+    
+    <!--測試連線-->
+    <div id="main" class="text-center">
+        <button id="getStoreInfoAPI" v-on:click="getStoreInfoAPI" class="btn btn-primary">getelment</button>
+    </div>
+    <!--測試連線-->
     <!-- Libs JS -->
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+@*     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
     <script src="~/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="~/assets/js/vendors/chart.js"></script>
+    <script src="~/assets/js/vendors/chart.js"></script> *@
 
 </body>
-
 </html>
+    @section Scripts
+{
+    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+    <script src="~/assets/js/theme.min.js"></script>
+    <script src="~/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="~/assets/js/vendors/chart.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        var baseAddress = "https://localhost:7042";
+        const StoreMainApp = Vue.createApp({
+            data: function () {
+                return {
+                    StoreInfo:[],
+                    ProductId: "",
+                    ProductName:"",
+                    SalesCount: "",
+                }
+            },
+            computed: {
+             },
+            mounted: function () {
+                let _this = this;
+                _this.getStoreInfoAPI();
+            },
+            methods: {
+                getStoreInfoAPI: function () {
+                    let _this = this; /* test */
+                    var uri = `${baseAddress}/Stores/Home/Main2`;
+                    fetch(uri, { method: "GET" })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        })
+                        .then(data => {
+                            // 在這裡處理數據
+                            alert(JSON.stringify(data));
+                            _this.StoreInfo = data /* test */
+
+                        })
+                        .catch(error => {
+                            alert(error);
+                        });
+                }
+            },
+        }).mount("#main")
+    </script>
+}
