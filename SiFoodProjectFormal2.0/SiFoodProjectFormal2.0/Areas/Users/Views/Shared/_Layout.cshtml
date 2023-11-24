@@ -33,12 +33,13 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header>
-        <div class=" border-bottom " id="app">
+    <header id="header">
+        <div class=" border-bottom ">
             <div class=" py-1 container">
 
                 @await Html.PartialAsync("~/Areas/Users/Views/Shared/_LoginPartial.cshtml")
 
+                
             </div>
             <!--左側邊攔-->
             <nav class="navbar navbar-expand-lg navbar-light navbar-default py-0 pb-lg-0 " aria-label="Offcanvas navbar large">
@@ -157,12 +158,13 @@
                 </div>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body" id="shoppingCart">
+            <div class="offcanvas-body" >
+               
 
-                <div class="">
+                <div>
                     <!-- alert -->
 
-                    <ul class="list-group list-group-flush" >
+                    <ul class="list-group list-group-flush" id="cartItemContainer">
 
                         <!-- list group -->
                         <li class="list-group-item py-3 ps-0 border-top" >
@@ -201,15 +203,12 @@
                                 
                                 <!-- input group -->
                                 <div class="col-4 col-md-3 col-lg-3">
-                                    <!-- input -->
-                                    <!-- input -->
                                     <div class="input-group input-spinner  ">
-                                        <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                        <input type="number" step="1" min="1" max="10" v-model:value="item.quantity" name="quantity" class="quantity-field form-control-sm form-input">
-                                        @*  <input type="number" step="1" max="10" v-model.lazy="item.quantity" name="quantity" class="quantity-field form-control-sm form-input   ">*@                                        <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                        
+                                        <input type="button" value="-" v-on:click="clickMinus(item)" class="button-minus  btn  btn-sm " data-field="quantity">
+                                        <input type="number" step="1" max="10" v-model="item.quantity" name="quantity" class="quantity-field form-control-sm form-input">
+                                        @*  <input type="number" step="1" max="10" v-model.lazy="item.quantity" name="quantity" class="quantity-field form-control-sm form-input   ">*@
+                                        <input type="button" value="+" v-on:click="clickAdd(item)" class="button-plus btn btn-sm " data-field="quantity">
                                     </div>
-
                                 </div>
                                 <!-- price -->
                                 <div class="col-2 text-lg-end text-start text-md-end col-md-2">
@@ -328,7 +327,7 @@
             // $("p").remove();
             alert("yes!");
         }
-        var temp = Vue.createApp({
+        var shoppingCart = Vue.createApp({
             data: function () {
                 return {
                     ProductName: [],
@@ -351,17 +350,40 @@
                 
             },
             methods: {
-                changeQty(product) {
+                clickMinus(item) {
+                    item.quantity = item.quantity - 1;
                     let cartItemQtyChange = {
-                        productId: model.productId,
-                        quantity: model.quantity,
+                        productId: item.productId,
+                        userId: "U001",
+                        storeId: item.storeId,
+                        quantity: item.quantity,
+                        productName: item.productName,
+                        storeName: item.storeName,
                     };
                     fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(cartData)
-                    }).then(response => response.ok)
+                        body: JSON.stringify(cartItemQtyChange)
+                    }).then(response => response)
                 },
+                clickAdd(item) {
+
+                    item.quantity = item.quantity + 1;
+                    let cartItemQtyChange = {
+                        productId: item.productId,
+                        userId: "U001",
+                        storeId: item.storeId,
+                        quantity: item.quantity,
+                        productName: item.productName,
+                        storeName: item.storeName,
+                    };
+                    fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(cartItemQtyChange)
+                    }).then(response => response)
+                },
+                
                 deleteCartItem(item) {
                     let _this = this;
                     let deleteItem = {
@@ -385,7 +407,7 @@
                                     alert("商品項目刪除成功!");
                                     var deleteConfirmItem = document.getElementById(item.productId);
                                     deleteConfirmItem.remove();
-                                    this.cartCount = this.carts.length;
+                                    this.cartCount = $('#cartItemContainer').find('div').length;
                                 }
                             })
                             .catch(error => {
@@ -398,7 +420,7 @@
 
             },
             
-        }).mount("#shoppingCart")
+        }).mount("#header")
     </script>
 </body>
 </html>
