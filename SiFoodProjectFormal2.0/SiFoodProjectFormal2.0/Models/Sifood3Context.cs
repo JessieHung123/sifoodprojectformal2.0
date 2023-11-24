@@ -41,6 +41,7 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
+ 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
@@ -300,6 +301,7 @@ public partial class Sifood3Context : DbContext
                 .HasColumnName("StoreID");
             entity.Property(e => e.Address).HasMaxLength(50);
             entity.Property(e => e.City).HasMaxLength(10);
+            entity.Property(e => e.ClosingDay).HasMaxLength(15);
             entity.Property(e => e.ContactName).HasMaxLength(10);
             entity.Property(e => e.Description).HasMaxLength(20);
             entity.Property(e => e.Email)
@@ -309,7 +311,6 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.Latitude).HasColumnType("decimal(10, 8)");
             entity.Property(e => e.LogoPath).HasMaxLength(50);
             entity.Property(e => e.Longitude).HasColumnType("decimal(11, 8)");
-            entity.Property(e => e.OpeningDay).HasMaxLength(15);
             entity.Property(e => e.OpeningTime).HasMaxLength(50);
             entity.Property(e => e.PasswordHash).HasMaxLength(64);
             entity.Property(e => e.PasswordSalt).HasMaxLength(64);

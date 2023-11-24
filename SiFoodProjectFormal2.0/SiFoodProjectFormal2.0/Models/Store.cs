@@ -37,7 +37,7 @@ public partial class Store
 
     public string OpeningTime { get; set; } = null!;
 
-    public string OpeningDay { get; set; } = null!;
+    public string ClosingDay { get; set; } = null!;
 
     public string? PhotosPath { get; set; }
 
