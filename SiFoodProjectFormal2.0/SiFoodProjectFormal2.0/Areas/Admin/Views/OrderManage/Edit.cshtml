@@ -1,0 +1,71 @@
+﻿@model SiFoodProjectFormal2._0.Models.OrderManageViewModel
+       SiFoodProjectFormal2._0.Models.OrderDetail
+@{
+    ViewData["Title"] = "Edit";
+    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
+    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+    <link href="~/assets/css/theme.min.css" rel="stylesheet" />
+}
+
+
+
+
+<h1>修改</h1>
+
+<h4>訂單明細</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                <dt >訂單編號</dt>
+                <dd >
+                    @Html.DisplayFor(model => model.OrderId)
+                </dd>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderAddress" class="control-label">收貨地址</label>
+                <input asp-for="OrderAddress" class="form-control" asp-items="ViewBag.OrderDetailId" />
+                <span asp-validation-for="OrderDetailId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label">收貨人姓名</label>
+                <input asp-for="UserName" class="form-control" asp-items="ViewBag.OrderDetailId" />
+                <span asp-validation-for="OrderDetailId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserPhone" class="control-label">收貨人電話</label>
+                <input asp-for="UserPhone" class="form-control" asp-items="ViewBag.OrderDetailId" />
+                <span asp-validation-for="OrderDetailId" class="text-danger"></span>
+            </div>
+
+            <input type="hidden" asp-for="OrderId" asp-items="ViewBag.OrderId" />
+            <input type="hidden" asp-for="ProductId" asp-items="ViewBag.ProductId" />
+            <div class="form-group">
+                <dt>商品名稱</dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ProductName)
+                </dd>
+            </div>
+            <div class="form-group">
+                <dt>商品數量</dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Quantity)
+                </dd>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="儲存" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">回上頁</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
