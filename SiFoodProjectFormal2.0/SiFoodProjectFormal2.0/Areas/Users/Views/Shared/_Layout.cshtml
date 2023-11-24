@@ -11,9 +11,9 @@
     <link href="~/assets/libs/tiny-slider/dist/tiny-slider.css" asp-append-version="true" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://unpkg.com/@@popperjs/core@2/dist/umd/popper.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 
 
 
@@ -33,11 +33,12 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header>
-        <div class=" border-bottom " id="app">
+    <header id="header">
+        <div class=" border-bottom ">
             <div class=" py-1 container">
 
                 @await Html.PartialAsync("~/Areas/Users/Views/Shared/_LoginPartial.cshtml")
+
 
             </div>
             <!--左側邊攔-->
@@ -149,7 +150,7 @@
 
         <!-- Shop Cart -->
 
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" >
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header border-bottom">
                 <div class="text-start">
                     <h5 id="offcanvasRightLabel" class="mb-0 fs-4">購物車</h5>
@@ -157,26 +158,28 @@
                 </div>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body" id="shoppingCart">
+            <div class="offcanvas-body">
 
-                <div class="">
+
+                <div>
                     <!-- alert -->
 
-                    <ul class="list-group list-group-flush" >
+                    <ul class="list-group list-group-flush" id="cartItemContainer">
 
                         <!-- list group -->
-                        <li class="list-group-item py-3 ps-0 border-top" >
+                        <li class="list-group-item py-3 ps-0 border-top">
                             <!-- row -->
                             <div class="row align-items-center py-2" v-for="(item,index) in carts" :key="index" :id=item.productId>
 
-                                <div class="col-6 col-md-6 col-lg-7" >
+                                <div class="col-6 col-md-6 col-lg-7">
                                     <div class="d-flex">
                                         <a href="./pages/shop-single.html" class="text-inherit">
                                             <img src="{{item.photoPath}}" alt="Ecommerce" class="icon-shape icon-xxl">
                                         </a>
                                         <div class="ms-3">
                                             <!-- title -->
-                                            <a href="./pages/shop-single.html" class="text-inherit">   @* 照片網址帶處李 *@
+                                            <a href="./pages/shop-single.html" class="text-inherit">
+                                                @* 照片網址帶處李 *@
                                                 <h6 class="mb-1">{{item.productName}}</h6>
                                             </a>
                                             <h6>{{item.storeName}}</h6>
@@ -192,24 +195,21 @@
                                                             <line x1="14" y1="11" x2="14" y2="17"></line>
                                                         </svg>
                                                     </span><span class="text-muted">Remove</span>
-                                                </a>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- input group -->
                                 <div class="col-4 col-md-3 col-lg-3">
-                                    <!-- input -->
-                                    <!-- input -->
                                     <div class="input-group input-spinner  ">
-                                        <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                        <input type="number" step="1" min="1" max="10" v-model:value="item.quantity" name="quantity" class="quantity-field form-control-sm form-input">
-                                        @*  <input type="number" step="1" max="10" v-model.lazy="item.quantity" name="quantity" class="quantity-field form-control-sm form-input   ">*@                                        <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                        
+                                        <input type="button" value="-" v-on:click="clickMinus(item)" class="button-minus  btn  btn-sm " data-field="quantity">
+                                        <input type="number" step="1" max="10" v-model="item.quantity" name="quantity" class="quantity-field form-control-sm form-input">
+                                        @*  <input type="number" step="1" max="10" v-model.lazy="item.quantity" name="quantity" class="quantity-field form-control-sm form-input   ">*@
+                                        <input type="button" value="+" v-on:click="clickAdd(item)" class="button-plus btn btn-sm " data-field="quantity">
                                     </div>
-
                                 </div>
                                 <!-- price -->
                                 <div class="col-2 text-lg-end text-start text-md-end col-md-2">
@@ -217,7 +217,7 @@
 
                                 </div>
                             </div>
-                            
+
                         </li>
 
                     </ul>
@@ -328,14 +328,14 @@
             // $("p").remove();
             alert("yes!");
         }
-        var temp = Vue.createApp({
+        var shoppingCart = Vue.createApp({
             data: function () {
                 return {
                     ProductName: [],
                     UnitPrice: [],
                     StoreName: [],
                     carts: [],
-                    cartCount:"",
+                    cartCount: "",
                 }
             },
             mounted: function () {
@@ -348,29 +348,52 @@
                     }).catch(error => {
                         alert(error);
                     });
-                
+
             },
             methods: {
-                changeQty(product) {
+                clickMinus(item) {
+                    item.quantity = item.quantity - 1;
                     let cartItemQtyChange = {
-                        productId: model.productId,
-                        quantity: model.quantity,
+                        productId: item.productId,
+                        userId: "U001",
+                        storeId: item.storeId,
+                        quantity: item.quantity,
+                        productName: item.productName,
+                        storeName: item.storeName,
                     };
                     fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(cartData)
-                    }).then(response => response.ok)
+                        body: JSON.stringify(cartItemQtyChange)
+                    }).then(response => response)
                 },
+                clickAdd(item) {
+
+                    item.quantity = item.quantity + 1;
+                    let cartItemQtyChange = {
+                        productId: item.productId,
+                        userId: "U001",
+                        storeId: item.storeId,
+                        quantity: item.quantity,
+                        productName: item.productName,
+                        storeName: item.storeName,
+                    };
+                    fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(cartItemQtyChange)
+                    }).then(response => response)
+                },
+
                 deleteCartItem(item) {
-                    
+                    let _this = this;
                     let deleteItem = {
                         productId: item.productId,
                         userId: "U001",
                         storeId: item.storeId,
                         quantity: item.quantity,
-                        productName:item.productName,
-                        storeName:item.storeName, 
+                        productName: item.productName,
+                        storeName: item.storeName,
                     }; /*  //寫死 */
                     let checkagain = confirm("確定要刪除嗎?");
                     if (checkagain == true) {
@@ -385,7 +408,7 @@
                                     alert("商品項目刪除成功!");
                                     var deleteConfirmItem = document.getElementById(item.productId);
                                     deleteConfirmItem.remove();
-                                    this.cartCount = this.carts.length;
+                                    this.cartCount = $('#cartItemContainer').find('div').length;
                                 }
                             })
                             .catch(error => {
@@ -397,8 +420,8 @@
                 },
 
             },
-            
-        }).mount("#shoppingCart")
+
+        }).mount("#header")
     </script>
 </body>
 </html>
