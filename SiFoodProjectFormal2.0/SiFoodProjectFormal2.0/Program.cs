@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
@@ -28,6 +29,12 @@ namespace SiFoodProjectFormal2._0
                 );
 
 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/LoginRegister";
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -44,6 +51,8 @@ namespace SiFoodProjectFormal2._0
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
 
@@ -54,7 +63,6 @@ namespace SiFoodProjectFormal2._0
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
             app.Run();
         }
