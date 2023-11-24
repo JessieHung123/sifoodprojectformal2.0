@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
@@ -12,7 +13,6 @@ namespace SiFoodProjectFormal2._0
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddDbContext<Sifood3Context>(options => {
                 options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Sifood"));
             });
@@ -28,6 +28,12 @@ namespace SiFoodProjectFormal2._0
 
                 );
 
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/LoginRegister";
+            });
 
             var app = builder.Build();
 
@@ -45,6 +51,8 @@ namespace SiFoodProjectFormal2._0
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
 
@@ -55,7 +63,6 @@ namespace SiFoodProjectFormal2._0
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
             app.Run();
         }
