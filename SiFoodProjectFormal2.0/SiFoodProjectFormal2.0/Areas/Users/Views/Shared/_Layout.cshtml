@@ -334,7 +334,7 @@
                     UnitPrice: [],
                     StoreName: [],
                     carts: [],
-
+                    cartCount:"",
                 }
             },
             mounted: function () {
@@ -343,7 +343,7 @@
                     .then(data => {
                         // alert(data);
                         this.carts = data;
-                        
+                        this.cartCount = this.carts.length;
                     }).catch(error => {
                         alert(error);
                     });
@@ -384,6 +384,7 @@
                                     alert("商品項目刪除成功!");
                                     var deleteConfirmItem = document.getElementById(item.productId);
                                     deleteConfirmItem.remove();
+                                    this.cartCount = this.carts.length;
                                 }
                             })
                             .catch(error => {
