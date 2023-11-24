@@ -1,0 +1,45 @@
+﻿@model SiFoodProjectFormal2._0.Models.OrderDetail
+
+@{
+    ViewData["Title"] = "Create";
+    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
+    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+    <link href="~/assets/css/theme.min.css" rel="stylesheet" />
+}
+
+<h2>新增</h2>
+
+<h4>訂單明細</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderId" class="control-label">訂單編號</label>
+                <input asp-for="OrderId" class ="form-control" asp-items="ViewBag.OrderId"></input>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label">產品編號</label>
+                <input asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></input>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label">數量</label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="新增" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">回上頁</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

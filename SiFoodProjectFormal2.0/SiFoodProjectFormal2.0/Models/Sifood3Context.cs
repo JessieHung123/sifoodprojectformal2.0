@@ -41,7 +41,6 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
