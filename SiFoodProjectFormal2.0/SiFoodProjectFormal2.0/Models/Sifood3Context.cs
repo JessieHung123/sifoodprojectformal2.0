@@ -41,27 +41,38 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
-    
+  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
 
         modelBuilder.Entity<Cart>(entity =>
         {
-            entity.HasKey(e => new { e.UserId, e.ProductId }).HasName("PK__Cart__51BCD7978DC3971B");
+            entity.HasKey(e => new { e.UserId, e.ProductId, e.StoreId });
 
             entity.ToTable("Cart");
+
+            entity.HasIndex(e => new { e.UserId, e.ProductId }, "Cart_Store_MustOne").IsUnique();
 
             entity.Property(e => e.UserId)
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("UserID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.StoreId)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("StoreID");
 
             entity.HasOne(d => d.Product).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Cart_Products");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.Carts)
+                .HasForeignKey(d => d.StoreId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Cart_Stores");
 
             entity.HasOne(d => d.User).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.UserId)
@@ -89,11 +100,20 @@ public partial class Sifood3Context : DbContext
                 .HasColumnName("OrderID");
             entity.Property(e => e.CommentTime).HasColumnType("datetime");
             entity.Property(e => e.Contents).HasMaxLength(255);
+            entity.Property(e => e.StoreId)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("StoreID");
 
             entity.HasOne(d => d.Order).WithOne(p => p.Comment)
                 .HasForeignKey<Comment>(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Comments_Orders");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.Comments)
+                .HasForeignKey(d => d.StoreId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Comments_Stores");
         });
 
         modelBuilder.Entity<Driver>(entity =>
@@ -103,6 +123,7 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.DriveId)
                 .HasMaxLength(50)
                 .IsUnicode(false)
+                .HasDefaultValueSql("('D'+format(NEXT VALUE FOR [SifoodDriverIdSeq],'000'))")
                 .HasColumnName("DriveID");
             entity.Property(e => e.Email)
                 .HasMaxLength(64)
@@ -151,6 +172,7 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.OrderId)
                 .HasMaxLength(50)
                 .IsUnicode(false)
+                .HasDefaultValueSql("('O'+format(NEXT VALUE FOR [SifoodOrderIdSeq],'000'))")
                 .HasColumnName("OrderID");
             entity.Property(e => e.Address).HasMaxLength(255);
             entity.Property(e => e.DeliveryMethod).HasMaxLength(10);
@@ -237,7 +259,7 @@ public partial class Sifood3Context : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.ProductId).HasName("PK__Products__B40CC6EDC62401DF");
+            entity.HasKey(e => e.ProductId).HasName("PK_Products_1");
 
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
@@ -275,9 +297,11 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.StoreId)
                 .HasMaxLength(50)
                 .IsUnicode(false)
+                .HasDefaultValueSql("('S'+format(NEXT VALUE FOR [SifoodStoreIdSeq],'000'))")
                 .HasColumnName("StoreID");
             entity.Property(e => e.Address).HasMaxLength(50);
             entity.Property(e => e.City).HasMaxLength(10);
+            entity.Property(e => e.ClosingDay).HasMaxLength(15);
             entity.Property(e => e.ContactName).HasMaxLength(10);
             entity.Property(e => e.Description).HasMaxLength(20);
             entity.Property(e => e.Email)
@@ -287,7 +311,6 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.Latitude).HasColumnType("decimal(10, 8)");
             entity.Property(e => e.LogoPath).HasMaxLength(50);
             entity.Property(e => e.Longitude).HasColumnType("decimal(11, 8)");
-            entity.Property(e => e.OpeningDay).HasMaxLength(15);
             entity.Property(e => e.OpeningTime).HasMaxLength(50);
             entity.Property(e => e.PasswordHash).HasMaxLength(64);
             entity.Property(e => e.PasswordSalt).HasMaxLength(64);
@@ -309,6 +332,7 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.UserId)
                 .HasMaxLength(50)
                 .IsUnicode(false)
+                .HasDefaultValueSql("('U'+format(NEXT VALUE FOR [SifoodUserIdSeq],'000'))")
                 .HasColumnName("UserID");
             entity.Property(e => e.TotalOrderAmount).HasColumnType("money");
             entity.Property(e => e.UserBirthDate).HasColumnType("date");
@@ -323,6 +347,7 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.UserPhone)
                 .HasMaxLength(10)
                 .IsUnicode(false);
+            entity.Property(e => e.UserVerificationCode).HasMaxLength(20);
         });
 
         modelBuilder.Entity<UserAddress>(entity =>
@@ -347,6 +372,10 @@ public partial class Sifood3Context : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserAddresses_Users");
         });
+        modelBuilder.HasSequence<int>("SifoodDriverIdSeq").StartsAt(3L);
+        modelBuilder.HasSequence<int>("SifoodOrderIdSeq").StartsAt(8L);
+        modelBuilder.HasSequence<int>("SifoodStoreIdSeq").StartsAt(6L);
+        modelBuilder.HasSequence<int>("SifoodUserIdSeq").StartsAt(5L);
 
         OnModelCreatingPartial(modelBuilder);
     }

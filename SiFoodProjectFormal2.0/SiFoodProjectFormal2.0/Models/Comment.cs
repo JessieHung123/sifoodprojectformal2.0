@@ -13,5 +13,9 @@ public partial class Comment
 
     public string? Contents { get; set; }
 
+    public string StoreId { get; set; } = null!;
+
     public virtual Order Order { get; set; } = null!;
+
+    public virtual Store Store { get; set; } = null!;
 }
