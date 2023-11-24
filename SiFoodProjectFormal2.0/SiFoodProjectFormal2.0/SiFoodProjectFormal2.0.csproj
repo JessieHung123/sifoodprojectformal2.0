@@ -8,6 +8,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Users\Views\OrderDetails\**" />
+    <Content Remove="Areas\Users\Views\OrderDetails\**" />
+    <EmbeddedResource Remove="Areas\Users\Views\OrderDetails\**" />
+    <None Remove="Areas\Users\Views\OrderDetails\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Users\Controllers\OrderDetailsController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="partials\Class.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\images\Admin\**" />
+    <Content Remove="wwwroot\images\Admin\**" />
+    <EmbeddedResource Remove="wwwroot\images\Admin\**" />
+    <None Remove="wwwroot\images\Admin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\assets\images\logo\SiFood_logo_BGclear.png" />
     <Content Remove="wwwroot\images\Drivers\1699453284197.jpg" />
     <Content Remove="wwwroot\images\Drivers\23718262.png" />
@@ -23,13 +45,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\" />
     <Folder Include="ViewModels\Admin\" />
-    <Folder Include="ViewModels\Stores\" />
     <Folder Include="ViewModels\Drivers\" />
-    <Folder Include="ViewModels\Users\" />
     <Folder Include="wwwroot\assets\libs\flatpickr\dist\types\" />
     <Folder Include="wwwroot\assets\libs\flatpickr\dist\utils\" />
     <Folder Include="wwwroot\assets\libs\rater-js\example\" />
@@ -37,6 +59,8 @@
     <Folder Include="wwwroot\assets\libs\tiny-slider\dist\sourcemaps\" />
     <Folder Include="wwwroot\images\Admin\" />
     <Folder Include="wwwroot\images\Drivers\" />
+    <Folder Include="wwwroot\images\FAQ\" />
+    <Folder Include="wwwroot\images\JoinUs\" />
   </ItemGroup>
 
   <ItemGroup>
