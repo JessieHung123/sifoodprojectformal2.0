@@ -41,6 +41,10 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=tcp:sifooddbserver.database.windows.net,1433;Initial Catalog=sifood3;Persist Security Info=False;User ID=SQLAdmin;Password=THM103sifood;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
@@ -300,6 +304,7 @@ public partial class Sifood3Context : DbContext
                 .HasColumnName("StoreID");
             entity.Property(e => e.Address).HasMaxLength(50);
             entity.Property(e => e.City).HasMaxLength(10);
+            entity.Property(e => e.ClosingDay).HasMaxLength(15);
             entity.Property(e => e.ContactName).HasMaxLength(10);
             entity.Property(e => e.Description).HasMaxLength(20);
             entity.Property(e => e.Email)
@@ -309,7 +314,6 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.Latitude).HasColumnType("decimal(10, 8)");
             entity.Property(e => e.LogoPath).HasMaxLength(50);
             entity.Property(e => e.Longitude).HasColumnType("decimal(11, 8)");
-            entity.Property(e => e.OpeningDay).HasMaxLength(15);
             entity.Property(e => e.OpeningTime).HasMaxLength(50);
             entity.Property(e => e.PasswordHash).HasMaxLength(64);
             entity.Property(e => e.PasswordSalt).HasMaxLength(64);
