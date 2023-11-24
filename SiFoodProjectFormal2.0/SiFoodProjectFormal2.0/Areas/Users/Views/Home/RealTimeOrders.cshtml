@@ -985,7 +985,7 @@
                     getOrder() {
                         let _this = this;
                         var userId = "U001"
-                        fetch(`${baseAddress}/api/orders/${userId}`, { method: "GET" })
+                        fetch(`${baseAddress}/api/RealTimeOrdersapi/${userId}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1011,7 +1011,7 @@
 
         <!-- Libs JS -->
         <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-        <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        @* <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
         <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
         <!-- Theme JS -->
