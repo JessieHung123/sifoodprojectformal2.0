@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
-namespace SiFoodProjectFormal2.Models
+namespace SiFoodProjectFormal2._0.Models
 {
     public partial class Sifood3Context : DbContext
     {
@@ -8,7 +10,7 @@ namespace SiFoodProjectFormal2.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                IConfigurationRoot configuration=new ConfigurationBuilder()
+                IConfigurationRoot configuration = new ConfigurationBuilder()
                     .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                     .AddJsonFile("appsettings.json")
                     .Build();
@@ -18,3 +20,4 @@ namespace SiFoodProjectFormal2.Models
         }
     }
 }
+

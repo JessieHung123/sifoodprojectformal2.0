@@ -1,0 +1,141 @@
+﻿@model IEnumerable<SiFoodProjectFormal2._0.Models.User>
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container">
+    <div class="row mb-8">
+        <div class="col-md-12">
+            <div class="d-md-flex justify-content-between align-items-center">
+                <div>
+                    <h2>客戶管理</h2>
+                    <!-- breacrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="#" class="text-inherit">後台首頁</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">客戶管理</li>
+                        </ol>
+                    </nav>
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-xl-12 col-12 mb-5">
+            <div class="card h-100 card-lg">
+                <div class="p-6">
+                    <div class="row justify-content-between">
+                        <div class="col-md-4 col-12">
+                            <form class="d-flex" role="search">
+                                <input class="form-control" type="search" placeholder="Search Customers" aria-label="Search">
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body p-0 ">
+
+                    <div class="table-responsive">
+                        <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.UserName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.UserEmail)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.UserPasswordHash)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.UserPhone)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.UserBirthDate)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.TotalOrderAmount)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.UserEnrollDate)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.UserLatestLogInDate)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.UserPasswordSalt)
+                                    </th>
+                                    <th>
+                                        功能
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserEmail)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserPasswordHash)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserPhone)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserBirthDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TotalOrderAmount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserEnrollDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserLatestLogInDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserPasswordSalt)
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="@("#EditUser-"+item.UserId)" data-url="@Url.Action($"Edit1/{item.UserId}")">
+                                                編輯
+                                            </button>
+                                            @await Html.PartialAsync("_Edit",item)
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@("#DetailUser-" + item.UserId)" data-url="@Url.Action($"Details1/{item.UserId}")">
+                                                明細
+                                            </button>
+                                            @await Html.PartialAsync("_Details",item)
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@("#DeleteUser-" + item.UserId)" data-url="@Url.Action($"Delete1/{item.UserId}")">
+                                                刪除
+                                            </button>
+                                            @await Html.PartialAsync("_Delete",item)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="border-top d-md-flex justify-content-between align-items-center p-6">
+                        <span>Showing 1 to 8 of 12 entries</span>
+                        <nav class="mt-2 mt-md-0">
+                            <ul class="pagination mb-0 ">
+                                <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
+                                <li class="page-item"><a class="page-link active" href="#!">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#!">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
