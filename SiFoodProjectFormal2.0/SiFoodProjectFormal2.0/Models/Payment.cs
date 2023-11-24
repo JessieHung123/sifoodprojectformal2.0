@@ -5,8 +5,6 @@ namespace SiFoodProjectFormal2._0.Models;
 
 public partial class Payment
 {
-    public int PaymentId { get; set; }
-
     public string OrderId { get; set; } = null!;
 
     public string PaymentMethodＮame { get; set; } = null!;

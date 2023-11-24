@@ -21,13 +21,19 @@ public partial class Order
 
     public decimal ShippingFee { get; set; }
 
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public int StatusId { get; set; }
+
+    public virtual Comment? Comment { get; set; }
 
     public virtual Driver Driver { get; set; } = null!;
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
-    public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
+    public virtual Payment? Payment { get; set; }
+
+    public virtual Status Status { get; set; } = null!;
+
+    public virtual Store Store { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
 }
