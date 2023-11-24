@@ -25,6 +25,10 @@ public partial class User
 
     public byte[]? UserPasswordSalt { get; set; }
 
+    public int UserAuthenticated { get; set; }
+
+    public string? UserVerificationCode { get; set; }
+
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
     public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
