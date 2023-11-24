@@ -112,7 +112,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         public IActionResult Edit1(User user)
         {
             _context.Users.Update(user);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
