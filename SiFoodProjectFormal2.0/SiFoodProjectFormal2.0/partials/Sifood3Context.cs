@@ -2,7 +2,7 @@
 
 namespace SiFoodProjectFormal2.Models
 {
-    public partial class SifoodContext:DbContext
+    public partial class Sifood3Context:DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
