@@ -35,12 +35,6 @@ namespace SiFoodProjectFormal2._0
                 options.LoginPath = "/Account/LoginRegister";
             });
 
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/Account/LoginRegister";
-            });
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
