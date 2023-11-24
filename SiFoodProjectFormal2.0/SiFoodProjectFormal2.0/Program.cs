@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
+
 
 namespace SiFoodProjectFormal2._0
 {
@@ -14,7 +16,18 @@ namespace SiFoodProjectFormal2._0
             builder.Services.AddDbContext<Sifood3Context>(options => {
                 options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Sifood"));
             });
+
             builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers().AddOData(
+                options => options.Select()
+                                .Filter()
+                                .Expand()
+                                .SetMaxTop(100)
+                                .Count()
+                                .OrderBy()
+
+                );
+
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
@@ -30,8 +43,9 @@ namespace SiFoodProjectFormal2._0
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
 
+            }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -41,7 +55,7 @@ namespace SiFoodProjectFormal2._0
 
             app.UseAuthorization();
 
-            
+
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Main}/{id?}");
@@ -49,7 +63,7 @@ namespace SiFoodProjectFormal2._0
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-            
+
 
             app.Run();
         }

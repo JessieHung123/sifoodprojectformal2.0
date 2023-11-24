@@ -3,7 +3,7 @@
 namespace SiFoodProjectFormal2._0.Models
 {
     public partial class Sifood3Context : DbContext
-    {
+    { 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
