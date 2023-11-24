@@ -41,7 +41,7 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
-
+   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
@@ -334,6 +334,7 @@ public partial class Sifood3Context : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('U'+format(NEXT VALUE FOR [SifoodUserIdSeq],'000'))")
                 .HasColumnName("UserID");
+            entity.Property(e => e.ForgotPasswordRandom).HasMaxLength(20);
             entity.Property(e => e.TotalOrderAmount).HasColumnType("money");
             entity.Property(e => e.UserBirthDate).HasColumnType("date");
             entity.Property(e => e.UserEmail)
