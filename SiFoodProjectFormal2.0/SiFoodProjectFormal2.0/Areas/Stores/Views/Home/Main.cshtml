@@ -109,13 +109,15 @@
                             <!-- card -->
                             <div class="card h-100 card-lg">
                                 <!-- card body -->
-                                <div class="card-body p-6">
+                                <div  class="card-body p-6">
                                     <!-- heading -->
                                     <h3 class="mb-0 fs-5">今日銷售</h3>
                                     <div id="totalSale" class="mt-6 d-flex justify-content-center"></div>
-                                    <div class="mt-4">
+                                    <div id="main" class="mt-4">
+                                        <button id="getStoreInfoAPI" v-on:click="getStoreInfoAPI" class="btn btn-primary">getelment</button>
+
                                         <!-- list -->
-                                        <ul class="list-unstyled mb-0">
+                                        <ul v-for="item in StoreInfo" class="list-unstyled mb-0">
                                             <li class="mb-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="8"
                                                      height="8" fill="currentColor"
@@ -123,39 +125,9 @@
                                                     <circle cx="8" cy="8" r="8" />
                                                 </svg> <span class="ms-1">
                                                     <span class="text-dark">
-                                                        雞排便當
-                                                        $32.98
+                                                        {{item.productName}}
+                                                        ${{item.unitPrice}}
                                                     </span> (2%)
-                                                </span>
-                                            </li>
-                                            <li class="mb-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="8"
-                                                     height="8" fill="currentColor"
-                                                     class="bi bi-circle-fill text-warning" viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8" />
-                                                </svg> <span class="ms-1">
-                                                    <span class="text-dark">知高飯 $11</span>
-                                                    (11%)
-                                                </span>
-                                            </li>
-                                            <li class="mb-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="8"
-                                                     height="8" fill="currentColor" class="bi bi-circle-fill text-danger"
-                                                     viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8" />
-                                                </svg> <span class="ms-1">
-                                                    <span class="text-dark">素便當 $14.87</span>
-                                                    (1%)
-                                                </span>
-                                            </li>
-                                            <li>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-                                                     fill="currentColor" class="bi bi-circle-fill text-info"
-                                                     viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8" />
-                                                </svg> <span class="ms-1">
-                                                    <span class="text-dark">乾麵 3,271</span>
-                                                    (86%)
                                                 </span>
                                             </li>
                                         </ul>
@@ -166,30 +138,16 @@
                     </div>
                     <!-- row -->
                     <!-- row -->
-                    <div id="main">
+@*                     <div id="main">
                         {{StoreInfo.productId}}
                     </div>
-
+ *@
                 </section>
             </main>
         </div>
     </div>
     
     <!--測試連線-->
-    <div id="main" class="text-center">
-        <button id="getStoreInfoAPI" v-on:click="getStoreInfoAPI" class="btn btn-primary">getelment</button>
-    </div>
-    <!--測試連線-->
-    <!-- Libs JS -->
-@*     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-
-    <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js"></script>
-    <script src="~/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="~/assets/js/vendors/chart.js"></script> *@
-
 </body>
 </html>
     @section Scripts
@@ -208,7 +166,6 @@
             data: function () {
                 return {
                     StoreInfo:[],
-                    ProductId: "",
                     ProductName:"",
                     SalesCount: "",
                 }
