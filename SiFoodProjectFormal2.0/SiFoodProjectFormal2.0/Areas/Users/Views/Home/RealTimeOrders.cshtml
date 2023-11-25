@@ -1,12 +1,5 @@
 ﻿@section Styles{
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Codescandy" name="author">
-    <title>Orders eCommerce HTML Template - FreshCart </title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Codescandy" name="author">
-    <title>Orders eCommerce HTML Template - FreshCart </title>
+
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
 
@@ -558,11 +551,11 @@
                                                 </template>
                                                 <template v-else-if="item.statusId === 2 ||item.statusId === 3 ">
                                                     <span class="badge bg-info">{{item.status}}</span>
-                                                </template>                                      
+                                                </template>
                                                 <template v-else-if="item.statusId === 4">
                                                     <span class="badge bg-primary">{{item.status}}</span>
                                                 </template>
-                                               
+
                                             </td>
                                             <td class="align-middle border-top-0">
                                                 ${{item.subtotal+item.shippingFee}}
@@ -604,11 +597,11 @@
                                                                                 <!-- button -->
                                                                                 <div class="ms-md-3">
                                                                                     <template v-if="item.statusId === 1">
-                                                                                        <a href="#" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="取消時限: 2分鐘">取消</a>
+                                                                                        <a v-on:click="cancelOrder(item)" href="#" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="取消時限: 2分鐘">取消</a>
                                                                                     </template>
                                                                                     <template v-else>
-                                                                                        <a href="#" class="btn btn-success">完成訂單</a>
-                                                                                    </template>                                                                                 
+                                                                                        <a v-on:click="completeOrder(item)" href="#" class="btn btn-success">完成訂單</a>
+                                                                                    </template>
                                                                                     <a href="#" class="btn btn-secondary">下載明細</a>
                                                                                 </div>
                                                                             </div>
@@ -800,7 +793,7 @@
                                                                             <div class="col-md-3 mb-4 mb-lg-0 ">
                                                                                 <h6>付款資訊</h6>
                                                                                 <span class="d-block">{{item.paymentMethodＮame}}</span>
-                                                                                <span class="d-block">{{item.paymentTime}}</span>
+                                                                                <span class="d-block">{{item.paymentDate}} {{item.paymentTime}}</span>
                                                                             </div>
                                                                             <div class="col-md-3 mb-4 mb-lg-0">
                                                                                 <h6>外送員: {{item.driverFullName}}</h6>
@@ -981,7 +974,44 @@
 
                 },
                 methods: {
+                    // **asynchronous nature of the fetch operation**
+                    cancelOrder(item) {
 
+                        this.updateOrderStatus(item, 7)
+                        item.statusId = 7;
+                        this.orders = this.orders.filter(order => order.orderId !== item.orderId);
+                    },
+                    completeOrder(item) {
+                        this.updateOrderStatus(item, 6)
+                        item.statusId = 6;
+                        this.orders = this.orders.filter(order => order.orderId !== item.orderId);
+                    },
+                    updateOrderStatus(item, newStatusId) {
+                        
+                        fetch(`${baseAddress}/api/RealTimeOrdersapi/${item.orderId}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                orderId: item.orderId,
+                                statusId: newStatusId,
+                            }),
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                                alert("成功");
+                            }
+                           
+
+                        }).then(data => {
+                            // console.log(data)
+
+                        }).catch(error => {
+                            console.error("PUT 請求發生錯誤:", error);
+                            // console.log(error);
+                        });
+                    },
                     getOrder() {
                         let _this = this;
                         var userId = "U001"

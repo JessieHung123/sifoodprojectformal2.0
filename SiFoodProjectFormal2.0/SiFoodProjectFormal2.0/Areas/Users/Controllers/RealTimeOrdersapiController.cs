@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 
@@ -50,7 +51,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                      UserEmail = z.User.UserEmail,
                      UserPhone = z.User.UserPhone,
                      PaymentMethodＮame = z.Payment.PaymentMethodＮame,
-                     PaymentTime = z.Payment.PaymentTime,
+                     PaymentDate = z.Payment.PaymentTime.ToString("yyyy-MM-dd"),
+                     PaymentTime = z.Payment.PaymentTime.ToString("HH:mm"),
                      OrderDetails = z.OrderDetails.Select(p => new OrderDetailsVM
                      {
                          PhotoPath = p.Product.PhotoPath,
@@ -69,14 +71,16 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         // PUT: api/RealTimeOrdersapi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder(string id, Order order)
+        public async Task<string> PutOrder(string id, [FromBody] RealTimeOrderVM realTimeOrderVM)
         {
-            if (id != order.OrderId)
+            
+            if (id != realTimeOrderVM.OrderId)
             {
-                return BadRequest();
+                return "失敗";
             }
-
-            _context.Entry(order).State = EntityState.Modified;
+            Order? order = await _context.Orders.FindAsync(id);
+            order.StatusId = realTimeOrderVM.StatusId;
+            //_context.Entry(realTimeOrderVM).State = EntityState.Modified;
 
             try
             {
@@ -86,7 +90,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             {
                 if (!OrderExists(id))
                 {
-                    return NotFound();
+                    return "取消失敗";
                 }
                 else
                 {
@@ -94,7 +98,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 }
             }
 
-            return NoContent();
+            return "已完成";
         }
 
         // POST: api/RealTimeOrdersapi
