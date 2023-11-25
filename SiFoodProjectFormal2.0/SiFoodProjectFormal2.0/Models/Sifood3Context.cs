@@ -41,14 +41,14 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
-
+   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
 
         modelBuilder.Entity<Cart>(entity =>
         {
-            entity.HasKey(e => new { e.UserId, e.ProductId, e.StoreId });
+            entity.HasKey(e => new { e.UserId, e.ProductId }).HasName("PK_Cart_1");
 
             entity.ToTable("Cart");
 
@@ -59,20 +59,11 @@ public partial class Sifood3Context : DbContext
                 .IsUnicode(false)
                 .HasColumnName("UserID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.StoreId)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("StoreID");
 
             entity.HasOne(d => d.Product).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Cart_Products");
-
-            entity.HasOne(d => d.Store).WithMany(p => p.Carts)
-                .HasForeignKey(d => d.StoreId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Cart_Stores");
 
             entity.HasOne(d => d.User).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.UserId)
@@ -334,6 +325,7 @@ public partial class Sifood3Context : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('U'+format(NEXT VALUE FOR [SifoodUserIdSeq],'000'))")
                 .HasColumnName("UserID");
+            entity.Property(e => e.ForgotPasswordRandom).HasMaxLength(20);
             entity.Property(e => e.TotalOrderAmount).HasColumnType("money");
             entity.Property(e => e.UserBirthDate).HasColumnType("date");
             entity.Property(e => e.UserEmail)

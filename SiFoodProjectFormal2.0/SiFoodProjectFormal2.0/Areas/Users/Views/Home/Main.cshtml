@@ -304,15 +304,7 @@
                 _this.getStoreapi();
  
             },
-            watch: {
-                // isStoreActive(n) {
-                //     if (n == true) { this.area = false; }
-                // },
-                // condition.active(n) {
-                //     if(n == true) { this.area = false; }
-                //         },
-
-            },
+            
             methods: {
                 filterActiveTime(stores) {
                     if (this.isStoreActive) {
@@ -380,7 +372,7 @@
 
                 getStoreapi() {
                     let _this = this;
-                    fetch(`${baseAddress}/odata/Storeapi/Main2`, { method: "GET" })
+                    fetch(`${baseAddress}/api/Storeapi/Main2`, { method: "GET" })
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -401,7 +393,7 @@
                 
                 getFavoriteStore() {
                     let _this = this;
-                    fetch(`${baseAddress}/odata/Storeapi/GetFavoriteStoreId`, { method: "GET" })
+                    fetch(`${baseAddress}/api/Storeapi/GetFavoriteStoreId`, { method: "GET" })
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -429,15 +421,15 @@
                 },
                 //加入收藏店家
                 addToFavorite(storeId) {
-                    // let isLogin=
-                    let _this = this;
+                    
+                    
                     // if (!isLogin) return alert("未登入，無法加入收藏!");
                     let favoriteData = {
                         userId: "U001",//暫定>>變數:登入者
                         storeId: storeId,
                     }
                     //如果U001加過，愛心為實心 空心
-                    fetch(`${baseAddress}/odata/Storeapi/AddToFavorite`, {
+                    fetch(`${baseAddress}/api/Storeapi/AddToFavorite`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(favoriteData)
@@ -450,14 +442,14 @@
                 },
                 //取消收藏
                 deleteFavorite(storeId) {
-                    let _this = this;
+                    
                     // if (!isLogin) return alert("未登入，無法加入收藏!");
                     let favoriteCancel = {
                         userId: "U001",//暫定>>變數:登入者
                         storeId: storeId,
                     }
                     //如果U001加過，愛心為實心 空心
-                    fetch(`${baseAddress}/odata/Storeapi/DeleteFavorite`, {
+                    fetch(`${baseAddress}/api/Storeapi/DeleteFavorite`, {
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(favoriteCancel)

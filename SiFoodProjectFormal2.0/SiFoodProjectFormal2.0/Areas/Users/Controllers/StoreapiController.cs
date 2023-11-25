@@ -12,7 +12,7 @@ using SiFoodProjectFormal2._0.Models;
 
 namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 {
-    [Route("odata/Storeapi/[action]")]
+    [Route("api/Storeapi/[action]")]
 
     [Area("Users")]
     public class StoreapiController : ODataController

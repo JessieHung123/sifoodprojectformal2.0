@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using System.Security.Cryptography.X509Certificates;
@@ -26,23 +27,24 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         // GET: api/CartVMapi
         [EnableQuery]
         [HttpGet]
-        public async Task<IEnumerable<CartVM>> GetCarts()
+        public async Task<List<CartVM>> GetCarts()
         {
 
             string GetUserId = "U001";//先寫死
             
-            var cart = _context.Carts.Where(c => c.UserId == GetUserId).Select(c => new CartVM
+            var cart = await _context.Carts.Where(c => c.UserId == GetUserId).Select(c => new CartVM
             {
                 ProductId = c.ProductId,
-                ProductName = _context.Products
+                ProductName =  _context.Products
                             .Where(p => p.ProductId == c.ProductId).Select(p => p.ProductName).Single(),
                 Quantity = c.Quantity,
                 TotalPrice = (c.Quantity) * _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.UnitPrice).FirstOrDefault(),
                 UnitPrice = _context.Products
                             .Where(p => p.ProductId == c.ProductId).Select(p => p.UnitPrice).Single(),
                 StoreName = _context.Stores.Where(s => s.StoreId == c.Product.StoreId).Select(p => p.StoreName).Single(),
+                
 
-            });
+            }).ToListAsync();
             return cart;
 
         }
@@ -67,11 +69,13 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         //加入購物車:一個user的購物車只能限定一間商店，不然要alert(購物車只能放一間商店，是否要更換店家?)
         // POST: api/CartVMapi
         [HttpPost]
-        public async Task<bool> AddToCart([FromBody]CartVM cartVM)
+        public string AddToCart([FromBody]CartVM cartVM)
         {//只能限制加一間>>還沒寫
-            if (cartVM == null) return false;
-            try {
-                string userId = "U001";//cartVM.UserId寫死
+            string userId = "U001";//cartVM.UserId寫死
+            
+            try
+            {
+                
                 Cart? cart = new Cart
                 {
                     ProductId = cartVM.ProductId,
@@ -80,10 +84,11 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     
                 };
                 _context.Carts.Add(cart);
-                await _context.SaveChangesAsync();
-                return true;
+                 _context.SaveChangesAsync();
+                    return "新增商品成功!";
+                
             }
-            catch (Exception){ return false; }
+            catch (Exception){ return "新增商品失敗!"; }
         }
         //刪除購物車商品
         
@@ -102,10 +107,20 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             }
             catch (Exception) { return false; }
         }
+        //刪除購物車商品
 
-        private bool CartExists(string id)
+        [HttpDelete("{userid}")]
+        public async Task<bool> DeleteUserAllCart(string userid)
         {
-            return (_context.Carts?.Any(e => e.UserId == id)).GetValueOrDefault();
+            var cart = await _context.Carts.Where(c => c.UserId == userid).ToListAsync();
+            try
+            {
+                 _context.Carts.RemoveRange(cart);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception) { return false; }
         }
+        
     }
 }
