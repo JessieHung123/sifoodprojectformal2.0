@@ -1,5 +1,4 @@
-﻿
-@section Styles {
+﻿@section Styles {
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
@@ -49,12 +48,12 @@
                     <br />
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked @@click="chooseDeliver">
                     <label class="form-check-label text-dark" for="homeRadio" style="font-size:20px">
-                        外送
+                        自取
                     </label>
                     &nbsp
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio2" @@click="chooseTakeout">
                     <label class="form-check-label text-dark" for="homeRadio2" style="font-size:20px">
-                        自取
+                        外送
                     </label>
                 </div>
             </div>
@@ -66,7 +65,79 @@
 
         <!-- row -->
         <div class="row">
+
             <template v-if="this.checkRadio==false">
+                <div class="col-lg-7 col-md-12">
+                    <!-- accordion -->
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <!-- accordion item -->
+                        <!-- accordion item -->
+                        <div class="accordion-item py-4">
+                            <h5>
+                                <i class="feather-icon icon-clock me-2 text-muted"></i>預定取貨時間
+                            </h5>
+
+                            <input type="text" class="border border-1" style="width:350px" readonly />
+                        </div>
+                        <!-- accordion item -->
+                        <div class="accordion-item py-4">
+
+                            <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                <i class="feather-icon icon-shopping-bag me-2 text-muted"></i>訂單備註
+                                <!-- collapse -->
+                            </a>
+                            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
+                                <div class="mt-5">
+                                    <label for="DeliveryInstructions" class="form-label sr-only">備註</label>
+                                    <textarea class="form-control" id="DeliveryInstructions" rows="3" placeholder="寫下您的訂單備註"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- accordion item -->
+                        <div class="accordion-item py-4">
+                            <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                <i class="feather-icon icon-credit-card me-2 text-muted"></i>付款方式
+                                <!-- collapse -->
+                            </a>
+                            <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
+                                <div class="mt-5">
+                                    <div>
+                                        <div class="card card-bordered shadow-none mb-2">
+                                            <!-- card body -->
+                                            <div class="card-body p-6">
+                                                <div class="d-flex">
+                                                    <div class="form-check">
+                                                        <!-- checkbox -->
+                                                        <input class="form-check-input" type="radio" name="flexRadioDefault2" id="homeRadio4" checked>
+                                                        <label class="form-check-label ms-2" for="homeRadio4">
+
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        <!-- title -->
+                                                        <h5 class="mb-1 h6">線上支付</h5>
+                                                        <p class="mb-0 small">
+                                                            您將會被導入至外部的付款頁面
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Button -->
+                                        <div class="mt-5 d-flex justify-content-end">
+                                            <button class="btn btn-primary ms-2" @@click="CreateTakeOutOrder">訂購</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            @*---------------------------------- 切換樣板分隔線 ----------------------------------------------*@
+
+            <template v-else>
                 <div class="col-lg-7 col-md-12">
                     <!-- accordion -->
                     <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -183,81 +254,6 @@
                     </div>
                 </div>
             </template>
-
-
-            @*---------------------------------- 切換樣板分隔線 ----------------------------------------------*@
-
-
-            <template v-else>
-                <div class="col-lg-7 col-md-12">
-                    <!-- accordion -->
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        <!-- accordion item -->
-                        <!-- accordion item -->
-                        <div class="accordion-item py-4">
-                            <h5>
-                                <i class="feather-icon icon-clock me-2 text-muted"></i>預定取貨時間
-                            </h5>
-
-                            <input type="text" class="border border-1" style="width:350px" readonly />
-                        </div>
-                        <!-- accordion item -->
-                        <div class="accordion-item py-4">
-
-                            <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                <i class="feather-icon icon-shopping-bag me-2 text-muted"></i>訂單備註
-                                <!-- collapse -->
-                            </a>
-                            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
-                                <div class="mt-5">
-                                    <label for="DeliveryInstructions" class="form-label sr-only">備註</label>
-                                    <textarea class="form-control" id="DeliveryInstructions" rows="3" placeholder="寫下您的訂單備註"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- accordion item -->
-                        <div class="accordion-item py-4">
-                            <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                                <i class="feather-icon icon-credit-card me-2 text-muted"></i>付款方式
-                                <!-- collapse -->
-                            </a>
-                            <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
-                                <div class="mt-5">
-                                    <div>
-                                        <div class="card card-bordered shadow-none mb-2">
-                                            <!-- card body -->
-                                            <div class="card-body p-6">
-                                                <div class="d-flex">
-                                                    <div class="form-check">
-                                                        <!-- checkbox -->
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault2" id="homeRadio4" checked>
-                                                        <label class="form-check-label ms-2" for="homeRadio4">
-
-                                                        </label>
-                                                    </div>
-                                                    <div>
-                                                        <!-- title -->
-                                                        <h5 class="mb-1 h6">線上支付</h5>
-                                                        <p class="mb-0 small">
-                                                            您將會被導入至外部的付款頁面
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Button -->
-                                        <div class="mt-5 d-flex justify-content-end">
-                                            <button class="btn btn-primary ms-2" @@click="CreateTakeOutOrder">訂購</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </template>
-
-
 
 
             @*------------------ 固定的訂單明細---------------- *@
@@ -388,7 +384,6 @@
     <script src="~/assets/libs/flatpickr/dist/flatpickr.min.js"></script>
     <!-- Libs JS -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
