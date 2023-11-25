@@ -43,7 +43,15 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 
         public async Task<IActionResult> Main2()
         {
-            var sifoodContext2 = _context.OrderDetails.Include(d => d.Product).Select(x => new { StoreId = x.Product.StoreId, UnitPrice = x.Product.UnitPrice, OrderId = x.OrderId, ProductId = x.ProductId, ProductName = x.Product.ProductName }).Where(e => e.StoreId == targetStoreId);
+            var sifoodContext2 = _context.OrderDetails.Include(d => d.Product).Select(x => new 
+            { StoreId = x.Product.StoreId,
+                UnitPrice = x.Product.UnitPrice,
+                OrderId = x.OrderId,
+                OrderDetailId = x.OrderDetailId,
+                ProductId = x.ProductId,
+                Quantity = x.Quantity,
+                ProductName = x.Product.ProductName })
+                .Where(e => e.StoreId == targetStoreId);
             return Json(sifoodContext2);
 
         }

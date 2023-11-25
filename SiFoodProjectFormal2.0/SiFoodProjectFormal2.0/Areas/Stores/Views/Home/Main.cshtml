@@ -114,10 +114,10 @@
                                     <h3 class="mb-0 fs-5">今日銷售</h3>
                                     <div id="totalSale" class="mt-6 d-flex justify-content-center"></div>
                                     <div id="main" class="mt-4">
-                                        <button id="getStoreInfoAPI" v-on:click="getStoreInfoAPI" class="btn btn-primary">getelment</button>
-
+@*                                         <button id="getStoreInfoAPI" v-on:click="getStoreInfoAPI" class="btn btn-primary">getelment</button>
+ *@
                                         <!-- list -->
-                                        <ul v-for="item in StoreInfo" class="list-unstyled mb-0">
+                                        <ul v-for="(item, productName) in TotalSales" class="list-unstyled mb-0">
                                             <li class="mb-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="8"
                                                      height="8" fill="currentColor"
@@ -125,9 +125,10 @@
                                                     <circle cx="8" cy="8" r="8" />
                                                 </svg> <span class="ms-1">
                                                     <span class="text-dark">
-                                                        {{item.productName}}
-                                                        ${{item.unitPrice}}
-                                                    </span> (2%)
+                                                        {{productName}}
+                                                        數量:{{item.amount}}
+                                                        總計:{{item.totalPrice}}
+                                                    </span> {{item.percentage}}%
                                                 </span>
                                             </li>
                                         </ul>
@@ -166,8 +167,8 @@
             data: function () {
                 return {
                     StoreInfo:[],
-                    ProductName:"",
-                    SalesCount: "",
+                    TotalSales: {},
+                    TodaySales:0
                 }
             },
             computed: {
@@ -191,13 +192,38 @@
                             // 在這裡處理數據
                             alert(JSON.stringify(data));
                             _this.StoreInfo = data /* test */
+                            _this.calculateTotalSales();
 
                         })
                         .catch(error => {
                             alert(error);
                         });
+                },
+                calculateTotalSales: function () {
+                    let _this = this; /* test */
+                    // 清空 TotalSales
+                    _this.TotalSales = {};
+                    // 遍歷 StoreInfo 並計算 TotalSales
+                    _this.StoreInfo.forEach(item => {
+                        _this.TodaySales += item.unitPrice * item.quantity;
+                        const productName = item.productName;
+                        if (!_this.TotalSales[productName]) {
+                            _this.TotalSales[productName] = {
+                                totalPrice: 0,
+                                amount: 0,
+                                percentage: 0,
+                            };
+                        }
+                        _this.TotalSales[productName].amount += item.quantity;
+                        _this.TotalSales[productName].totalPrice += (item.unitPrice * item.quantity);
+                    });
+                    for (const productName in _this.TotalSales) {
+                        const product = _this.TotalSales[productName];
+                        product.percentage = ((product.totalPrice / _this.TodaySales) * 100).toFixed(2); // 修正此行
+                    }
                 }
             },
         }).mount("#main")
     </script>
 }
+
