@@ -14,28 +14,27 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             _context = context;
         }
 
-
         [HttpGet]
         public IActionResult Checkout(int id)
         {
-            var _address = _context.UserAddresses.Find(id)?.UserDetailAddress;
-            ViewBag.ad = _address;
+            var address = _context.UserAddresses.Find(id)?.UserDetailAddress;
+            ViewBag.ad = address;
+
+
 
             return View();
         }
-
-
-        [HttpPost]
-        public string DeliverOrder(CreateOrderVM model)
-        {
-            return "新增外送訂單成功";
-        }
-
 
         [HttpPost]
         public string TakeOutOrder(CreateOrderVM model)
         {
             return "新增自取訂單成功";
+        }
+
+        [HttpPost]
+        public string DeliverOrder(CreateOrderVM model)
+        {
+            return "新增外送訂單成功";
         }
 
         public IActionResult Payment()
