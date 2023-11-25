@@ -1,11 +1,13 @@
-﻿
-namespace SiFoodProjectFormal2._0.Models
+﻿using SiFoodProjectFormal2._0.Models;
+using SiFoodProjectFormal2._0.Areas.Admin.Views.Models;
+
+namespace SiFoodProjectFormal2._0.Areas.Admin.Views.Models
 {
-    public class OrderManageViewModel
+    public class OrderManageVM
     {
-        
+
         public string? OrderAddress { get; set; }
-        public string? OrderId { get; set; } 
+        public string? OrderId { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
         public string? UserName { get; set; }
@@ -13,11 +15,11 @@ namespace SiFoodProjectFormal2._0.Models
         public string? UserPhone { get; set; }
         public int OrderDetailId { get; set; }
         public ICollection<UserAddress>? UserAddress { get; internal set; }
-        public DateTime OrderDate { get; set; }       
+        public DateTime OrderDate { get; set; }
         public string? StatusName { get; internal set; }
-        public decimal ProductUnitPrice { get; internal set; }
-        public string StoreName { get; internal set; }
-        public string StorePhone { get; internal set; }
-        public string StoreAddress { get; internal set; }
+        public decimal ProductUnitPrice { get;  set; }
+        public string? StoreName { get;  set; }
+        public string? StorePhone { get; set; }
+        public string? StoreAddress { get; set; }
     }
 }

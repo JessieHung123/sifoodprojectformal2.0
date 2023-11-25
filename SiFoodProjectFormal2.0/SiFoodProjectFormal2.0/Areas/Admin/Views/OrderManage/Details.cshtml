@@ -1,14 +1,16 @@
-﻿@model SiFoodProjectFormal2._0.Models.OrderManageViewModel
-        
+﻿@model SiFoodProjectFormal2._0.Areas.Admin.Views.Models.OrderManageVM
+
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "訂單詳細資料";
+    Layout = "_AdminLayout";
+    <link rel="shortcut icon" href="~/images/sifood_logo_bgclear.png">
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
     <link href="~/assets/css/theme.min.css" rel="stylesheet" />
     <style>
-       .col-sm-2 {
-            background-color: forestgreen; 
+        .col-sm-2 {
+            background-color: forestgreen;
             color: #fff;
             text-align: center;
         }
@@ -22,7 +24,7 @@
     <hr />
     <div class="mt-8">
         <div class="row">
-          
+
             <div class="col-lg-4 col-md-4 col-12">
                 <div class="mb-6">
                     <h6 style="color: forestgreen;">顧客資料</h6>
@@ -31,10 +33,10 @@
                         @Html.DisplayFor(model => model.UserPhone)<br>
                         @Html.DisplayFor(model => model.OrderAddress)
                     </p>
-                    
+
                 </div>
             </div>
-           
+
             <div class="col-lg-4 col-md-4 col-12">
                 <div class="mb-6">
                     <h6 style="color: forestgreen;">店家資料</h6>
@@ -46,57 +48,57 @@
 
                 </div>
             </div>
- 
-  <table class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
-    <thead class="bg-light">
-        <tr>
-            <th>訂單編號</th>
-            <th>訂單日期</th>
-            <th>商品名稱</th>
-            <th>商品數量</th>
-            <th>產品編號</th>
-            <th>商品單價</th>
-            <th>訂單狀態</th>
-        </tr>
-    </thead>
-    <tbody>
 
-        <tr>
-                <td>
+            <table class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
+                <thead class="bg-light">
+                    <tr>
+                        <th>訂單編號</th>
+                        <th>訂單日期</th>
+                        <th>商品名稱</th>
+                        <th>商品數量</th>
+                        <th>產品編號</th>
+                        <th>商品單價</th>
+                        <th>訂單狀態</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>
                             @Html.DisplayFor(model => model.OrderId)
-                </td>
-            <td>
+                        </td>
+                        <td>
                             @Html.DisplayFor(model => model.OrderDate)
-            </td>
-                <td>
+                        </td>
+                        <td>
                             @Html.DisplayFor(model => model.ProductName)
-                </td>
-            <td>
+                        </td>
+                        <td>
                             @Html.DisplayFor(model => model.Quantity)
-            </td>
-           
-            <td>
+                        </td>
+
+                        <td>
                             @Html.DisplayFor(model => model.ProductId)
-            </td>
-             <td>
+                        </td>
+                        <td>
                             @Html.DisplayFor(model => model.ProductUnitPrice)
-             </td>
-             <td>
+                        </td>
+                        <td>
                             @Html.DisplayFor(model => model.StatusName)
-             </td>
-             </tr>
-    </tbody>
-</table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-         
-     
-  
 
-<div>
-    <a asp-controller="OrderManage" asp-action="Edit" asp-route-OrderId="@Model.OrderId"
-       asp-route-ProductId="@Model.ProductId"><button type="button" class="btn btn-warning">修改</button></a>
-   
-    <a asp-action="Index">回上頁</a>
-</div>
+
+
+
+            <div>
+                <a asp-controller="OrderManage" asp-action="Edit" asp-route-OrderId="@Model.OrderId"
+                   asp-route-ProductId="@Model.ProductId"><button type="button" class="btn btn-warning">修改</button></a>|
+
+                <a asp-action="Index">回上頁</a>
+            </div>
 
 

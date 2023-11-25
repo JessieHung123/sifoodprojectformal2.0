@@ -1,9 +1,9 @@
-﻿
-@* @model IEnumerable<SiFoodProjectFormal2._0.Models.OrderDetail> *@
-@model IEnumerable<SiFoodProjectFormal2._0.Models.OrderManageViewModel>
+﻿@model IEnumerable<SiFoodProjectFormal2._0.Areas.Admin.Views.Models.OrderManageVM>
 
 @{
+    Layout = "_AdminLayout";
     ViewData["Title"] = "訂單管理";
+   
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
@@ -15,7 +15,7 @@
 
         <div>
             <h2>訂單管理</h2>
-            <!-- breacrumb -->
+          
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="#">首頁</a></li>
@@ -62,8 +62,8 @@
             <th>訂單編號</th>
             <th>訂單日期</th>
             <th>客戶姓名</th>
+            <th>商品名稱</th>
             <th>商品數量</th>
-            <th>產品編號</th>
             <th>訂單狀態</th>
             <th>編輯</th>
         </tr>
@@ -80,18 +80,19 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
            
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductId)
-            </td>
+            
              <td>
                     @Html.DisplayFor(modelItem => item.StatusName)
              </td>
             <td>
-                    @* <a asp-action="Create"><button type="button" class="btn btn-primary">新增</button></a> | *@
+                   
                     <a asp-controller="OrderManage" asp-action="Edit" asp-route-OrderId="@item.OrderId" asp-route-ProductId="@item.ProductId"><button type="button" class="btn btn-warning">修改</button></a> |
                     <a asp-controller="OrderManage" asp-action="Details" asp-route-OrderId="@item.OrderId" asp-route-ProductId="@item.ProductId"><button type="button" class="btn btn-info">明細</button></a> |
                     <a asp-controller="OrderManage" asp-action="Delete" asp-route-OrderId="@item.OrderId" asp-route-ProductId="@item.ProductId"><button type="button" class="btn btn-danger">刪除</button></a>                          
