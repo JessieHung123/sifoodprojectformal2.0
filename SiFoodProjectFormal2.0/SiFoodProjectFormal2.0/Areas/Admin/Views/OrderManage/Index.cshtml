@@ -4,10 +4,10 @@
     Layout = "_AdminLayout";
     ViewData["Title"] = "訂單管理";
    
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
-    <link href="~/assets/css/theme.min.css" rel="stylesheet" />
+                                                    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+                                                    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
+                                                    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+                                                    <link href="~/assets/css/theme.min.css" rel="stylesheet" />
 }
 
 <div class="text-center">
@@ -33,25 +33,21 @@
        
         <div class="col-3 col-md-4 col-12">
 
-           @*  <!-- select -->
-            <form id="orderStatusForm" action="/OrderManage/UpdateOrderStatus" method="post">
-                <label for="orderStatus">訂單狀態</label>
-                <select class="form-select" id="orderStatus" name="orderStatus" onchange="submitForm()">
-                    <option selected disabled>選擇訂單狀態</option>
-                    <option value="Success">已領取</option>
-                    <option value="Pending">進行中</option>
-                    <option value="Cancel">已取消</option>
-                </select>
-                <!-- 隐藏的按钮 -->
-                <button type="submit" style="display: none;"></button>
-            </form>
+            <!-- select -->
+            <label for="orderStatusFilter">訂單狀態篩選</label>
+            <select class="form-select" id="orderStatusFilter" name="orderStatusFilter" onchange="filterOrders()">
+            <option value="">所有訂單狀態</option>
+            <option value="待確認">待確認</option>
+            <option value="待配送">待配送</option>
+            <option value="待領取">待領取</option>
+            <option value="配送中">配送中</option>
+            <option value="已送達">已送達</option>
+            <option value="已領取">已領取</option>
+            <option value="已取消">已取消</option>
+            </select>
+           
 
-            <script>
-                function submitForm() {
-                  document.getElementById('orderStatusForm').submit();
-                }
-            </script> *@
-        
+            
         </div>
     </div>
 </div>
@@ -68,7 +64,7 @@
             <th>編輯</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="orderTableBody">
 @foreach (var item in Model) {
         <tr>
                 <td>
@@ -120,5 +116,24 @@
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="~/assets/js/theme.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            document.getElementById("orderStatusFilter").addEventListener("change", function () {
+                var selectedStatusName = this.value;
+                $.ajax({
+                    url: "/Admin/OrderManage/FilterOrders",
+                    type: "GET",
+                    data: { status: selectedStatusName },
+                    success: function (result) { $("#orderTableBody").html(result); },
+                    error: function (error) {
+                        console.error("無法篩選訂單狀態!");
+                    }
+                });
+            });
+
+        });
+
+    </script>
 
 }
