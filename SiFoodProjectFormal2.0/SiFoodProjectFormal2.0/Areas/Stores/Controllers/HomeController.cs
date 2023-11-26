@@ -13,10 +13,12 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         string targetStoreId = "S001";
         //------------------------//
         private readonly Sifood3Context _context;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public HomeController(Sifood3Context context)
+        public HomeController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Products
