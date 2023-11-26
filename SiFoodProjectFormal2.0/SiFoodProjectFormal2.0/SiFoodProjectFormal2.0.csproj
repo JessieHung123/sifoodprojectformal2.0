@@ -37,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
->>>>>>> a65e8415d2e2561e5aa30c100e9f04c7544e741f
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
