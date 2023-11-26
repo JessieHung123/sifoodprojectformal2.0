@@ -39,10 +39,28 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> JoinUs([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,OpeningDay,PhotosPath,LogoPath")] JoinUsViewModel joinus)
+        public async Task<IActionResult> JoinUs([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,ClosingDay,PhotosPath,LogoPath")] JoinUsViewModel joinus)
         {
             if (ModelState.IsValid)
             {
+
+                //處理圖片上傳
+                try
+                {
+                    if (Request.Form.Files["LogoPath"] != null)
+                    {
+                        byte[] data = null;
+                        using (BinaryReader br=new BinaryReader(
+                            Request.Form.Files["LogoPath"].OpenReadStream())) {
+                            data = br.ReadBytes((int)Request.Form.Files["LogoPath"].Length);
+                            //這邊先註解掉等資料庫欄位修改好
+                            // joinus.LogoPath = data;
+
+
+                        }
+                    }
+                }
+
                 var store = new Store
                 {
                     // 將joinus 的數據映射到 store 實體
