@@ -70,7 +70,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
                 CategoryList = z.Products.Where(p => p.RealeasedTime.Date == today && p.RealeasedTime.TimeOfDay < currentTime && p.SuggestPickEndTime > currentTime).Select(y => y.Category.CategoryName).Distinct().ToArray(),
 
-                Comment = z.Orders.Select(d => new CommentVM
+                Comment = z.Orders.Where(x => x.Comment != null).Select(d => new CommentVM
                 {
                     Contents = d.Comment.Contents,
                     CommentRank = d.Comment.CommentRank,

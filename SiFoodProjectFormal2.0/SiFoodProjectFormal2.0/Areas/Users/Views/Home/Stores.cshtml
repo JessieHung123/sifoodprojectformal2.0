@@ -18,12 +18,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
           rel="stylesheet" />
     <!-- Google Fonts -->
-    @* <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+                        @* <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           rel="stylesheet" /> *@
     <!-- MDB -->
                         @* <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
     rel="stylesheet" /> *@
-  
+
 }
 
 
@@ -130,7 +130,6 @@
                             <!-- input group -->
                             <div class="col-4 col-md-3 col-lg-3">
                                 <!-- input -->
-                                <!-- input -->
                                 <div class="input-group input-spinner  ">
                                     <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
                                     <input type="number" step="1" max="10" value="1" name="quantity"
@@ -179,7 +178,6 @@
                                     </div>
                                 </div>
                             </div>
-
 
                             <!-- input group -->
                             <div class="col-4 col-md-3 col-lg-3">
@@ -237,7 +235,7 @@
 
                             <!-- input group -->
                             <div class="col-4 col-md-3 col-lg-3">
-                                <!-- input -->
+
                                 <!-- input -->
                                 <div class="input-group input-spinner  ">
                                     <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
@@ -263,7 +261,7 @@
                                     <img src="~/assets/images/products/product-img-4.jpg" alt="Ecommerce"
                                          class="icon-shape icon-xxl">
                                     <div class="ms-3">
-                                        <!-- title -->
+
                                         <!-- title -->
                                         <a href="~/pages/shop-single.html" class="text-inherit">
                                             <h6 class="mb-0">Onion Flavour Potato</h6>
@@ -291,7 +289,7 @@
 
                             <!-- input group -->
                             <div class="col-4 col-md-3 col-lg-3">
-                                <!-- input -->
+
                                 <!-- input -->
                                 <div class="input-group input-spinner  ">
                                     <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
@@ -344,7 +342,7 @@
 
                             <!-- input group -->
                             <div class="col-4 col-md-3 col-lg-3">
-                                <!-- input -->
+
                                 <!-- input -->
                                 <div class="input-group input-spinner  ">
                                     <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
@@ -470,19 +468,19 @@
             </div>
         </div>
         <!-- section -->
-        <section  class="mb-lg-14 mb-8 mt-8">
+        <section class="mb-lg-14 mb-8 mt-8">
             <div class="container">
                 <!-- row -->
                 <div class="row">
                     <div class="col-12 col-lg-3 col-md-4 mb-4 mb-md-0">
                         <div class="d-flex flex-column">
                             <div>
-                                <!-- img -->
+
                                 <!-- img -->
                                 <img :src="stores.logoPath"
                                      alt=""
-                                     class="rounded-circle icon-shape icon-xxl" 
-                                     style="height:150px; width:auto"/>
+                                     class="rounded-circle icon-shape icon-xxl"
+                                     style="height:150px; width:auto" />
                             </div>
                             <!-- heading -->
                             <div class="mt-4">
@@ -500,11 +498,11 @@
                                 </div>
                                 <div>
                                     @* <span> *@
-                                        <small><a href="#!">{{stores.weekdayOpeningTime}}</a></small>
-                                        <br />
-                                        <small><a href="#!">{{stores.weekendOpeningTime}}</a></small>
-                                        <br />
-                                        <small><a href="#!">(Open Now***)</a></small>
+                                    <small><a href="#!">{{stores.weekdayOpeningTime}}</a></small>
+                                    <br />
+                                    <small><a href="#!">{{stores.weekendOpeningTime}}</a></small>
+                                    <br />
+                                    <small><a href="#!">(Open Now***)</a></small>
                                     @* </span> *@
                                 </div>
                                 <!-- rating -->
@@ -528,9 +526,9 @@
 
 
                         </div>
-                       
+
                         <hr />
-                        <div >
+                        <div>
                             <ul class="nav flex-column nav-links">
                                 <!-- nav item -->
                                 <li class="nav-item" v-for="category in stores.categoryList" v-on:click="categoriesFilter(category)">
@@ -540,7 +538,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-lg-9 col-md-8">
-                        
+
                         <div class="mb-8 d-lg-flex justify-content-lg-between rounded">
 
                             <div class="p-8">
@@ -599,7 +597,7 @@
                                         <div class="text-center position-relative">
                                             <!-- badge-二期*** -->
                                             @* <div class="position-absolute top-0 start-0">
-                                                <span class="badge bg-danger">Sale</span>
+                                            <span class="badge bg-danger">Sale</span>
                                             </div> *@
                                             <a href="#!">
                                                 <!-- img --><img :src="item.photoPath"
@@ -656,22 +654,22 @@
                                                 @****二期 <span class="text-decoration-line-through text-muted">$***</span> *@
                                             </div>
                                             @* <div>
-                                                <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                         width="16"
-                                                         height="16"
-                                                         viewBox="0 0 24 24"
-                                                         fill="none"
-                                                         stroke="currentColor"
-                                                         stroke-width="2"
-                                                         stroke-linecap="round"
-                                                         stroke-linejoin="round"
-                                                         class="feather feather-plus">
-                                                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                                    </svg>
-                                                    Add
-                                                </a>
+                                            <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="feather feather-plus">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                            Add
+                                            </a>
                                             </div> *@
                                         </div>
                                     </div>
@@ -737,12 +735,9 @@
                         <!-- Single item -->
                         <div v-for="(group, groupIndex) in groupedPeople" :key="groupIndex" class="carousel-item" :class="{ 'active': groupIndex === 0 }">
 
-                        @* <div class="carousel-item active"> *@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-4" v-for="(person, personIndex) in group">
-
-                                    @* <div class="col-lg-4"> *@
 
                                         <h5 class="mb-3">{{person.user}}</h5>
                                         <p>{{person.deliveryMethod}}</p>
@@ -759,44 +754,45 @@
                                         </ul>
                                     </div>
 
-@*                                     <div class="col-lg-4 d-none d-lg-block">
+                                    @*                                     <div class="col-lg-4 d-none d-lg-block">
 
-                                        <h5 class="mb-3">John Doe</h5>
-                                        <p>Web Developer</p>
-                                        <p class="text-muted">
-                                            <i class="fas fa-quote-left pe-2"></i>
-                                            Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis
-                                            suscipit laboriosam, nisi ut aliquid commodi.
-                                        </p>
-                                        <ul class="list-unstyled d-flex justify-content-center text-warning mb-0">
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li>
-                                                <i class="fas fa-star-half-alt fa-sm"></i>
-                                            </li>
-                                        </ul>
+                                    <h5 class="mb-3">John Doe</h5>
+                                    <p>Web Developer</p>
+                                    <p class="text-muted">
+                                    <i class="fas fa-quote-left pe-2"></i>
+                                    Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis
+                                    suscipit laboriosam, nisi ut aliquid commodi.
+                                    </p>
+                                    <ul class="list-unstyled d-flex justify-content-center text-warning mb-0">
+                                    <li><i class="fas fa-star fa-sm"></i></li>
+                                    <li><i class="fas fa-star fa-sm"></i></li>
+                                    <li><i class="fas fa-star fa-sm"></i></li>
+                                    <li><i class="fas fa-star fa-sm"></i></li>
+                                    <li>
+                                    <i class="fas fa-star-half-alt fa-sm"></i>
+                                    </li>
+                                    </ul>
                                     </div>
 
                                     <div class="col-lg-4 d-none d-lg-block">
 
-                                        <h5 class="mb-3">Maria Kate</h5>
-                                        <p>Photographer</p>
-                                        <p class="text-muted">
-                                            <i class="fas fa-quote-left pe-2"></i>
-                                            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
-                                            praesentium voluptatum deleniti atque corrupti.
-                                        </p>
-                                        <ul class="list-unstyled d-flex justify-content-center text-warning mb-0">
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="far fa-star fa-sm"></i></li>
-                                        </ul>
+                                    <h5 class="mb-3">Maria Kate</h5>
+                                    <p>Photographer</p>
+                                    <p class="text-muted">
+                                    <i class="fas fa-quote-left pe-2"></i>
+                                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
+                                    praesentium voluptatum deleniti atque corrupti.
+                                    </p>
+                                    <ul class="list-unstyled d-flex justify-content-center text-warning mb-0">
+                                    <li><i class="fas fa-star fa-sm"></i></li>
+                                    <li><i class="fas fa-star fa-sm"></i></li>
+                                    <li><i class="fas fa-star fa-sm"></i></li>
+                                    <li><i class="fas fa-star fa-sm"></i></li>
+                                    <li><i class="far fa-star fa-sm"></i></li>
+                                    </ul>
                                     </div>
- *@                                </div>
+                                    *@
+                                </div>
                             </div>
                         </div>
 
@@ -807,7 +803,7 @@
             </div>
         </section>
     </main>
-    <!-- modal -->
+
     <!-- Modal -->
     <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -930,7 +926,7 @@
                                     </button>
                                 </div>
                                 <div>
-                                    <!-- input -->
+
                                     <!-- input -->
                                     <div class="input-group input-spinner  ">
                                         <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
@@ -1004,66 +1000,55 @@
 
     @section Scripts{
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
-
         <script>
             var baseAddress = "https://localhost:7042";
-
             const storeProductApp = Vue.createApp({
                 data: function () {
-                    return {                     
+                    return {
                         products: [],
-                        stores: [],                    
+                        stores: [],
                         storeName: "",
-                        comment: [],                      
+                        comment: [],
                         selectedCategory: null,
                         sortingOptions: 'PriceLowToHigh',
-                        productsQty:0
+                        productsQty: 0
                     }
                 },
                 computed: {
-                        groupedPeople() {
-                            const groupSize = 3;
-                            const grouped = [];
-
-                            for (let i = 0; i < this.comment.length; i += groupSize) {
-                                grouped.push(this.comment.slice(i, i + groupSize));
-                            }
-
-                            return grouped;
-                        },
-                    
-                        
-
-                        filteredProducts() {
-                            let filteredProducts = this.products;
-
-                            // Apply filtering based on selected category
-                            if (this.selectedCategory && this.selectedCategory !== "全部") {
-                                filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
-                            }
-
-                            // Apply sorting based on sortingOptions
-                            if (this.sortingOptions === "PriceLowToHigh") {
-                                filteredProducts = filteredProducts.sort((a, b) => a.unitPrice - b.unitPrice);
-                            } else if (this.sortingOptions === "PriceHighToLow") {
-                                filteredProducts = filteredProducts.sort((a, b) => b.unitPrice - a.unitPrice);
-                            } else if (this.sortingOptions === "QtyLowToHigh") {
-                                filteredProducts = filteredProducts.sort((a, b) => a.avalibleQty - b.avalibleQty);
-                            } else if (this.sortingOptions === "QtyHighToLow") {
-                                filteredProducts = filteredProducts.sort((a, b) => b.avalibleQty - a.avalibleQty);
-                            }
-                            this.productsQty = filteredProducts.length;
-                            return filteredProducts;
+                    groupedPeople() {
+                        const groupSize = 3;
+                        const grouped = [];
+                        for (let i = 0; i < this.comment.length; i += groupSize) {
+                            grouped.push(this.comment.slice(i, i + groupSize));
                         }
-                               
+                        return grouped;
+                    },
+
+                    filteredProducts() {
+                        let filteredProducts = this.products;
+                        // filtering based on selected category
+                        if (this.selectedCategory && this.selectedCategory !== "全部") {
+                            filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
+                        }
+                        // sorting based on sortingOptions
+                        if (this.sortingOptions === "PriceLowToHigh") {
+                            filteredProducts = filteredProducts.sort((a, b) => a.unitPrice - b.unitPrice);
+                        } else if (this.sortingOptions === "PriceHighToLow") {
+                            filteredProducts = filteredProducts.sort((a, b) => b.unitPrice - a.unitPrice);
+                        } else if (this.sortingOptions === "QtyLowToHigh") {
+                            filteredProducts = filteredProducts.sort((a, b) => a.avalibleQty - b.avalibleQty);
+                        } else if (this.sortingOptions === "QtyHighToLow") {
+                            filteredProducts = filteredProducts.sort((a, b) => b.avalibleQty - a.avalibleQty);
+                        }
+                        this.productsQty = filteredProducts.length;
+                        return filteredProducts;
+                    }
                 },
                 mounted: function () {
                     let _this = this;
                     _this.getStoreInfo();
-
                 },
                 methods: {
-
                     categoriesFilter(category) {
                         this.selectedCategory = category;
                     },
@@ -1079,12 +1064,10 @@
                                 return response.json();
                             })
                             .then(data => {
-                                // alert(JSON.stringify(data));                      
+                                // alert(JSON.stringify(data));
                                 _this.stores = data[0];
                                 _this.products = data[0].products;
-                                _this.comment = data[0].comment;
-                                // _this.categoryList = data[0].categoryList;
-                                // const newCategory = "New Category";
+                                _this.comment = data[0].comment;                              
                                 _this.stores.categoryList.push("全部");
                                 _this.stores.categoryList.sort();
                                 console.table(_this.stores)
@@ -1092,9 +1075,7 @@
                                 alert(error);
                                 console.log('error', error);
                             });
-
                     },
-                    
                 }
             }).mount("#storeProductsApp")
         </script>
@@ -1116,6 +1097,5 @@
                 src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
     }
 
-   
 </body>
 
