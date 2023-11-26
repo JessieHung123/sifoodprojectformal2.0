@@ -43,7 +43,9 @@ public partial class Store
 
     public string? LogoPath { get; set; }
 
-    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
+    public string? PhotosPath2 { get; set; }
+
+    public string? PhotosPath3 { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
