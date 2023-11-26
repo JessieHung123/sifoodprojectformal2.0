@@ -57,12 +57,15 @@
                     <!-- accordion -->
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <!-- accordion item -->
+                        <div class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            <i class="fa-solid fa-user"></i> &nbsp;訂購人 : {{checkoutData.userName}}
+                        </div>
                         <!-- accordion item -->
                         <div class="accordion-item py-4">
                             <h5>
                                 <i class="feather-icon icon-clock me-2 text-muted"></i>預定取貨時間
                             </h5>
-                            <input type="text" class="border border-1" style="width:350px" readonly />
+                            <input type="text" class="border border-1" style="width:150px" readonly v-model="orderTime" />
                         </div>
                         <!-- accordion item -->
                         <div class="accordion-item py-4">
@@ -74,7 +77,7 @@
                             <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
                                 <div class="mt-5">
                                     <label for="DeliveryInstructions" class="form-label sr-only">備註</label>
-                                    <textarea class="form-control" id="DeliveryInstructions" rows="3" placeholder="寫下您的訂單備註"></textarea>
+                                    <textarea class="form-control" v-model="orderNotes" id="DeliveryInstructions" rows="3" placeholder="寫下您的訂單備註"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -149,7 +152,7 @@
                                                 </div>
                                                 <!-- address -->
                                                 <address>
-                                                    <div>{{checkoutDatas.userAddress}}</div>
+                                                    <div>{{checkoutData.userAddress}}</div>
                                                 </address>
                                                 <span class="text-danger">預設地址</span>
                                             </div>
@@ -179,7 +182,7 @@
                             <h5>
                                 <i class="feather-icon icon-clock me-2 text-muted"></i>預定送達時間
                             </h5>
-                            <input type="text" class="border border-1" style="width:350px" readonly />
+                            <input type="text" class="border border-1" style="width:200px" readonly />
                         </div>
                         <!-- accordion item -->
                         <div class="accordion-item py-4">
@@ -240,27 +243,27 @@
 
             <div class="col-12 col-md-12 offset-lg-1 col-lg-4">
                 <div class="mt-4 mt-lg-0">
-                    <div class="card shadow-sm" style="width:30rem">
+                    <div class="card shadow-sm" style="width:35rem">
                         <h5 class="px-6 py-4 bg-transparent mb-0">訂單明細</h5>
                         <ul class="list-group list-group-flush">
                             <!-- list group item -->
                             <li class="list-group-item px-4 py-3" v-for="item in checkoutDatas">
-                                <div class="row align-items-between">
+                                <div class="row">
                                     <div class="col-2 col-md-2">
                                         <img src="~/assets/images/products/product-img-1.jpg" alt="Ecommerce" class="img-fluid">
                                     </div>
-                                    <div class="col-3 col-md-2">
+                                    <div class="col-3 col-md-3 text-md-start p-4">
                                         <h6 class="mb-0">{{item.productName}}</h6>
-                                        <span><small class="text-muted">店家名稱</small></span>
+                                        <span><small>{{item.storeName}}</small></span>
                                     </div>
-                                    <div class="col-3 col-sm-2 text-muted">
-                                        <span>單價:{{item.unitPrice}}</span>
+                                    <div class="col-2 col-sm-2 text-md-start p-4">
+                                        <span>單價:{{item.unitPrice}}$</span>
                                     </div>
-                                    <div class="col-3 col-sm-2 text-muted">
+                                    <div class="col-2 col-sm-2 text-md-end p-4">
                                         <span>數量:{{item.quantity}}</span>
                                     </div>
-                                    <div class="col-3 text-lg-end text-md-end col-md-3">
-                                        <span class="fw-bold">總價:{{item.totalPrice}}</span>
+                                    <div class="col-3 col-md-3 text-md-end p-4">
+                                        <span class="fw-bold">總價:{{item.totalPrice}}$</span>
                                     </div>
                                 </div>
                             </li>
@@ -268,10 +271,10 @@
                             <li class="list-group-item px-4 py-3">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                     <div>
-                                        商品總價
+                                        訂單總價
                                     </div>
                                     <div class="fw-bold">
-                                        $
+                                        {{totalPrice}}$
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between">
@@ -290,7 +293,7 @@
                                         總金額
                                     </div>
                                     <div>
-                                        $
+                                        {{totalPrice}}$
                                     </div>
                                 </div>
                             </li>
@@ -310,6 +313,7 @@
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -320,11 +324,30 @@
                     checkRadio: false,
                     selectAddress: "",
                     checkoutDatas: [],
+                    orderTime: "",
+                    orderNotes: "",
+                    checkoutData: {}, //陣列裡面第一筆物件
+
+
+
+
+
+                }
+            },
+            computed: {
+                totalPrice: function () {
+                    var _this = this; 
+                    var totalPrice = 0;
+                    _this.checkoutDatas.forEach(item => {
+                        totalPrice += item.totalPrice;
+                    });
+                    return totalPrice;
                 }
             },
             mounted: function () {
                 var _this = this;
                 _this.getDataInfo();
+                _this.getOrderTime();
             },
             methods: {
                 chooseTakeout: function () {
@@ -339,12 +362,25 @@
                 createDelieverOrder: function () {
 
                 },
+                getOrderTime: function () {
+                    var _this = this;
+                    var currentDate = new Date();
+                    currentDate.setMinutes(currentDate.getMinutes() + 30);
+                    var year = currentDate.getFullYear();
+                    var month = (currentDate.getMonth() + 1);
+                    var day = currentDate.getDate();
+                    var hours = currentDate.getHours();
+                    var minutes = currentDate.getMinutes();
+                    var stringDateTime = year + '-' + month + '-' + day + '  ' + hours + ':' + minutes;
+                    _this.orderTime = stringDateTime;
+                },
                 getDataInfo: function () {
                     var _this = this;
                     axios.get(`/Transaction/GetCheckoutData`)
                         .then(response => {
                             //alert(JSON.stringify(response.data));
                             _this.checkoutDatas = response.data;
+                            _this.checkoutData = response.data[0];
                         })
                         .catch(err => {
                             alert(err);

@@ -3,7 +3,7 @@
 namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 {
     public class CheckOutVM
-    { 
+    {
         public int ProductId { get; set; }
 
         [Range(1, 10, ErrorMessage = "{0}必須小於{1}")]
@@ -16,7 +16,9 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         public decimal? UnitPrice { get; set; }
 
         public string? StoreName { get; set; }
-        
+
         public string? UserAddress { get; set; }
+
+        public string? UserName { get; set;}
     }
 }

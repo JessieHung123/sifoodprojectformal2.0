@@ -43,6 +43,10 @@ public partial class Store
 
     public string? LogoPath { get; set; }
 
+    public string? PhotosPath2 { get; set; }
+
+    public string? PhotosPath3 { get; set; }
+
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
