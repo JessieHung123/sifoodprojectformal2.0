@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
     [Area("Users")]
+    
     public class HomeController : Controller
     {
         Sifood3Context _context;
@@ -134,34 +136,57 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //{
         //    return View();
         //}
-
-
-
-        public IActionResult Products()
+        [Route("Users/Home/Products/{ProductId?}")]
+        
+        public IActionResult Products(int ProductId)
         {
+            var IdToString = ProductId.ToString();
+            List<string> ProductList = GetCookieProductList();//讀取
+            if (ProductList.Contains(IdToString)) { ProductList.Remove(IdToString); }
+            ProductList.Add(IdToString);
+            SetCookieProductList(ProductList);//取陣列最後一個以外的值
+            //倒敘且只留最後五個
+            ProductList.Reverse();
+            ProductList = ProductList.Take(5).ToList();
+            
+
+            ViewBag.ProductList= ProductList;
+            List<ProductVM> cookieProduct= new List<ProductVM>();
+            foreach (var productid in ProductList) {
+                var c = _context.Products.Where(p => p.ProductId == int.Parse(productid));
+                ProductVM vM = new ProductVM
+                {
+                    ProductName = c.Select(p => p.ProductName).Single(),
+                    StoreName = c.Include(p => p.Store).Select(p => p.Store.StoreName).Single(),
+                    PhotoPath = c.Select(p => p.PhotoPath).Single(),
+                    UnitPrice = c.Select(p => p.UnitPrice).Single()
+                };
+                cookieProduct.Add(vM);
+            }
+            ViewBag.CookieProduct = cookieProduct;
             return View();
         }
-        //private void GetCookieProductList(string product)
-        //{
-        //    string? CookieValue = Request.Cookies["商品瀏覽紀錄"];
-        //    if (CookieValue != null)
-        //    {
+        private List<string> GetCookieProductList()
+        {
+            string? ProductCookieValue = Request.Cookies["Records"];
+            List<string> ProductList = new List<string>();
+            if (ProductCookieValue != null)
+            {
+                ProductList.AddRange(ProductCookieValue.Split(',')); ;
+            }
+            return ProductList;//{"32","33","34"}
+        }
+        private void SetCookieProductList(List<string> product)
+        {
+            string RecentBrowse = string.Join(",", product);
+            CookieOptions CO = new CookieOptions();
+            CO.Expires = DateTime.Now.AddDays(1);
+            CO.HttpOnly = true;
+            CO.Secure = true;
+            Response.Cookies.Append("Records", RecentBrowse, CO);
+        }
 
-        //    }
 
-        //}
-
-        //private void SetCookieProductList(string product)
-        //{
-        //    string RecentBrowse = string.Join(",", product);
-        //    CookieOptions CO = new CookieOptions();
-        //    CO.Expires = DateTime.Now.AddDays(1);
-        //    CO.HttpOnly = true;
-        //    CO.Secure = true;
-        //    Response.Cookies.Append("商品瀏覽紀錄", RecentBrowse, CO);
-        //}
-
-        
         public IActionResult RealTimeOrders()
         {
             return View();
