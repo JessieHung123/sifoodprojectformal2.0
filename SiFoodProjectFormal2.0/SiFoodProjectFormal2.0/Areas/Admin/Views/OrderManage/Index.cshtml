@@ -4,10 +4,10 @@
     Layout = "_AdminLayout";
     ViewData["Title"] = "訂單管理";
    
-                                                    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
-                                                    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
-                                                    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
-                                                    <link href="~/assets/css/theme.min.css" rel="stylesheet" />
+    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
+    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+    <link href="~/assets/css/theme.min.css" rel="stylesheet" />
 }
 
 <div class="text-center">
@@ -70,20 +70,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.OrderId)
                 </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDate)
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ProductName)
                 </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-           
-            
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
              <td>
                     @Html.DisplayFor(modelItem => item.StatusName)
              </td>

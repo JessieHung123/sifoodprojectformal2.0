@@ -2,7 +2,8 @@
 
 
 <table class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
-  
+
+   
     <tbody id="orderTableBody">
         @foreach (var item in Model)
         {
@@ -17,11 +18,10 @@
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
+                    @Html.DisplayFor(modelItem => item.ProductName)
                 </td>
-
                 <td>
-                    @Html.DisplayFor(modelItem => item.ProductId)
+                    @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StatusName)

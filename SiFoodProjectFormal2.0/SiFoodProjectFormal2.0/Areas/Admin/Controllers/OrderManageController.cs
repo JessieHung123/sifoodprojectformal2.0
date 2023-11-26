@@ -49,7 +49,12 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
 
         [HttpGet]
         public async Task<IActionResult> FilterOrders(string status)
-        { var filteredOrders=await _context.OrderDetails.Where(o=>o.Order.Status.StatusName == status
+        { var filteredOrders=await _context.OrderDetails
+                 .Include(o => o.Order).ThenInclude(o => o.User)
+                 .Include(o => o.Product)
+                 .Include(o => o.Order).ThenInclude(o => o.Status)
+                 .Include(o => o.Order).ThenInclude(o => o.Store)
+                .Where(o=>o.Order.Status.StatusName == status
         ||string.IsNullOrEmpty(status)).Select(o=>new OrderManageVM
         {
             UserName = o.Order.User.UserName,
