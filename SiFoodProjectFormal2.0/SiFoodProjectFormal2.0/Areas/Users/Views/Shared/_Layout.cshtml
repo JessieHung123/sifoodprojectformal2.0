@@ -159,22 +159,18 @@
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-
-
                 <div>
                     <!-- alert -->
-
                     <ul class="list-group list-group-flush" id="cartItemContainer">
-
                         <!-- list group -->
                         <li class="list-group-item py-3 ps-0 border-top">
                             <!-- row -->
-                            <div class="row align-items-center py-2" v-for="(item,index) in carts" :key="index" :id=item.productId>
+                            <div class="row align-items-center py-2" v-for="item in carts" :id=item.productId>
 
                                 <div class="col-6 col-md-6 col-lg-7">
                                     <div class="d-flex">
                                         <a href="./pages/shop-single.html" class="text-inherit">
-                                            <img src="{{item.photoPath}}" alt="Ecommerce" class="icon-shape icon-xxl">
+                                            <img :src="item.photoPath" alt="Ecommerce" class="icon-shape icon-xxl">
                                         </a>
                                         <div class="ms-3">
                                             <!-- title -->
@@ -324,10 +320,6 @@
     <script>
 
         var baseAddress = "https://localhost:7042";
-        function removeCartProduct() {
-            // $("p").remove();
-            alert("yes!");
-        }
         var shoppingCart = Vue.createApp({
             data: function () {
                 return {
@@ -339,18 +331,20 @@
                 }
             },
             mounted: function () {
-                fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
-                    .then(response => response.json())
-                    .then(data => {
-                        // alert(data);
-                        this.carts = data;
-                        this.cartCount = this.carts.length;
-                    }).catch(error => {
-                        alert(error);
-                    });
-
+                this.getCart();
             },
             methods: {
+                getCart() {
+                    fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
+                        .then(response => response.json())
+                        .then(data => {
+                            // alert(data);
+                            this.carts = data;
+                            this.cartCount = this.carts.length;
+                        }).catch(error => {
+                            alert(error);
+                        });
+                },
                 async clickMinus(item) {
                     item.quantity = item.quantity <= 1 ? item.quantity = 1 : item.quantity - 1;
                     let cartItemQtyChange = {
@@ -361,20 +355,15 @@
                         productName: item.productName,
                         storeName: item.storeName,
                     };
-                    
                         await fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
                             method: "PUT",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(cartItemQtyChange)
                         }).then(response => response)
-                    
-                   
                 },
                 async clickAdd(item) {
-                    let remainingStock = $("#remainingStock").text();
-                    if (item.quantity >= remainingStock) {
-                        alert("必須小於庫存數量!");
-                    }
+                    let remainingStock = productApp.remainingStock;
+                    if (item.quantity >= remainingStock) {alert("必須小於庫存數量!");}
                     else { item.quantity = item.quantity + 1; }
                     // item.quantity = item.quantity >= remainingStock ? alert("必須小於庫存數量!"): item.quantity + 1;
                     let cartItemQtyChange = {
@@ -388,19 +377,12 @@
                     // let remainingStock = $("#remainingStock").text();
                     // if (item.quantity >= remainingStock) {
                     //     alert("必須小於庫存數量!");
-                    
                         await fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
                             method: "PUT",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(cartItemQtyChange)
                         }).then(response => response)
-                    
-                    
-                    
-                  
-                    
                 },
-
                 deleteCartItem(item) {
                     let _this = this;
                     let deleteItem = {
@@ -432,11 +414,8 @@
                             })
                     };
                     //remove那個元素
-
                 },
-
             },
-
         }).mount("#header")
     </script>
 </body>

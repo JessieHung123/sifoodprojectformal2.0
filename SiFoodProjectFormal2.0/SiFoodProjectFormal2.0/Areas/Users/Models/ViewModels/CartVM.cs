@@ -21,6 +21,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         
         public string? StoreName { get; set; } 
 
-        public string? StoreId { get; set; }
+        public string? PhotoPath { get; set; }
     }
 }

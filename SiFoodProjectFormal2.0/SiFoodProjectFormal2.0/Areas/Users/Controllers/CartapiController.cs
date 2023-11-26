@@ -35,14 +35,12 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             var cart = await _context.Carts.Where(c => c.UserId == GetUserId).Select(c => new CartVM
             {
                 ProductId = c.ProductId,
-                ProductName =  _context.Products
-                            .Where(p => p.ProductId == c.ProductId).Select(p => p.ProductName).Single(),
+                ProductName =  _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.ProductName).Single(),
                 Quantity = c.Quantity,
                 TotalPrice = (c.Quantity) * _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.UnitPrice).FirstOrDefault(),
-                UnitPrice = _context.Products
-                            .Where(p => p.ProductId == c.ProductId).Select(p => p.UnitPrice).Single(),
+                UnitPrice = _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.UnitPrice).Single(),
                 StoreName = _context.Stores.Where(s => s.StoreId == c.Product.StoreId).Select(p => p.StoreName).Single(),
-                
+                PhotoPath= _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.PhotoPath).Single(),
 
             }).ToListAsync();
             return cart;

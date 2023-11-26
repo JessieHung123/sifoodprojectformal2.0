@@ -137,19 +137,29 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
 
 
-    public IActionResult Products()
+        public IActionResult Products()
         {
-            //ViewBag.ProductName=
-            //    ViewBag.StoreName =
-            //    ViewBag.Address =
-            //    ViewBag.Description =
-            //    ViewBag.UnitPrice =
-            //    ViewBag.PhotoPath =
-            //    ViewBag.SuggestPickUpTime =
-            //    ViewBag.SuggestPickEndTime =
-            //    ViewBag.RemainingStock=
             return View();
         }
+        //private void GetCookieProductList(string product)
+        //{
+        //    string? CookieValue = Request.Cookies["商品瀏覽紀錄"];
+        //    if (CookieValue != null)
+        //    {
+
+        //    }
+
+        //}
+
+        //private void SetCookieProductList(string product)
+        //{
+        //    string RecentBrowse = string.Join(",", product);
+        //    CookieOptions CO = new CookieOptions();
+        //    CO.Expires = DateTime.Now.AddDays(1);
+        //    CO.HttpOnly = true;
+        //    CO.Secure = true;
+        //    Response.Cookies.Append("商品瀏覽紀錄", RecentBrowse, CO);
+        //}
 
         
         public IActionResult RealTimeOrders()

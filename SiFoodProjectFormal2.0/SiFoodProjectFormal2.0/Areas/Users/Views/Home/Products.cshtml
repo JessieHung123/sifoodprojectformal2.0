@@ -18,7 +18,6 @@
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item"><a href="#">首頁</a></li>
                                 <li class="breadcrumb-item"><a href="#">{{productData.storeName}}</a></li>
-
                                 <li class="breadcrumb-item active" aria-current="page" v-cloak>{{productData.productName}}</li>
                             </ol>
                         </nav>
@@ -29,7 +28,6 @@
         <section class="mt-8">
             <div class="container">
                 <div class="row">
-
                     <img class="col-md-6" :src="productData.photoPath" alt="">
                     <div class="col-md-6">
                         <div class="ps-lg-10 mt-6 mt-md-0">
@@ -38,62 +36,46 @@
                             <a  class="mb-2 d-block" v-cloak>{{productData.address}}</a>
                             <!-- heading -->
                             <h1 class="mb-1" v-cloak>{{productData.productName}}</h1>
-
                             <div class="fs-4">
                                 <!-- price --><span class="fw-bold text-dark" v-cloak>${{productData.unitPrice}}</span>
                             </div>
                             <!-- hr -->
                             <hr class="my-6">
                             <div class="container">
-
                                 <!-- input -->
                                 <div style="display:inline;" class=" input-group input-spinner  ">
                                     <input type="button" value="-" v-on:click="clickMinus" class="button-minus  btn  btn-sm " data-field="quantity">
                                     <input type="number" step="1" v-model:value="number" name="quantity" class="quantity-field form-control-sm form-input" readonly>
                                     <input type="button" value="+" v-on:click="clickAdd" class="button-plus btn btn-sm " data-field="quantity">
-
                                 </div>
-
                                 <div style="display:inline;" class="mt-3 mx-3 g-2 align-items-center">
 
                                     <button type="button" class="btn btn-primary" @@click="AddCartItem(productData)">
                                         <i class="feather-icon icon-shopping-bag me-2"></i>加入購物車
                                     </button>
-
                                 </div>
-
-
-
-
                                 <!-- hr -->
                                 <hr class="my-6">
                                 <div>
                                     <!-- table -->
                                     <table class="table table-borderless mb-0">
-
                                         <tbody>
                                             <tr>
                                                 <td>領取時間</td>
                                                 <td v-cloak>{{productData.suggestPickUpTime}}~{{productData.suggestPickEndTime}}</td>
-
                                             </tr>
                                             <tr>
                                                 <td>剩餘庫存</td>
                                                 <td id="remainingStock" v-cloak>{{remainingStock}}</td>
-
                                             </tr>
                                             <tr>
                                                 <td>商品描述</td>
                                                 <td style="word-break: break-all" v-cloak>
                                                     {{productData.description}}
-
                                                 </td>
-
                                             </tr>
-
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                             </div>
@@ -101,8 +83,6 @@
                     </div>
                 </div>
         </section>
-
-
         <!-- 前次瀏覽的商品? -->
         <section class="my-lg-14 my-14">
             <div class="container">
@@ -125,7 +105,39 @@
                                         <img src="~/assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                                              class="mb-3 img-fluid">
                                     </a>
-
+                                </div>
+                                <!-- heading -->
+                                <div class="text-small mb-1">
+                                    <a href="#!" class="text-decoration-none text-muted">
+                                        <small>
+                                            電家名稱
+                                        </small>
+                                    </a>
+                                </div>
+                                <h2 class="fs-6"><a href="#!" class="text-inherit text-decoration-none">商品名稱 </a></h2>
+                                <div class="text-muted small">
+                                    取貨時間
+                                </div>
+                                <!-- price -->
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div>
+                                        <span class="text-dark">$24</span>
+                                    </div>
+                                    <!-- btn -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- col -->
+                    <div class="col">
+                        <div class="card card-product">
+                            <div class="card-body">
+                                <!-- badge -->
+                                <div class="text-center position-relative">
+                                    <a href="#!">
+                                        <img src="~/assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                                             class="mb-3 img-fluid">
+                                    </a>
                                 </div>
                                 <!-- heading -->
                                 <div class="text-small mb-1">
@@ -195,7 +207,6 @@
                                         <img src="~/assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                                              class="mb-3 img-fluid">
                                     </a>
-
                                 </div>
                                 <!-- heading -->
                                 <div class="text-small mb-1">
@@ -215,7 +226,6 @@
                                         <span class="text-dark">$24</span>
                                     </div>
                                     <!-- btn -->
-
                                 </div>
                             </div>
                         </div>
@@ -230,7 +240,6 @@
                                         <img src="~/assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                                              class="mb-3 img-fluid">
                                     </a>
-
                                 </div>
                                 <!-- heading -->
                                 <div class="text-small mb-1">
@@ -250,42 +259,6 @@
                                         <span class="text-dark">$24</span>
                                     </div>
                                     <!-- btn -->
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col">
-                        <div class="card card-product">
-                            <div class="card-body">
-                                <!-- badge -->
-                                <div class="text-center position-relative">
-                                    <a href="#!">
-                                        <img src="~/assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
-                                             class="mb-3 img-fluid">
-                                    </a>
-
-                                </div>
-                                <!-- heading -->
-                                <div class="text-small mb-1">
-                                    <a href="#!" class="text-decoration-none text-muted">
-                                        <small>
-                                            電家名稱
-                                        </small>
-                                    </a>
-                                </div>
-                                <h2 class="fs-6"><a href="#!" class="text-inherit text-decoration-none">商品名稱 </a></h2>
-                                <div class="text-muted small">
-                                    取貨時間
-                                </div>
-                                <!-- price -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div>
-                                        <span class="text-dark">$24</span>
-                                    </div>
-                                    <!-- btn -->
-
                                 </div>
                             </div>
                         </div>
@@ -293,15 +266,12 @@
                 </div>
             </div>
         </section>
-
     </main>
-
 </body>
 
 @section Scripts{
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
-        
         var baseAddress ="https://localhost:7042";
         var productApp = Vue.createApp({
             data: function () {
@@ -313,23 +283,18 @@
             },
             mounted: function () {
                 this.getProductApi();
-            
-            
-            
             },
             watch: {
                 number(newValue) {
                     if (newValue > this.remainingStock) {
                         alert("必須小於庫存數量!");
                     }
-
                 }
-                
             },
             methods: {
                 getProductApi: function () {
                     // fetch(`${baseAddress}/odata/Productapi/GetProduct/${productId}`)
-                    fetch(`${baseAddress}/api/Productapi/GetProduct/16`, { method: "GET" })//寫死
+                    fetch(`${baseAddress}/api/Productapi/GetProduct/33`, { method: "GET" })//寫死
                         .then(response => response.json())
                         .then(data => {
                             if (data.length === 0) {
@@ -345,10 +310,7 @@
                         })
                 },
                 clickMinus() {
-                    if (this.number <= 1) {
-                        this.number = 1;
-                    } else { this.number = this.number - 1; }
-
+                    this.number = this.number <= 1 ? 1 : this.number - 1;
                 },
                 clickAdd() {
                     if (this.number >= this.remainingStock) {
@@ -365,17 +327,14 @@
                         productName: productData.productName,
                         storeName: productData.storeName,
                     }; /*  //寫死 */
-
-                    let cartCurrentStoreName = $('#cartItemContainer').find('h6:eq(1)').text();
-
+                    // let cartCurrentStoreName = shoppingCart.carts[0].storeName;
+                    let cartCurrentStoreName = shoppingCart.carts.length > 0 ? shoppingCart.carts[0].storeName : "";
                     if (productData.storeName != cartCurrentStoreName && cartCurrentStoreName!="") {
                         let isChangeStore = confirm(`目前購物車內商品的店家屬於${cartCurrentStoreName}，是否要挑選其他商家做購買?`);
-                        if (isChangeStore == true) {
+                        if (isChangeStore) {
                             try {
                                 //刪除原購物車所有商品
                                 await fetch(`${baseAddress}/api/CartVMapi/DeleteUserAllCart/${addItem.userId}`, { method: "DELETE" })
-
-
                                 //換成新店家
                                 let response = await fetch(`${baseAddress}/api/CartVMapi/AddToCart`,
                                     {
@@ -385,13 +344,12 @@
                                     });
                                 let data = await response.text();
                                 alert(data);
+                                
                             } catch (error) { alert("發生錯誤:" + error); }
-
-
+                            shoppingCart.getCart();
                         }
                     }
                     else {
-                        
                         fetch(`${baseAddress}/api/CartVMapi/AddToCart`,
                             {
                                 method: "POST",
@@ -400,17 +358,15 @@
                             }).then(response => response.text())
                             .then(data => {
                                 alert(data);
-
+                                shoppingCart.getCart();
                             })
                             .catch(error => {
                                 alert("商品項目新增失敗!");
                             });
                         
                     }
+                    
                 },
-
-
-               
             }
 
         }).mount("#product")
