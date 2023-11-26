@@ -4,10 +4,10 @@
     Layout = "_AdminLayout";
     ViewData["Title"] = "訂單管理";
    
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
-    <link href="~/assets/css/theme.min.css" rel="stylesheet" />
+          <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+          <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
+         <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+          <link href="~/assets/css/theme.min.css" rel="stylesheet" />
 }
 
 <div class="text-center">
@@ -27,7 +27,7 @@
     </div>
 </div>
 
-<div class=" p-6 ">
+<div class="col-12">
     <div class="row justify-content-between">
 
        
@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<table class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
+<table id="orderTable" class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
     <thead class="bg-light">
         <tr>
             <th>訂單編號</th>
@@ -96,25 +96,29 @@
     </tbody>
 </table>
 
-<div class="border-top d-md-flex justify-content-between align-items-center p-6">
+
+
+
+@* <div class="border-top d-md-flex justify-content-between align-items-center p-6"> *@
     @* <span>Showing 1 to 8 of 12 entries</span> *@
    
-    <nav class="mt-2 mt-md-0">
+    @* <nav class="mt-2 mt-md-0">
         <ul class="pagination mb-0 ">
             <li class="page-item disabled"><a class="page-link " href="#!">《</a></li>
-            <li class="page-item"><a class="page-link active" href="#!">1</a></li>
+            <li class="page-item"><a class="page-link active" href="#!">1</a></li> *@
           @*   <li class="page-item"><a class="page-link" href="#!">2</a></li>
             <li class="page-item"><a class="page-link" href="#!">3</a></li> *@
-            <li class="page-item"><a class="page-link" href="#!">》</a></li>
+         @*    <li class="page-item"><a class="page-link" href="#!">》</a></li>
         </ul>
     </nav>
-</div>
+</div> *@
 @section Scripts {
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="~/assets/js/theme.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+   
     <script>
         $(document).ready(function () {
             document.getElementById("orderStatusFilter").addEventListener("change", function () {
@@ -134,4 +138,32 @@
 
     </script>
 
+     <script>
+         $(document).ready(function () {
+             $("#orderTable").DataTable({
+                "dom": `<'row'<'col-sm-12 col-md-5'f><'col-sm-12 col-md-7'p>>
+                    <'row'<'col-sm-12'tr>>
+                    <'row'<'col-sm-12 col-md-6'l>>`,
+
+                // "dom": `<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'l>>
+                //     <'row'<'col-sm-12'tr>>
+                //     <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
+                "language": {
+                    "sLengthMenu": "顯示 _MENU_ 項結果",
+                    "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                     "oPaginate": {
+                        // "sFirst":"前一頁",
+                        "sPrevious":"前一頁" ,
+                        "sNext":"後一頁",
+                        // "sLast": "後一頁"
+                    },
+                },
+                "iDisplayLength": 5,
+                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                "bSort": true,
+             });
+        });         
+         
+     </script>
+    
 }

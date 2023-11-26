@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -7,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Areas.Admin.Views.Models;
+using SiFoodProjectFormal2._0.DTO;
 using SiFoodProjectFormal2._0.Models;
+using SiFoodProjectFormal2._0.ViewModels.Users;
 
 namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
 {
@@ -25,7 +28,8 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         // GET: Admin/OrderManage
         public async Task<IActionResult> Index()
         {
-            var sifood3Context = _context.OrderDetails.Include(o => o.Order).ThenInclude(o => o.User).Include(o => o.Product)
+           
+            var sifood3Context = await _context.OrderDetails.Include(o => o.Order).ThenInclude(o => o.User).Include(o => o.Product)
                 .Select(o => new OrderManageVM
                 {
                     UserName = o.Order.User.UserName,
@@ -44,18 +48,24 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                     StoreAddress=o.Order.Store.Address,
 
                 }).ToListAsync();
-                return View(await sifood3Context);
+
+                      return View(sifood3Context);
+
+                
         }
+
+        
 
         [HttpGet]
         public async Task<IActionResult> FilterOrders(string status)
+
         { var filteredOrders=await _context.OrderDetails
                  .Include(o => o.Order).ThenInclude(o => o.User)
                  .Include(o => o.Product)
                  .Include(o => o.Order).ThenInclude(o => o.Status)
                  .Include(o => o.Order).ThenInclude(o => o.Store)
                 .Where(o=>o.Order.Status.StatusName == status
-        ||string.IsNullOrEmpty(status)).Select(o=>new OrderManageVM
+        || string.IsNullOrEmpty(status)).Select(o => new OrderManageVM
         {
             UserName = o.Order.User.UserName,
             OrderAddress = o.Order.Address,
@@ -72,8 +82,9 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             StorePhone = o.Order.Store.Phone,
             StoreAddress = o.Order.Store.Address,
         }
-        ).ToListAsync(); 
-            return PartialView("_OrderTablePartial", filteredOrders); 
+        ).ToListAsync();
+            
+            return PartialView("_OrderTablePartial", filteredOrders);
         }
 
 
