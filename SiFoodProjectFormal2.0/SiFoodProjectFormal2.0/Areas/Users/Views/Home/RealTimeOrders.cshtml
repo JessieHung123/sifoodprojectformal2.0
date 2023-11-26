@@ -987,7 +987,7 @@
                         this.orders = this.orders.filter(order => order.orderId !== item.orderId);
                     },
                     updateOrderStatus(item, newStatusId) {
-                        
+
                         fetch(`${baseAddress}/api/RealTimeOrdersapi/${item.orderId}`, {
                             method: "PUT",
                             headers: {
@@ -1002,11 +1002,8 @@
                                 throw new Error(`HTTP error! Status: ${response.status}`);
                                 alert("成功");
                             }
-                           
-
                         }).then(data => {
                             // console.log(data)
-
                         }).catch(error => {
                             console.error("PUT 請求發生錯誤:", error);
                             // console.log(error);
@@ -1031,9 +1028,7 @@
                             }).catch(error => {
                                 alert(error);
                             });
-
                     },
-
                 }
             }).mount("#orderApp")
         </script>

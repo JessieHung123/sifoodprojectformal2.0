@@ -73,15 +73,13 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpPut("{id}")]
         public async Task<string> PutOrder(string id, [FromBody] RealTimeOrderVM realTimeOrderVM)
         {
-            
             if (id != realTimeOrderVM.OrderId)
             {
                 return "失敗";
             }
             Order? order = await _context.Orders.FindAsync(id);
             order.StatusId = realTimeOrderVM.StatusId;
-            //_context.Entry(realTimeOrderVM).State = EntityState.Modified;
-
+            _context.Entry(order).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
@@ -97,7 +95,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     throw;
                 }
             }
-
             return "已完成";
         }
 
@@ -106,10 +103,10 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-          if (_context.Orders == null)
-          {
-              return Problem("Entity set 'Sifood3Context.Orders'  is null.");
-          }
+            if (_context.Orders == null)
+            {
+                return Problem("Entity set 'Sifood3Context.Orders'  is null.");
+            }
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
