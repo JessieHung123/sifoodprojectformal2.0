@@ -27,14 +27,9 @@
                         <!-- page header -->
                         <div class="d-md-flex justify-content-between align-items-center">
                             <div>
-                                <h2></h2>
+                                <h2>商品管理</h2>
                                 <!-- breacrumb -->
                             </div>
-                            <!-- button -->
-                            @*                             <div>
-                            <a href="add-product.html" class="btn btn-primary">新增商品</a>
-                            </div>
-                            *@
                         </div>
                     </div>
                 </div>
@@ -169,14 +164,14 @@
                                     <table class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
                                         <thead class="bg-light">
                                             <tr>
-                                                <th>
+ @*                                                <th>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" value="" id="checkAll">
                                                         <label class="form-check-label" for="checkAll">
 
                                                         </label>
                                                     </div>
-                                                </th>
+                                                </th> *@
                                                 <th>商品圖片</th>
                                                 <th>商品名稱</th>
                                                 <th>商品種類</th>
@@ -188,17 +183,17 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="item in ProductInfo">
-                                                <td>
+                                               @*  <td>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" value="" id="productOne">
                                                         <label class="form-check-label" for="productOne">
 
                                                         </label>
                                                     </div>
-                                                </td>
+                                                </td> *@
                                                 <td>
                                                     <a href="#!">
-                                                        <img src="~/assets/images/products/product-img-1.jpg" alt=""
+                                                        <img :src="item.photoPath" alt=""
                                                              class="icon-shape icon-md">
                                                     </a>
                                                 </td>
@@ -208,18 +203,10 @@
                                                 <td>${{item.unitPrice}}</td>
                                                 <td>{{item.realeasedTime}}</td>
                                                 <td>
-                                                    <div class="dropdown">
-                                                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                                    <!-- Accept Order Button -->
+                                                    <button class="btn btn-warning btn-sm">編輯</button>&ensp;<button class="btn btn-danger btn-sm">刪除</button>
                                                 </td>
+
                                             </tr>
                                         </tbody>
                                     </table>
