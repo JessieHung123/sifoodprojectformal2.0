@@ -205,6 +205,7 @@
                             alert(error);
                         });
                 },
+                //計算各類別商品的加總
                 calculateTotalSales: function () {
                     let _this = this; /* test */
                     _this.TotalSales = {};
@@ -223,9 +224,10 @@
                     });
                     for (const productName in _this.TotalSales) {
                         const product = _this.TotalSales[productName];
-                        product.percentage = ((product.totalPrice / _this.TodaySales) * 100).toFixed(2); // 修正此行
+                        product.percentage = ((product.totalPrice / _this.TodaySales) * 100).toFixed(2); 
                     }
                 },
+                //取得各類別商品的總金額作為chart.js功能所需要的變數
                 updateChartData: function () {
                     let _this = this;
                     _this.chartData.series = [];
@@ -236,6 +238,7 @@
                     }
                     _this.updateChart();
                 },
+                // 引用chart.js裡面的表格套件
                 updateChart: function () {
                     if ($('#totalSale1').length) {
                         var options = {
