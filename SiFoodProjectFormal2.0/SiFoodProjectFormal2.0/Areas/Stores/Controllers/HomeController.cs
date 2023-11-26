@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -13,10 +14,12 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         string targetStoreId = "S001";
         //------------------------//
         private readonly Sifood3Context _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public HomeController(Sifood3Context context)
+        public HomeController(Sifood3Context context, IWebHostEnvironment webHostenvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostenvironment;
         }
 
         // GET: Products
@@ -43,30 +46,17 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 
         public async Task<IActionResult> Main2()
         {
-            var sifoodContext2 = _context.OrderDetails.Include(d => d.Product).Select(x => new { StoreId = x.Product.StoreId, UnitPrice = x.Product.UnitPrice, OrderId = x.OrderId, ProductId = x.ProductId, ProductName = x.Product.ProductName }).Where(e => e.StoreId == targetStoreId);
+            var sifoodContext2 = _context.OrderDetails.Include(d => d.Product)
+                .Select(x => new { 
+                    StoreId = x.Product.StoreId,
+                    UnitPrice = x.Product.UnitPrice,
+                    OrderId = x.OrderId,
+                    ProductId = x.ProductId,
+                    ProductName = x.Product.ProductName })
+                .Where(e => e.StoreId == targetStoreId);
             return Json(sifoodContext2);
-
         }
 
-        //public async Task<IActionResult> Main2()
-        //{
-        //    var sifoodContext2 = _context.OrderDetails.Include(d => d.Product).Select(x => new { StoreId = x.Product.StoreId, OrderDetailId = x.OrderDetailId, OrderId = x.OrderId, ProductId = x.ProductId, ProductName = x.Product.ProductName }).Where(e => e.StoreId == targetStoreId);
-        //    return Json(sifoodContext2);
-
-        //}
-
-        //public async Task<IActionResult> Main3()
-        //{
-        //    var sifoodContext3 = _context.Products.Select(x => new { StoreId = x.StoreId, Description = x.Description, ProductName = x.ProductName, ReleasedQty = x.ReleasedQty }).Where(p => p.StoreId == targetStoreId);
-        //    return Json(sifoodContext3);
-
-        //}
-
-        //----------------------------------//
-        //public IActionResult Main()
-        //{
-        //    return View();
-        //}
         public IActionResult RealTimeOrders()
         {
             return View();
@@ -79,6 +69,32 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             return View();
         }
+
+        public IActionResult GetProduct()
+        {
+            var ProductContext = _context.Products.Include(d => d.Category).
+                Select(x => new {
+                    StoreId = x.StoreId,
+                    ProductId = x.ProductId,
+                    ProductName = x.ProductName,
+                    Category = x.Category.CategoryName,
+                    RealeasedQty = x.ReleasedQty,
+                    RealeasedTime = x.RealeasedTime,
+                    UnitPrice = x.UnitPrice,
+                    PhotoPath = x.PhotoPath
+                }).Where(e => e.StoreId == targetStoreId);
+            return Json(ProductContext);
+        }
+
+        //public async Task<FileResult> GetPicture(int id)
+        //{
+        //    string WebRootPath = _webHostEnvironment.WebRootPath;
+        //    string Filename = Path.Combine(WebRootPath, "images", "Noimage.png");
+        //    Product? c = await _context.Products.FindAsync(id);
+        //    byte[] ImageContent = c.PhotoPath != null ? c.PhotoPath : System.IO.File.ReadAllBytes(Filename);
+        //    return File(ImageContent, "image/jpeg");
+        //}
+
         public IActionResult InfoModify()
         {
             return View();
