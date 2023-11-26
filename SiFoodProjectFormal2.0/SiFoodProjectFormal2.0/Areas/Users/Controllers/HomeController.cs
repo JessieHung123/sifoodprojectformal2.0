@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
+using System.Text.Json; 
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -44,10 +45,15 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             if (ModelState.IsValid)
             {
 
+                //處理資料庫string型態問題
+                string logoPathInDb = null;
+                List<string> photoPathsInDb = new List<string>();
+
+
                 // 處理 Logo 圖片上傳
-                if (Request.Form.Files["LogoPath"] != null)
+                if (joinus.LogoPath != null)
                 {
-                    var file = Request.Form.Files["LogoPath"];
+                    var file = joinus.LogoPath;
                     //存到images/JoinUs
                     var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Logo", file.FileName);
 
@@ -57,25 +63,30 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     }
 
                     // 保存路徑
-                    joinus.LogoPath = "/images/JoinUs/Logo/" + file.FileName;
+                    logoPathInDb = "/images/JoinUs/Logo/" + file.FileName;
                 }
 
 
-                //處理店家照片上傳
-                if (Request.Form.Files["PhotoPath"] != null)
+                //處理店家多張照片上傳
+                if (joinus.PhotosPath != null && joinus.PhotosPath.Count > 0)
                 {
-                    var file = Request.Form.Files["PhotoPath"];
-                    //存到images/JoinUs
-                    var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Photo", file.FileName);
-
-                    using (var stream = new FileStream(savePath, FileMode.Create))
+                    foreach (var photo in joinus.PhotosPath)
                     {
-                        await file.CopyToAsync(stream);
-                    }
+                        var photoSavePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Photo", photo.FileName);
 
-                    // 保存路徑
-                    joinus.LogoPath = "/images/JoinUs/Photo/" + file.FileName;
+                        using (var stream = new FileStream(photoSavePath, FileMode.Create))
+                        {
+                            await photo.CopyToAsync(stream);
+                        }
+
+                        photoPathsInDb.Add("/images/JoinUs/Photo/" + photo.FileName);
+                    }
                 }
+
+                //串接照片路徑
+                string concatenatedPhotoPaths = String.Join(",", photoPathsInDb);
+
+                //創建store實體
 
                 var store = new Store
                 {
@@ -92,67 +103,20 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     Description = joinus.Description,
                     ClosingDay = joinus.ClosingDay,
                     OpeningTime = joinus.OpeningTime,
-                    LogoPath = joinus.LogoPath,
-                    PhotosPath = joinus.PhotosPath,
+                    LogoPath = logoPathInDb,
+                    // 存儲串接後的照片路徑
+                    PhotosPath = concatenatedPhotoPaths, 
                 };
 
                 _context.Add(store);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(JoinUs));
+                return Json(new { success = true, message = "申請已成功提交！" });
             }
-            return View(joinus);
+            // 如果模型狀態無效，返回 JSON 錯誤信息
+            return Json(new { success = false, message = "表單驗證失敗，請檢查輸入內容。" });
+ 
         }
 
-
-        //之前寫的老版本
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")]JoinUsViewModel joinUsViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        return RedirectToAction("JoinUs");
-        //    }
-        //   return View(joinUsViewModel);
-        //}
-
-        //之前寫的for AJAX版本
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")] JoinUsViewModel joinUsViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // 創建一個新的 Store 實例
-        //        var joinus = new Store
-        //        {
-        //            StoreName = joinUsViewModel.StoreName,
-        //            ContactName = joinUsViewModel.ContactName,
-        //            TaxId = joinUsViewModel.TaxId,
-        //            Email = joinUsViewModel.Email,
-        //            Phone= joinUsViewModel.Phone,
-        //            OpeningDay = joinUsViewModel.OpeningDay,
-        //            OpeningTime = joinUsViewModel.OpeningTime,
-        //            Address = joinUsViewModel.Address,
-        //            Description = joinUsViewModel.Description,
-
-        //        };
-
-        //        // 將 joinus 實例添加到數據庫上下文的 Stores 集合中
-        //        _context.Stores.Add(joinus);
-
-        //        // 保存更改到數據庫
-        //        await _context.SaveChangesAsync();
-
-        //        // 返回 JSON 響應
-        //        return Json(new { success = true, message = "申請已成功提交！" });
-        //    }
-        //    else
-        //    {
-        //        // 返回包含錯誤信息的 JSON 響應
-        //        return Json(new { success = false, message = "表單驗證失敗，請檢查輸入內容。" });
-        //    }
-        //}
 
 
 
