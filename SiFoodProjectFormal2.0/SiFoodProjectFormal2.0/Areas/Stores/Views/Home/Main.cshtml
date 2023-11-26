@@ -41,16 +41,16 @@
                         <div class="col-md-12">
                             <!-- card -->
                             <div class="card bg-light border-0 rounded-4"
-                                 style="background-image: url(~/assets/images/slider/slider-image-1.jpg); background-repeat: no-repeat; background-size: cover; background-position: right;">
+                                 style="background-image: url(@ViewBag.Storephoto); background-repeat: no-repeat; background-size: cover; background-position: right;">
                                 <div class="card-body p-lg-12">
                                     <h1>
-                                        歡迎回來! @ViewBag.StoreName
+                                        <span class="badge bg-secondary">歡迎回來! @ViewBag.StoreName</span>                                      
                                     </h1>
-                                    <p>目前狀態:營業中</p>
+@*                                     <p>目前狀態:營業中</p>
                                     <a href="#" class="btn btn-primary">
                                         切換營業狀態
                                     </a>
-                                </div>
+ *@                                </div>
                             </div>
                         </div>
                     </div>
