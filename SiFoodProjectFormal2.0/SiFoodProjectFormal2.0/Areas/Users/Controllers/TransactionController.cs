@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 
@@ -14,15 +15,28 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public IActionResult Checkout(int id)
+        public IActionResult CheckOut()
         {
-            var address = _context.UserAddresses.Find(id)?.UserDetailAddress;
-            ViewBag.ad = address;
-
-
-
             return View();
+        }
+
+        [HttpGet]
+        [Route("/Transaction/GetCheckoutData")]
+        public IQueryable<CheckOutVM> GetCheckoutData()
+        {
+            string id = "U002";
+            var CheckOutData = _context.Carts.Include(x => x.User).Where(y => y.UserId == id).Select(y => new CheckOutVM
+            {
+                
+                UserAddress = y.User.UserAddresses.Select(y=>y.UserDetailAddress).FirstOrDefault(),
+                ProductId = y.ProductId,
+                ProductName = _context.Products.Where(c => c.ProductId == y.ProductId).Select(x => x.ProductName).Single(),
+                Quantity = y.Quantity,
+                UnitPrice = _context.Products.Where(c => c.ProductId == y.ProductId).Select(x => x.UnitPrice).FirstOrDefault(),
+                TotalPrice = y.Quantity * _context.Products.Where(c => c.ProductId == y.ProductId).Select(x => x.UnitPrice).FirstOrDefault()
+            });
+
+            return CheckOutData;
         }
 
         [HttpPost]
