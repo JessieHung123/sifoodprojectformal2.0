@@ -60,6 +60,8 @@
     <Folder Include="wwwroot\images\Admin\" />
     <Folder Include="wwwroot\images\Drivers\" />
     <Folder Include="wwwroot\images\FAQ\" />
+    <Folder Include="wwwroot\images\JoinUs\Logo\" />
+    <Folder Include="wwwroot\images\JoinUs\Photo\" />
   </ItemGroup>
 
   <ItemGroup>

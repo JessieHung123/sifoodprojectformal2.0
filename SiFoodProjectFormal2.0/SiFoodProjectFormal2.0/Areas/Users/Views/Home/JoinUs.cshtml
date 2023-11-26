@@ -205,17 +205,42 @@
                         </div>
 
 
-                        <div class="col-md-6 mb-3">
+                        @* <div class="col-md-6 mb-3">
                             <label asp-for="City" class="form-label">店家地址-市<span class="text-danger">*</span></label>
                             <input asp-for="City" class="form-control" autocomplete="address-level2" placeholder="請輸入臺北市或新北市" />
                             <span asp-validation-for="City" class="text-danger"></span>
+                        </div> *@
+
+
+
+                        <!-- City 改下拉選單 -->
+                        <div class="col-md-6 mb-3">
+                        <label asp-for="City" class="form-label">店家地址-市<span class="text-danger">*</span></label>
+                            <select asp-for="City" class="form-select" id="citySelect">
+                            <option value="" selected>選擇城市</option>
+                            <option value="臺北市">臺北市</option>
+                            <option value="新北市">新北市</option>
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </select>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        @* <div class="col-md-6 mb-3">
                             <label asp-for="Region" class="form-label">店家地址-區<span class="text-danger">*</span></label>
                             <input asp-for="Region" class="form-control" autocomplete="address-level3" placeholder="請輸入區，例:大安區" />
                             <span asp-validation-for="Region" class="text-danger"></span>
+                        </div> *@
+
+
+                        <!--  區改下拉選單,並依照City動態改變 -->
+                       
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Region" class="form-label">店家地址-區<span class="text-danger">*</span></label>
+                            <select asp-for ="Region" id="regionSelect" class="form-select">
+                                <option value="">請先選擇城市</option>
+                            </select>
+                            <span asp-validation-for="Region" class="text-danger"></span>
                         </div>
+
 
 
                         <div class="col-md-12 mb-3">
@@ -510,6 +535,48 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <!-- Region下拉選單 -->
+    <script>
+        document.getElementById('citySelect').addEventListener('change', function () {
+            var city = this.value;
+            var regionSelect = document.getElementById('regionSelect');
+
+            // 清空 Region 下拉選單
+            regionSelect.innerHTML = '';
+
+            // 添加一個提示選擇的預設選項
+            var defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.text = "選擇區域";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            regionSelect.appendChild(defaultOption);
+
+            // 根據選擇的城市填充 Region 下拉選單
+            if (city == "臺北市") {
+                var regions = ["中正區", "大同區", "中山區", "松山區", "大安區", "萬華區", "信義區", "士林區", "北投區", "內湖區", "南港區", "文山區"];
+            } else if (city == "新北市") {
+                var regions = ["板橋區", "新莊區", "中和區", "永和區", "土城區", "樹林區", "三峽區", "鶯歌區", "三重區", "蘆洲區", "五股區", "泰山區", "林口區", "八里區", "淡水區", "三芝區", "石門區", "金山區", "萬里區", "汐止區", "瑞芳區", "貢寮區", "平溪區", "雙溪區", "新店區", "深坑區", "石碇區", "坪林區", "烏來區", "新店區"];
+            } else {
+                var regions = [];
+            }
+
+            // 將各個區域作為選項添加到 Region 下拉選單
+            regions.forEach(function (region) {
+                var option = document.createElement('option');
+                option.value = region;
+                option.text = region;
+                regionSelect.appendChild(option);
+            });
+        });
+
+    </script>
+       
+
+
+
+
 
 @* 
 <script>

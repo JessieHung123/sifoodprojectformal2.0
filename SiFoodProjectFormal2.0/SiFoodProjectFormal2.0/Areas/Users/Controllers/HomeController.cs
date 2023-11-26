@@ -44,23 +44,38 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             if (ModelState.IsValid)
             {
 
-                //處理圖片上傳
-                try
+                // 處理 Logo 圖片上傳
+                if (Request.Form.Files["LogoPath"] != null)
                 {
-                    if (Request.Form.Files["LogoPath"] != null)
+                    var file = Request.Form.Files["LogoPath"];
+                    //存到images/JoinUs
+                    var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Logo", file.FileName);
+
+                    using (var stream = new FileStream(savePath, FileMode.Create))
                     {
-                        byte[] data = null;
-                        using (BinaryReader br=new BinaryReader(
-                            Request.Form.Files["LogoPath"].OpenReadStream())) {
-                            data = br.ReadBytes((int)Request.Form.Files["LogoPath"].Length);
-                            //這邊先註解掉等資料庫欄位修改好
-                            // joinus.LogoPath = data;
-
-
-                        }
+                        await file.CopyToAsync(stream);
                     }
+
+                    // 保存路徑
+                    joinus.LogoPath = "/images/JoinUs/Logo/" + file.FileName;
                 }
-                catch (Exception ex) { }
+
+
+                //處理店家照片上傳
+                if (Request.Form.Files["PhotoPath"] != null)
+                {
+                    var file = Request.Form.Files["PhotoPath"];
+                    //存到images/JoinUs
+                    var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Photo", file.FileName);
+
+                    using (var stream = new FileStream(savePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    // 保存路徑
+                    joinus.LogoPath = "/images/JoinUs/Photo/" + file.FileName;
+                }
 
                 var store = new Store
                 {
