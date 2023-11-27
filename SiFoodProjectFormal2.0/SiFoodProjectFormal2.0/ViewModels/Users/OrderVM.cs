@@ -2,13 +2,15 @@
 {
     public class OrderVM
     {
-        public string OrderId { get; set; } 
+        public string OrderId { get; set; }
 
-        //public DateTime OrderDate { get; set; }
+        public double OrderDuration { get; set; }
 
         public string OrderDate { get; set; }
 
         public string OrderTime { get; set; }
+
+        public string DeliveryMethod { get; set; }
 
         public string Address { get; set; } = null!;
 
