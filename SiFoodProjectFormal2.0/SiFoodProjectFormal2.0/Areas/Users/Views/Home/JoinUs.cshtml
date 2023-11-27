@@ -392,7 +392,7 @@
                     </div>
 
                     <!--根據送出結果跳出Modal-->
-                    <!-- OK Modal -->
+                   
                     <!-- OK Modal -->
                     <div class="modal fade" id="modalOK" tabindex="-1" role="dialog" aria-labelledby="okModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -404,7 +404,7 @@
                                     請稍待一至二天審核，謝謝~
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='https://localhost:7042/Users'>好</button>
                                 </div>
                             </div>
                         </div>
@@ -508,13 +508,13 @@
             const formData = new FormData(this);
 
             // 發送 AJAX 請求
-            fetch('/Users/Home/JoinUs', {
+            fetch('/Users/Home/JoinUsSubmit', {
                 method: 'POST',
-                body: formData
+                body: formData,
             })
-                .then(response => response.json()) // 將響應轉換為 JSON
+                .then(response => response.text()) // 將響應轉換為 JSON
                 .then(data => {
-                    if (data.success) {
+                    if (data==成功) {
                         // 如果後端返回成功，顯示成功的 Modal
                         $('#modalOK').modal('show');
                     } else {
