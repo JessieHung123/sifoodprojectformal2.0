@@ -58,7 +58,7 @@
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <!-- accordion item -->
                         <div class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                            <i class="fa-solid fa-user"></i> &nbsp;訂購人 : {{checkoutData.userName}}
+                            <i class="fa-solid fa-user"></i> &nbsp;訂購人 : <span v-model="sendBackUserName">{{checkoutData.userName}}</span>
                         </div>
                         <!-- accordion item -->
                         <div class="accordion-item py-4">
@@ -253,14 +253,14 @@
                                         <img src="~/assets/images/products/product-img-1.jpg" alt="Ecommerce" class="img-fluid">
                                     </div>
                                     <div class="col-3 col-md-3 text-md-start p-4">
-                                        <h6 class="mb-0">{{item.productName}}</h6>
-                                        <span><small>{{item.storeName}}</small></span>
+                                        <h6 class="mb-0" value="{{item.productName}}" v-model="sendBackProductName">{{item.productName}}</h6>
+                                        <span v-model="sendBackStoreName"><small>{{item.storeName}}</small></span>
                                     </div>
                                     <div class="col-2 col-sm-2 text-md-start p-4">
                                         <span>單價:{{item.unitPrice}}$</span>
                                     </div>
                                     <div class="col-2 col-sm-2 text-md-end p-4">
-                                        <span>數量:{{item.quantity}}</span>
+                                        <span v-model="sendBackQuantity">數量:{{item.quantity}}</span>
                                     </div>
                                     <div class="col-3 col-md-3 text-md-end p-4">
                                         <span class="fw-bold">總價:{{item.totalPrice}}$</span>
@@ -273,7 +273,7 @@
                                     <div>
                                         訂單總價
                                     </div>
-                                    <div class="fw-bold">
+                                    <div class="fw-bold" v-model="sendBackTotalPrice">
                                         {{totalPrice}}$
                                     </div>
                                 </div>
@@ -327,11 +327,11 @@
                     orderTime: "",
                     orderNotes: "",
                     checkoutData: {}, //陣列裡面第一筆物件
-
-
-
-
-
+                    sendBackStoreName: "",
+                    sendBackUserName: "",
+                    sendBackProductName: [],
+                    sendBackQuantity: [],
+                    sendBackTotalPrice: null,
                 }
             },
             computed: {
@@ -351,13 +351,33 @@
             },
             methods: {
                 chooseTakeout: function () {
-                    this.checkRadio = true
+                    this.checkRadio = true;
                 },
                 chooseDeliver: function () {
-                    this.checkRadio = false
+                    this.checkRadio = false;
                 },
                 createTakeOutOrder: function () {
-
+                    _this = this;
+                    axios.post(`/Transaction/TakeOutOrder`, {
+                        StoreName: _this.sendBackStoreName,
+                        UserName: _this.sendBackUserName,
+                        ProductDetails: [   
+                            { ProductName: _this.sendBackProductName[0], Quantity: _this.sendBackQuantity[0] },
+                        ],
+                        TotalPrice: _this.sendBackTotalPrice
+                    }, {
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }).then(response => {
+                        alert(response.data);
+                        var success = "訂單下訂成功!";
+                        if (response.data = success) {
+                            window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
+                        }
+                    }).catch(err => {
+                        alert(err);
+                    })
                 },
                 createDelieverOrder: function () {
 

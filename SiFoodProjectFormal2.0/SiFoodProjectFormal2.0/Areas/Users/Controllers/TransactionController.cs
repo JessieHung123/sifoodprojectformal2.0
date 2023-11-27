@@ -41,11 +41,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Transaction/TakeOutOrder")]
-        public string TakeOutOrder(CreateOrderVM model)
+        public string TakeOutOrder([FromBody] CreateOrderVM model)
         {
-            string StoreId = _context.Stores.Where(s=>s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
-            string UserId = _context.Users.Where(x=>x.UserName == model.UserName).Select(x => x.UserId).Single();
-            
+            string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
+            string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
+
             Order order = new Order
             {
                 OrderDate = DateTime.Now,
@@ -56,22 +56,29 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 TotalPrice = model.TotalPrice
             };
 
-            foreach (var product in model.ProductName)
-            {
-                OrderDetail orderDetail = new OrderDetail
-                {
-                    OrderId = order.OrderId,
-                    ProductId = product.ProductId,
-                    Quantity = model.Quantity,
-                };
-
-                _context.OrderDetails.Add(orderDetail);
-                _context.SaveChanges();
-            }
             _context.Orders.Add(order);
             _context.SaveChanges();
 
-            return "新增自取訂單成功";
+            foreach (var item in model.ProductDetails)
+            {
+                int productId = GetProductIdByName(item.ProductName);
+
+                OrderDetail orderDetail = new OrderDetail
+                {
+                    OrderId = order.OrderId,
+                    ProductId = productId,
+                    Quantity = item.Quantity,
+                };
+                _context.OrderDetails.Add(orderDetail);
+                _context.SaveChanges();
+
+            }
+            return "訂單下訂成功!";
+        }
+
+        private int GetProductIdByName(string productName)
+        {
+            return _context.Products.Where(p => p.ProductName == productName).Select(p => p.ProductId).Single();
         }
 
         [HttpPost]
