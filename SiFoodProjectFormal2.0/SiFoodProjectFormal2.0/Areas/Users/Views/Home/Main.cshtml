@@ -33,10 +33,10 @@
                     <img class="rounded-2" style="width:360px ;height:180px" src="~/assets/images/banner/ad-banner-3.jpg" alt="">
                 </div>
                 <div class="d-flex justify-content-center">
-                    <img class="rounded-2" style="width:340px ;height:180px" src="~/assets/images/banner/ad-banner-4.jpg" alt="">
+                    <img class="rounded-2" style="width:284.76px ;height:180px" src="~/assets/images/banner/ad-banner-4.jpg" alt="">
                 </div>
                 <div class="d-flex justify-content-center">
-                    <img class="rounded-2" style="width:340px ;height:180px" src="~/assets/images/banner/ad-banner-5.jpg" alt="">
+                    <img class="rounded-2" style="width:284.76px ;height:180px" src="~/assets/images/banner/ad-banner-5.jpg" alt="">
                 </div>
             </div>
         </section>
@@ -202,6 +202,7 @@
     </div>
 
 </div>
+
 @section Scripts{
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
@@ -222,7 +223,7 @@
                     },
                     isSelected: false,
                     page: {
-                        countPerPage: 3,
+                        countPerPage: 6,
                         pageNumber: 1,
                     },
                 }
@@ -387,9 +388,8 @@
     </script>
     <script src="~/slickcdn.min.js"></script>
     <script>
-        var baseAddress = "https://localhost:7042";
-        $('.slider-nav').slick({
-            infiinte: true,
+        $('.responsive').slick({
+            infinite: true,
             slidesToShow: 3,
             slidesToScroll: 1,
             autoplaySpeed: 3000,
@@ -403,22 +403,28 @@
                     settings: {
                         slidesToShow: 3,
                         slidesToScroll: 3,
-                        infinite: true,
-                        dots: true
+
                     }
                 },
                 {
-                    breakpoint: 600,
+                    breakpoint: 990,
                     settings: {
                         slidesToShow: 2,
-                        slidesToScroll: 2
+                        slidesToScroll: 2,
+                    }
+                },
+                {
+                    breakpoint: 700,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
                     }
                 },
                 {
                     breakpoint: 480,
                     settings: {
                         slidesToShow: 1,
-                        slidesToScroll: 1
+                        slidesToScroll: 1,
                     }
                 }
             ]
