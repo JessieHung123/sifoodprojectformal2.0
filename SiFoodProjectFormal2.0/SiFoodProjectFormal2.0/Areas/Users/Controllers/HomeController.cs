@@ -40,51 +40,87 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> JoinUs([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,ClosingDay,PhotosPath,LogoPath")] JoinUsViewModel joinus)
+        public async Task<IActionResult> JoinUs([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,ClosingDay,PhotosPath,PhotosPath2,PhotosPath3,LogoPath")] JoinUsViewModel joinus)
         {
             if (ModelState.IsValid)
             {
 
-                //處理資料庫string型態問題
-                string logoPathInDb = null;
-                List<string> photoPathsInDb = new List<string>();
-
-
                 // 處理 Logo 圖片上傳
-                if (joinus.LogoPath != null)
-                {
-                    var file = joinus.LogoPath;
-                    //存到images/JoinUs
-                    var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Logo", file.FileName);
+                string logoPathInDb = await SavePhoto(joinus.LogoPath, "Logo");
 
-                    using (var stream = new FileStream(savePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
+                // 處理三張店家照片上傳
+                string photoPathInDb = await SavePhoto(joinus.PhotosPath, "Photo");
+                string photoPath2InDb = await SavePhoto(joinus.PhotosPath2, "Photo2");
+                string photoPath3InDb = await SavePhoto(joinus.PhotosPath3, "Photo3");
 
-                    // 保存路徑
-                    logoPathInDb = "/images/JoinUs/Logo/" + file.FileName;
-                }
+                ////處理資料庫string型態問題
+                //string logoPathInDb = null;
+                //List<string> photoPathsInDb = new List<string>();
 
 
-                //處理店家多張照片上傳
-                if (joinus.PhotosPath != null && joinus.PhotosPath.Count > 0)
-                {
-                    foreach (var photo in joinus.PhotosPath)
-                    {
-                        var photoSavePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Photo", photo.FileName);
+                //// 處理 Logo 圖片上傳
+                //if (joinus.LogoPath != null)
+                //{
+                //    var file = joinus.LogoPath;
+                //    //存到images/JoinUs
+                //    var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Logo", file.FileName);
 
-                        using (var stream = new FileStream(photoSavePath, FileMode.Create))
-                        {
-                            await photo.CopyToAsync(stream);
-                        }
+                //    using (var stream = new FileStream(savePath, FileMode.Create))
+                //    {
+                //        await file.CopyToAsync(stream);
+                //    }
 
-                        photoPathsInDb.Add("/images/JoinUs/Photo/" + photo.FileName);
-                    }
-                }
+                //    // 保存路徑
+                //    logoPathInDb = "/images/JoinUs/Logo/" + file.FileName;
+                //}
 
-                //串接照片路徑
-                string concatenatedPhotoPaths = String.Join(",", photoPathsInDb);
+
+                ////處理店家照片1上傳
+                //if (joinus.PhotosPath != null && joinus.PhotosPath.Count > 0)
+                //{
+                //    foreach (var photo in joinus.PhotosPath)
+                //    {
+                //        var photoSavePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Photo", photo.FileName);
+
+                //        using (var stream = new FileStream(photoSavePath, FileMode.Create))
+                //        {
+                //            await photo.CopyToAsync(stream);
+                //        }
+
+                //        photoPathsInDb.Add("/images/JoinUs/Photo/" + photo.FileName);
+                //    }
+                //}
+
+                //// 處理第二張店家照片上傳
+                //if (joinus.PhotosPath2 != null)
+                //{
+                //    var file = joinus.PhotosPath2.First();
+                //    var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Photo", file.FileName);
+
+                //    using (var stream = new FileStream(savePath, FileMode.Create))
+                //    {
+                //        await file.CopyToAsync(stream);
+                //    }
+
+                //    // 添加到 photoPathsInDb 列表
+                //    photoPathsInDb.Add("/images/JoinUs/Photo/" + file.FileName);
+                //}
+
+                //// 處理第三張店家照片上傳
+                //if (joinus.PhotosPath3 != null)
+                //{
+                //    var file = joinus.PhotosPath3.First();
+                //    var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs/Photo", file.FileName);
+
+                //    using (var stream = new FileStream(savePath, FileMode.Create))
+                //    {
+                //        await file.CopyToAsync(stream);
+                //    }
+
+                //    // 添加到 photoPathsInDb 列表
+                //    photoPathsInDb.Add("/images/JoinUs/Photo/" + file.FileName);
+                //}
+
 
                 //創建store實體
 
@@ -104,8 +140,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     ClosingDay = joinus.ClosingDay,
                     OpeningTime = joinus.OpeningTime,
                     LogoPath = logoPathInDb,
-                    // 存儲串接後的照片路徑
-                    PhotosPath = concatenatedPhotoPaths, 
+                    PhotosPath = photoPathInDb,
+                    PhotosPath2 = photoPath2InDb,
+                    PhotosPath3 = photoPath3InDb,
                 };
 
                 _context.Add(store);
@@ -117,6 +154,25 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
  
         }
 
+
+        //儲存照片專用方法
+        private async Task<string> SavePhoto(IFormFile photo, string folderName)
+        {
+            if (photo != null)
+            {
+                var fileName = Path.GetFileName(photo.FileName);
+                var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs", folderName, fileName);
+
+                using (var stream = new FileStream(savePath, FileMode.Create))
+                {
+                    await photo.CopyToAsync(stream);
+                }
+
+                return $"/images/JoinUs/{folderName}/{fileName}";
+            }
+
+            return null;
+        }
 
 
 

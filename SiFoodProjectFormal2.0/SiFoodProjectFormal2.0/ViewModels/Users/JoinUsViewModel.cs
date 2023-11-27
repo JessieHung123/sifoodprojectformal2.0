@@ -62,6 +62,11 @@ namespace SiFoodProjectFormal2._0.ViewModels.Users
         [Display(Name = "店家照片")]
         //改類型,用於處理多個文件
         //然後，在控制器中，會遍歷這個列表並分別處理每個文件
-        public List<IFormFile>? PhotosPath { get; set; }
+        public IFormFile? PhotosPath { get; set; }
+
+
+        public IFormFile? PhotosPath2 { get; set; }
+        public IFormFile? PhotosPath3 { get; set; }
+
     }
 }

@@ -61,7 +61,9 @@
     <Folder Include="wwwroot\images\Drivers\" />
     <Folder Include="wwwroot\images\FAQ\" />
     <Folder Include="wwwroot\images\JoinUs\Logo\" />
-    <Folder Include="wwwroot\images\JoinUs\Photo\" />
+    <Folder Include="wwwroot\images\JoinUs\PhotosPaths3\" />
+    <Folder Include="wwwroot\images\JoinUs\PhotosPath2\" />
+    <Folder Include="wwwroot\images\JoinUs\PhotosPath\" />
   </ItemGroup>
 
   <ItemGroup>
