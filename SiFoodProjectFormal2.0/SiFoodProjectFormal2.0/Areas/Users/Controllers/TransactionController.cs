@@ -45,7 +45,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
             string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
-
             Order order = new Order
             {
                 OrderDate = DateTime.Now,
@@ -55,7 +54,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 StatusId = 1,
                 TotalPrice = model.TotalPrice
             };
-
             _context.Orders.Add(order);
             _context.SaveChanges();
 
@@ -78,7 +76,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         private int GetProductIdByName(string productName)
         {
-            return _context.Products.Where(p => p.ProductName == productName).Select(p => p.ProductId).Single();
+            return _context.Products.Where(p => p.ProductName == productName).Select(p => p.ProductId).FirstOrDefault();
         }
 
         [HttpPost]
