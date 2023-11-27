@@ -1025,11 +1025,10 @@
                                 // alert(JSON.stringify(data));
                                 _this.stores = data[0];
                                 _this.products = data[0].products;
-                                _this.comment = data[0].comment;
-                                _this.storeCategoryList = [..._this.stores.categoryList];
-                                _this.storeCategoryList = _this.storeCategoryList.filter(category => category !== "其他")
+                                _this.comment = data[0].comment;                              
+                                _this.storeCategoryList = [..._this.stores.categoryList].filter(category => category !== "其他")
                                 _this.stores.categoryList.unshift("全部");
-                                console.table(_this.stores)
+                                // console.table(_this.stores)
                             }).catch(error => {
                                 alert(error);
                                 console.log('error', error);
