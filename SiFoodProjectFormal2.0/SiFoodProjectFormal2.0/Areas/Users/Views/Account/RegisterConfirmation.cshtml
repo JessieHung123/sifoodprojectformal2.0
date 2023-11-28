@@ -68,7 +68,7 @@
 
             methods: {
                 verifyAccount() {
-                    _this = this
+                    var _this = this
                     _this.loading = true;
                     axios.post(`/Account/OpenUserAccount`, {
                         UserAccountVerificationCode: _this.verificationCode
