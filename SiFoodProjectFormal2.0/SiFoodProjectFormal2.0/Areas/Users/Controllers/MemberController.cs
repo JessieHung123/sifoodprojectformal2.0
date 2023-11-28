@@ -4,6 +4,7 @@ using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 using SiFoodProjectFormal2._0.Helper;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -227,8 +228,22 @@ public IActionResult Favorite()
         }
         public IActionResult HistoryOrders()
         {
-            return View();
+            var historyOrders = _context.Orders
+                .Include(o => o.OrderDetails)
+                .Include(o => o.Status)
+                .Select(o => new HistoryOrderVM
+                {
+                    StoreId = o.StoreId,
+                    OrderId = o.OrderId,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status.StatusName,
+                    Quantity = o.OrderDetails.Sum(od => od.Quantity),
+                    TotalPrice = o.TotalPrice ?? 0
+                }).ToList();
+
+            return View(historyOrders);
         }
+
         public IActionResult Address()
         {
             return View();
