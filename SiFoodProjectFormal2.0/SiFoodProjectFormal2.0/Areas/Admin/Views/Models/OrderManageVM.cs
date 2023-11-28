@@ -5,7 +5,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Views.Models
 {
     public class OrderManageVM
     {
-
         public string? OrderAddress { get; set; }
         public string? OrderId { get; set; }
         public int ProductId { get; set; }
@@ -21,5 +20,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Views.Models
         public string? StoreName { get;  set; }
         public string? StorePhone { get; set; }
         public string? StoreAddress { get; set; }
+        public decimal Total { get; set; }
     }
 }

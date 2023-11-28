@@ -58,6 +58,7 @@
                         <th>商品數量</th>
                         <th>產品編號</th>
                         <th>商品單價</th>
+                        <th>金額</th>
                         <th>訂單狀態</th>
                     </tr>
                 </thead>
@@ -82,6 +83,9 @@
                         </td>
                         <td>
                             @Html.DisplayFor(model => model.ProductUnitPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Total)
                         </td>
                         <td>
                             @Html.DisplayFor(model => model.StatusName)

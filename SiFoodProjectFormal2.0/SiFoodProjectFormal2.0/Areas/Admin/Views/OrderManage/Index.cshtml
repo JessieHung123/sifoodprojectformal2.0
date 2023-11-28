@@ -31,7 +31,7 @@
     <div class="row justify-content-between">
 
        
-        <div class="col-3 col-md-4 col-12">
+      @*   <div class="col-3 col-md-4 col-12">
 
             <!-- select -->
             <label for="orderStatusFilter">訂單狀態篩選</label>
@@ -48,7 +48,7 @@
            
 
             
-        </div>
+        </div> *@
     </div>
 </div>
 
@@ -60,6 +60,7 @@
             <th>客戶姓名</th>
             <th>商品名稱</th>
             <th>商品數量</th>
+            <th>金額</th>
             <th>訂單狀態</th>
             <th>編輯</th>
         </tr>
@@ -81,6 +82,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(ModelItem => item.Total)
                 </td>
              <td>
                     @Html.DisplayFor(modelItem => item.StatusName)
@@ -120,34 +124,34 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
    
     <script>
-        $(document).ready(function () {
-            document.getElementById("orderStatusFilter").addEventListener("change", function () {
-                var selectedStatusName = this.value;
-                $.ajax({
-                    url: "/Admin/OrderManage/FilterOrders",
-                    type: "GET",
-                    data: { status: selectedStatusName },
-                    success: function (result) { $("#orderTableBody").html(result); },
-                    error: function (error) {
-                        console.error("無法篩選訂單狀態!");
-                    }
-                });
-            });
+        // $(document).ready(function () {
+        //     document.getElementById("orderStatusFilter").addEventListener("change", function () {
+        //         var selectedStatusName = this.value;
+        //         $.ajax({
+        //             url: "/Admin/OrderManage/FilterOrders",
+        //             type: "GET",
+        //             data: { status: selectedStatusName },
+        //             success: function (result) { $("#orderTableBody").html(result); },
+        //             error: function (error) {
+        //                 console.error("無法篩選訂單狀態!");
+        //             }
+        //         });
+        //     });
 
-        });
+        // });
 
     </script>
 
      <script>
          $(document).ready(function () {
              $("#orderTable").DataTable({
-                "dom": `<'row'<'col-sm-12 col-md-5'f><'col-sm-12 col-md-7'p>>
-                    <'row'<'col-sm-12'tr>>
-                    <'row'<'col-sm-12 col-md-6'l>>`,
-
-                // "dom": `<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'l>>
+                // "dom": `<'row'<'col-sm-12 col-md-5'f><'col-sm-12 col-md-7'p>>
                 //     <'row'<'col-sm-12'tr>>
-                //     <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
+                //     <'row'<'col-sm-12 col-md-6'l>>`,
+
+                "dom": `<'row'<'col-sm-12 col-md-6'f><'col-sm-12 col-md-6'l>>
+                    <'row'<'col-sm-12'tr>>
+                    <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
                 "language": {
                     "sLengthMenu": "顯示 _MENU_ 項結果",
                     "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",

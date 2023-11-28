@@ -28,7 +28,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         // GET: Admin/OrderManage
         public async Task<IActionResult> Index()
         {
-           
             var sifood3Context = await _context.OrderDetails.Include(o => o.Order).ThenInclude(o => o.User).Include(o => o.Product)
                 .Select(o => new OrderManageVM
                 {
@@ -46,6 +45,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                     StoreName=o.Order.Store.StoreName,
                     StorePhone=o.Order.Store.Phone,
                     StoreAddress=o.Order.Store.Address,
+                    Total = o.Quantity * o.Product.UnitPrice,
 
                 }).ToListAsync();
 
@@ -81,6 +81,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             StoreName = o.Order.Store.StoreName,
             StorePhone = o.Order.Store.Phone,
             StoreAddress = o.Order.Store.Address,
+            Total = o.Quantity * o.Product.UnitPrice,
         }
         ).ToListAsync();
             
@@ -114,6 +115,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                     StoreName = o.Order.Store.StoreName,
                     StorePhone = o.Order.Store.Phone,
                     StoreAddress = o.Order.Store.Address,
+                    Total = o.Quantity * o.Product.UnitPrice,
                 })
                 .FirstOrDefaultAsync();
 
@@ -154,6 +156,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                     StoreName = o.Order.Store.StoreName,
                     StorePhone = o.Order.Store.Phone,
                     StoreAddress = o.Order.Store.Address,
+                    Total = o.Quantity * o.Product.UnitPrice,
                 })
                 .FirstOrDefaultAsync();
 
@@ -237,6 +240,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                     StoreName = o.Order.Store.StoreName,
                     StorePhone = o.Order.Store.Phone,
                     StoreAddress = o.Order.Store.Address,
+                    Total = o.Quantity * o.Product.UnitPrice,
                 })
                 .FirstOrDefaultAsync(od => od.OrderId == OrderId && od.ProductId == ProductId);
 
