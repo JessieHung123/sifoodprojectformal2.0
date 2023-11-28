@@ -707,9 +707,11 @@
                         <div class="mb-8">
                             <!-- heading -->
                             <h1 class="mb-1">收藏店家</h1>
-                            <p>目前共有5個喜愛的店家</p>
+                            <p>目前共有_______個喜愛的店家</p>
                         </div>
                         <div>
+                            <!--加上form-->
+                            <form method="post" action="@Url.Action("DeleteFavorite", "Member")">
                             <!-- table -->
                             <div class="table-responsive">
                                 <table class="table text-nowrap table-with-checkbox">
@@ -731,177 +733,47 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr>
-
-                                            <td class="align-middle">
-                                                <!-- form check -->
-                                                <div class="form-check">
-                                                    <!-- input --><input class="form-check-input" type="checkbox" value="" id="chechboxTwo">
-                                                    <!-- label --><label class="form-check-label" for="chechboxTwo">
-
-                                                    </label>
-                                                </div>
-
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="#">
-                                                    <img src="~/assets/images/products/product-img-18.jpg"
-                                                         class="icon-shape icon-xxl" alt="">
-                                                </a>
-
-                                            </td>
-                                            <td class="align-middle">
-                                                <div>
-                                                    <h5 class="fs-6 mb-0"><a href="#" class="text-inherit">水果店</a></h5>
-                                                    <small></small>
-                                                </div>
-                                            </td>
-
-                                            <td class="align-middle ">
-                                                <a href="#" class="text-muted" data-bs-toggle="tooltip"
-                                                   data-bs-placement="top" title="Delete">
-                                                    <i class="feather-icon icon-trash-2"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-
-                                            <td class="align-middle">
-                                                <!-- form check -->
-                                                <div class="form-check">
-                                                    <!-- input --><input class="form-check-input" type="checkbox" value="" id="chechboxThree">
-                                                    <!-- label --><label class="form-check-label" for="chechboxThree">
-
-                                                    </label>
-                                                </div>
-
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="#">
-                                                    <img src="~/assets/images/products/product-img-17.jpg"
-                                                         class="icon-shape icon-xxl" alt="">
-                                                </a>
-
-                                            </td>
-                                            <td class="align-middle">
-                                                <div>
-                                                    <h5 class="fs-6 mb-0"><a href="#" class="text-inherit">溫帶水果店</a></h5>
-                                                    <small></small>
-                                                </div>
-                                            </td>
-
-                                            <td class="align-middle ">
-                                                <a href="#" class="text-muted" data-bs-toggle="tooltip"
-                                                   data-bs-placement="top" title="Delete">
-                                                    <i class="feather-icon icon-trash-2"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-
-                                            <td class="align-middle">
-                                                <!-- form check -->
-                                                <div class="form-check">
-                                                    <!-- input --><input class="form-check-input" type="checkbox" value="" id="chechboxFour">
-                                                    <!-- label --><label class="form-check-label" for="chechboxFour">
-
-                                                    </label>
-                                                </div>
-
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="#">
-                                                    <img src="~/assets/images/products/product-img-16.jpg"
-                                                         class="icon-shape icon-xxl" alt="">
-                                                </a>
-
-                                            </td>
-                                            <td class="align-middle">
-                                                <div>
-                                                    <h5 class="fs-6 mb-0"><a href="#" class="text-inherit">熱帶水果店</a></h5>
-                                                    <small></small>
-                                                </div>
-                                            </td>
-
-                                            <td class="align-middle ">
-                                                <a href="#" class="text-muted" data-bs-toggle="tooltip"
-                                                   data-bs-placement="top" title="Delete">
-                                                    <i class="feather-icon icon-trash-2"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-
-                                            <td class="align-middle">
-                                                <!-- form check -->
-                                                <div class="form-check">
-                                                    <!-- input --><input class="form-check-input" type="checkbox" value="" id="chechboxFive">
-                                                    <!-- label --><label class="form-check-label" for="chechboxFive">
-
-                                                    </label>
-                                                </div>
-
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="#">
-                                                    <img src="~/assets/images/products/product-img-19.jpg"
-                                                         class="icon-shape icon-xxl" alt="">
-                                                </a>
-
-                                            </td>
-                                            <td class="align-middle">
-                                                <div>
-                                                    <h5 class="fs-6 mb-0"><a href="#" class="text-inherit">稀奇水果店</a></h5>
-                                                    <small></small>
-                                                </div>
-                                            </td>
-
-                                            <td class="align-middle ">
-                                                <a href="#" class="text-muted" data-bs-toggle="tooltip"
-                                                   data-bs-placement="top" title="Delete">
-                                                    <i class="feather-icon icon-trash-2"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-
-                                            <td class="align-middle">
-                                                <!-- form check -->
-                                                <div class="form-check">
-                                                    <!-- input --><input class="form-check-input" type="checkbox" value="" id="chechboxSix">
-                                                    <!-- label --><label class="form-check-label" for="chechboxSix">
-
-                                                    </label>
-                                                </div>
-
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="#">
-                                                    <img src="~/assets/images/products/product-img-15.jpg"
-                                                         class="icon-shape icon-xxl" alt="">
-                                                </a>
-
-                                            </td>
-                                            <td class="align-middle">
-                                                <div>
-                                                    <h5 class="fs-6 mb-0"><a href="#" class="text-inherit">蘋果店</a></h5>
-                                                    <small></small>
-                                                </div>
-                                            </td>
-
-                                            <td class="align-middle ">
-                                                <a href="#" class="text-muted" data-bs-toggle="tooltip"
-                                                   data-bs-placement="top" title="Delete">
-                                                    <i class="feather-icon icon-trash-2"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-
+                                        @*  <!--在 <tbody> 部分使用 @foreach 循環來動態生成每一行--> *@
+                                        @foreach(var store in Model)
+                                        {
+                                                <tr>
+                                                    <td class="align-middle">
+                                                        <!-- form check -->
+                                                        <div class="form-check">
+                                                           @*  <!-- input 這邊value="@store.FavoriteId"--> id="checkbox-@store.FavoriteId"*@
+                                                            <input class="form-check-input" type="checkbox" value="@store.FavoriteId" id="checkbox-@store.FavoriteId">
+                                                            @* <!-- label for="checkbox-@store.FavoriteId"--> *@
+                                                            <label class="form-check-label" for="checkbox-@store.FavoriteId"></label>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    <td class="align-middle">
+                                                        <a href="#">
+                                                            <img src="@store.LogoPath" class="icon-shape icon-xxl" alt="">
+                                                        </a>
+                                                    </td>
+                                                    
+                                                    <td class="align-middle">
+                                                        <div>
+                                                            <h5 class="fs-6 mb-0"><a href="#" class="text-inherit">@store.StoreName</a></h5>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    <td class="align-middle ">
+                                                        <button type="submit" name="singleDelete" value="@store.FavoriteId" class="text-muted" title="Delete">
+                                                            <i class="feather-icon icon-trash-2"></i>
+                                                        </button>
+                                                    </td>
+                                                
+                                                </tr>
+                                            }
                                     </tbody>
                                 </table>
                             </div>
+                            <button type="submit" name="bulkDelete">刪除選中</button>
+                        </form>
 
-                        </div>
+                        
                     </div>
 
                 </div>

@@ -255,7 +255,18 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             }
 
             // 根據 selectedFavorites 刪除收藏項目
-            // 刪除邏輯...
+            // 刪除邏輯
+            // 根據 selectedFavorites 刪除收藏項目
+            foreach (var favoriteId in selectedFavorites)
+            {
+                var favorite = _context.Favorites.Find(favoriteId);
+                if (favorite != null)
+                {
+                    _context.Favorites.Remove(favorite);
+                }
+            }
+            _context.SaveChanges();
+
 
             return RedirectToAction("Favorite");
         }
