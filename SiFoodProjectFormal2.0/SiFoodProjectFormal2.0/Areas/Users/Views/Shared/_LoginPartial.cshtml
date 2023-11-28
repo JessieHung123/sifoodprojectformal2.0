@@ -5,24 +5,19 @@
     <div class="container">
         <div class="row w-100 align-items-center gx-lg-2 gx-0">
             <div class="col-md-2 col-xxl-2 col-lg-2">
-                <a class="navbar-brand" asp-area="Users" asp-controller="Home" asp-action="Main">
+                <a class="navbar-brand d-none d-lg-block" asp-area="Users" asp-controller="Home" asp-action="Main">
                     <img style="height:75px;width:100px" src="~/images/SiFood_logo BGclear.png" alt="SiFood">
-
                 </a>
-
             </div>
             <div class="d-flex justify-content-between w-100 d-lg-none">
                 <a class="navbar-brand" asp-area="Users" asp-controller="Home" asp-action="Main">
                     <img style="height:60px;width:75px" src="~/images/SiFood_logo BGclear.png" alt="SiFood">
-
                 </a>
                 <!--三個登入出現按鈕當md-->
                 <div class="d-flex align-items-center lh-1">
-
                     <div class="list-inline me-4">
                         <!--登入md-->
                         <div class="dropdown list-inline-item me-5">
-
                             <a role="button" href="#" class="dropdown-toggle text-muted position-relative" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuButton">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -46,8 +41,6 @@
                         <div class="dropdown list-inline-item me-5">
 
                             <a role="button" href="#" class="dropdown-toggle text-muted position-relative" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuButton">
-
-
                                 <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
                                     <g id="SVGRepo_bgCarrier" stroke-width="2"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -189,15 +182,10 @@
                                 <a style="white-space: normal;word-break: break-all;color:#6c757d;font-weight: bold" href="#!">
                                     <div>活動通知</div>
                                     <div>!慶祝!為惜Food破50家合作店家喝采，12/14-12/31期間，購買平台上任何時餐點，皆免運費!</div>
-
                                 </a>
                             </div>
                         </div>
-
                     </div>
-
-
-
                     <div class="list-inline-item">
 
                         <a class="text-muted position-relative " data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" href="#offcanvasExample" role="button" aria-controls="offcanvasRight" @@click="clickcart">
@@ -211,14 +199,11 @@
                                 <span class="visually-hidden">unread messages</span>
                             </span>
                         </a>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 }
 else
 {
@@ -227,9 +212,7 @@ else
             <div class="col-md-2 col-xxl-2 col-lg-2">
                 <a class="navbar-brand d-none d-lg-block" asp-area="Users" asp-controller="Home" asp-action="Main">
                     <img style="height:75px;width:100px" src="~/images/SiFood_logo BGclear.png" alt="SiFood">
-
                 </a>
-
             </div>
             <div class="d-flex justify-content-between w-100 d-lg-none">
                 <a class="navbar-brand" asp-area="Users" asp-controller="Home" asp-action="Main">
@@ -293,26 +276,7 @@ else
                                     </a>
                                 </div>
                             </div>
-
                         </div>
-
-                        <!--通知md-->
-
-                        <div class="list-inline-item">
-
-                            <a class="text-muted position-relative " data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" href="#offcanvasExample" role="button" aria-controls="offcanvasRight" @@click="clickcart">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag">
-                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                                    <path d="M16 10a4 4 0 0 1-8 0"></path>
-                                </svg>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" v-cloak>
-                                    {{cartCount}}
-                                    <span class="visually-hidden">unread messages</span>
-                                </span>
-                            </a>
-                        </div>
-
                     </div>
                     <!-- Button -->
                     <button class="navbar-toggler collapsed" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar-default" aria-controls="navbar-default" aria-label="Toggle navigation">
@@ -371,9 +335,7 @@ else
                     </div>
 
                     <div class="dropdown list-inline-item me-5">
-
                         <a role="button" href="#" class="dropdown-toggle text-muted position-relative" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuButton">
-
                             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
                                 <g id="SVGRepo_bgCarrier" stroke-width="2"></g>
                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -387,7 +349,6 @@ else
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="dropdownMenuButton" style="flex-direction:column-reverse;height:40vh;width:30vw">
-
                             <div class="border-top p-3" style="text-align:center; color:black;font-weight: bold;height:20%">系統通知</div>
                             <div class="border-top p-3  dropdown-item " style="height:40%">
                                 <a style="white-space: normal;word-break: break-all;color:#6c757d;font-weight: bold" href="#!">
@@ -400,29 +361,9 @@ else
                                 <a style="white-space: normal;word-break: break-all;color:#6c757d;font-weight: bold" href="#!">
                                     <div>活動通知</div>
                                     <div>!慶祝!為惜Food破50家合作店家喝采，12/25-12/31期間，購買平台上任何時餐點，皆半價優惠!</div>
-
                                 </a>
                             </div>
                         </div>
-
-                    </div>
-
-
-
-                    <div class="list-inline-item">
-
-                        <a class="text-muted position-relative " data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" href="#offcanvasExample" role="button" aria-controls="offcanvasRight" @@click="clickcart">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag">
-                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                <path d="M16 10a4 4 0 0 1-8 0"></path>
-                            </svg>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" v-cloak>
-                                {{cartCount}}
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                        </a>
-
                     </div>
                 </div>
             </div>
