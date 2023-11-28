@@ -19,8 +19,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             _context = context;
         }
         public IActionResult Index(int page = 1, int pageSize = 5, string searchStores = null)
-        {
-            // 從 TempData 中讀取搜索條件值
+        {            
             if (!string.IsNullOrEmpty(searchStores))
             {
                 TempData["SearchStores"] = searchStores;

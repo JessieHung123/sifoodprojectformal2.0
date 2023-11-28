@@ -40,19 +40,19 @@
                         <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
                             <thead class="bg-light">
                                 <tr>
-                                    <th>
+                                    <th style="text-align: center;">
                                         姓名
                                     </th>
-                                    <th>
+                                    <th style="text-align: center;">
                                         信箱
                                     </th>                                    
-                                    <th>
+                                    <th style="text-align: center;">
                                         電話
                                     </th>
-                                    <th>
+                                    <th style="text-align: center;">
                                         生日
                                     </th>                                                                
-                                    <th>
+                                    <th style="text-align: center;">
                                         功能
                                     </th>
                                 </tr>
@@ -75,15 +75,15 @@
                                         </td>                                        
                                         <td>
                                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#EditUser-" + item.UserId)" data-url="@Url.Action($"Edit1/{item.UserId}")">
-                                                <i class="bi bi-pencil-square me-3"></i>Edit
+                                                <i class="bi bi-pencil-square me-3"></i>修改
                                             </button>
                                             @await Html.PartialAsync("_Edit",item)
                                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DetailUser-" + item.UserId)" data-url="@Url.Action($"Details1/{item.UserId}")">
-                                                <i class="bi bi-info-circle me-3"></i>Details
+                                                <i class="bi bi-info-circle me-3"></i>明細
                                             </button>
                                             @await Html.PartialAsync("_Details",item)
                                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DeleteUser-" + item.UserId)" data-url="@Url.Action($"Delete1/{item.UserId}")">
-                                                <i class="bi bi-trash me-3"></i>Delete
+                                                <i class="bi bi-trash me-3"></i>刪除
                                             </button>
                                             @await Html.PartialAsync("_Delete",item)
                                         </td>

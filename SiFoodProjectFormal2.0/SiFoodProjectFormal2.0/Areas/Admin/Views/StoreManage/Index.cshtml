@@ -38,31 +38,30 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.StoreName)
+                                <th style="text-align: center;">
+                                    商店名稱
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ContactName)
+                                <th style="text-align: center;">
+                                    聯絡人
                                 </th>                               
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Email)
+                                <th style="text-align: center;">
+                                    Email
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Phone)
+                                <th style="text-align: center;">
+                                    電話
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.City)
-                                </th>                                
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Description)
-                                </th>                                
-                                <th>
-                                    @Html.DisplayNameFor(model => model.OpeningTime)
+                                <th style="text-align: center;">
+                                    城市
+                                </th>                                                           
+                                <th style="text-align: center;">
+                                    開店時間
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ClosingDay)
+                                <th style="text-align: center;">
+                                    關店時間
                                 </th>                                
-                                <th></th>
+                                <th style="text-align: center;">
+                                    功能
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -83,9 +82,6 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.City)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
                                     </td>                                    
                                     <td>
                                         @Html.DisplayFor(modelItem => item.OpeningTime)
@@ -95,15 +91,15 @@
                                     </td>
                                     <td>
                                         <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#EditStore-" + item.StoreId)" data-url="@Url.Action($"Edit/{item.StoreId}")">
-                                            <i class="bi bi-pencil-square me-3"></i>Edit
+                                            <i class="bi bi-pencil-square me-3"></i>修改
                                         </button>
                                         @await Html.PartialAsync("_EditPartialView",item)
                                         <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DetailStore-" + item.StoreId)" data-url="@Url.Action($"Details/{item.StoreId}")">
-                                            <i class="bi bi-info-circle me-3"></i>Details
+                                            <i class="bi bi-info-circle me-3"></i>明細
                                         </button>
                                         @await Html.PartialAsync("_DetailsPartialView",item)
                                         <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DeleteStore-" + item.StoreId)" data-url="@Url.Action($"Delete/{item.StoreId}")">
-                                            <i class="bi bi-trash me-3"></i>Delete
+                                            <i class="bi bi-trash me-3"></i>刪除
                                         </button>
                                         @await Html.PartialAsync("_DeletePartialView",item)
                                     </td>
