@@ -221,10 +221,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
    
 
-public IActionResult Favorite()
+        public IActionResult Favorite()
         {
             return View();
         }
+
+
         public IActionResult HistoryOrders()
         {
             return View();
