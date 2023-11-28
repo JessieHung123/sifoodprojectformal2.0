@@ -53,7 +53,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     {
                         List<Claim> claims = new List<Claim>()
                         {
-                        new Claim(ClaimTypes.Name, $"{model.Account}"),
+                        new Claim(ClaimTypes.Name, $"{EmailAccount.UserId}"),
                         new Claim(ClaimTypes.Role, "User"),
                         };
 
@@ -91,8 +91,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 {
                     ran.GetBytes(saltBytes);
                 }
-                model.PasswordSalt = saltBytes;
-
+                
                 SHA256 sha256 = SHA256.Create();
                 byte[] passwordBytes = Encoding.ASCII.GetBytes($"{model?.Password}{saltBytes}");
                 byte[] hashBytes = sha256.ComputeHash(passwordBytes);
@@ -102,7 +101,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 User user = new User
                 {
                     UserEmail = $"{model?.EmailAccount}",
-                    UserPasswordSalt = model?.PasswordSalt,
+                    UserPasswordSalt = saltBytes,
                     UserPasswordHash = hashBytes,
                     UserVerificationCode = UserVerification.Next(100000, 999999).ToString(),
                 };
