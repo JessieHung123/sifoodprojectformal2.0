@@ -674,6 +674,9 @@
             </div>
         </div>
     </div>
+    
+    
+   <!--Main:主要編輯區在這 -->
     <main>
         <!-- section-->
         <div class="mt-4">
@@ -685,8 +688,8 @@
                         <!-- breadcrumb -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="#!">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#!">Shop</a></li>
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Main">首頁</a></li>
+                            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="Profile">會員資料</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">收藏店家</li>
                             </ol>
                         </nav>
@@ -714,19 +717,18 @@
                                             <th>
                                                 <!-- form check -->
                                                 <div class="form-check">
-                                                    <!-- input --><input class="form-check-input" type="checkbox" value="" id="checkAll">
-                                                    <!-- label --><label class="form-check-label" for="checkAll">
-                                                        全選
-
-                                                    </label>
+                                                    <!-- input -->
+                                                    <input class="form-check-input" type="checkbox" value="" id="checkAll">
+                                                    <!-- label -->
+                                                    <label class="form-check-label" for="checkAll">全選</label>
                                                 </div>
                                             </th>
                                             <th></th>
                                             <th>店家</th>
-
                                             <th>刪除收藏</th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
                                         <tr>
 
