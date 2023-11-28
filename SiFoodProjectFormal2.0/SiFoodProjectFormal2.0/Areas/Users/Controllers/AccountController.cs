@@ -201,7 +201,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Account/ResetPassword")]
-        public string ResetPassword([FromBody] ResetPasswordVM model)
+        public string ResetPassword([FromForm] ResetPasswordVM model)
         {
             User? user = _context.Users.FirstOrDefault(x => x.UserEmail == model.UserConfirmEmail);
 
