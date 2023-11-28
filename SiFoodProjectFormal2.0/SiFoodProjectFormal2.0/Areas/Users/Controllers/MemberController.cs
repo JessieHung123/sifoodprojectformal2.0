@@ -4,6 +4,7 @@ using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 using SiFoodProjectFormal2._0.Helper;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -101,7 +102,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         //11/23新版
         [HttpGet]
-        public async Task<IActionResult> Profile(string id)
+        public async Task<IActionResult> Profile()
         {
             //if (id == null || _context.Users == null)
             //{
@@ -219,11 +220,27 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             return View();
         }
-   
 
-        public IActionResult Favorite()
+
+        public async Task<IActionResult> Favorite()
         {
-            return View();
+           // var userId = "當前用戶的ID"; // 從用戶會話或身份驗證系統獲取
+           //暫時先寫死
+            var userId = "U001"; 
+
+            // 查詢收藏的商家
+            var favoriteStores = await _context.Favorites
+                .Where(f => f.UserId == userId)
+                .Include(f => f.Store)
+                .Select(f => new FavoriteVM
+                {
+                    FavoriteId = f.FavoriteId,
+                    StoreName = f.Store.StoreName,
+                    LogoPath = f.Store.LogoPath
+                })
+                .ToListAsync();
+
+            return View(favoriteStores);
         }
 
 
