@@ -13,7 +13,6 @@ using SiFoodProjectFormal2._0.Models;
 namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 {
     [Route("odata/Storeapi/[action]")]
-
     [Area("Users")]
     public class StoreapiController : ODataController
     {
@@ -27,7 +26,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [EnableQuery]
         public object Main2()
         {
-            
             return _context.Stores.Include(x => x.Products).ThenInclude(x=>x.Category).Include(x => x.Orders)
                 .ThenInclude(x => x.Comment)
                 .Select(z => new StoreVM
@@ -106,6 +104,21 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             {
                 return false;
             }
+        }
+        [HttpGet]
+        public IEnumerable<StoreVM> GetStoreOnMap()
+        {
+            return  _context.Stores.Select(s=>new StoreVM { 
+                StoreId = s.StoreId,
+                StoreName = s.StoreName,
+                Description = s.Description,
+                LogoPath = s.LogoPath,
+                City = s.City,
+                Region = s.Region,
+                Latitude= s.Latitude,
+                Longitude= s.Longitude,
+            });
+
         }
 
 
