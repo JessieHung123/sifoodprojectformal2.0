@@ -4,11 +4,9 @@
     Layout = "_AdminLayout";
 }
 
-<h1>客戶管理</h1>
+<h1>店家管理</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -127,9 +125,18 @@
                 @Html.DisplayFor(modelItem => item.LogoPath)
             </td>
             <td>
-                    <a asp-controller="StoreManage" asp-action="Edit" asp-route-StoreId="@item.StoreId">Edit</a> |
-                    <a asp-controller="StoreManage"asp-action="Details" asp-route-StoreId="@item.StoreId">Details</a> |
-                    <a asp-controller="StoreManage"asp-action="Delete" asp-route-StoreId="@item.StoreId">Delete</a>
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="@("#EditStore-" + item.StoreId)" data-url="@Url.Action($"Edit/{item.StoreId}")">
+                    編輯
+                </button>
+                    @await Html.PartialAsync("_EditPartialView",item)
+                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@("#DetailStore-" + item.StoreId)" data-url="@Url.Action($"Details/{item.StoreId}")">
+                    明細
+                </button>
+                    @await Html.PartialAsync("_DetailsPartialView",item)
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@("#DetailStore-" + item.StoreId)" data-url="@Url.Action($"Delete/{item.StoreId}")">
+                        刪除
+                </button>
+                    @await Html.PartialAsync("_DeletePartialView",item)
             </td>
         </tr>
 }
