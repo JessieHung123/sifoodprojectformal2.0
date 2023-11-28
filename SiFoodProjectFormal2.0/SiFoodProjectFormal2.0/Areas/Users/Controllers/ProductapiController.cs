@@ -37,18 +37,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
 
         }
-        ////取得單一商品資訊
-        //[HttpGet("{id}")]
-        //public async Task<List<TransportPlanDto>> GetProduct(int id)
-        //{
-        //    return await _dbContext.Products.Where(p => p.ProductId == id).Select(p => new TransportPlanDto
-        //    {
-        //        ProductName = p.ProductName,
-        //        MainDescribe = p.MainDescribe,
-        //        SubDescribe = p.SubDescribe,
-        //        ShortDescribe = p.ShortDescribe,
-        //        Img = p.Img
-        //    }).ToListAsync();
-        //}
+       
     }
 }
