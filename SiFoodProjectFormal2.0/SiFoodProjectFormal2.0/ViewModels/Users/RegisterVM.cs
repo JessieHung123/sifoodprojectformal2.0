@@ -10,5 +10,7 @@ namespace SiFoodProjectFormal2._0.ViewModels.Users
 
         [Required(ErrorMessage = "請輸入欲註冊密碼")]
         public byte[]? Password { get; set; }
+
+        public byte[]? PasswordSalt { get; set; }
     }
 }

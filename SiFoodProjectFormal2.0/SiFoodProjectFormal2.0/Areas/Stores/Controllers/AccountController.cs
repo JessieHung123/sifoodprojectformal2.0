@@ -32,13 +32,13 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginVM model)
+        public async Task<IActionResult> Login(StoreLoginVM model)
         {
-            Store? account = _context.Stores.FirstOrDefault(x => x.Email == model.Account);
+            Store? account = _context.Stores.FirstOrDefault(x => x.Email == model.StoreAccount);
 
             if (account != null)
             {
-                string passwordWithSalt = $"{model.Password}{account.PasswordSalt}";
+                string passwordWithSalt = $"{model.SetPassword}{account.PasswordSalt}";
                 Byte[] RealPasswordBytes = Encoding.ASCII.GetBytes(passwordWithSalt);
 
                 using (SHA256 sha256 = SHA256.Create())
@@ -49,7 +49,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                     {
                         List<Claim> claims = new List<Claim>()
                         {
-                        new Claim(ClaimTypes.Name, $"{model.Account}"),
+                        new Claim(ClaimTypes.Name, $"{account.StoreId}"),
                         new Claim(ClaimTypes.Role, "Store"),
                         };
 
@@ -70,32 +70,30 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             return View();
         }
 
-    //    [HttpPost]
-    //    [Route("Account/SetPassword")]
-    //    public string SetPassword()
-    //    {
-    //        byte[] saltBytes = new byte[8];
-    //        using (RandomNumberGenerator ran = RandomNumberGenerator.Create())
-    //        {
-    //            ran.GetBytes(saltBytes);
-    //        }
-
-    //        SHA256 sha256 = SHA256.Create();
-    //        byte[] passwordBytes = Encoding.ASCII.GetBytes($"{model?.Password}{saltBytes}");
-    //        byte[] hashBytes = sha256.ComputeHash(passwordBytes);
-
-    //        Random UserVerification = new Random();
-
-    //        User user = new User
-    //        {
-    //            UserPasswordSalt = saltBytes,
-    //            UserPasswordHash = hashBytes,
-    //            UserVerificationCode = UserVerification.Next(100000, 999999).ToString(),
-    //        };
-    //        _context.Users.Add(user);
-    //        _context.SaveChanges();
-
-    //        return "密碼設定成功";
-    //    }
-    //}
+        [HttpPost]
+        [Route("Account/SetPassword")]
+        public string SetPassword([FromBody] StoreLoginVM model)
+        {
+            Store? account = _context.Stores.FirstOrDefault(x => x.Email == model.StoreAccount);
+            if (account == null)
+            {
+                return "找不到此商家";
+            }
+            else
+            {
+                byte[] saltBytes = new byte[8];
+                using (RandomNumberGenerator ran = RandomNumberGenerator.Create())
+                {
+                    ran.GetBytes(saltBytes);
+                }
+                SHA256 sha256 = SHA256.Create();
+                byte[] passwordBytes = Encoding.ASCII.GetBytes($"{model?.SetPassword}{saltBytes}");
+                byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+                account.PasswordSalt = saltBytes;
+                account.PasswordHash = hashBytes;
+                _context.SaveChanges();
+                return "密碼設定成功";
+            }
+        }
+    }
 }

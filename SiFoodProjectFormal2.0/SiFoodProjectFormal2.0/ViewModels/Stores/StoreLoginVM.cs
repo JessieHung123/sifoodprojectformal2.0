@@ -2,12 +2,12 @@
 
 namespace SiFoodProjectFormal2._0.ViewModels.Stores
 {
-    public class LoginVM
+    public class StoreLoginVM
     {
         [Required(ErrorMessage = "請輸入登入帳號")]
-        public string? Account { get; set; }
+        public string? StoreAccount { get; set; }
 
         [Required(ErrorMessage = "請輸入登入密碼")]
-        public byte[]? Password { get; set; }
+        public byte[]? SetPassword { get; set; }
     }
 }
