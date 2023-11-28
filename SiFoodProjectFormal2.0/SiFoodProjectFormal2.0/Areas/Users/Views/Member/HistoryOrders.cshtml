@@ -580,14 +580,13 @@
                                     {
                                         <tr>
                                             <td class="align-middle border-top-0 w-0">
-                                                <!-- 根據order中的數據來動態生成產品圖片的路徑 -->
                                                 <a href="#">
-                                                    <img src="@($"~/images/products/{order.PhotoPath}")" alt="Ecommerce" class="icon-shape icon-xl">
+                                                    <img src="@Url.Content($"~/images/products/{order.FirstProductPhotoPath}")" alt="Ecommerce" class="icon-shape icon-xl">
                                                 </a>
                                             </td>
                                             <td class="align-middle border-top-0">
                                                 <a href="#" class="fw-semi-bold text-inherit">
-                                                    <h6 class="mb-0">@order.ProductName</h6>
+                                                    <h6 class="mb-0">@order.FirstProductName</h6>
                                                 </a>
                                                 @* <span><small class="text-muted">@order.ProductSize</small></span> *@
                                             </td>

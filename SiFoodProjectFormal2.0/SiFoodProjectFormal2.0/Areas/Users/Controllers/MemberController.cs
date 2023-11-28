@@ -230,7 +230,9 @@ public IActionResult Favorite()
         {
             var historyOrders = _context.Orders
                 .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
                 .Include(o => o.Status)
+                
                 .Select(o => new HistoryOrderVM
                 {
                     StoreId = o.StoreId,
@@ -239,6 +241,10 @@ public IActionResult Favorite()
                     Status = o.Status.StatusName,
                     Quantity = o.OrderDetails.Sum(od => od.Quantity),
                     TotalPrice = o.TotalPrice ?? 0
+                    //抓第一個商品的名稱和照片
+                     FirstProductPhotoPath = o.OrderDetails.FirstOrDefault()?.Product?.PhotoPath,
+                    FirstProductName = o.OrderDetails.FirstOrDefault()?.Product?.ProductName,
+
                 }).ToList();
 
             return View(historyOrders);

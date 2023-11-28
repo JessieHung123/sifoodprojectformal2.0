@@ -13,5 +13,8 @@
 
         public string ProductName { get; set; } = null!;
 
+        //第一個商品照片&名稱
+        public string FirstProductPhotoPath { get; set; }
+        public string FirstProductName { get; set; }
     }
 }
