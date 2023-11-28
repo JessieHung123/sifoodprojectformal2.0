@@ -294,15 +294,11 @@
                         var c = this.filtercategory(a);
                         this.storeCount = c.length;
                         return c;
-
                 },
-                
             },
-          
             mounted: function () {
                 let _this = this;
                 _this.getStoreapi();
- 
             },
             watch: {
                 // isStoreActive(n) {
@@ -310,8 +306,7 @@
                 // },
                 // condition.active(n) {
                 //     if(n == true) { this.area = false; }
-                //         },
-
+                //         }
             },
             methods: {
                 filterActiveTime(stores) {
@@ -375,9 +370,7 @@
                             return activeConditions.some(condition => store.categoryName.includes(condition.label));
                         })
                     };
-
                 },
-
                 getStoreapi() {
                     let _this = this;
                     fetch(`${baseAddress}/odata/Storeapi/Main2`, { method: "GET" })
@@ -396,9 +389,7 @@
                         }).catch(error => {
                             alert(error);
                         });
-
                 },
-                
                 getFavoriteStore() {
                     let _this = this;
                     fetch(`${baseAddress}/odata/Storeapi/GetFavoriteStoreId`, { method: "GET" })
