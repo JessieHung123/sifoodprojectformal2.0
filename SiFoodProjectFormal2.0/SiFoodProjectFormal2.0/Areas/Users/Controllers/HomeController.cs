@@ -47,12 +47,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 try
                 {
                     // 處理 Logo 圖片上傳
-                    string logoPathInDb = await SavePhoto(joinus.LogoPath, "Logo");
+                    string logoPathInDb = await SavePhoto(joinus.LogoPath, "logo");
 
                     // 處理三張店家照片上傳
-                    string photoPathInDb = await SavePhoto(joinus.PhotosPath, "PhotosPath");
-                    string photoPath2InDb = await SavePhoto(joinus.PhotosPath2, "PhotosPath2");
-                    string photoPath3InDb = await SavePhoto(joinus.PhotosPath3, "PhotosPath3");
+                    string photoPathInDb = await SavePhoto(joinus.PhotosPath, "photo");
+                    string photoPath2InDb = await SavePhoto(joinus.PhotosPath2, "photo");
+                    string photoPath3InDb = await SavePhoto(joinus.PhotosPath3, "photo");
 
                                         //創建store實體
 
