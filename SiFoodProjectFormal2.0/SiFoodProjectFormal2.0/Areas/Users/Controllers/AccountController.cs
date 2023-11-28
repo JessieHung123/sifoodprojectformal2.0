@@ -140,9 +140,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             if (LockUser != null)
             {
                 LockUser.UserAuthenticated = 1;
+                _context.SaveChanges();
+                return "驗證帳號成功，已為您開通帳號，請再次重新登入";
             }
-            _context.SaveChanges();
-            return "驗證帳號成功，已為您開通帳號，請再次重新登入";
+            else
+            {
+                return "驗證帳號失敗，請重新輸入驗證碼";
+            }
         }
 
         [HttpPost]

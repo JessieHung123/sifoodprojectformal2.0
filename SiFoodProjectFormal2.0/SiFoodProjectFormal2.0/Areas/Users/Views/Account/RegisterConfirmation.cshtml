@@ -81,10 +81,8 @@
                         var success = "驗證帳號成功，已為您開通帳號，請再次重新登入";
                         if (response.data == success) {
                             window.location.href = 'https://localhost:7042/Users/Account/LoginRegister'
-                        }
-                        else {
-                            alert("驗證碼錯誤，請重新輸入驗證碼")
-                            window.location.href = 'https://localhost:7042/Users/Account/RegisterConfirmation'
+                        }else{
+                            _this.verificationCode = "";
                         }
                         _this.loading = false;
                     }).catch(err => {
