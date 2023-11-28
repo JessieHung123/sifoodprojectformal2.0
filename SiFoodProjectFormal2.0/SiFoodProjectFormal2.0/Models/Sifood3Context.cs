@@ -41,6 +41,9 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//        => optionsBuilder.UseSqlServer("Server=tcp:sifooddbserver.database.windows.net,1433;Initial Catalog=sifood3;Persist Security Info=False;User ID=SQLAdmin;Password=THM103sifood;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,7 +51,7 @@ public partial class Sifood3Context : DbContext
 
         modelBuilder.Entity<Cart>(entity =>
         {
-            entity.HasKey(e => new { e.UserId, e.ProductId, e.StoreId });
+            entity.HasKey(e => new { e.UserId, e.ProductId }).HasName("PK_Cart_1");
 
             entity.ToTable("Cart");
 
@@ -59,20 +62,11 @@ public partial class Sifood3Context : DbContext
                 .IsUnicode(false)
                 .HasColumnName("UserID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.StoreId)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("StoreID");
 
             entity.HasOne(d => d.Product).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Cart_Products");
-
-            entity.HasOne(d => d.Store).WithMany(p => p.Carts)
-                .HasForeignKey(d => d.StoreId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Cart_Stores");
 
             entity.HasOne(d => d.User).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.UserId)
@@ -194,7 +188,6 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.Driver).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.DriverId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Orders_Drivers");
 
             entity.HasOne(d => d.Status).WithMany(p => p.Orders)
@@ -316,6 +309,8 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.PasswordSalt).HasMaxLength(64);
             entity.Property(e => e.Phone).HasMaxLength(10);
             entity.Property(e => e.PhotosPath).HasMaxLength(50);
+            entity.Property(e => e.PhotosPath2).HasMaxLength(50);
+            entity.Property(e => e.PhotosPath3).HasMaxLength(50);
             entity.Property(e => e.Region).HasMaxLength(10);
             entity.Property(e => e.StoreName).HasMaxLength(15);
             entity.Property(e => e.TaxId)
@@ -334,6 +329,7 @@ public partial class Sifood3Context : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('U'+format(NEXT VALUE FOR [SifoodUserIdSeq],'000'))")
                 .HasColumnName("UserID");
+            entity.Property(e => e.ForgotPasswordRandom).HasMaxLength(20);
             entity.Property(e => e.TotalOrderAmount).HasColumnType("money");
             entity.Property(e => e.UserBirthDate).HasColumnType("date");
             entity.Property(e => e.UserEmail)
@@ -373,7 +369,7 @@ public partial class Sifood3Context : DbContext
                 .HasConstraintName("FK_UserAddresses_Users");
         });
         modelBuilder.HasSequence<int>("SifoodDriverIdSeq").StartsAt(3L);
-        modelBuilder.HasSequence<int>("SifoodOrderIdSeq").StartsAt(8L);
+        modelBuilder.HasSequence<int>("SifoodOrderIdSeq").StartsAt(10L);
         modelBuilder.HasSequence<int>("SifoodStoreIdSeq").StartsAt(6L);
         modelBuilder.HasSequence<int>("SifoodUserIdSeq").StartsAt(5L);
 

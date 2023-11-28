@@ -15,5 +15,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         public string UserDetailAddress { get; set; } = null!;
 
         public string? UserPhone { get; set; }
+
+        public bool IsDefault { get; set; }
     }
 }

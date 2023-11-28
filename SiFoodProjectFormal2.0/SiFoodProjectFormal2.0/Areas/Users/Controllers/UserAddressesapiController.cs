@@ -40,7 +40,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 UserDetailAddress = x.UserDetailAddress,
                 UserRegion = x.UserRegion,
                 UserCity = x.UserCity,
-                UserPhone = x.User.UserPhone
+                UserPhone = x.User.UserPhone,
+                IsDefault = x.IsDefault
             });
         }
 
@@ -54,6 +55,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 return "修改地址失敗!";
             }
             UserAddress? userAddresses = await _context.UserAddresses.FindAsync(id);
+            userAddresses.UserDetailAddress = userAddressesVM.UserDetailAddress;
             _context.Entry(userAddresses).State = EntityState.Modified;
 
             try
@@ -78,7 +80,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         // POST: api/UserAddressesapi
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<string> PostUserAddress([FromBody] UserAddressesVM userAddressesVM)
+        public async Task<string> PostUserAddress([FromForm] UserAddressesVM userAddressesVM)
         {
             UserAddress userAddresses = new UserAddress
             {
