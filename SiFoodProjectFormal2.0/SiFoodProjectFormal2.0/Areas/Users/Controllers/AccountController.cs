@@ -230,6 +230,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
         [HttpGet]
+        [Route("/Account/Logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
