@@ -72,7 +72,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 
         [HttpPost]
         [Route("Account/SetPassword")]
-        public string SetPassword([FromBody] StoreLoginVM model)
+        public string SetPassword([FromForm] StoreLoginVM model)
         {
             Store? account = _context.Stores.FirstOrDefault(x => x.Email == model.StoreAccount);
             if (account == null)

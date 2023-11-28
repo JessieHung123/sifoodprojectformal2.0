@@ -64,12 +64,12 @@
             methods: {
                 setPassword() {
                     var _this = this;
-                    axios.post(`/Account/SetPassword`, {
-                        StoreAccount: _this.storeEmail,
-                        SetPassword: _this.storePassword
-                    }, {
+                    var form = new FormData();
+                    form.append("StoreAccount", _this.storeEmail);
+                    form.append("SetPassword", _this.storePassword);
+                    axios.post(`/Account/SetPassword`, form, {
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "multipart/form-data"
                         }
                     }).then(response => {
                         alert(response.data);
