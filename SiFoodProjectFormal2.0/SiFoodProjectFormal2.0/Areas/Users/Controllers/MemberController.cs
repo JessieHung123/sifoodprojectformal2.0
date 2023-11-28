@@ -226,7 +226,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
            // var userId = "當前用戶的ID"; // 從用戶會話或身份驗證系統獲取
            //暫時先寫死
-            var userId = "U001"; 
+            var userId = "U001";
+
+            //加入計算收藏幾間店家的功能
+            var favoriteStoresCount = _context.Favorites.Count(f => f.UserId == userId);
+            ViewBag.FavoriteStoresCount = favoriteStoresCount;
 
             // 查詢收藏的商家
             var favoriteStores = await _context.Favorites
@@ -254,12 +258,16 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 selectedFavorites = new int[] { singleDelete.Value };
             }
 
-            // 根據 selectedFavorites 刪除收藏項目
-            // 刪除邏輯
+            // 假設 currentUserId 是當前用戶的 UserId
+            // 從用戶身份驗證系統獲取,現在先暫時指定鈺晴首頁使用的ID
+            string currentUserId = "U001"; 
+
             // 根據 selectedFavorites 刪除收藏項目
             foreach (var favoriteId in selectedFavorites)
             {
-                var favorite = _context.Favorites.Find(favoriteId);
+                var favorite = _context.Favorites
+                    .FirstOrDefault(f => f.UserId == currentUserId && f.FavoriteId == favoriteId);
+
                 if (favorite != null)
                 {
                     _context.Favorites.Remove(favorite);
@@ -267,9 +275,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             }
             _context.SaveChanges();
 
-
             return RedirectToAction("Favorite");
         }
+
 
 
 

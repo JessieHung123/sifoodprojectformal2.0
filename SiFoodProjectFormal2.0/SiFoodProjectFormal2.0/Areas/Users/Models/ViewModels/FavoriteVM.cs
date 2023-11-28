@@ -5,5 +5,4 @@
         public int FavoriteId { get; set; }
         public string StoreName { get; set; }
         public string LogoPath { get; set; }
-    }
-}
+    }}
