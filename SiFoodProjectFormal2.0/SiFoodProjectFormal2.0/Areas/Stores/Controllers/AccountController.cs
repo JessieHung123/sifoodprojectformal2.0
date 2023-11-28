@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.ViewModels.Stores;
 using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 {
@@ -24,36 +26,76 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             return View();
         }
 
+        public IActionResult SetAccount()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
-            string[]? account = _context.Stores.Select(x => x.Email).ToArray();
-            byte[]?[] password = _context.Stores.Select(y => y.PasswordHash).ToArray();
+            Store? account = _context.Stores.FirstOrDefault(x => x.Email == model.Account);
 
-
-            if (account.Contains(model.Account) && password.Contains(model.Password))
+            if (account != null)
             {
-                var claims = new List<Claim>()
+                string passwordWithSalt = $"{model.Password}{account.PasswordSalt}";
+                Byte[] RealPasswordBytes = Encoding.ASCII.GetBytes(passwordWithSalt);
+
+                using (SHA256 sha256 = SHA256.Create())
                 {
-                new Claim(ClaimTypes.Name, $"{model.Account}"),
-                new Claim(ClaimTypes.Role, "Stores"),
-                };
+                    Byte[] RealPasswordHash = sha256.ComputeHash(RealPasswordBytes);
 
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var principal = new ClaimsPrincipal(identity);
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    principal, new AuthenticationProperties
+                    if (Enumerable.SequenceEqual(RealPasswordHash, account.PasswordHash))
                     {
-                        ExpiresUtc = DateTime.UtcNow.AddDays(1)
-                    });
-                return RedirectToAction("Main", "Home");
+                        List<Claim> claims = new List<Claim>()
+                        {
+                        new Claim(ClaimTypes.Name, $"{model.Account}"),
+                        new Claim(ClaimTypes.Role, "Store"),
+                        };
+
+                        ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                        ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                            principal, new AuthenticationProperties
+                            {
+                                ExpiresUtc = DateTime.UtcNow.AddDays(1)
+                            });
+
+                        return RedirectToAction("Main", "Home");
+                    }
+                }
             }
-            else
-            {
-                return View();
-            }
+            return View();
         }
-    }
+
+    //    [HttpPost]
+    //    [Route("Account/SetPassword")]
+    //    public string SetPassword()
+    //    {
+    //        byte[] saltBytes = new byte[8];
+    //        using (RandomNumberGenerator ran = RandomNumberGenerator.Create())
+    //        {
+    //            ran.GetBytes(saltBytes);
+    //        }
+
+    //        SHA256 sha256 = SHA256.Create();
+    //        byte[] passwordBytes = Encoding.ASCII.GetBytes($"{model?.Password}{saltBytes}");
+    //        byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+
+    //        Random UserVerification = new Random();
+
+    //        User user = new User
+    //        {
+    //            UserPasswordSalt = saltBytes,
+    //            UserPasswordHash = hashBytes,
+    //            UserVerificationCode = UserVerification.Next(100000, 999999).ToString(),
+    //        };
+    //        _context.Users.Add(user);
+    //        _context.SaveChanges();
+
+    //        return "密碼設定成功";
+    //    }
+    //}
 }
