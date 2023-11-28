@@ -100,14 +100,14 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             if (photo != null)
             {
                 var fileName = Path.GetFileName(photo.FileName);
-                var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/JoinUs", folderName, fileName);
+                var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Stores", folderName, fileName);
 
                 using (var stream = new FileStream(savePath, FileMode.Create))
                 {
                     await photo.CopyToAsync(stream);
                 }
 
-                return $"/images/JoinUs/{folderName}/{fileName}";
+                return $"/images/Stores/{folderName}/{fileName}";
             }
 
             return null;
