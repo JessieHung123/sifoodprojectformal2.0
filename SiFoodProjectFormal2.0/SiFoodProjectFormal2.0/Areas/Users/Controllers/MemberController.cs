@@ -244,6 +244,24 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
 
+
+        [HttpPost]
+        public IActionResult DeleteFavorite(int[] selectedFavorites, int? singleDelete)
+        {
+            // 如果單獨刪除被觸發，只將 singleDelete 值加入 selectedFavorites
+            if (singleDelete.HasValue)
+            {
+                selectedFavorites = new int[] { singleDelete.Value };
+            }
+
+            // 根據 selectedFavorites 刪除收藏項目
+            // 刪除邏輯...
+
+            return RedirectToAction("Favorite");
+        }
+
+
+
         public IActionResult HistoryOrders()
         {
             return View();
