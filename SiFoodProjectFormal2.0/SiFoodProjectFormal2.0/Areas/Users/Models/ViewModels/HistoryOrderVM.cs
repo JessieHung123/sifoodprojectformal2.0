@@ -1,6 +1,6 @@
 ﻿namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 {
-    internal class HistoryOrderVM
+    public class HistoryOrderVM
     {
         public string StoreId { get; set; }
         public string OrderId { get; set; }
@@ -8,5 +8,10 @@
         public string Status { get; set; }
         public int Quantity { get; set; }
         public int TotalPrice { get; set; }
+
+        public string? PhotoPath { get; set; }
+
+        public string ProductName { get; set; } = null!;
+
     }
 }
