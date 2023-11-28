@@ -8,6 +8,6 @@ namespace SiFoodProjectFormal2._0.ViewModels.Stores
         public string? StoreAccount { get; set; }
 
         [Required(ErrorMessage = "請輸入登入密碼")]
-        public byte[]? SetPassword { get; set; }
+        public string? SetPassword { get; set; }
     }
 }
