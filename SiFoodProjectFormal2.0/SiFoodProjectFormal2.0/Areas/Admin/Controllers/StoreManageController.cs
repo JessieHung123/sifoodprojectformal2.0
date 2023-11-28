@@ -18,16 +18,39 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(string searchString)
+        public IActionResult Index(int page = 1, int pageSize = 5, string searchStores = null)
         {
-            IQueryable<Store> stores = _context.Stores;
-            if (!string.IsNullOrEmpty(searchString))
+            // 從 TempData 中讀取搜索條件值
+            if (!string.IsNullOrEmpty(searchStores))
             {
-                stores = stores.Where(u => u.StoreName.Contains(searchString));
+                TempData["SearchStores"] = searchStores;
             }
-            return View(await stores.ToListAsync());
-        }
+            else
+            {
+                searchStores = TempData["SearchStores"] as string ?? "";
+            }
 
+            var query = _context.Stores.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchStores))
+            {
+                query = query.Where(u => u.StoreName.Contains(searchStores) || u.ContactName.Contains(searchStores));
+            }
+
+            var totalEntries = query.Count();
+            var stores = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var entriesStart = (page - 1) * pageSize + 1;
+            var entriesEnd = entriesStart + stores.Count - 1;
+
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalEntries / (double)pageSize);
+            ViewBag.EntriesStart = entriesStart;
+            ViewBag.EntriesEnd = entriesEnd;
+            ViewBag.TotalEntries = totalEntries;
+
+            return View(stores);
+        }
         public IActionResult Details(string storeId)
         {
             Store store = _context.Stores.Where(x => x.StoreId == storeId).FirstOrDefault();

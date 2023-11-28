@@ -4,141 +4,139 @@
     Layout = "_AdminLayout";
 }
 
-<h1>店家管理</h1>
+<div class="container">
+    <div class="row mb-8">
+        <div class="col-md-12">
+            <div class="d-md-flex justify-content-between align-items-center">
+                <div>
+                    <h2>商家管理</h2>
+                    <!-- breacrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="#" class="text-inherit">後台首頁</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">商家管理</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-xl-12 col-12 mb-5">
+            <div class="card h-100 card-lg">
+                <div class="p-6">
+                    <div class="row justify-content-between">
+                        <div class="col-md-4 col-12">
+                            <form class="d-flex" role="search">
+                                <input class="form-control" type="search" name="searchStores" value="@ViewBag.searchStores" placeholder="Search Stores" aria-label="Search">
+                            </form>
+                        </div>
 
+                    </div>
+                </div>
+                <div class="card-body p-0 ">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.StoreName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ContactName)
+                                </th>                               
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Email)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Phone)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.City)
+                                </th>                                
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>                                
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OpeningTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ClosingDay)
+                                </th>                                
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StoreName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ContactName)
+                                    </td>                                    
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Phone)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.City)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>                                    
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OpeningTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ClosingDay)
+                                    </td>
+                                    <td>
+                                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#EditStore-" + item.StoreId)" data-url="@Url.Action($"Edit/{item.StoreId}")">
+                                            <i class="bi bi-pencil-square me-3"></i>Edit
+                                        </button>
+                                        @await Html.PartialAsync("_EditPartialView",item)
+                                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DetailStore-" + item.StoreId)" data-url="@Url.Action($"Details/{item.StoreId}")">
+                                            <i class="bi bi-info-circle me-3"></i>Details
+                                        </button>
+                                        @await Html.PartialAsync("_DetailsPartialView",item)
+                                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DeleteStore-" + item.StoreId)" data-url="@Url.Action($"Delete/{item.StoreId}")">
+                                            <i class="bi bi-trash me-3"></i>Delete
+                                        </button>
+                                        @await Html.PartialAsync("_DeletePartialView",item)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StoreName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContactName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TaxId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Region)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PasswordHash)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PasswordSalt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EnrollDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OpeningTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClosingDay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhotosPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LogoPath)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoreName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TaxId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Region)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PasswordHash)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PasswordSalt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EnrollDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OpeningTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClosingDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhotosPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LogoPath)
-            </td>
-            <td>
-                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="@("#EditStore-" + item.StoreId)" data-url="@Url.Action($"Edit/{item.StoreId}")">
-                    編輯
-                </button>
-                    @await Html.PartialAsync("_EditPartialView",item)
-                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@("#DetailStore-" + item.StoreId)" data-url="@Url.Action($"Details/{item.StoreId}")">
-                    明細
-                </button>
-                    @await Html.PartialAsync("_DetailsPartialView",item)
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@("#DetailStore-" + item.StoreId)" data-url="@Url.Action($"Delete/{item.StoreId}")">
-                        刪除
-                </button>
-                    @await Html.PartialAsync("_DeletePartialView",item)
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    <div class="border-top d-md-flex justify-content-between align-items-center p-6">
+                        <span>Showing @ViewBag.EntriesStart to @ViewBag.EntriesEnd of @ViewBag.TotalEntries entries</span>
+                        <nav class="mt-2 mt-md-0">
+                            <ul class="pagination mb-0">
+                                @if (ViewBag.Page > 1)
+                                {
+                                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = ViewBag.Page - 1, searchStores = ViewBag.searchStores })">Previous</a></li>
+                                }
+
+                                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize, searchStores = TempData["SearchStores"] })">@i</a>
+                                    </li>
+                                }
+
+                                @if (ViewBag.Page < ViewBag.TotalPages)
+                                {
+                                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = ViewBag.Page + 1, searchStores = ViewBag.searchStores })">Next</a></li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

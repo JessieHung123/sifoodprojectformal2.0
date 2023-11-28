@@ -18,15 +18,38 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         {
             _context = context;
         }
-
-        public async Task<IActionResult> Index(string searchString)
-        {
-            IQueryable<User> users = _context.Users;
-            if (!string.IsNullOrEmpty(searchString))
+        //分頁+查詢
+        public IActionResult Index(int page = 1, int pageSize = 5, string searchUsers = null)
+        {            
+            if (!string.IsNullOrEmpty(searchUsers))
             {
-                users = users.Where(u => u.UserName.Contains(searchString) || u.UserEmail.Contains(searchString) || u.UserPhone.Contains(searchString));
+                TempData["searchUsers"] = searchUsers;
             }
-            return View(await users.ToListAsync());
+            else
+            {
+                searchUsers = TempData["searchUsers"] as string ?? "";
+            }
+
+            var query = _context.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchUsers))
+            {
+                query = query.Where(u => u.UserName.Contains(searchUsers) || u.UserEmail.Contains(searchUsers));
+            }
+
+            var totalEntries = query.Count();
+            var users = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var entriesStart = (page - 1) * pageSize + 1;
+            var entriesEnd = entriesStart + users.Count - 1;
+
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalEntries / (double)pageSize);
+            ViewBag.EntriesStart = entriesStart;
+            ViewBag.EntriesEnd = entriesEnd;
+            ViewBag.TotalEntries = totalEntries;
+
+            return View(users);
         }
 
         public IActionResult Details1(string UserId)
