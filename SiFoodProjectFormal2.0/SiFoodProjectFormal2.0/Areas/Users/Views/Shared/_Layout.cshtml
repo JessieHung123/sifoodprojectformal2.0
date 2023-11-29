@@ -30,7 +30,7 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css" />
-
+    
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -338,21 +338,21 @@
                 }
             },
             methods: {
-                
                 getCart() {
                     fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
-                            // alert(data);
                             this.carts = data;
                             this.cartCount = this.carts.length > 0? this.carts.length:0;
                         }).catch(error => {
-                            alert("請先登入");
+                            Swal.fire({
+                                title: "未登入無法收藏~",
+                                icon: "warning"
+                            });
                         });
                 },
                 async clickMinus(item) {
                     item.quantity = item.quantity <= 1 ? item.quantity = 1 : item.quantity - 1;
-                    
                         await fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
                             method: "PUT",
                             headers: { "Content-Type": "application/json" },
@@ -361,9 +361,13 @@
                 },
                 async clickAdd(item) {
                     let remainingStock = productApp.remainingStock;
-                    if (item.quantity >= remainingStock) {alert("必須小於庫存數量!");}
+                    if (item.quantity >= remainingStock) {
+                        Swal.fire({
+                            title: "必須小於庫存數量~",
+                            icon: "warning"
+                        });
+                    }
                     else { item.quantity = item.quantity + 1; }
-                   
                     // let remainingStock = $("#remainingStock").text();
                     // if (item.quantity >= remainingStock) {
                     //     alert("必須小於庫存數量!");
@@ -375,7 +379,7 @@
                 },
                 deleteCartItem(item) {
                     let _this = this;
-                    let checkagain = confirm("確定要刪除嗎?");
+                    let checkagain = confirm("確認要刪除嗎?");
                     if (checkagain == true) {
                         fetch(`${baseAddress}/api/CartVMapi/DeleteCartItem`,
                             {
@@ -385,17 +389,20 @@
                             }).then(response => response.json())
                             .then(data => {
                                 if (data) {
-                                    alert("商品項目刪除成功!");
+                                    alert("商品項目刪除成功!")
                                     var deleteConfirmItem = document.getElementById(item.productId);
                                     deleteConfirmItem.remove();
                                     this.cartCount = $('#cartItemContainer').find('div').length;
                                 }
                             })
                             .catch(error => {
-                                alert("商品項目刪除失敗!");
+                                // Swal.fire({
+                                //     title: "商品項目刪除失敗!",
+                                //     icon: "warning"
+                                // });
+                                alert("商品項目刪除失敗!")
                             })
                     };
-                    //remove那個元素
                 },
             },
         }).mount("#header")

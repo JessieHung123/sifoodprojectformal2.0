@@ -194,6 +194,7 @@
 @section Scripts{
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         var baseAddress = "https://localhost:7042";
         var isLogin = ('@User.Identity.IsAuthenticated' == "True");
@@ -322,12 +323,17 @@
                 },
                 toggle(storeId) {
                     let _this = this;
-                    if (isLogin) { 
+                    if (isLogin) {
                         var item = this.stores.find(store => store.storeId === storeId);
                         if (item.noHeart == false) { this.deleteFavorite(storeId); item.noHeart = !item.noHeart; }//準備被取消
                         else { this.addToFavorite(storeId); item.noHeart = !item.noHeart; }//準備被收藏
                     }
-                    else alert("未登入，無法加入收藏!");
+                    else {
+                        Swal.fire({
+                            title: "未登入無法收藏~",
+                            icon: "warning"
+                        });
+                    }
                 },
                 //加入收藏店家
                 addToFavorite(storeId) {
@@ -340,7 +346,10 @@
                         body: JSON.stringify(favoriteData)
                     }).then(response => {
                         if (response.ok) {
-                            alert("商品已加入收藏!");
+                            Swal.fire({
+                                title: "成功加入收藏!",
+                                icon: "success"
+                            });
                         }
                     });
                 },
@@ -355,7 +364,10 @@
                         body: JSON.stringify(favoriteCancel)
                     }).then(response => {
                         if (response.ok) {
-                            alert("商品已取消收藏!");
+                            Swal.fire({
+                                title: "商品已取消收藏!",
+                                icon: "success"
+                            });
                         }
                     });
                 },
