@@ -88,6 +88,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 UserDetailAddress = userAddressesVM.UserDetailAddress,
                 UserRegion = userAddressesVM.UserRegion,
                 UserCity = userAddressesVM.UserCity,
+                IsDefault = userAddressesVM.IsDefault
             };
             _context.UserAddresses.Add(userAddresses);
             await _context.SaveChangesAsync();
