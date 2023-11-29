@@ -232,20 +232,18 @@ public IActionResult Favorite()
                 .Include(o => o.OrderDetails)
                     .ThenInclude(od => od.Product)
                 .Include(o => o.Status)
-                
-                .Select(o => new HistoryOrderVM
-                {
-                    StoreId = o.StoreId,
-                    OrderId = o.OrderId,
-                    OrderDate = o.OrderDate,
-                    Status = o.Status.StatusName,
-                    Quantity = o.OrderDetails.Sum(od => od.Quantity),
-                    TotalPrice = o.TotalPrice ?? 0
-                    //抓第一個商品的名稱和照片
-                     FirstProductPhotoPath = o.OrderDetails.FirstOrDefault()?.Product?.PhotoPath,
-                    FirstProductName = o.OrderDetails.FirstOrDefault()?.Product?.ProductName,
 
-                }).ToList();
+                    .Select(o => new HistoryOrderVM
+                {
+                        StoreId = o.StoreId,
+                        OrderId = o.OrderId,
+                        OrderDate = o.OrderDate,
+                        Status = o.Status.StatusName,
+                        Quantity = o.OrderDetails.Sum(od => od.Quantity),
+                        TotalPrice = o.TotalPrice ?? 0,
+                        FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
+                        FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
+                    }).ToList();
 
             return View(historyOrders);
         }
