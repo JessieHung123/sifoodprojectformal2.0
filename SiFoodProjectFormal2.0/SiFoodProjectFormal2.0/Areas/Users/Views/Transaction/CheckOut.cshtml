@@ -366,6 +366,17 @@
                 _this.getOrderTime();
             },
             methods: {
+                getDataInfo: function () {
+                    var _this = this;
+                    axios.get(`/Transaction/GetCheckoutData`)
+                        .then(response => {
+                            _this.checkoutDatas = response.data;
+                            _this.checkoutData = response.data[0];
+                        })
+                        .catch(err => {
+                            alert(err);
+                        });
+                },
                 processUserName(userName) {
                     this.sendBackUserName = userName;
                 },
@@ -398,10 +409,10 @@
                         }
                     }).then(response => {
                         alert(response.data);
-                        var success = "訂單下訂成功!";
-                        if (response.data === success) {
-                            window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
-                        }
+                        // var success = "訂單下訂成功!";
+                        // if (response.data === success) {
+                        //     window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
+                        // }
                         _this.loading = false;
                     }).catch(err => {
                         alert(err);
@@ -418,18 +429,6 @@
                     var minutes = currentDate.getMinutes();
                     var stringDateTime = year + '-' + month + '-' + day + '  ' + hours + ':' + minutes;
                     _this.orderTime = stringDateTime;
-                },
-                getDataInfo: function () {
-                    var _this = this;
-                    axios.get(`/Transaction/GetCheckoutData`)
-                        .then(response => {
-                            //alert(JSON.stringify(response.data));
-                            _this.checkoutDatas = response.data;
-                            _this.checkoutData = response.data[0];
-                        })
-                        .catch(err => {
-                            alert(err);
-                        });
                 },
             },
         }
