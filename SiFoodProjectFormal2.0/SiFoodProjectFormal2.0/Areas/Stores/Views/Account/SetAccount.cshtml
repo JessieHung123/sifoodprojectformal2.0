@@ -56,10 +56,8 @@
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
     <script>
         var baseAddress = "https://localhost:7042";
-
         var setAccountApp = Vue.createApp({
             data: function () {
                 return {
@@ -73,9 +71,7 @@
                 setPassword() {
                     var _this = this;
                     if (_this.storePassword != _this.confirmPassword) {
-                        alert("密碼輸入不一致，請重新輸入");
-                        _this.storePassword = "";
-                        _this.confirmPassword = "";
+                        alert("密碼輸入不一致");
                     } else {
                         _this.loading = true;
                         var form = new FormData();
@@ -87,7 +83,7 @@
                             }
                         }).then(response => {
                             alert(response.data);
-                            var success = "密碼設定成功";
+                            var success = "密碼設定成功，請重新登入";
                             if (response.data == success) {
                                 window.location.href = 'https://localhost:7042/Stores/Account/Login'
                             } else {
@@ -103,7 +99,5 @@
                 },
             },
         }).mount("#storeSetPasswordApp")
-
     </script>
-
 }

@@ -83,7 +83,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 account.PasswordSalt = saltBytes;
                 account.PasswordHash = hashBytes;
                 _context.SaveChanges();
-                return "密碼設定成功";
+                return "密碼設定成功，請重新登入";
             }
         }
 
