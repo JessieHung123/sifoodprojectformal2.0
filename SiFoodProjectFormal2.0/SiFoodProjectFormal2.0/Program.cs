@@ -29,6 +29,7 @@ namespace SiFoodProjectFormal2._0
                 );
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddTransient<IUserIdentityService, UserIdentityService>();
+            builder.Services.AddTransient<IStoreIdentityService, StoreIdentityService>();
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
