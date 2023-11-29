@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SiFoodProjectFormal2._0.ViewModels.Users;
 
 namespace sifoodprojectformal2._0.Areas.Admin.Controllers
 {
@@ -25,6 +26,12 @@ namespace sifoodprojectformal2._0.Areas.Admin.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        public IActionResult Login(LoginVM model)
+        {
+
+            return RedirectToAction("", "");
         }
     }
 }
