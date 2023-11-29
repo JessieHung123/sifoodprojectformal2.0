@@ -12,7 +12,7 @@ using SiFoodProjectFormal2._0.Models;
 
 namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 {
-    [Route("odata/Storeapi/[action]")]
+    [Route("api/Storeapi/[action]")]
     [Area("Users")]
     public class StoreapiController : ODataController
     {
@@ -120,7 +120,22 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             });
 
         }
-
+        public object FilterInMap()
+        {
+            return _context.Stores.Include(x => x.Orders).ThenInclude(x => x.Comment).Select(z => new StoreLocationVM
+                {
+                    StoreId = z.StoreId,
+                    StoreName = z.StoreName,
+                    Description = z.Description,
+                    LogoPath = z.LogoPath,
+                    City = z.City,
+                    Region = z.Region,
+                    Latitude=z.Latitude==null?0: z.Latitude,
+                    Longitude=z.Longitude==null?0:z.Longitude,
+                CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
+                CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
+            }).ToList();
+        }
 
         //[EnableQuery]
         //public async Task<IQueryable<StoreVM>> FilterBy()
