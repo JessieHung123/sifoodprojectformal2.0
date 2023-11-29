@@ -125,123 +125,126 @@
                 </div>
             </div>
         </main>
+        <div class="modal fade" id="insertModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitleId">新增商品種類</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <!-- input -->
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">商品名稱</label>
+                                    <input type="text" class="form-control" placeholder="請輸入名稱" required>
+                                </div>
+                                <!-- input -->
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">商品種類</label>
+                                    <select class="form-select">
+                                        <option selected>商品種類</option>
+                                        <option :value="1">生鮮</option>
+                                        <option :value="2">飲料</option>
+                                        <option :value="3">甜點麵包</option>
+                                        <option :value="4">便當</option>
+                                        <option :value="5">素食</option>
+                                        <option :value="6">異國料理</option>
+                                        <option :value="7">其他</option>
+                                    </select>
+                                </div>
+                                <!-- input -->
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">商品單價</label>
+                                    <input type="text" class="form-control" placeholder="請輸入價格" required>
+                                </div>
+                                <!-- input -->
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">上架數量</label>
+                                    <input type="text" class="form-control" placeholder="請輸入價格" required>
+                                </div>
+                                <div class="form-group">
+                                    <img id="insertFilePreview" src="~/images/Noimage.png" title="待上傳" style="width:300px;width:240px" />
+                                    <input type="file" id="insertFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
+                                </div>
+                                <div class="mb-3 col-lg-12 mt-5">
+                                    <h4 class="mb-3 h5">商品描述</h4>
+                                    <div class="mb-3">
+                                        <textarea class="form-control" rows="3" placeholder="請輸入文字敘述"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                            <button type="button" class="btn btn-primary" @@click="insert">確定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="updateModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitleId">編輯商品種類</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <!-- input -->
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">商品名稱</label>
+                                    <input type="text" class="form-control" v-model="selectedToEdit.productName" required>
+                                </div>
+                                <!-- input -->
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">商品種類</label>
+                                    <select class="form-select" v-model="selectedToEdit.categoryName">
+                                        <option :value="1">生鮮</option>
+                                        <option :value="2">飲料</option>
+                                        <option :value="3">甜點麵包</option>
+                                        <option :value="4">便當</option>
+                                        <option :value="5">素食</option>
+                                        <option :value="6">異國料理</option>
+                                        <option :value="7">其他</option>
+                                    </select>
+                                </div>
+                                <!-- input -->
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">商品單價</label>
+                                    <input type="text" class="form-control" v-model="selectedToEdit.unitPrice" required>
+                                </div>
+                                <!-- input -->
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">上架數量</label>
+                                    <input type="text" class="form-control" v-model="selectedToEdit.releasedQty" required>
+                                </div>
+                                <div class="form-group">
+                                    <img id="insertFilePreview" src="~/images/Noimage.png" title="待上傳" style="width:300px;width:240px" />
+                                    <input type="file" id="insertFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
+                                </div>
+                                <div class="mb-3 col-lg-12 mt-5">
+                                    <h4 class="mb-3 h5">商品描述</h4>
+                                    <div class="mb-3">
+                                        <textarea class="form-control" rows="3" v-model="selectedToEdit.description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                            <button type="button" class="btn btn-primary" @@click="insert">確定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Modal -->
     @*  編輯商品的介面 *@
-    <div class="modal fade" id="insertModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitleId">新增商品種類</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <!-- input -->
-                            <div class="mb-3 col-lg-6">
-                                <label class="form-label">商品名稱</label>
-                                <input type="text" class="form-control" placeholder="請輸入名稱" required>
-                            </div>
-                            <!-- input -->
-                            <div class="mb-3 col-lg-6">
-                                <label class="form-label">商品種類</label>
-                                <select class="form-select">
-                                    <option selected>商品種類</option>
-                                    <option value="1">生鮮</option>
-                                    <option value="2">飲料</option>
-                                    <option value="3">甜點</option>
-                                    <option value="4">便當</option>
-                                    <option value="5">熟食</option>
-                                </select>
-                            </div>
-                            <!-- input -->
-                            <div class="mb-3 col-lg-6">
-                                <label class="form-label">商品單價</label>
-                                <input type="text" class="form-control" placeholder="請輸入價格" required>
-                            </div>
-                            <!-- input -->
-                            <div class="mb-3 col-lg-6">
-                                <label class="form-label">上架數量</label>
-                                <input type="text" class="form-control" placeholder="請輸入價格" required>
-                            </div>
-                            <div class="form-group">
-                                <img id="insertFilePreview" src="~/images/Noimage.png" title="待上傳" style="width:300px;width:240px" />
-                                <input type="file" id="insertFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
-                            </div>
-                            <div class="mb-3 col-lg-12 mt-5">
-                                <h4 class="mb-3 h5">商品描述</h4>
-                                <div class="mb-3">
-                                    <textarea class="form-control" rows="3" placeholder="請輸入文字敘述"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                        <button type="button" class="btn btn-primary" @@click="insert">確定</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="updateModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitleId">編輯商品種類</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <!-- input -->
-                            <div class="mb-3 col-lg-6">
-                                <label class="form-label">商品名稱</label>
-                                <input type="text" class="form-control" v-model="selectedToEdit.productName" required>
-                            </div>
-                            <!-- input -->
-                            <div class="mb-3 col-lg-6">
-                                <label class="form-label">商品種類</label>
-                                <select class="form-select">
-                                    <option selected>商品種類</option>
-                                    <option value="1">生鮮</option>
-                                    <option value="2">飲料</option>
-                                    <option value="3">甜點</option>
-                                    <option value="4">便當</option>
-                                    <option value="5">熟食</option>
-                                </select>
-                            </div>
-                            <!-- input -->
-                            <div class="mb-3 col-lg-6">
-                                <label class="form-label">商品單價</label>
-                                <input type="text" class="form-control" placeholder="請輸入價格" required>
-                            </div>
-                            <!-- input -->
-                            <div class="mb-3 col-lg-6">
-                                <label class="form-label">上架數量</label>
-                                <input type="text" class="form-control" placeholder="請輸入價格" required>
-                            </div>
-                            <div class="form-group">
-                                <img id="insertFilePreview" src="~/images/Noimage.png" title="待上傳" style="width:300px;width:240px" />
-                                <input type="file" id="insertFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
-                            </div>
-                            <div class="mb-3 col-lg-12 mt-5">
-                                <h4 class="mb-3 h5">商品描述</h4>
-                                <div class="mb-3">
-                                    <textarea class="form-control" rows="3" placeholder="請輸入文字敘述"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                        <button type="button" class="btn btn-primary" @@click="insert">確定</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </body>
 </html>
@@ -259,7 +262,7 @@
                 return {
                     ProductInfo: [],
                     searchText: "",
-                    selectedToEdit: null,
+                    selectedToEdit: {},
                 }
             },
             watch: {
