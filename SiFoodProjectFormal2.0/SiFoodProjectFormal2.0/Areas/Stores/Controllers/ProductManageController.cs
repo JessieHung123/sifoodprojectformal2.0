@@ -37,6 +37,8 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                     PhotoPath = x.PhotoPath,
                     Description = x.Description,
                     RealeasedTime = x.RealeasedTime,
+                    SuggestPickUpTime= x.SuggestPickUpTime,
+                    SuggestPickEndTime = x.SuggestPickEndTime,
                 }).ToListAsync();
         }
 
@@ -61,6 +63,8 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                 PhotoPath = x.PhotoPath,
                 Description = x.Description,
                 RealeasedTime = x.RealeasedTime,
+                SuggestPickUpTime = x.SuggestPickUpTime,
+                SuggestPickEndTime = x.SuggestPickEndTime,
             }).ToListAsync();
         }
 
@@ -105,6 +109,8 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                 CategoryId = addProductDTO.CategoryId,
                 ReleasedQty = addProductDTO.ReleasedQty,
                 UnitPrice = addProductDTO.UnitPrice,
+                SuggestPickUpTime=addProductDTO.SuggestPickUpTime,
+                SuggestPickEndTime=addProductDTO.SuggestPickEndTime,
                 RealeasedTime = DateTime.Now,
                 PhotoPath = await SavePhoto(addProductDTO.ImageFile)
             };

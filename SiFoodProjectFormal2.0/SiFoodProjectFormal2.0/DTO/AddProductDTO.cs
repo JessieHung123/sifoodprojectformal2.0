@@ -20,6 +20,10 @@
 
         public DateTime RealeasedTime { get; set; }
 
+        public TimeSpan SuggestPickUpTime { get; set; }
+
+        public TimeSpan SuggestPickEndTime { get; set; }
+
         public decimal UnitPrice { get; set; }
 
         public string CategoryName { get; set; } = null!;
