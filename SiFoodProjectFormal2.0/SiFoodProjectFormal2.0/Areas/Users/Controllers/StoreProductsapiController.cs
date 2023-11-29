@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 
@@ -78,9 +79,56 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     DeliveryMethod = d.DeliveryMethod
                 })
             });
+        }
+        [HttpGet("favorite/status/{userId}/{storeId}")]
+        public object GetFavoriteStatus(string userId, string storeId)
+        {
+             //return _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
+            bool isFavorite = _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
+            return Ok(new { IsFavorite = isFavorite });
+        }
+        [HttpPost("favorite/add")]
+        public async Task<string> SaveToFavorites([FromBody] FavoriteVM favoriteVM)
+        {
+            string userId = favoriteVM.UserId;
+            string storeId = favoriteVM.StoreId;
+            if (favoriteVM == null || string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(storeId))
+            {
+                return "無法新增";
+            }
+            if (!_context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId))
+            {
+                Favorite favorite = new Favorite
+                {
+                    UserId = favoriteVM.UserId,
+                    StoreId = favoriteVM.StoreId
+                };
+                _context.Favorites.Add(favorite);
+                await _context.SaveChangesAsync();
+            }
+            return "收藏成功!";
+        }
+        [HttpDelete("favorite/remove")]
+        public async Task<string> RemoveFromFavorites([FromBody] FavoriteVM favoriteVM)
+        {
+            if (favoriteVM == null || string.IsNullOrEmpty(favoriteVM.UserId) || string.IsNullOrEmpty(favoriteVM.StoreId))
+            {
+                return "未收藏";
+            }
+
+            var existingFavorite = _context.Favorites
+                .FirstOrDefault(f => f.UserId == favoriteVM.UserId && f.StoreId == favoriteVM.StoreId);
+
+            if (existingFavorite != null)
+            {
+                _context.Favorites.Remove(existingFavorite);
+                await _context.SaveChangesAsync(); 
+                return "已取消收藏";
+            }
+
+            return "未收藏";
 
         }
-
         // PUT: api/StoreProductsapi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -117,10 +165,10 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpPost]
         public async Task<ActionResult<Store>> PostStore(Store store)
         {
-          if (_context.Stores == null)
-          {
-              return Problem("Entity set 'Sifood3Context.Stores'  is null.");
-          }
+            if (_context.Stores == null)
+            {
+                return Problem("Entity set 'Sifood3Context.Stores'  is null.");
+            }
             _context.Stores.Add(store);
             await _context.SaveChangesAsync();
 

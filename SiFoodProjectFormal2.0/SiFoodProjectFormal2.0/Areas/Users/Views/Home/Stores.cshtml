@@ -514,7 +514,12 @@
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
-                                    <a href="#" class="btn btn-primary btn-sm"><strong>收藏</strong></a>
+                                    <a v-if="this.isFavorite" @@click="removeFromFavorites" class="btn btn-primary btn-sm">
+                                        <strong>取消收藏</strong>
+                                    </a>
+                                    <a v-else @@click="saveToFavorites" class="btn btn-primary btn-sm">
+                                        <strong>收藏</strong>
+                                    </a>                                  
                                     <a href="#" class="btn btn-info btn-sm ms-2"><strong>分享</strong></a>
                                     <a href="#" class="btn btn-success btn-sm ms-2"><strong>導航</strong></a>
                                 </div>
@@ -969,7 +974,8 @@
                         selectedCategory: null,
                         storeCategoryList: [],
                         sortingOptions: 'PriceLowToHigh',
-                        productsQty: 0
+                        productsQty: 0,
+                        isFavorite: false
                     }
                 },
                 computed: {
@@ -1010,7 +1016,83 @@
                     categoriesFilter(category) {
                         this.selectedCategory = category;
                     },
-
+                    getFavoriteStatus() {
+                        let _this = this;
+                        const storeId = "S001"
+                        const userId = "U001"
+                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/status/${userId}/${storeId}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`${response.status}`);
+                                }
+                                // return response;
+                                return response.json()
+                            })                          
+                            .then(result => {
+                                // _this.isFavorite = result;
+                                _this.isFavorite = result.isFavorite;
+                            })
+                            .catch(error => {
+                                console.error('Error', error);
+                            });
+                    },
+                    saveToFavorites() {
+                        const storeId = "S001"; 
+                        const userId = "U001";
+                        let raw = {
+                            userId: userId,
+                            storeId: storeId,
+                        }
+                        var requestOptions = {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(raw),
+                        };
+                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/add`, 
+                            requestOptions
+                        )
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`${response.status}`);
+                                }
+                                return response.text();
+                            })
+                            .then(result => {
+                                alert(result);
+                                this.isFavorite = true;
+                            })
+                            .catch(error => {
+                                console.error('Error', error);
+                            });
+                    },
+                    removeFromFavorites() {
+                        const storeId = "S001"; 
+                        const userId = "U001"; 
+                        var raw = JSON.stringify({ userId, storeId });
+                        const requestOptions = {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: raw,
+                        };
+                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/remove`, requestOptions)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`${response.status}`);
+                                }
+                                return response.text(); 
+                            })
+                            .then(result => {
+                                alert(result);
+                                this.isFavorite = false;
+                            })
+                            .catch(error => {
+                                console.error('Error', error);
+                            });
+                    },
                     getStoreInfo() {
                         let _this = this;
                         let storeId = "S001"
@@ -1028,6 +1110,7 @@
                                 _this.comment = data[0].comment;                              
                                 _this.storeCategoryList = [..._this.stores.categoryList].filter(category => category !== "其他")
                                 _this.stores.categoryList.unshift("全部");
+                                _this.getFavoriteStatus();
                                 // console.table(_this.stores)
                             }).catch(error => {
                                 alert(error);
