@@ -503,16 +503,15 @@
                         <div class="py-6 p-md-6 p-lg-10">
                             <div class="d-flex justify-content-between mb-6">
                                 <!-- heading -->
-                                <h2 class="mb-0">Address</h2>
+                                <h2 class="mb-0">地址管理</h2>
                                 <!-- button -->
                                 <a href="#" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
-                                    Add a
-                                    new address
+                                    新增地址
                                 </a>
                             </div>
                             <div class="row">
                                 <!-- col -->
-                                <div class="col-lg-5 col-xxl-4 col-12 mb-4" v-for="item in addresses">
+                                <div class="col-lg-5 col-xxl-4 col-12 mb-4" v-for="(item, index) in addresses">
                                     <template v-if="item.Edit==true">
                                         <!-- form -->
                                         <div class="card">
@@ -520,7 +519,7 @@
                                                 <div class="form-check mb-4">
                                                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
                                                     <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
-                                                        住址一
+                                                        住址{{index + 1}}
                                                     </label>
                                                 </div>
                                                 <!-- address --><p class="card-text"></p>
@@ -529,8 +528,8 @@
                                                     {{item.userPhone}}
                                                 </p>
                                                 <!-- btn -->
-                                                <a v-if="!item.isDefault" href="#" class="link-primary">Set as Default</a>
-                                                <a v-else href="#" class="btn btn-info btn-sm">Default address</a>
+                                                <a v-if="!item.isDefault" href="#" class="link-primary">設定為預設地址</a>
+                                                <a v-else href="#" class="btn btn-info btn-sm">預設地址</a>
                                                 <div class="mt-4">
                                                     <a href="#" class="text-inherit" @@click="update(item)">修改 </a>
                                                     <a href="#" class="text-danger ms-3" @@click="cancel(item)">取消</a>
@@ -545,7 +544,7 @@
                                                 <div class="form-check mb-4">
                                                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
                                                     <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
-                                                        住址一
+                                                        住址{{index + 1}}
                                                     </label>
                                                 </div>
                                                 <!-- address -->
@@ -554,8 +553,8 @@
                                                     {{item.userPhone}}
                                                 </p>
                                                 <!-- btn -->                                            
-                                                <a v-if="!item.isDefault" href="#" class="link-primary">Set as Default</a>
-                                                <a v-else href="#" class="btn btn-info btn-sm">Default address</a>
+                                                <a v-if="!item.isDefault" href="#" class="link-primary">設定為預設地址</a>
+                                                <a v-else href="#" class="btn btn-info btn-sm">預設地址</a>
                                                 <div class="mt-4">
                                                     <a href="#" class="text-inherit" @@click="edit(item.userAddressId)">編輯 </a>
                                                     <a href="#" class="text-danger ms-3" data-bs-toggle="modal" data-bs-target="#deleteModal" @@click="deleteAddressModal(item)">
@@ -610,8 +609,8 @@
                         <div class="d-flex justify-content-between mb-5">
                             <div>
                                 <!-- heading -->
-                                <h5 class="mb-1" id="addAddressModalLabel">New Shipping Address</h5>
-                                <p class="small mb-0">Add new shipping address for your order delivery.</p>
+                                <h5 class="mb-1" id="addAddressModalLabel">新收件地址</h5>
+                                <p class="small mb-0">為您的訂單新增新的寄送地址</p>
                             </div>
                             <div>
                                 <!-- button -->
@@ -623,7 +622,7 @@
                             <!-- col -->
                             <div class="col-12">
                                 <!-- input -->
-                                <input type="text" class="form-control" placeholder="Address Line 2" v-model="addressLine">
+                                <input type="text" class="form-control" placeholder="請輸入地址" v-model="addressLine">
                             </div>
                             <!-- col -->
                             <div class="col-12">
@@ -637,8 +636,8 @@
                             <div class="col-12">
                                 <!-- form select -->
                                 <select class="form-select" v-model="selectedCity">
-                                    <option value="台北市" selected="">台北</option>
-                                    <option value="新北市">新北</option>
+                                    <option value="台北市" selected="">台北市</option>
+                                    <option value="新北市">新北市</option>
                                 </select>
                             </div>
                             <!-- col -->
@@ -648,14 +647,14 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
-                                        Set as Default
+                                        設定為預設地址
                                     </label>
                                 </div>
                             </div>
                             <!-- col -->
                             <div class="col-12 text-end">
-                                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
-                                <button class="btn btn-primary" type="button" @@click="insert">Save Address</button>
+                                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">取消</button>
+                                <button class="btn btn-primary" type="button" @@click="insert">儲存地址</button>
                             </div>
                         </div>
                     </div>
@@ -663,8 +662,6 @@
             </div>
         </div>
     </main>
-
-
 
 
     <!-- modal -->
