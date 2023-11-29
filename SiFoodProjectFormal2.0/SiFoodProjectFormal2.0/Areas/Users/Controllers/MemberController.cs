@@ -244,7 +244,7 @@ public IActionResult Favorite()
             var totalOrdersCount = historyOrdersQuery.Count();
 
              // 將總訂單數傳遞給視圖
-    ViewBag.TotalOrdersCount = totalOrdersCount;
+            ViewBag.TotalOrdersCount = totalOrdersCount;
 
             //下拉控制顯示筆數
             var historyOrders = historyOrdersQuery
