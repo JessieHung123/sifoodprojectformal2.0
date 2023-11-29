@@ -213,12 +213,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     ran.GetBytes(NewSaltBytes);
                 }
                 user.UserPasswordSalt = NewSaltBytes;
-
                 SHA256 Sha256 = SHA256.Create();
                 byte[] PasswordBytes = Encoding.ASCII.GetBytes($"{model?.NewPassword}{NewSaltBytes}");
                 byte[] NewHashBytes = Sha256.ComputeHash(PasswordBytes);
                 user.UserPasswordHash = NewHashBytes;
-
                 _context.SaveChanges();
                 return "密碼重設成功, 即將回到登入畫面";
             }

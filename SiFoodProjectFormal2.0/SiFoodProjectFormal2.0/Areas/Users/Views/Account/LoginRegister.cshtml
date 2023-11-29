@@ -36,7 +36,7 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="password-field position-relative">
-                                                <input v-bind:type="registerConfirmPwdShowType" id="passwordConfirmed" placeholder="Password Confirmed" class="form-control" required="">
+                                                <input v-bind:type="registerConfirmPwdShowType" v-model="vuePasswordConfirm" id="passwordConfirmed" placeholder="Password Confirmed" class="form-control" required="">
                                                 <span><i id="passwordToggler" v-bind:class="registerConfirmPwdShowClass" @@click="registerConfirmPwdShow = !registerConfirmPwdShow"></i></span>
                                             </div>
                                         </div>
@@ -119,6 +119,7 @@
                 return {
                     vueAccount: "",
                     vuePassword: "",
+                    vuePasswordConfirm: "",
                     loading: false,
                     registerPwdShow: false,
                     registerConfirmPwdShow: false,
@@ -128,28 +129,33 @@
             methods: {
                 register() {
                     var _this = this
-                    _this.loading = true;
-                    var form = new FormData();
-                    form.append("EmailAccount", _this.vueAccount);
-                    form.append("Password", _this.vuePassword);
-                    axios.post(`/Account/PostAccount`, form, {
-                        headers: {
-                            "Content-Type": "multipart/form-data"
-                        }
-                    }).then(response => {
-                        alert(response.data);
-                        var success = "帳號註冊成功, 即將進入驗證階段";
-                        var fail = "此帳號已被註冊";
-                        if (response.data == success) {
-                            window.location.href = 'https://localhost:7042/Users/Account/RegisterConfirmation'
-                        }
-                        else {
-                            window.location.href = 'https://localhost:7042/Users/Account/LoginRegister'
-                        }
-                        _this.loading = false;
-                    }).catch(err => {
-                        alert(err);
-                    });
+                    if (_this.vuePassword != _this.vuePasswordConfirm) {
+                        alert("密碼輸入不一致");
+                    } else {
+                        _this.loading = true;
+                        var form = new FormData();
+                        form.append("EmailAccount", _this.vueAccount);
+                        form.append("Password", _this.vuePassword);
+                        axios.post(`/Account/PostAccount`, form, {
+                            headers: {
+                                "Content-Type": "multipart/form-data"
+                            }
+                        }).then(response => {
+                            alert(response.data);
+                            var success = "帳號註冊成功, 即將進入驗證階段";
+                            if (response.data == success) {
+                                window.location.href = 'https://localhost:7042/Users/Account/RegisterConfirmation'
+                            }
+                            else {
+                                _this.vueAccount = "";
+                                _this.vuePassword = "";
+                                _this.vuePasswordConfirm = "";
+                            }
+                            _this.loading = false;
+                        }).catch(err => {
+                            alert(err);
+                        });
+                    }
                 },
             },
             computed: {
