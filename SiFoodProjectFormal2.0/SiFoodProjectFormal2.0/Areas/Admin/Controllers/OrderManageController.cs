@@ -46,48 +46,9 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                     StorePhone=o.Order.Store.Phone,
                     StoreAddress=o.Order.Store.Address,
                     Total = o.Quantity * o.Product.UnitPrice,
-
                 }).ToListAsync();
-
-                      return View(sifood3Context);
-
-                
+                      return View(sifood3Context);    
         }
-
-        
-
-        [HttpGet]
-        public async Task<IActionResult> FilterOrders(string status)
-
-        { var filteredOrders=await _context.OrderDetails
-                 .Include(o => o.Order).ThenInclude(o => o.User)
-                 .Include(o => o.Product)
-                 .Include(o => o.Order).ThenInclude(o => o.Status)
-                 .Include(o => o.Order).ThenInclude(o => o.Store)
-                .Where(o=>o.Order.Status.StatusName == status
-        || string.IsNullOrEmpty(status)).Select(o => new OrderManageVM
-        {
-            UserName = o.Order.User.UserName,
-            OrderAddress = o.Order.Address,
-            ProductName = o.Product.ProductName,
-            Quantity = o.Quantity,
-            UserPhone = o.Order.User.UserPhone,
-            OrderDetailId = o.OrderDetailId,
-            OrderId = o.OrderId,
-            OrderDate = o.Order.OrderDate,
-            StatusName = o.Order.Status.StatusName,
-            ProductId = o.ProductId,
-            ProductUnitPrice = o.Product.UnitPrice,
-            StoreName = o.Order.Store.StoreName,
-            StorePhone = o.Order.Store.Phone,
-            StoreAddress = o.Order.Store.Address,
-            Total = o.Quantity * o.Product.UnitPrice,
-        }
-        ).ToListAsync();
-            
-            return PartialView("_OrderTablePartial", filteredOrders);
-        }
-
 
         // GET: Admin/OrderManage/Details/5
         public async Task<IActionResult> Details(string? OrderId,int? ProductId)

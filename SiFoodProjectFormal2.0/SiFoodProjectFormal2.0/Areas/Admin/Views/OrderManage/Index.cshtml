@@ -27,30 +27,6 @@
     </div>
 </div>
 
-<div class="col-12">
-    <div class="row justify-content-between">
-
-       
-      @*   <div class="col-3 col-md-4 col-12">
-
-            <!-- select -->
-            <label for="orderStatusFilter">訂單狀態篩選</label>
-            <select class="form-select" id="orderStatusFilter" name="orderStatusFilter" onchange="filterOrders()">
-            <option value="">所有訂單狀態</option>
-            <option value="待確認">待確認</option>
-            <option value="待配送">待配送</option>
-            <option value="待領取">待領取</option>
-            <option value="配送中">配送中</option>
-            <option value="已送達">已送達</option>
-            <option value="已領取">已領取</option>
-            <option value="已取消">已取消</option>
-            </select>
-           
-
-            
-        </div> *@
-    </div>
-</div>
 
 <table id="orderTable" class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
     <thead class="bg-light">
@@ -101,21 +77,6 @@
 </table>
 
 
-
-
-@* <div class="border-top d-md-flex justify-content-between align-items-center p-6"> *@
-    @* <span>Showing 1 to 8 of 12 entries</span> *@
-   
-    @* <nav class="mt-2 mt-md-0">
-        <ul class="pagination mb-0 ">
-            <li class="page-item disabled"><a class="page-link " href="#!">《</a></li>
-            <li class="page-item"><a class="page-link active" href="#!">1</a></li> *@
-          @*   <li class="page-item"><a class="page-link" href="#!">2</a></li>
-            <li class="page-item"><a class="page-link" href="#!">3</a></li> *@
-         @*    <li class="page-item"><a class="page-link" href="#!">》</a></li>
-        </ul>
-    </nav>
-</div> *@
 @section Scripts {
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -123,43 +84,20 @@
     <script src="~/assets/js/theme.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
    
-    <script>
-        // $(document).ready(function () {
-        //     document.getElementById("orderStatusFilter").addEventListener("change", function () {
-        //         var selectedStatusName = this.value;
-        //         $.ajax({
-        //             url: "/Admin/OrderManage/FilterOrders",
-        //             type: "GET",
-        //             data: { status: selectedStatusName },
-        //             success: function (result) { $("#orderTableBody").html(result); },
-        //             error: function (error) {
-        //                 console.error("無法篩選訂單狀態!");
-        //             }
-        //         });
-        //     });
-
-        // });
-
-    </script>
-
+   
      <script>
          $(document).ready(function () {
-             $("#orderTable").DataTable({
-                // "dom": `<'row'<'col-sm-12 col-md-5'f><'col-sm-12 col-md-7'p>>
-                //     <'row'<'col-sm-12'tr>>
-                //     <'row'<'col-sm-12 col-md-6'l>>`,
-
+             $("#orderTable").DataTable({            
                 "dom": `<'row'<'col-sm-12 col-md-6'f><'col-sm-12 col-md-6'l>>
                     <'row'<'col-sm-12'tr>>
                     <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
                 "language": {
                     "sLengthMenu": "顯示 _MENU_ 項結果",
                     "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
-                     "oPaginate": {
-                        // "sFirst":"前一頁",
+                    "search": "搜尋",
+                     "oPaginate": {                  
                         "sPrevious":"前一頁" ,
                         "sNext":"後一頁",
-                        // "sLast": "後一頁"
                     },
                 },
                 "iDisplayLength": 5,
