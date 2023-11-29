@@ -12,23 +12,24 @@ using SiFoodProjectFormal2._0.Models;
 
 namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 {
-    [Route("odata/Storeapi/[action]")]
+    [Route("api/Storeapi/[action]")]
 
     [Area("Users")]
-    public class StoreapiController : ODataController
+    public class StoreapiController
     {
         private readonly Sifood3Context _context;
-
-        public StoreapiController(Sifood3Context context)
+        private readonly IUserIdentityService _userIdentityService;
+        public StoreapiController(Sifood3Context context, IUserIdentityService userIdentityService)
         {
             _context = context;
+            _userIdentityService = userIdentityService;
         }
 
         [EnableQuery]
         public object Main2()
         {
-            
-            return _context.Stores.Include(x => x.Products).ThenInclude(x=>x.Category).Include(x => x.Orders)
+
+            return _context.Stores.Include(x => x.Products).ThenInclude(x => x.Category).Include(x => x.Orders)
                 .ThenInclude(x => x.Comment)
                 .Select(z => new StoreVM
                 {
@@ -38,14 +39,14 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     LogoPath = z.LogoPath,
                     CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
                     CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
-                    Inventory = z.Products.Where(x=>x.RealeasedTime.Date==DateTime.Now.Date&& x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x=>x.ReleasedQty-x.OrderedQty).Sum(),
+                    Inventory = z.Products.Where(x => x.RealeasedTime.Date == DateTime.Now.Date && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.ReleasedQty - x.OrderedQty).Sum(),
                     WeekdayOpeningTime = z.OpeningTime.Substring(3, 5),
                     WeekdayClosingTime = z.OpeningTime.Substring(11, 5),
                     WeekendOpeningTime = z.OpeningTime.Substring(20, 5),
                     WeekendClosingTime = z.OpeningTime.Substring(28, 5),
-                    City=z.City,
-                    Region=z.Region,
-                    CategoryName =z.Products.Where(x => x.RealeasedTime.Date == DateTime.Today && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x=>x.Category.CategoryName).Distinct(),
+                    City = z.City,
+                    Region = z.Region,
+                    CategoryName = z.Products.Where(x => x.RealeasedTime.Date == DateTime.Today && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.Category.CategoryName).Distinct(),
                 }).ToList();
         }
 
@@ -54,22 +55,21 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpGet]
         public async Task<string[]> GetFavoriteStoreId()
         {
-            Sifood3Context _context = new Sifood3Context();
 
-            var Userid = "U001";//寫死
-            return await _context.Favorites.Where(f => f.UserId == Userid).Select(f => f.StoreId).ToArrayAsync();
+            string userId = _userIdentityService.GetUserId();
+            return await _context.Favorites.Where(f => f.UserId == userId).Select(f => f.StoreId).ToArrayAsync();
 
         }
 
         [HttpPost]
         public async Task<bool> AddToFavorite([FromBody] Favorite favorite)
         {
-            Sifood3Context _context = new Sifood3Context();
             if (favorite == null) return false;
-            string userId = "U001";//寫死
+
 
             try
             {
+                string userId = _userIdentityService.GetUserId();
                 _context.Favorites.Add(new Favorite
                 {
                     UserId = userId,
@@ -90,10 +90,9 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         {
 
             if (favorite == null) return false;
-            string userId = "U001";//寫死
-            //var userId = XXX.GetUserId();
             try
             {
+                string userId = _userIdentityService.GetUserId();
                 var likeItem = await _context.Favorites.FirstOrDefaultAsync(c =>
                 c.UserId == userId && c.StoreId == favorite.StoreId);
                 if (likeItem == null) return false;

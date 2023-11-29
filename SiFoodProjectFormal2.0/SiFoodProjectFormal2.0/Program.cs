@@ -27,8 +27,8 @@ namespace SiFoodProjectFormal2._0
                                 .OrderBy()
 
                 );
-
-
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddTransient<IUserIdentityService, UserIdentityService>();
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
@@ -45,7 +45,7 @@ namespace SiFoodProjectFormal2._0
                 app.UseHsts();
 
             }
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
