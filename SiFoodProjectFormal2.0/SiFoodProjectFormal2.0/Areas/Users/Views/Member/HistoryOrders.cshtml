@@ -487,13 +487,13 @@
             <div class="row">
               <div class="col-12">
                  <div class="d-lg-flex justify-content-between align-items-center">
-                    <div class="mb-3 mb-lg-0">
-                       <p class="mb-0"> <span class="text-dark">24 </span> 筆訂單</p>
-                    </div>
+                                    <div class="mb-3 mb-lg-0">
+                                    <p class="mb-0">共 <span class="text-dark">@ViewBag.TotalOrdersCount </span> 筆訂單</p>
+                                </div>
 
                     <!-- 自製搜尋 start -->
 
-                    <div class="col-xxl-5 col-lg-5 d-none d-lg-block">
+                    <div class="col-xxl-4 col-lg-4 d-none d-lg-block">
 
                                         <form action="@Url.Action("HistoryOrders", "Member")" method="get">
                                             <div class="input-group">
@@ -510,7 +510,7 @@
           
                       </form>
                     </div>
-                                    <!-- 自製搜尋 end-->
+                    <!-- 自製搜尋 end-->
 
                     <!-- icon -->
                     <div class="d-md-flex justify-content-between align-items-center">
@@ -532,21 +532,21 @@
                           </div>
                        </div>
                        <div class="d-flex mt-2 mt-lg-0">
-                          <div class="me-2 flex-grow-1">
+                       <div class="me-2 flex-grow-1">
 
 
-                              <!-- 顯示筆數 -->
+                             <!-- 顯示筆數 -->
                              <!-- select option -->
-                                                <form id="orderForm" action="@Url.Action("HistoryOrders", "Member")" method="get">
-                                                    <!-- 其他搜索欄位... -->
-                                                    <!-- 顯示筆數選擇 -->
-                                                    <select class="form-select" name="pageSize" aria-label="Default select example" onchange="this.form.submit()">
-                                                        <option value="10" selected>顯示: 10</option>
-                                                        <option value="5">5</option>
-                                                        <option value="20">20</option>
-                                                        <option value="30">30</option>
-                                                    </select>
-                                                </form>
+                            <form id="orderForm" action="@Url.Action("HistoryOrders", "Member")" method="get">
+                                <!-- 其他搜索欄位... -->
+                                <!-- 顯示筆數選擇 -->
+                                <select class="form-select" name="pageSize" aria-label="Default select example" onchange="this.form.submit()">
+                                    <option value="10" selected>顯示: 10</option>
+                                    <option value="5">5</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                </select>
+                            </form>
                           </div>
                           <div>
 

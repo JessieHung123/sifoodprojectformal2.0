@@ -240,23 +240,27 @@ public IActionResult Favorite()
                     o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)));
             }
 
+            // 計算總訂單數
+            var totalOrdersCount = historyOrdersQuery.Count();
+
+             // 將總訂單數傳遞給視圖
+    ViewBag.TotalOrdersCount = totalOrdersCount;
+
             //下拉控制顯示筆數
             var historyOrders = historyOrdersQuery
             // 使用 pageSize 來限制返回的結果數量
             .Take(pageSize) 
-
-
-                .Select(o => new HistoryOrderVM
-                {
-                        StoreId = o.StoreId,
-                        OrderId = o.OrderId,
-                        OrderDate = o.OrderDate,
-                        Status = o.Status.StatusName,
-                        Quantity = o.OrderDetails.Sum(od => od.Quantity),
-                        TotalPrice = o.TotalPrice ?? 0,
-                        FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
-                        FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
-                    }).ToList();
+            .Select(o => new HistoryOrderVM
+            {
+                    StoreId = o.StoreId,
+                    OrderId = o.OrderId,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status.StatusName,
+                    Quantity = o.OrderDetails.Sum(od => od.Quantity),
+                    TotalPrice = o.TotalPrice ?? 0,
+                    FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
+                    FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
+                }).ToList();
 
             return View(historyOrders);
         }
