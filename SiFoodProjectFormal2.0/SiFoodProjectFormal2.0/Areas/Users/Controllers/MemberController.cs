@@ -226,14 +226,22 @@ public IActionResult Favorite()
         {
             return View();
         }
-        public IActionResult HistoryOrders()
+        public IActionResult HistoryOrders(string searchTerm)
         {
-            var historyOrders = _context.Orders
+            IQueryable<Order> historyOrdersQuery = _context.Orders
                 .Include(o => o.OrderDetails)
                     .ThenInclude(od => od.Product)
-                .Include(o => o.Status)
+                .Include(o => o.Status);
 
-                    .Select(o => new HistoryOrderVM
+                //關鍵字搜尋
+                if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                historyOrdersQuery = historyOrdersQuery.Where(o =>
+                    o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)));
+            }
+
+            var historyOrders = historyOrdersQuery
+                .Select(o => new HistoryOrderVM
                 {
                         StoreId = o.StoreId,
                         OrderId = o.OrderId,
