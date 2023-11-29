@@ -33,10 +33,10 @@
                     <img class="rounded-2" style="width:360px ;height:180px" src="~/assets/images/banner/ad-banner-3.jpg" alt="">
                 </div>
                 <div class="d-flex justify-content-center">
-                    <img class="rounded-2" style="width:284.76px ;height:180px" src="~/assets/images/banner/ad-banner-4.jpg" alt="">
+                    <img class="rounded-2" style="width:324.76px ;height:180px" src="~/assets/images/banner/ad-banner-4.jpg" alt="">
                 </div>
                 <div class="d-flex justify-content-center">
-                    <img class="rounded-2" style="width:284.76px ;height:180px" src="~/assets/images/banner/ad-banner-5.jpg" alt="">
+                    <img class="rounded-2" style="width:324.76px ;height:180px" src="~/assets/images/banner/ad-banner-5.jpg" alt="">
                 </div>
             </div>
         </section>
@@ -208,7 +208,7 @@
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
     <script>
         var baseAddress = "https://localhost:7042";
-        // var isLogin = ('@User.Identity.IsAuthenticated' == "True");
+        var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         const storeApp = Vue.createApp({
             data: function () {
                 return {                   
@@ -321,40 +321,31 @@
                 },
                 getFavoriteStore() {
                     let _this = this;
+                    if (!isLogin) {return _this.stores = _this.stores.map(store => ({ ...store, noHeart: true }));  }
                     fetch(`${baseAddress}/api/Storeapi/GetFavoriteStoreId`, { method: "GET" })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
+                        .then(response => response.json()
+                        )
                         .then(data => {
-                            // alert(JSON.stringify(data));
-                            //data的指定店家要變紅心
-                            _this.stores = _this.stores.map(store => {
-                                if (data.includes(store.storeId)) { return { ...store, noHeart: false }; }
-                                else { return { ...store, noHeart: true }; }
-                            })
+                                _this.stores = _this.stores.map(store => {
+                                    if (data.includes(store.storeId)) { return { ...store, noHeart: false }; }
+                                    else return { ...store, noHeart: true }
+                                });
                         }).catch(error => { alert(error); });
                 },
                 toggle(storeId) {
                     let _this = this;
-                    for (var i = 0; i < _this.stores.length; i++) {
-                        var item = _this.stores[i];
-                        if (storeId == _this.stores[i].storeId) {
-                            if (item.noHeart == false) { this.deleteFavorite(storeId); item.noHeart = !item.noHeart; }//準備被取消
-                            else { this.addToFavorite(storeId); item.noHeart = !item.noHeart; }//準備被收藏
-                        }
+                    if (isLogin) { 
+                        var item = this.stores.find(store => store.storeId === storeId);
+                        if (item.noHeart == false) { this.deleteFavorite(storeId); item.noHeart = !item.noHeart; }//準備被取消
+                        else { this.addToFavorite(storeId); item.noHeart = !item.noHeart; }//準備被收藏
                     }
+                    else alert("未登入，無法加入收藏!");
                 },
                 //加入收藏店家
                 addToFavorite(storeId) {
-                    // if (!isLogin) return alert("未登入，無法加入收藏!");
                     let favoriteData = {
-                        userId: "U001",//暫定>>變數:登入者
                         storeId: storeId,
                     }
-                    //如果U001加過，愛心為實心 空心
                     fetch(`${baseAddress}/api/Storeapi/AddToFavorite`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -367,12 +358,9 @@
                 },
                 //取消收藏
                 deleteFavorite(storeId) {
-                    // if (!isLogin) return alert("未登入，無法加入收藏!");
                     let favoriteCancel = {
-                        userId: "U001",//暫定>>變數:登入者
                         storeId: storeId,
                     }
-                    //如果U001加過，愛心為實心 空心
                     fetch(`${baseAddress}/api/Storeapi/DeleteFavorite`, {
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" },

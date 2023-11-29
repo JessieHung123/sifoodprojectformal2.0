@@ -136,7 +136,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //{
         //    return View();
         //}
-        [Route("Users/Home/Products/{ProductId?}")]
+        [Route("Products/{ProductId?}")]
         
         public IActionResult Products(int ProductId)
         {
@@ -154,14 +154,14 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             List<ProductVM> cookieProduct= new List<ProductVM>();
             foreach (var productid in ProductList) {
                 var c = _context.Products.Where(p => p.ProductId == int.Parse(productid));
-                ProductVM vM = new ProductVM
+                ProductVM VM = new ProductVM
                 {
                     ProductName = c.Select(p => p.ProductName).Single(),
                     StoreName = c.Include(p => p.Store).Select(p => p.Store.StoreName).Single(),
                     PhotoPath = c.Select(p => p.PhotoPath).Single(),
-                    UnitPrice = c.Select(p => p.UnitPrice).Single()
+                    UnitPrice = Math.Round(c.Select(p => p.UnitPrice).Single(),2)
                 };
-                cookieProduct.Add(vM);
+                cookieProduct.Add(VM);
             }
             ViewBag.CookieProduct = cookieProduct;
             return View();

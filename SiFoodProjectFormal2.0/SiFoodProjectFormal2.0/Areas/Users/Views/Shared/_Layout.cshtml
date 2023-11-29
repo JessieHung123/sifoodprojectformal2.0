@@ -321,6 +321,7 @@
     <script>
 
         var baseAddress = "https://localhost:7042";
+        var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         var shoppingCart = Vue.createApp({
             data: function () {
                 return {
@@ -332,75 +333,55 @@
                 }
             },
             mounted: function () {
-                this.getCart();
+                if (isLogin) {
+                    this.getCart();
+                }
             },
             methods: {
+                
                 getCart() {
                     fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
                             // alert(data);
                             this.carts = data;
-                            this.cartCount = this.carts.length;
+                            this.cartCount = this.carts.length > 0? this.carts.length:0;
                         }).catch(error => {
-                            alert(error);
+                            alert("請先登入");
                         });
                 },
                 async clickMinus(item) {
                     item.quantity = item.quantity <= 1 ? item.quantity = 1 : item.quantity - 1;
-                    let cartItemQtyChange = {
-                        productId: item.productId,
-                        userId: "U001",
-                        storeId: item.storeId,
-                        quantity: item.quantity,
-                        productName: item.productName,
-                        storeName: item.storeName,
-                    };
+                    
                         await fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
                             method: "PUT",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(cartItemQtyChange)
+                            body: JSON.stringify(item)
                         }).then(response => response)
                 },
                 async clickAdd(item) {
                     let remainingStock = productApp.remainingStock;
                     if (item.quantity >= remainingStock) {alert("必須小於庫存數量!");}
                     else { item.quantity = item.quantity + 1; }
-                    // item.quantity = item.quantity >= remainingStock ? alert("必須小於庫存數量!"): item.quantity + 1;
-                    let cartItemQtyChange = {
-                        productId: item.productId,
-                        userId: "U001",
-                        storeId: item.storeId,
-                        quantity: item.quantity,
-                        productName: item.productName,
-                        storeName: item.storeName,
-                    };
+                   
                     // let remainingStock = $("#remainingStock").text();
                     // if (item.quantity >= remainingStock) {
                     //     alert("必須小於庫存數量!");
                         await fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
                             method: "PUT",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(cartItemQtyChange)
+                            body: JSON.stringify(item)
                         }).then(response => response)
                 },
                 deleteCartItem(item) {
                     let _this = this;
-                    let deleteItem = {
-                        productId: item.productId,
-                        userId: "U001",
-                        storeId: item.storeId,
-                        quantity: item.quantity,
-                        productName: item.productName,
-                        storeName: item.storeName,
-                    }; /*  //寫死 */
                     let checkagain = confirm("確定要刪除嗎?");
                     if (checkagain == true) {
                         fetch(`${baseAddress}/api/CartVMapi/DeleteCartItem`,
                             {
                                 method: "DELETE",
                                 headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(deleteItem)
+                                body: JSON.stringify(item)
                             }).then(response => response.json())
                             .then(data => {
                                 if (data) {

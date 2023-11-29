@@ -7,7 +7,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         public int ProductId { get; set; }
 
         public string ProductName { get; set; }
-        [DisplayFormat(DataFormatString = "{0:0}")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal UnitPrice { get; set; }
 
         public string StoreName { get; set; }

@@ -118,12 +118,12 @@
                                     </div>
                                     <h2 class="fs-6"><a href="#!" class="text-inherit text-decoration-none">@item.ProductName</a></h2>
                                     <div class="text-muted small">
-                                        取貨時間
+                                        
                                     </div>
                                     <!-- price -->
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div>
-                                            <span class="text-dark">@item.UnitPrice</span>
+                                            <span class="text-dark">$ @item.UnitPrice</span>
                                         </div>
                                         <!-- btn -->
                                     </div>
@@ -142,6 +142,7 @@
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
         var baseAddress ="https://localhost:7042";
+        var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         var productApp = Vue.createApp({
             data: function () {
                 return {
@@ -162,8 +163,8 @@
             },
             methods: {
                 getProductApi: function () {
-                    // fetch(`${baseAddress}/odata/Productapi/GetProduct/${productId}`)
-                    fetch(`${baseAddress}/api/Productapi/GetProduct/33`, { method: "GET" })//寫死
+                    var productId=window.location.pathname.slice("10");
+                    fetch(`${baseAddress}/api/Productapi/GetProduct/${productId}`, { method: "GET" })//寫死
                         .then(response => response.json())
                         .then(data => {
                             if (data.length === 0) {
@@ -187,53 +188,49 @@
                     } else { this.number = this.number + 1; }
                 },
                 async AddCartItem(productData) {
-                    //只能限制加一間>>還沒寫
                     let addItem = {
                         productId: productData.productId,
-                        userId: "U001",
-                        storeId: productData.storeId,
                         quantity: this.number,
-                        productName: productData.productName,
-                        storeName: productData.storeName,
-                    }; /*  //寫死 */
-                    // let cartCurrentStoreName = shoppingCart.carts[0].storeName;
+                    }; 
                     let cartCurrentStoreName = shoppingCart.carts.length > 0 ? shoppingCart.carts[0].storeName : "";
-                    if (productData.storeName != cartCurrentStoreName && cartCurrentStoreName!="") {
-                        let isChangeStore = confirm(`目前購物車內商品的店家屬於${cartCurrentStoreName}，是否要挑選其他商家做購買?`);
-                        if (isChangeStore) {
-                            try {
-                                //刪除原購物車所有商品
-                                await fetch(`${baseAddress}/api/CartVMapi/DeleteUserAllCart/${addItem.userId}`, { method: "DELETE" })
-                                //換成新店家
-                                let response = await fetch(`${baseAddress}/api/CartVMapi/AddToCart`,
-                                    {
-                                        method: "POST",
-                                        headers: { "Content-Type": "application/json" },
-                                        body: JSON.stringify(addItem)
-                                    });
-                                let data = await response.text();
-                                alert(data);
-                                
-                            } catch (error) { alert("發生錯誤:" + error); }
-                            shoppingCart.getCart();
+                    if (isLogin) {
+                        if (productData.storeName != cartCurrentStoreName && cartCurrentStoreName != "") {
+                            let isChangeStore = confirm(`目前購物車內商品的店家屬於${cartCurrentStoreName}，是否要挑選其他商家做購買?`);
+                            if (isChangeStore) {
+                                try {
+                                    //刪除原購物車所有商品
+                                    await fetch(`${baseAddress}/api/CartVMapi/DeleteUserAllCart/`, { method: "DELETE" })
+                                    //換成新店家
+                                    let response = await fetch(`${baseAddress}/api/CartVMapi/AddToCart`,
+                                        {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify(addItem)
+                                        });
+                                    let data = await response.text();
+                                    alert(data);
+
+                                } catch (error) { alert("發生錯誤:" + error); }
+                                shoppingCart.getCart();
+                            }
+                        }
+                        else {
+                            fetch(`${baseAddress}/api/CartVMapi/AddToCart`,
+                                {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify(addItem)
+                                }).then(response => response.text())
+                                .then(data => {
+                                    alert(data);
+                                    shoppingCart.getCart();
+                                })
+                                .catch(error => {
+                                    alert("商品項目新增失敗!");
+                                });
                         }
                     }
-                    else {
-                        fetch(`${baseAddress}/api/CartVMapi/AddToCart`,
-                            {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(addItem)
-                            }).then(response => response.text())
-                            .then(data => {
-                                alert(data);
-                                shoppingCart.getCart();
-                            })
-                            .catch(error => {
-                                alert("商品項目新增失敗!");
-                            });
-                        
-                    }
+                    else {alert("加入購物車前請先登入!") }
                     
                 },
             }
