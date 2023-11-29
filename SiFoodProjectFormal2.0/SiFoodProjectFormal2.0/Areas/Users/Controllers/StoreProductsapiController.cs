@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 {
@@ -35,12 +36,13 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpGet("{id}")]
         public object GetStore(string id)
         {
-
             var today = DateTime.Today;
             var currentTime = DateTime.Now.TimeOfDay;
-            var store = _context.Stores.AsNoTracking().Include(x => x.Products).Include(x => x.Orders)
-               .ThenInclude(x => x.Comment).Where(c => c.StoreId == id);
-
+            var store = _context.Stores.AsNoTracking()
+                .Include(x => x.Products)
+                .Include(x => x.Orders)
+                .ThenInclude(x => x.Comment)
+                .Where(c => c.StoreId == id);
             return store.Select(z => new StoreProductsVM
             {
                 StoreName = z.StoreName,
@@ -57,33 +59,41 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 WeekdayOpeningTime = z.OpeningTime.Substring(0, 16),
                 WeekendOpeningTime = z.OpeningTime.Substring(17, 16),
 
-                Products = z.Products.Where(p => p.RealeasedTime.Date == today && p.RealeasedTime.TimeOfDay < currentTime && p.SuggestPickEndTime > currentTime).Select(p => new ProductsVM
-                {
-                    UnitPrice = p.UnitPrice,
-                    ProductName = p.ProductName,
-                    CategoryId = p.CategoryId,
-                    CategoryName = p.Category.CategoryName,
-                    avalibleQty = p.ReleasedQty - p.OrderedQty,
-                    SuggestPickUpTime = $"{p.SuggestPickUpTime.ToString(@"hh\:mm")} ~ {p.SuggestPickEndTime.ToString(@"hh\:mm")}",
-                    RealeasedTime = p.RealeasedTime,
-                    PhotoPath = p.PhotoPath,
-                }),
+                Products = z.Products.Where(p => p.RealeasedTime.Date == today &&
+                                                 p.RealeasedTime.TimeOfDay < currentTime &&
+                                                 p.SuggestPickEndTime > currentTime)
+                                     .Select(p => new ProductsVM
+                                     {
+                                         UnitPrice = p.UnitPrice,
+                                         ProductName = p.ProductName,
+                                         CategoryId = p.CategoryId,
+                                         CategoryName = p.Category.CategoryName,
+                                         avalibleQty = p.ReleasedQty - p.OrderedQty,
+                                         SuggestPickUpTime = $"{p.SuggestPickUpTime.ToString(@"hh\:mm")} ~ {p.SuggestPickEndTime.ToString(@"hh\:mm")}",
+                                         RealeasedTime = p.RealeasedTime,
+                                         PhotoPath = p.PhotoPath,
+                                     }),
 
-                CategoryList = z.Products.Where(p => p.RealeasedTime.Date == today && p.RealeasedTime.TimeOfDay < currentTime && p.SuggestPickEndTime > currentTime).Select(y => y.Category.CategoryName).Distinct().ToArray(),
+                CategoryList = z.Products.Where(p => p.RealeasedTime.Date == today &&
+                                                     p.RealeasedTime.TimeOfDay < currentTime &&
+                                                     p.SuggestPickEndTime > currentTime)
+                                         .Select(y => y.Category.CategoryName).Distinct().ToArray(),
 
-                Comment = z.Orders.Where(x => x.Comment != null).Select(d => new CommentVM
-                {
-                    Contents = d.Comment.Contents,
-                    CommentRank = d.Comment.CommentRank,
-                    User = d.User.UserName,
-                    DeliveryMethod = d.DeliveryMethod
-                })
+                Comment = z.Orders
+                    .Where(x => x.Comment != null)
+                    .Select(d => new CommentVM
+                    {
+                        Contents = d.Comment.Contents,
+                        CommentRank = d.Comment.CommentRank,
+                        User = d.User.UserName,
+                        DeliveryMethod = d.DeliveryMethod
+                    })
             });
         }
         [HttpGet("favorite/status/{userId}/{storeId}")]
         public object GetFavoriteStatus(string userId, string storeId)
         {
-             //return _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
+            //return _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
             bool isFavorite = _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
             return Ok(new { IsFavorite = isFavorite });
         }
@@ -122,15 +132,42 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             if (existingFavorite != null)
             {
                 _context.Favorites.Remove(existingFavorite);
-                await _context.SaveChangesAsync(); 
+                await _context.SaveChangesAsync();
                 return "已取消收藏";
             }
 
             return "未收藏";
 
         }
-        // PUT: api/StoreProductsapi/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpGet("Search")]
+        public async Task<List<ProductsVM>> SearchProducts(string? query)
+        {
+            string storeId = "S001";
+            DateTime today = DateTime.Today;
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+
+            var products = await _context.Products
+                .Where(p => p.StoreId == storeId &&
+                            p.RealeasedTime.Date == today &&
+                            p.RealeasedTime.TimeOfDay < currentTime &&
+                            p.SuggestPickEndTime > currentTime &&
+                            (string.IsNullOrEmpty(query) ||
+                             p.ProductName.Contains(query) ||
+                             p.Category.CategoryName.Contains(query)))
+                .Select(x => new ProductsVM
+                {
+                    UnitPrice = x.UnitPrice,
+                    ProductName = x.ProductName,
+                    CategoryId = x.CategoryId,
+                    CategoryName = x.Category.CategoryName,
+                    avalibleQty = x.ReleasedQty - x.OrderedQty,
+                    SuggestPickUpTime = $"{x.SuggestPickUpTime:hh\\:mm} ~ {x.SuggestPickEndTime:hh\\:mm}",
+                    RealeasedTime = x.RealeasedTime,
+                    PhotoPath = x.PhotoPath,
+                })
+                .ToListAsync();
+            return products;
+        }
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStore(string id, Store store)
         {

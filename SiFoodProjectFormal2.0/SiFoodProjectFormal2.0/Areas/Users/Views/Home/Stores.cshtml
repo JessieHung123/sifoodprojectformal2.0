@@ -73,7 +73,7 @@
 
     <!-- Shop Cart -->
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+@*     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header border-bottom">
             <div class="text-start">
                 <h5 id="offcanvasRightLabel" class="mb-0 fs-4">Shop Cart</h5>
@@ -366,7 +366,7 @@
             </div>
         </div>
     </div>
-
+ *@
     <!-- Modal -->
     <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered">
@@ -550,7 +550,7 @@
                                     <h5>{{stores.description}}</h5>
                                 </div>
                                 <div class="position-relative">
-                                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Search E-Grocery Super Market">
+                                    <input v-model.lazy="searchKeyWords" type="text" class="form-control" placeholder="搜尋店家商品" @@keyup.enter="searchProducts">
                                     <span class="position-absolute end-0 top-0 mt-2 me-3">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
                                             <circle cx="11" cy="11" r="8"></circle>
@@ -975,10 +975,12 @@
                         storeCategoryList: [],
                         sortingOptions: 'PriceLowToHigh',
                         productsQty: 0,
-                        isFavorite: false
+                        isFavorite: false,
+                        searchKeyWords:""
                     }
                 },
-                computed: {
+                computed: {                  
+                            
                     groupedPeople() {
                         const groupSize = 3;
                         const grouped = [];
@@ -1060,7 +1062,7 @@
                                 return response.text();
                             })
                             .then(result => {
-                                alert(result);
+                                // alert(result);
                                 this.isFavorite = true;
                             })
                             .catch(error => {
@@ -1117,6 +1119,24 @@
                                 console.log('error', error);
                             });
                     },
+                    searchProducts() {
+                        let _this = this;
+                        // alert(_this.searchKeyWords)
+                        fetch(`${baseAddress}/api/StoreProductsapi/Search?query=${_this.searchKeyWords}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`${response.status}`);
+                                }
+                                return response.json()
+                            })
+                            .then(result => {
+                                // alert(JSON.stringify(result))
+                                _this.products = result;
+                            })
+                            .catch(error => {
+                                console.error('Error', error);
+                            });
+                    }
                 }
             }).mount("#storeProductsApp")
         </script>
