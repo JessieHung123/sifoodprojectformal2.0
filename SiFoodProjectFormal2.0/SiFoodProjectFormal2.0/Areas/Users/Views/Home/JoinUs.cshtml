@@ -300,9 +300,7 @@
                             </div>
 
                             @* 店家照片上傳3張安排 *@
-
-                           
-
+                                                       
                             <div class="border-bottom py-4 mb-4">
                                 <label><h4 class="mb-5 h5">請上傳您的店家照片</h4></label>
                                 <div class="row">
@@ -496,13 +494,12 @@
                 regionSelect.appendChild(option);
             });
         });
-
     </script>
 
     <script>
         document.getElementById('myForm').addEventListener('submit', function (e) {
             e.preventDefault(); 
-            // 阻止表單的默認提交行為
+            // 阻止表單的默認提交行為:驗證沒過不要亂送出
 
             // 使用 FormData 來獲取表單數據
             const formData = new FormData(this);
