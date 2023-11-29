@@ -226,7 +226,7 @@ public IActionResult Favorite()
         {
             return View();
         }
-        public IActionResult HistoryOrders(string searchTerm = null, int pageSize = 50)
+        public IActionResult HistoryOrders(string searchTerm = null, int pageSize = 20)
         {
             IQueryable<Order> historyOrdersQuery = _context.Orders
                 .Include(o => o.OrderDetails)
@@ -248,6 +248,7 @@ public IActionResult Favorite()
 
             //下拉控制顯示筆數
             var historyOrders = historyOrdersQuery
+
             // 使用 pageSize 來限制返回的結果數量
             .Take(pageSize) 
             .Select(o => new HistoryOrderVM
