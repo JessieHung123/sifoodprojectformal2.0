@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.ViewModels.Stores;
 using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
@@ -20,7 +19,6 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             _context = context;
         }
 
-
         public IActionResult Login()
         {
             return View();
@@ -35,16 +33,13 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         public async Task<IActionResult> Login(StoreLoginVM model)
         {
             Store? account = _context.Stores.FirstOrDefault(x => x.Email == model.StoreAccount);
-
             if (account != null)
             {
                 string passwordWithSalt = $"{model.SetPassword}{account.PasswordSalt}";
                 Byte[] RealPasswordBytes = Encoding.ASCII.GetBytes(passwordWithSalt);
-
                 using (SHA256 sha256 = SHA256.Create())
                 {
                     Byte[] RealPasswordHash = sha256.ComputeHash(RealPasswordBytes);
-
                     if (Enumerable.SequenceEqual(RealPasswordHash, account.PasswordHash))
                     {
                         List<Claim> claims = new List<Claim>()
@@ -52,17 +47,13 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                         new Claim(ClaimTypes.Name, $"{account.StoreId}"),
                         new Claim(ClaimTypes.Role, "Store"),
                         };
-
                         ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
                         ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                             principal, new AuthenticationProperties
                             {
                                 ExpiresUtc = DateTime.UtcNow.AddDays(1)
                             });
-
                         return RedirectToAction("Main", "Home");
                     }
                 }
@@ -94,6 +85,14 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 _context.SaveChanges();
                 return "密碼設定成功";
             }
+        }
+
+        [HttpGet]
+        [Route("/Account/StroeLogout")]
+        public async Task<IActionResult> StoreLogout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Account", "StoreLogout");
         }
     }
 }
