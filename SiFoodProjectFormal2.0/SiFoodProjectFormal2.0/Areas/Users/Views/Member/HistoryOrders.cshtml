@@ -491,7 +491,7 @@
                        <p class="mb-0"> <span class="text-dark">24 </span> 筆訂單</p>
                     </div>
 
-                    <!-- 自製搜尋 -->
+                    <!-- 自製搜尋 start -->
 
                     <div class="col-xxl-5 col-lg-5 d-none d-lg-block">
 
@@ -510,7 +510,7 @@
           
                       </form>
                     </div>
-
+                                    <!-- 自製搜尋 end-->
 
                     <!-- icon -->
                     <div class="d-md-flex justify-content-between align-items-center">
@@ -533,15 +533,24 @@
                        </div>
                        <div class="d-flex mt-2 mt-lg-0">
                           <div class="me-2 flex-grow-1">
+
+
+                              <!-- 顯示筆數 -->
                              <!-- select option -->
-                             <select class="form-select" aria-label="Default select example">
-                                <option selected>顯示: 50</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                             </select>
+                                                <form id="orderForm" action="@Url.Action("HistoryOrders", "Member")" method="get">
+                                                    <!-- 其他搜索欄位... -->
+                                                    <!-- 顯示筆數選擇 -->
+                                                    <select class="form-select" name="pageSize" aria-label="Default select example" onchange="this.form.submit()">
+                                                        <option value="50" selected>顯示: 50</option>
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="30">30</option>
+                                                    </select>
+                                                </form>
                           </div>
                           <div>
+
+                             <!-- Sort顯示 -->
                              <!-- select option -->
                              <select class="form-select" aria-label="Default select example">
                                 <option selected>Sort by: 訂單狀態</option>
@@ -676,6 +685,16 @@
 
 
 @section Scripts{
+    <!--顯示筆數下拉選單 start-->
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('pageSizeSelect').addEventListener('change', function () {
+                this.form.submit();
+            });
+        });
+    </script>
+    <!--顯示筆數下拉選單 end-->
+
         <!-- Javascript-->
         <!-- Libs JS -->
         <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
