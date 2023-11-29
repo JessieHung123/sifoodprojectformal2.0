@@ -24,8 +24,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         {
 
             var findProduct = _context.Products.Where(p => p.ProductId == id && p.RealeasedTime.Date == DateTime.Now.Date && p.SuggestPickEndTime > DateTime.Now.TimeOfDay).Include(p => p.Store);
-            Console.WriteLine(DateTime.Now.Date);
-            Console.WriteLine(DateTime.Now.TimeOfDay);
             if (findProduct == null) { return Enumerable.Empty<ProductVM>(); }
             else
             {
