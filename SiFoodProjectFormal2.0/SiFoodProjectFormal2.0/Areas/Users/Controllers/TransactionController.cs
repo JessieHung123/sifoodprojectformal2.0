@@ -15,13 +15,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public TransactionController(Sifood3Context context)
         {
             _context = context;
-
         }
         private BankInfoModel _bankInfoModel = new BankInfoModel
         {
             MerchantID = "MS150834052",
             HashKey = "EXyVmIxZL7uvX09Sk2wJp5hoDyGPocWn",
             HashIV = "C09KA4wzx60UCOqP",
+            NotifyURL = "http://yourWebsitUrl/Bank/SpgatewayNotify",
             ReturnURL = "https://localhost:7042/Users/Home/RealTimeOrders",
             AuthUrl = " https://ccore.newebpay.com/MPG/mpg_gateway",
         };
@@ -66,6 +66,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 TotalPrice = model.TotalPrice
             };
             _context.Orders.Add(order);
+            _context.SaveChanges();
 
             foreach (var item in model.ProductDetails)
             {
@@ -79,8 +80,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 _context.OrderDetails.Add(orderDetail);
             }
             _context.SaveChanges();
-
-
 
             string version = "2";
             // 目前時間轉換 +08:00, 防止傳入時間或Server時間時區不同造成錯誤
@@ -101,7 +100,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
                 // * 商店訂單編號
                 //MerchantOrderNo = $"T{DateTime.Now.ToString("yyyyMMddHHmm")}",
-                MerchantOrderNo = order.OrderId,
+                MerchantOrderNo = $"{order.OrderId}",
 
                 // * 訂單金額
                 Amt = model.TotalPrice,
@@ -111,6 +110,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
                 // 支付完成 返回商店網址
                 ReturnURL = _bankInfoModel.ReturnURL,
+
+                NotifyURL = _bankInfoModel.NotifyURL,
 
                 // * 付款人電子信箱
                 Email = string.Empty,
@@ -161,11 +162,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             return Content(string.Empty);
         }
-
-
-
-
-
 
         private int GetProductIdByName(string productName)
         {

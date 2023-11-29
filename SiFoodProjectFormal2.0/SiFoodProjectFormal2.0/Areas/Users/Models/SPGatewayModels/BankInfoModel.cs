@@ -20,6 +20,8 @@
         //<para>3.只接受80與443 Port。</para>
         public string? ReturnURL { get; set; }
 
+        public string? NotifyURL { get; set; }
+
         public string? AuthUrl { get; set; }
     }
 }

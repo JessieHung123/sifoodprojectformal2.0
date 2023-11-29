@@ -397,7 +397,6 @@
                 },
                 createTakeOutOrder: function () {
                     var _this = this;
-                    _this.loading = true;
                     axios.post(`/Transaction/TakeOutOrder`, {
                         StoreName: _this.sendBackStoreName,
                         UserName: _this.sendBackUserName,
@@ -408,12 +407,11 @@
                             "Content-Type": "application/json"
                         }
                     }).then(response => {
-                        alert(response.data);
+                        return response.data;
                         // var success = "訂單下訂成功!";
                         // if (response.data === success) {
                         //     window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
                         // }
-                        _this.loading = false;
                     }).catch(err => {
                         alert(err);
                     })

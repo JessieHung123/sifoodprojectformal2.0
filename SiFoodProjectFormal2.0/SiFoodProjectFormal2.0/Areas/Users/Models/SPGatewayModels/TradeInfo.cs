@@ -43,6 +43,8 @@
         /// </summary>
         public string? ItemDesc { get; set; }
 
+        public string? NotifyURL { get; set; }
+
         public string? ReturnURL { get; set; }
 
         public string? Email { get; set; }
