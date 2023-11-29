@@ -17,12 +17,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-
+        [Route("MainPage")]
         public IActionResult Main()
         {
             
             return View();
         }
+        [Route("MapFind")]
         public IActionResult MapFind()
         {
             return View();
