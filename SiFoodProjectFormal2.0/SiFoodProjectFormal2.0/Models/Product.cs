@@ -29,6 +29,8 @@ public partial class Product
 
     public TimeSpan SuggestPickEndTime { get; set; }
 
+    public int IsDelete { get; set; }
+
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
     public virtual Category Category { get; set; } = null!;
