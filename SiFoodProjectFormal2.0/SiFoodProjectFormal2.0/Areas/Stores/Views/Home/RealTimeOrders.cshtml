@@ -11,8 +11,11 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
-    <!-- Google tag (gtag.js) -->
-    <!-- End Tag -->
+    <style>
+        th {
+            border-bottom: none !important;
+        }
+    </style>
     }
 
 <body>
@@ -20,7 +23,7 @@
     <!-- main -->
     <div class="main-wrapper">
         <!-- main wrapper -->
-        <main class="main-content-wrapper">
+        <main class="main-content-wrapper" id="orderApp">
             <div class="container">
                 <!-- row -->
                 <div class="row mb-8">
@@ -80,7 +83,7 @@
                                                     </div>
                                                 </th><!--改-->
                                                 <th>訂單序號</th>
-                                                <th>商品名稱</th>
+                                                @* <th>商品名稱</th> *@
                                                 <th>商品數量</th>
                                                 <th>訂單產生時間</th>
                                                 <th>取餐方式</th>
@@ -89,8 +92,8 @@
                                                 <th>是否接單</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
+                                        <tbody v-for="item in orders">
+                                            <tr >
 
                                                 <td>
                                                     <div class="form-check">
@@ -101,8 +104,17 @@
                                                         </label>
                                                     </div>
                                                 </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
+                                                <td>O001
+                                                    <a href="#" class="text-inherit"
+                                                       data-bs-toggle="collapse"
+                                                       :data-bs-target="'#orderDetails' + item.orderId"                                                        
+                                                       data-bs-toggle="tooltip"
+                                                       data-bs-placement="top"
+                                                       data-bs-title="View">
+                                                        <i class="feather-icon icon-eye"></i>
+                                                    </a>
+                                                </td>
+                                                @* <td>雞肉飯</td> *@
                                                 <td>1</td>
 
                                                 <td>01 May 2023 (10:12 am)</td>
@@ -120,7 +132,171 @@
                                                     <button class="btn btn-danger btn-sm">退單</button>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <!-- Add a collapsible row for order details -->
+                                            <tr >
+                                                <td colspan="8" class="p-0">
+                                                    <div class="collapse" :id="'orderDetails' + item.orderId">
+                                                        <div class="p-3">
+                                                            <div class="row ">
+                                                                <div class="col-xl-12 col-12 mb-5">
+                                                                    <!-- card -->
+                                                                    <div class="card h-100 card-lg">
+                                                                        <div class="card-body p-6">
+                                                                            <div class="d-md-flex justify-content-between">
+                                                                                <div class="d-flex align-items-center mb-2 mb-md-0">
+                                                                                    <h2 class="mb-0">訂單明細</h2>
+
+                                                                                </div>
+                                                                                <!-- select option -->
+                                                                                <div class="d-md-flex">
+
+                                                                                    <!-- button -->
+                                                                                    <div class="ms-md-3">
+                                                                                        <template v-if="item.statusId === 1">
+                                                                                            <a v-on:click="confirmCancelOrder(item)" href="#" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" :title="'取消時限: ' + (10-Math.round(item.orderDuration)) + '分鐘'">取消</a>
+                                                                                        </template>
+                                                                                        <template v-else>
+                                                                                            <a v-on:click="confirmCompleteOrder(item)" href="#" class="btn btn-success">完成訂單</a>
+                                                                                        </template>
+                                                                                        <a href="#" class="btn btn-secondary">下載明細</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="mt-8">
+                                                                                <div class="row">
+                                                                                    <!-- address -->
+                                                                                    <div class="col-lg-4 col-md-4 col-12">
+                                                                                        <div class="mb-6">
+                                                                                            <h6>顧客資訊</h6>
+                                                                                            <p class="mb-1 lh-lg">
+                                                                                                {{item.userName}}<br>
+                                                                                                {{item.userEmail}}<br>
+                                                                                                {{item.userPhone}}
+                                                                                            </p>
+                                                                                            <a href="#">View Profile</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!-- address -->
+                                                                                    <div class="col-lg-4 col-md-4 col-12">
+                                                                                        <div class="mb-6">
+                                                                                            <h6>收件地址</h6>
+                                                                                            <p class="mb-1 lh-lg">
+                                                                                                {{item.address}}
+                                                                                            </p>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!-- address -->
+                                                                                    <div class="col-lg-4 col-md-4 col-12">
+                                                                                        <div class="mb-6">
+                                                                                            <h6>訂單資訊</h6>
+                                                                                            <p class="mb-1 lh-lg">
+                                                                                                訂單編號: <span class="text-dark">{{item.orderId}}</span><br>
+                                                                                                訂購時間: <span class="text-dark">{{item.orderDate}} {{item.orderTime}}</span><br>
+                                                                                                訂單金額: <span class="text-dark">${{item.subtotal+item.shippingFee}}</span>
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <div class="table-responsive">
+                                                                                    <!-- Table -->
+                                                                                    <table class="table mb-0 text-nowrap table-centered">
+                                                                                        <!-- Table Head -->
+                                                                                        <thead class="bg-light">
+                                                                                            <tr>
+                                                                                                <th>商品</th>
+                                                                                                <th>單價</th>
+                                                                                                <th>數量</th>
+                                                                                                <th>總計</th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <!-- tbody -->
+                                                                                        <tbody>
+                                                                                            <tr v-for="product in item.orderDetails">
+                                                                                                <td>
+                                                                                                    <a href="#" class="text-inherit">
+                                                                                                        <div class="d-flex align-items-center">
+                                                                                                            <div>
+                                                                                                                <img :src="product.photoPath" alt=""
+                                                                                                                     class="icon-shape icon-lg">
+                                                                                                            </div>
+                                                                                                            <div class="ms-lg-4 mt-2 mt-lg-0">
+                                                                                                                <h5 class="mb-0 h6">
+                                                                                                                    {{product.productName}}
+                                                                                                                </h5>
+
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                                <td><span class="text-body">${{product.unitPrice}}</span></td>
+                                                                                                <td>{{product.quantity}}</td>
+                                                                                                <td>${{product.total}}</td>
+                                                                                            </tr>                                                                                           
+                                                                                            <tr>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td colspan="1" class="fw-medium text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    小計 :
+                                                                                                </td>
+                                                                                                <td class="fw-medium text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    ${{item.subtotal}}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td colspan="1" class="fw-medium text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    運費
+                                                                                                </td>
+                                                                                                <td class="fw-medium text-dark  ">
+                                                                                                    <!-- text -->
+                                                                                                    ${{item.shippingFee}}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td></td>
+                                                                                                <td></td>
+                                                                                                <td colspan="1" class="fw-semi-bold text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    總額
+                                                                                                </td>
+                                                                                                <td class="fw-semi-bold text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    ${{item.subtotal+item.shippingFee}}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        @* <div class="card-body p-6">
+                                                                            <div class="row">
+                                                                                <div class="col-md-3 mb-4 mb-lg-0 ">
+                                                                                    <h6>付款資訊</h6>
+                                                                                    <span class="d-block">{{item.paymentMethodＮame}}</span>
+                                                                                    <span class="d-block">{{item.paymentDate}} {{item.paymentTime}}</span>
+                                                                                </div>
+                                                                               
+                                                                            </div>
+                                                                        </div> *@
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+@*                                             <tr>
 
                                                 <td>
                                                     <div class="form-check">
@@ -252,7 +428,7 @@
                                                 <td>$12.99</td>
 
                                             </tr>
-                                            <!-- 改 -->
+ *@                                            <!-- 改 -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -278,13 +454,56 @@
     </div>
 
     @section Scripts{
+        <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
         <!-- Libs JS -->
         <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-        <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        @* <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
         <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
         <!-- Theme JS -->
         <script src="~/assets/js/theme.min.js"></script>
+        <script>
+            var baseAddress = "https://localhost:7042";
+
+            const orderApp = Vue.createApp({
+                data: function () {
+                    return {
+                        orders: [],
+                        orderDetails: [],
+                    }
+                },
+                computed: {
+
+                },
+                mounted: function () {
+                    let _this = this;
+                    _this.getOrder();
+
+                },
+                methods: {
+                    getOrder() {
+                        let _this = this;
+                        var userId = "U001"
+                        fetch(`${baseAddress}/api/TempOrdersapi/${userId}`, { method: "GET" })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                // alert(JSON.stringify(data));
+
+                                _this.orders = data;
+                                // _this.orderDetails = data[0].orderDetails;
+
+                            }).catch(error => {
+                                alert(error);
+                            });
+                    },
+                }
+            }).mount("#orderApp")
+        </script>
     }
 
 </body>

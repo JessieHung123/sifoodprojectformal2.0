@@ -5,33 +5,34 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SiFoodProjectFormal2._0.DTO;
 using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 
-namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
+namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class TempOrdersapiController : ControllerBase
     {
         private readonly Sifood3Context _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public OrdersController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
+        public TempOrdersapiController(Sifood3Context context)
         {
             _context = context;
-            _webHostEnvironment = webHostEnvironment;
         }
 
-        // GET: api/Orders
+        // GET: api/TempOrdersapi
         [HttpGet]
-        public async Task<IEnumerable<Order>> GetOrders()
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return _context.Orders;
+          if (_context.Orders == null)
+          {
+              return NotFound();
+          }
+            return await _context.Orders.ToListAsync();
         }
 
-        // GET: api/Orders/5
+        // GET: api/TempOrdersapi/5
         [HttpGet("{id}")]
         public object GetOrder(string id)
         {
@@ -71,8 +72,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                      DriverFullName = z.Driver.FullName
                  });
         }
-
-        // PUT: api/Orders/5
+        // PUT: api/TempOrdersapi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(string id, Order order)
@@ -103,36 +103,22 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             return NoContent();
         }
 
-        // POST: api/Orders
+        // POST: api/TempOrdersapi
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-            if (_context.Orders == null)
-            {
-                return Problem("Entity set 'Sifood3Context.Orders'  is null.");
-            }
+          if (_context.Orders == null)
+          {
+              return Problem("Entity set 'Sifood3Context.Orders'  is null.");
+          }
             _context.Orders.Add(order);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (OrderExists(order.OrderId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
         }
 
-        // DELETE: api/Orders/5
+        // DELETE: api/TempOrdersapi/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(string id)
         {
