@@ -26,13 +26,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-        [Route("LoginRegister")]
+        
         [HttpGet]
         public IActionResult LoginRegister()
         {
             return View();
         }
-
+        [Route("/Account/LoginRegister")]
         [HttpPost]
         public async Task<IActionResult> LoginRegister(LoginVM model)
         {
@@ -199,7 +199,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Account/ResetPassword")]
-
         public string ResetPassword([FromForm] ResetPasswordVM model)
         {
             User? user = _context.Users.FirstOrDefault(x => x.UserEmail == model.UserConfirmEmail);
@@ -232,23 +231,23 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
-        [Route("ResetPassword")]
+
         public IActionResult ResetPassword()
         {
             return View();
         }
-        [Route("RegisterConfirmation")]
+
         public IActionResult RegisterConfirmation()
         {
             return View();
 
         }
-        [Route("ForgotPassword")]
+
         public IActionResult ForgotPassword()
         {
             return View();
         }
-        [Route("ForgotPasswordConfirmation")]
+
         public IActionResult ForgotPasswordConfirmation()
         {
             return View();
