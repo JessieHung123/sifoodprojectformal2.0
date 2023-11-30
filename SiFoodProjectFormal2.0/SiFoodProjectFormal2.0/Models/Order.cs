@@ -23,6 +23,8 @@ public partial class Order
 
     public int StatusId { get; set; }
 
+    public int? TotalPrice { get; set; }
+
     public virtual Comment? Comment { get; set; }
 
     public virtual Driver? Driver { get; set; }

@@ -29,11 +29,11 @@ public partial class Store
 
     public byte[]? PasswordSalt { get; set; }
 
-    public DateTime EnrollDate { get; set; }
+    public DateTime? EnrollDate { get; set; }
 
-    public decimal Latitude { get; set; }
+    public decimal? Latitude { get; set; }
 
-    public decimal Longitude { get; set; }
+    public decimal? Longitude { get; set; }
 
     public string OpeningTime { get; set; } = null!;
 
@@ -46,6 +46,8 @@ public partial class Store
     public string? PhotosPath2 { get; set; }
 
     public string? PhotosPath3 { get; set; }
+
+    public int StoreIsAuthenticated { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
