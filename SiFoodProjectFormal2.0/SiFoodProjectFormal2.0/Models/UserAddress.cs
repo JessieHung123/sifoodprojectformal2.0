@@ -19,5 +19,7 @@ public partial class UserAddress
 
     public decimal UserLongitude { get; set; }
 
+    public bool IsDefault { get; set; }
+
     public virtual User User { get; set; } = null!;
 }

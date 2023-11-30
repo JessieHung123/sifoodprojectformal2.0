@@ -15,6 +15,8 @@ public partial class Sifood3Context : DbContext
     {
     }
 
+    public virtual DbSet<Admin> Admins { get; set; }
+
     public virtual DbSet<Cart> Carts { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -41,10 +43,22 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
-   
+ 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
+
+        modelBuilder.Entity<Admin>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Admin");
+
+            entity.Property(e => e.Account).HasMaxLength(30);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Name).HasMaxLength(30);
+            entity.Property(e => e.Password).HasMaxLength(30);
+        });
 
         modelBuilder.Entity<Cart>(entity =>
         {
@@ -62,7 +76,6 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Cart_Products");
 
             entity.HasOne(d => d.User).WithMany(p => p.Carts)
@@ -185,7 +198,6 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.Driver).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.DriverId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Orders_Drivers");
 
             entity.HasOne(d => d.Status).WithMany(p => p.Orders)
@@ -255,6 +267,7 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.Description).HasMaxLength(15);
+            entity.Property(e => e.IsDelete).HasDefaultValueSql("((1))");
             entity.Property(e => e.PhotoPath).HasMaxLength(50);
             entity.Property(e => e.ProductName).HasMaxLength(15);
             entity.Property(e => e.RealeasedTime).HasColumnType("datetime");
@@ -266,12 +279,10 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Products_Category1");
 
             entity.HasOne(d => d.Store).WithMany(p => p.Products)
                 .HasForeignKey(d => d.StoreId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Products_Stores");
         });
 
@@ -307,6 +318,8 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.PasswordSalt).HasMaxLength(64);
             entity.Property(e => e.Phone).HasMaxLength(10);
             entity.Property(e => e.PhotosPath).HasMaxLength(50);
+            entity.Property(e => e.PhotosPath2).HasMaxLength(50);
+            entity.Property(e => e.PhotosPath3).HasMaxLength(50);
             entity.Property(e => e.Region).HasMaxLength(10);
             entity.Property(e => e.StoreName).HasMaxLength(15);
             entity.Property(e => e.TaxId)
@@ -365,7 +378,7 @@ public partial class Sifood3Context : DbContext
                 .HasConstraintName("FK_UserAddresses_Users");
         });
         modelBuilder.HasSequence<int>("SifoodDriverIdSeq").StartsAt(3L);
-        modelBuilder.HasSequence<int>("SifoodOrderIdSeq").StartsAt(8L);
+        modelBuilder.HasSequence<int>("SifoodOrderIdSeq").StartsAt(10L);
         modelBuilder.HasSequence<int>("SifoodStoreIdSeq").StartsAt(6L);
         modelBuilder.HasSequence<int>("SifoodUserIdSeq").StartsAt(5L);
 
