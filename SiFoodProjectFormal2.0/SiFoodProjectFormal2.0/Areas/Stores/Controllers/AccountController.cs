@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using SiFoodProjectFormal2._0.ViewModels.Stores;
 using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
 using System.Text;
 using System.Security.Cryptography;
+using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
 
 namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 {
@@ -18,12 +18,12 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             _context = context;
         }
-
+        [Route("Account/Login")]
         public IActionResult Login()
         {
             return View();
         }
-
+        [Route("Account/SetAccount")]
         public IActionResult SetAccount()
         {
             return View();

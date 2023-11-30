@@ -26,7 +26,7 @@
 
                 File.AppendAllText(logFile, $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}: {msg}{Environment.NewLine}");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle the exception
             }
