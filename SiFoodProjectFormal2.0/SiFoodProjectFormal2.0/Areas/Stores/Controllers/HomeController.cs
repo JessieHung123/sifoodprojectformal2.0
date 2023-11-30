@@ -61,7 +61,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7);
             return Json(sifoodContext2);
         }
-        [Route("RealTimeOrders")]
+        //[Route("RealTimeOrders")]
         public IActionResult RealTimeOrders()
         {
             return View();
