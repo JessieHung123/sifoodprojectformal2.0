@@ -44,6 +44,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             {
                 UserName = y.User.UserName,
                 UserAddress = y.User.UserAddresses.Select(y => y.UserDetailAddress).ToList(),
+                //UserAddressList = (List<AddressItemVM>)y.User.UserAddresses.Select(x => new AddressItemVM
+                //{
+                //    UserAdress = x.UserDetailAddress,
+                //    AdressIsDefault = x.IsDefault,
+                //}),
                 ProductId = y.ProductId,
                 ProductName = _context.Products.Where(c => c.ProductId == y.ProductId).Select(x => x.ProductName).Single(),
                 Quantity = y.Quantity,
