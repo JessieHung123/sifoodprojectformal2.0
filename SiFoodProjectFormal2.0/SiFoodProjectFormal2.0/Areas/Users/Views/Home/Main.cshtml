@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css">
     <style>
-        .highlight{
-            color:green !important;
+
+        .highlight {
+            color: green !important;
             text-decoration: underline !important;
             font-weight: bold !important;
         }
@@ -56,7 +57,9 @@
                                             <ul class="nav flex-column ms-3">
                                                 <!-- nav item -->
                                                 <li class="nav-item" v-for="(region,regionName) in Object.groupBy(area,z=>z.region)">
+
                                                     <button class="nav-link" :class="name==selectedSetting.city && regionName==selectedSetting.region?'highlight':''"  v-on:click="selectRegion(name,regionName,$event)">{{regionName}}</button>
+
                                                 </li>
                                             </ul>
                                         </div>
@@ -194,13 +197,17 @@
 @section Scripts{
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         var baseAddress = "https://localhost:7042";
         var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         const storeApp = Vue.createApp({
             data: function () {
-                return {                   
+
+                return {
+
                     stores: [],
                     storeCount: "",
                     selectedSetting: {
@@ -288,6 +295,7 @@
                     this.selectedSetting.city = isBoth? "":city;
                     this.selectedSetting.region = isBoth ? "" : region;                    
                 },
+
                 getStoreapi() {
                     let _this = this;
                     fetch(`${baseAddress}/api/Storeapi/Main2`, { method: "GET" })
@@ -311,6 +319,7 @@
                 getFavoriteStore() {
                     let _this = this;
                     if (!isLogin) {return _this.stores = _this.stores.map(store => ({ ...store, noHeart: true }));  }
+
                     fetch(`${baseAddress}/api/Storeapi/GetFavoriteStoreId`, { method: "GET" })
                         .then(response => response.json()
                         )
@@ -333,7 +342,6 @@
                             title: "未登入無法收藏~",
                             icon: "warning"
                         });
-                    }
                 },
                 //加入收藏店家
                 addToFavorite(storeId) {
