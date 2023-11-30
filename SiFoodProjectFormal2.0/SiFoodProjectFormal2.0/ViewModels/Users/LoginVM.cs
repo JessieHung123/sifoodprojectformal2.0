@@ -8,6 +8,6 @@ namespace SiFoodProjectFormal2._0.ViewModels.Users
         public string? Account {  get; set; }
 
         [Required(ErrorMessage = "請輸入登入密碼")]
-        public byte[]? Password { get; set; }
+        public string? Password { get; set; }
     }
 }
