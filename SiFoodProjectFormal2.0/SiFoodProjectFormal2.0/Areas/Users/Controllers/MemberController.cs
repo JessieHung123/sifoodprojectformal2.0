@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
-using SiFoodProjectFormal2._0.ViewModels.Users;
-using SiFoodProjectFormal2._0.Helper;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 
@@ -36,7 +34,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             if (user != null)
             {
                 // 創建 ViewModel 並填充資料
-                var viewModel = new ProfileViewModel
+                var viewModel = new ProfileVM
                 {
                     //填充欄位資料
                     UserName = user.UserName,
@@ -56,7 +54,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //11/23新版
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Profile(string id, [Bind("UserName,UserEmail,UserPhone,UserBirthDate")] ProfileViewModel profileViewModel)
+        public async Task<IActionResult> Profile(string id, [Bind("UserName,UserEmail,UserPhone,UserBirthDate")] ProfileVM profileViewModel)
         {
             //if (ModelState.IsValid)
             //{
@@ -92,7 +90,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Route("/Member/ChangePassword")]
-        public async Task<IActionResult> ChangePassword(ProfileViewModel model)
+        public async Task<IActionResult> ChangePassword(ProfileVM model)
         {
             // 驗證模型
             if (!ModelState.IsValid)
@@ -112,18 +110,18 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             }
 
             // 驗證當前密碼
-            bool validPassword = PasswordHelper.VerifyPassword(model.CurrentPassword, user.UserPasswordHash, user.UserPasswordSalt);
-            if (!validPassword)
-            {
-                ModelState.AddModelError("CurrentPassword", "當前密碼不正確");
-                return View("Profile", model);
-            }
+            //bool validPassword = PasswordHelper.VerifyPassword(model.CurrentPassword, user.UserPasswordHash, user.UserPasswordSalt);
+            //if (!validPassword)
+            //{
+            //    ModelState.AddModelError("CurrentPassword", "當前密碼不正確");
+            //    return View("Profile", model);
+            //}
 
             // 更新用戶的密碼
-            (user.UserPasswordHash, user.UserPasswordSalt) = PasswordHelper.CreatePasswordHash(model.NewPassword);
+            //(user.UserPasswordHash, user.UserPasswordSalt) = PasswordHelper.CreatePasswordHash(model.NewPassword);
 
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+            //_context.Users.Update(user);
+            //await _context.SaveChangesAsync();
 
             // 密碼更新成功後，你可能想要重導向用戶到個人資料頁面，或顯示一個成功消息
             TempData["SuccessMessage"] = "密碼更新成功";
