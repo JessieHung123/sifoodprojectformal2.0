@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
     [Area("Users")]
+    
     public class HomeController : Controller
     {
         Sifood3Context _context;
@@ -15,12 +17,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-
+        [Route("MainPage")]
         public IActionResult Main()
         {
             
             return View();
         }
+        [Route("MapFind")]
         public IActionResult MapFind()
         {
             return View();
@@ -134,24 +137,57 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //{
         //    return View();
         //}
-
-
-
-    public IActionResult Products()
+        [Route("Products/{ProductId?}")]
+        
+        public IActionResult Products(int ProductId)
         {
-            //ViewBag.ProductName=
-            //    ViewBag.StoreName =
-            //    ViewBag.Address =
-            //    ViewBag.Description =
-            //    ViewBag.UnitPrice =
-            //    ViewBag.PhotoPath =
-            //    ViewBag.SuggestPickUpTime =
-            //    ViewBag.SuggestPickEndTime =
-            //    ViewBag.RemainingStock=
+            var IdToString = ProductId.ToString();
+            List<string> ProductList = GetCookieProductList();//讀取
+            if (ProductList.Contains(IdToString)) { ProductList.Remove(IdToString); }
+            ProductList.Add(IdToString);
+            SetCookieProductList(ProductList);//取陣列最後一個以外的值
+            //倒敘且只留最後五個
+            ProductList.Reverse();
+            ProductList = ProductList.Take(5).ToList();
+            
+
+            ViewBag.ProductList= ProductList;
+            List<ProductVM> cookieProduct= new List<ProductVM>();
+            foreach (var productid in ProductList) {
+                var c = _context.Products.Where(p => p.ProductId == int.Parse(productid));
+                ProductVM VM = new ProductVM
+                {
+                    ProductName = c.Select(p => p.ProductName).Single(),
+                    StoreName = c.Include(p => p.Store).Select(p => p.Store.StoreName).Single(),
+                    PhotoPath = c.Select(p => p.PhotoPath).Single(),
+                    UnitPrice = Math.Round(c.Select(p => p.UnitPrice).Single(),2)
+                };
+                cookieProduct.Add(VM);
+            }
+            ViewBag.CookieProduct = cookieProduct;
             return View();
         }
+        private List<string> GetCookieProductList()
+        {
+            string? ProductCookieValue = Request.Cookies["Records"];
+            List<string> ProductList = new List<string>();
+            if (ProductCookieValue != null)
+            {
+                ProductList.AddRange(ProductCookieValue.Split(',')); ;
+            }
+            return ProductList;//{"32","33","34"}
+        }
+        private void SetCookieProductList(List<string> product)
+        {
+            string RecentBrowse = string.Join(",", product);
+            CookieOptions CO = new CookieOptions();
+            CO.Expires = DateTime.Now.AddDays(1);
+            CO.HttpOnly = true;
+            CO.Secure = true;
+            Response.Cookies.Append("Records", RecentBrowse, CO);
+        }
 
-        
+
         public IActionResult RealTimeOrders()
         {
             return View();
