@@ -36,7 +36,7 @@
 
         public string DriverFullName { get; set; }
 
-        public decimal ShippingFee { get; set; }
+        public decimal? ShippingFee { get; set; }
 
         public decimal Subtotal { get; set; }
 
