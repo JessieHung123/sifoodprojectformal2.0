@@ -1,6 +1,6 @@
 ﻿<!--測試連線--->
-@model IEnumerable<SiFoodProjectFormal2._0.Models.Product>
-<!--測試連線--->
+@* @model IEnumerable<SiFoodProjectFormal2._0.Models.Product>
+ *@<!--測試連線--->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -41,16 +41,16 @@
                         <div class="col-md-12">
                             <!-- card -->
                             <div class="card bg-light border-0 rounded-4"
-                                 style="background-image: url(~/assets/images/slider/slider-image-1.jpg); background-repeat: no-repeat; background-size: cover; background-position: right;">
+                                 style="background-image: url(@ViewBag.Storephoto); background-repeat: no-repeat; background-size: cover; background-position: right;">
                                 <div class="card-body p-lg-12">
                                     <h1>
-                                        歡迎回來! @ViewBag.StoreName
+                                        <span class="badge bg-secondary">歡迎回來! @ViewBag.StoreName</span>                                      
                                     </h1>
-                                    <p>目前狀態:營業中</p>
+@*                                     <p>目前狀態:營業中</p>
                                     <a href="#" class="btn btn-primary">
                                         切換營業狀態
                                     </a>
-                                </div>
+ *@                                </div>
                             </div>
                         </div>
                     </div>
@@ -112,50 +112,23 @@
                                 <div class="card-body p-6">
                                     <!-- heading -->
                                     <h3 class="mb-0 fs-5">今日銷售</h3>
-                                    <div id="totalSale" class="mt-6 d-flex justify-content-center"></div>
-                                    <div class="mt-4">
+                                    <div id="totalSale1" class="mt-6 d-flex justify-content-center"></div>
+                                    <div id="main" class="mt-4">
+                                        @*                                         <button id="getStoreInfoAPI" v-on:click="getStoreInfoAPI" class="btn btn-primary">getelment</button>
+                                        *@
                                         <!-- list -->
-                                        <ul class="list-unstyled mb-0">
+                                        <ul v-for="(item, productName) in TotalSales" class="list-unstyled mb-0">
                                             <li class="mb-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="8"
-                                                     height="8" fill="currentColor"
-                                                     class="bi bi-circle-fill text-primary" viewBox="0 0 16 16">
+                                                     height="8" :fill="getCircleFillColor()"
+                                                     class="bi bi-circle-fill" viewBox="0 0 16 16">
                                                     <circle cx="8" cy="8" r="8" />
                                                 </svg> <span class="ms-1">
                                                     <span class="text-dark">
-                                                        雞排便當
-                                                        $32.98
-                                                    </span> (2%)
-                                                </span>
-                                            </li>
-                                            <li class="mb-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="8"
-                                                     height="8" fill="currentColor"
-                                                     class="bi bi-circle-fill text-warning" viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8" />
-                                                </svg> <span class="ms-1">
-                                                    <span class="text-dark">知高飯 $11</span>
-                                                    (11%)
-                                                </span>
-                                            </li>
-                                            <li class="mb-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="8"
-                                                     height="8" fill="currentColor" class="bi bi-circle-fill text-danger"
-                                                     viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8" />
-                                                </svg> <span class="ms-1">
-                                                    <span class="text-dark">素便當 $14.87</span>
-                                                    (1%)
-                                                </span>
-                                            </li>
-                                            <li>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-                                                     fill="currentColor" class="bi bi-circle-fill text-info"
-                                                     viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8" />
-                                                </svg> <span class="ms-1">
-                                                    <span class="text-dark">乾麵 3,271</span>
-                                                    (86%)
+                                                        {{productName}}
+                                                        數量:{{item.amount}}
+                                                        總計:{{item.totalPrice}}
+                                                    </span> {{item.percentage}}%
                                                 </span>
                                             </li>
                                         </ul>
@@ -166,34 +139,20 @@
                     </div>
                     <!-- row -->
                     <!-- row -->
-                    <div id="main">
-                        {{StoreInfo.productId}}
+                    @*                     <div id="main">
+                    {{StoreInfo.productId}}
                     </div>
-
+                    *@
                 </section>
             </main>
         </div>
     </div>
-    
-    <!--測試連線-->
-    <div id="main" class="text-center">
-        <button id="getStoreInfoAPI" v-on:click="getStoreInfoAPI" class="btn btn-primary">getelment</button>
-    </div>
-    <!--測試連線-->
-    <!-- Libs JS -->
-@*     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
-    <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js"></script>
-    <script src="~/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="~/assets/js/vendors/chart.js"></script> *@
-
+    <!--測試連線-->
 </body>
 </html>
-    @section Scripts
-{
+@section Scripts
+    {
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
@@ -207,14 +166,19 @@
         const StoreMainApp = Vue.createApp({
             data: function () {
                 return {
-                    StoreInfo:[],
-                    ProductId: "",
-                    ProductName:"",
-                    SalesCount: "",
+                    StoreInfo: [],
+                    TotalSales: {},
+                    TodaySales: 0,
+                    chartData: {
+                        series: [], 
+                        labels: []  
+                    },
+                    circleFillColors: ['#0aad0a', '#ffc107', '#db3030', '#016bf8'],
+                    currentColorIndex: 0,
                 }
             },
             computed: {
-             },
+            },
             mounted: function () {
                 let _this = this;
                 _this.getStoreInfoAPI();
@@ -234,13 +198,136 @@
                             // 在這裡處理數據
                             alert(JSON.stringify(data));
                             _this.StoreInfo = data /* test */
-
+                            _this.calculateTotalSales();
+                            _this.updateChartData();
                         })
                         .catch(error => {
                             alert(error);
                         });
+                },
+                //計算各類別商品的加總
+                calculateTotalSales: function () {
+                    let _this = this; /* test */
+                    _this.TotalSales = {};
+                    _this.StoreInfo.forEach(item => {
+                        _this.TodaySales += item.unitPrice * item.quantity;
+                        const productName = item.productName;
+                        if (!_this.TotalSales[productName]) {
+                            _this.TotalSales[productName] = {
+                                totalPrice: 0,
+                                amount: 0,
+                                percentage: 0,
+                            };
+                        }
+                        _this.TotalSales[productName].amount += item.quantity;
+                        _this.TotalSales[productName].totalPrice += (item.unitPrice * item.quantity);
+                    });
+                    for (const productName in _this.TotalSales) {
+                        const product = _this.TotalSales[productName];
+                        product.percentage = ((product.totalPrice / _this.TodaySales) * 100).toFixed(2); 
+                    }
+                },
+                //取得各類別商品的總金額作為chart.js功能所需要的變數
+                updateChartData: function () {
+                    let _this = this;
+                    _this.chartData.series = [];
+                    _this.chartData.labels = [];
+                    for (const productName in _this.TotalSales) {
+                        _this.chartData.series.push(_this.TotalSales[productName].totalPrice);
+                        _this.chartData.labels.push(productName);
+                    }
+                    _this.updateChart();
+                },
+                // 引用chart.js裡面的表格套件
+                updateChart: function () {
+                    if ($('#totalSale1').length) {
+                        var options = {
+                            series: this.chartData.series,
+                            labels: this.chartData.labels,
+                            colors: ['#0aad0a', '#ffc107', '#db3030', '#016bf8'],
+                            chart: {
+                                type: 'donut',
+                                height: 280,
+                            },
+                            legend: {
+                                show: false,
+                            },
+                            dataLabels: {
+                                enabled: false,
+                            },
+                            plotOptions: {
+                                pie: {
+                                    donut: {
+                                        size: '85%',
+                                        background: 'transparent',
+                                        labels: {
+                                            show: true,
+                                            name: {
+                                                show: true,
+                                                fontSize: '22px',
+                                                fontFamily: '"Inter", "sans-serif"',
+                                                fontWeight: 600,
+                                                colors: [window.theme.gray600],
+                                                offsetY: -10,
+                                                formatter: function (val) {
+                                                    return val
+
+                                                }
+                                            },
+                                            value: {
+                                                show: true,
+                                                fontSize: '24px',
+                                                fontFamily: '"Inter", "sans-serif"',
+                                                fontWeight: 800,
+                                                colors: window.theme.gray800,
+                                                offsetY: 8,
+                                                formatter: function (val) {
+                                                    return val
+                                                }
+                                            },
+                                            total: {
+                                                show: true,
+                                                showAlways: false,
+                                                label: 'Total Sales',
+                                                fontSize: '16px',
+                                                fontFamily: '"Inter", "sans-serif"',
+                                                fontWeight: 400,
+                                                colors: window.theme.gray400,
+                                                formatter: function (w) {
+                                                    return w.globals.seriesTotals.reduce((a, b) => {
+                                                        return a + b
+                                                    }, 0)
+                                                }
+                                            }
+                                        },
+                                    },
+                                },
+                            },
+                            stroke: {
+                                width: 0,
+                            },
+                            responsive: [{
+                                breakpoint: 1400,
+                                options: {
+                                    chart: {
+                                        type: 'donut',
+                                        width: 290,
+                                        height: 330,
+                                    },
+                                },
+                            },],
+                        };
+                        var chart = new ApexCharts(document.querySelector('#totalSale1'), options);
+                        chart.render();
+                    }
+                },
+                getCircleFillColor: function () {
+                    const color = this.circleFillColors[this.currentColorIndex];
+                    this.currentColorIndex = (this.currentColorIndex + 1) % this.circleFillColors.length;
+                    return color;
                 }
             },
         }).mount("#main")
     </script>
 }
+
