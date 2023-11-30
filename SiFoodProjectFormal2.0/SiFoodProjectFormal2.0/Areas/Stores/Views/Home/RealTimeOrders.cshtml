@@ -104,7 +104,8 @@
                                                         </label>
                                                     </div>
                                                 </td>
-                                                <td>O001
+                                                <td>
+                                                    {{item.orderId}}
                                                     <a href="#" class="text-inherit"
                                                        data-bs-toggle="collapse"
                                                        :data-bs-target="'#orderDetails' + item.orderId"                                                        
@@ -115,15 +116,15 @@
                                                     </a>
                                                 </td>
                                                 @* <td>雞肉飯</td> *@
-                                                <td>1</td>
+                                                <td>{{item.totalQuantity}}</td>
 
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
+                                                <td>{{item.orderDate}}</td>
+                                                <td>{{item.deliveryMethod}}</td>
 
                                                 <td>
-                                                    <span class="badge bg-light-warning text-dark-primary">待確認</span>
+                                                    <span class="badge bg-light-warning text-dark-primary">{{item.status}}</span>
                                                 </td>
-                                                <td>$12.99</td>
+                                                <td>${{item.subtotal+item.shippingFee}}</td>
 
                                                 <td>
                                                     <!-- Accept Order Button -->
