@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Areas.Admin.Views.Models;
-using SiFoodProjectFormal2._0.DTO;
 using SiFoodProjectFormal2._0.Models;
-using SiFoodProjectFormal2._0.ViewModels.Users;
 
 namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
 {

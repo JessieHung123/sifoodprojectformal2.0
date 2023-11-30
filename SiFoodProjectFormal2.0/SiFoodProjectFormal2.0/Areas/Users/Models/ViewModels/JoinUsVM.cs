@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SiFoodProjectFormal2._0.ViewModels.Users
+namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 {
-    public class JoinUsViewModel
+    public class JoinUsVM
     {
         //都先加?取消驗證方便測試
 
         //[Required(ErrorMessage="店名未填寫")]
-        [Display(Name ="平台顯示店名")]
+        [Display(Name = "平台顯示店名")]
         public string? StoreName { get; set; }
 
 
@@ -26,7 +26,7 @@ namespace SiFoodProjectFormal2._0.ViewModels.Users
         public string? Phone { get; set; }
 
         //[Required(ErrorMessage = "公司統編未填寫")]
-       // [RegularExpression(@"^\d{8}$", ErrorMessage = "無效的公司統編格式")]
+        // [RegularExpression(@"^\d{8}$", ErrorMessage = "無效的公司統編格式")]
         [Display(Name = "公司統編")]
         public string? TaxId { get; set; }
 
@@ -35,23 +35,23 @@ namespace SiFoodProjectFormal2._0.ViewModels.Users
         [Display(Name = "店家地址-市")]
         public string? City { get; set; }
 
-       // [Required(ErrorMessage = "店家所在區未填寫")]
+        // [Required(ErrorMessage = "店家所在區未填寫")]
         [Display(Name = "店家地址-區")]
         public string? Region { get; set; }
 
-       // [Required(ErrorMessage = "店家地址未填寫")]
+        // [Required(ErrorMessage = "店家地址未填寫")]
         [Display(Name = "店家地址")]
         public string? Address { get; set; }
 
-       // [Required(ErrorMessage = "店家介紹未填寫")]
+        // [Required(ErrorMessage = "店家介紹未填寫")]
         [Display(Name = "店家介紹")]
         public string? Description { get; set; }
 
-       // [Required(ErrorMessage = "營業時間未填寫")]
+        // [Required(ErrorMessage = "營業時間未填寫")]
         [Display(Name = "營業時間")]
         public string? OpeningTime { get; set; }
 
-       // [Required(ErrorMessage = "營業日未填寫")]
+        // [Required(ErrorMessage = "營業日未填寫")]
         [Display(Name = "公休日")]
         public string? ClosingDay { get; set; }
 

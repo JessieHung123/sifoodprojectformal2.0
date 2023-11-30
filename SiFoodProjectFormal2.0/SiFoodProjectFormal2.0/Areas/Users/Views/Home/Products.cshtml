@@ -137,6 +137,45 @@
         </section>
     </main>
 </body>
+<!--moreThanQty Modal -->
+<div class="modal fade" id="moreThanQty" tabindex="-1" role="dialog" aria-labelledby="moreThanQtyLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="moreThanQtyLabel">必須小於庫存數量!</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart Modal -->
+<div class="modal fade" id="CartModal" tabindex="-1" role="dialog" aria-labelledby="CartLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CartLabel">加入購物車前請先登入!</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart Modal -->
+<div class="modal fade" id="CartAddOkModal" tabindex="-1" role="dialog" aria-labelledby="CartAddOkLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CartAddOkLabel">加入購物車成功!</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
@@ -184,7 +223,7 @@
                 },
                 clickAdd() {
                     if (this.number >= this.remainingStock) {
-                        alert("必須小於庫存數量!");
+                        $('#moreThanQty').modal('show');
                     } else { this.number = this.number + 1; }
                 },
                 async AddCartItem(productData) {
@@ -209,7 +248,7 @@
                                             body: JSON.stringify(addItem)
                                         });
                                     let data = await response.text();
-                                    alert(data);
+                                    $('#CartAddOkModal').modal('show');
 
                                 } catch (error) { alert("發生錯誤:" + error); }
                                 shoppingCart.getCart();
@@ -223,7 +262,7 @@
                                     body: JSON.stringify(addItem)
                                 }).then(response => response.text())
                                 .then(data => {
-                                    alert(data);
+                                    $('#CartAddOkModal').modal('show');
                                     shoppingCart.getCart();
                                 })
                                 .catch(error => {
@@ -231,7 +270,7 @@
                                 });
                         }
                     }
-                    else {alert("加入購物車前請先登入!") }
+                    else { $('#CartModal').modal('show'); }
                     
                 },
             }

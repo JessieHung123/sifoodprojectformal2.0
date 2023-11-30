@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Areas.Users.Models.SPGatewayModels;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
-using SiFoodProjectFormal2._0.ViewModels.Users;
 using System.Text;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers

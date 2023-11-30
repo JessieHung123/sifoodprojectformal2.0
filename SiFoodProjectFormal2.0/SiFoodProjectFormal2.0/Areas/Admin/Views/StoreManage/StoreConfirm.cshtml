@@ -9,12 +9,12 @@
         <div class="col-md-12">
             <div class="d-md-flex justify-content-between align-items-center">
                 <div>
-                    <h2>商家管理</h2>
+                    <h2>商家審核</h2>
                     <!-- breacrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="#" class="text-inherit">後台首頁</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">商家管理</li>
+                            <li class="breadcrumb-item active" aria-current="page">商家審核</li>
                         </ol>
                     </nav>
                 </div>
@@ -67,7 +67,7 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                @if (item.StoreIsAuthenticated == 1)
+                                @if (item.StoreIsAuthenticated == 0)
                                 {
                                     <tr>
                                         <td>
@@ -93,7 +93,7 @@
                                         </td>
                                         <td>
                                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#EditStore-" + item.StoreId)" data-url="@Url.Action($"Edit/{item.StoreId}")">
-                                                <i class="bi bi-pencil-square me-3"></i>修改
+                                                <i class="bi bi-pencil-square me-3"></i>確認
                                             </button>
                                             @await Html.PartialAsync("_EditPartialView",item)
                                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DetailStore-" + item.StoreId)" data-url="@Url.Action($"Details/{item.StoreId}")">
@@ -101,7 +101,7 @@
                                             </button>
                                             @await Html.PartialAsync("_DetailsPartialView",item)
                                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DeleteStore-" + item.StoreId)" data-url="@Url.Action($"Delete/{item.StoreId}")">
-                                                <i class="bi bi-trash me-3"></i>刪除
+                                                <i class="bi bi-trash me-3"></i>拒絕
                                             </button>
                                             @await Html.PartialAsync("_DeletePartialView",item)
                                         </td>
@@ -116,19 +116,19 @@
                             <ul class="pagination mb-0">
                                 @if (ViewBag.Page > 1)
                                 {
-                                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = ViewBag.Page - 1, searchStores = ViewBag.searchStores })">上一頁</a></li>
+                                    <li class="page-item"><a class="page-link" href="@Url.Action("StoreConfirm", new { page = ViewBag.Page - 1, searchStores = ViewBag.searchStores })">上一頁</a></li>
                                 }
 
                                 @for (int i = 1; i <= ViewBag.TotalPages; i++)
                                 {
                                     <li class="page-item @(i == ViewBag.Page ? "active" : "")">
-                                        <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize, searchStores = TempData["SearchStores"] })">@i</a>
+                                        <a class="page-link" href="@Url.Action("StoreConfirm", new { page = i, pageSize = ViewBag.PageSize, searchStores = TempData["SearchStores"] })">@i</a>
                                     </li>
                                 }
 
                                 @if (ViewBag.Page < ViewBag.TotalPages)
                                 {
-                                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = ViewBag.Page + 1, searchStores = ViewBag.searchStores })">下一頁</a></li>
+                                    <li class="page-item"><a class="page-link" href="@Url.Action("StoreConfirm", new { page = ViewBag.Page + 1, searchStores = ViewBag.searchStores })">下一頁</a></li>
                                 }
                             </ul>
                         </nav>

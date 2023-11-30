@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
 using System.Text;
-using SiFoodProjectFormal2._0.ViewModels.Users;
 using Microsoft.Win32;
 
 using NuGet.Packaging;
@@ -27,7 +26,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-
+        [Route("LoginRegister")]
         [HttpGet]
         public IActionResult LoginRegister()
         {
@@ -226,27 +225,30 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/Account/Logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
-
+        [Route("ResetPassword")]
         public IActionResult ResetPassword()
         {
             return View();
         }
+        [Route("RegisterConfirmation")]
         public IActionResult RegisterConfirmation()
         {
             return View();
 
         }
+        [Route("ForgotPassword")]
         public IActionResult ForgotPassword()
         {
             return View();
         }
+        [Route("ForgotPasswordConfirmation")]
         public IActionResult ForgotPasswordConfirmation()
         {
             return View();

@@ -54,7 +54,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.SPGatewayModels
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 
             }
