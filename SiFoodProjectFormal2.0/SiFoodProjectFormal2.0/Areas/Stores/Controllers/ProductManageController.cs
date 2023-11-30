@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SiFoodProjectFormal2._0.DTO;
+using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 
 namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
@@ -20,11 +20,11 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         }
 
 
-        public async Task<List<ProductManageDTO>> GetAll()
+        public async Task<List<ProductManageVM>> GetAll()
         {
             return await _context.Products
                 .Include(p => p.Category)
-                .Where(e => e.StoreId == targetStoreId).Select(x => new ProductManageDTO
+                .Where(e => e.StoreId == targetStoreId).Select(x => new ProductManageVM
                 {
                     StoreId = x.StoreId,
                     UnitPrice = x.UnitPrice,
@@ -42,7 +42,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                 }).ToListAsync();
         }
 
-        public async Task<List<ProductManageDTO>> Filter(string? text)
+        public async Task<List<ProductManageVM>> Filter(string? text)
         {
             var query = _context.Products.Include(p => p.Category).Where(e => e.StoreId == targetStoreId);
 
@@ -50,7 +50,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             {
                 query = query.Where(e => e.ProductName.Contains(text) || e.Category.CategoryName.Contains(text));
             }
-            return await query.Select(x => new ProductManageDTO
+            return await query.Select(x => new ProductManageVM
             {
                 StoreId = x.StoreId,
                 UnitPrice = x.UnitPrice,
@@ -86,7 +86,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                 await _context.SaveChangesAsync();
 
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 return "刪除商品關聯紀錄失敗!";
             }
@@ -100,7 +100,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 
 
         [HttpPost]
-        public async Task<string> postProduct([FromForm]AddProductDTO addProductDTO)
+        public async Task<string> postProduct([FromForm]AddProductVM addProductDTO)
         {
             Product prodct = new Product
             {

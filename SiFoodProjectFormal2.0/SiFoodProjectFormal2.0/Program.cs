@@ -57,15 +57,28 @@ namespace SiFoodProjectFormal2._0
 
             app.UseAuthorization();
 
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "Users",
+            //        pattern: "{area:exists}/{controller=Home}/{action=Main}/{id?}");
 
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller=Home}/{action=Main}/{id?}");
+
+            //});
             app.MapControllerRoute(
-                name: "areas",
-                pattern: "{area:exists}/{controller=Home}/{action=Main}/{id?}");
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
+              name: "areas",
+              pattern: "{area=Users}/{controller=Home}/{action=Main}/{id?}"
+            );
+            //app.MapControllerRoute(
+            //    name: "default",
+            //    pattern: "{area=Users}/{controller=Home}/{action=MainPage}/{id?}");
+            //app.UseEndpoints(
+            //    endpoints => { endpoints.MapAreaControllerRoute(name: "Users", areaName: "Users", pattern: "{action=MainPage}");
+            //    endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Main}/{id?}"); });
+             
             app.Run();
         }
     }

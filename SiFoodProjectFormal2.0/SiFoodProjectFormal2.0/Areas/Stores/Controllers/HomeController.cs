@@ -21,7 +21,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             _context = context;
             _webHostEnvironment = webHostenvironment;
         }
-
+        [Route("Main")]
         // GET: Products
         [HttpGet] //uri:/
         public async Task<IActionResult> Main()
@@ -61,20 +61,22 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7);
             return Json(sifoodContext2);
         }
-
+        [Route("RealTimeOrders")]
         public IActionResult RealTimeOrders()
         {
             return View();
         }
+        [Route("History")]
         public IActionResult History()
         {
             return View();
         }
+        [Route("ProductManage")]
         public IActionResult ProductManage()
         {
             return View();
         }
-
+        [Route("GetProduct")]
         public IActionResult GetProduct()
         {
             var ProductContext = _context.Products.Include(d => d.Category).
@@ -99,15 +101,17 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         //    byte[] ImageContent = c.PhotoPath != null ? c.PhotoPath : System.IO.File.ReadAllBytes(Filename);
         //    return File(ImageContent, "image/jpeg");
         //}
-
+        [Route("InfoModify")]
         public IActionResult InfoModify()
         {
             return View();
         }
+        [Route("Review")]
         public IActionResult Review()
         {
             return View();
         }
+        [Route("FAQ")]
         public IActionResult FAQ()
         {
             return View();
