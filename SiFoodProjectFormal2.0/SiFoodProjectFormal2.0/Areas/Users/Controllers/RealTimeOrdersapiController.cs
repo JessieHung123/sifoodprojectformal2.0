@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SiFoodProjectFormal2._0.DTO;
+using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 
@@ -13,25 +13,25 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class RealTimeOrdersapiController : ControllerBase
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public OrdersController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
+        public RealTimeOrdersapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // GET: api/Orders
+        // GET: api/RealTimeOrdersapi
         [HttpGet]
         public async Task<IEnumerable<Order>> GetOrders()
         {
             return _context.Orders;
         }
 
-        // GET: api/Orders/5
+        // GET: api/RealTimeOrdersapi/5
         [HttpGet("{id}")]
         public object GetOrder(string id)
         {
@@ -72,18 +72,18 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                  });
         }
 
-        // PUT: api/Orders/5
+        // PUT: api/RealTimeOrdersapi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder(string id, Order order)
+        public async Task<string> PutOrder(string id, [FromBody] RealTimeOrderVM realTimeOrderVM)
         {
-            if (id != order.OrderId)
+            if (id != realTimeOrderVM.OrderId)
             {
-                return BadRequest();
+                return "失敗";
             }
-
+            Order? order = await _context.Orders.FindAsync(id);
+            order.StatusId = realTimeOrderVM.StatusId;
             _context.Entry(order).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -92,18 +92,17 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             {
                 if (!OrderExists(id))
                 {
-                    return NotFound();
+                    return "取消失敗";
                 }
                 else
                 {
                     throw;
                 }
             }
-
-            return NoContent();
+            return "已完成";
         }
 
-        // POST: api/Orders
+        // POST: api/RealTimeOrdersapi
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
@@ -113,26 +112,12 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 return Problem("Entity set 'Sifood3Context.Orders'  is null.");
             }
             _context.Orders.Add(order);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (OrderExists(order.OrderId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
         }
 
-        // DELETE: api/Orders/5
+        // DELETE: api/RealTimeOrdersapi/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(string id)
         {
