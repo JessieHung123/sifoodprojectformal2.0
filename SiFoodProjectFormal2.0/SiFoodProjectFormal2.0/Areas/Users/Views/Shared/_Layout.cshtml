@@ -10,14 +10,8 @@
     <link href="~/assets/libs/slick-carousel/slick/slick.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/slick-carousel/slick/slick-theme.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/tiny-slider/dist/tiny-slider.css" asp-append-version="true" rel="stylesheet" />
-
     <script src="https://unpkg.com/@@popperjs/core@2/dist/umd/popper.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
-
-
-
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico" />
 
@@ -30,7 +24,7 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css" />
-
+    
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -183,7 +177,7 @@
                                             <!-- text -->
                                             <div class="mt-2 small lh-1">
                                                 <div class="text-decoration-none text-inherit">
-                                                    <span class="me-1 align-text-bottom" @@click="deleteCartItem(item)">
+                                                    <span class="me-1 align-text-bottom"  @@click="deleteCartItem(item)">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 text-success">
                                                             <polyline points="3 6 5 6 21 6"></polyline>
                                                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
@@ -192,13 +186,27 @@
                                                             <line x1="14" y1="11" x2="14" y2="17"></line>
                                                         </svg>
                                                     </span><span class="text-muted">Remove</span>
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+                                <!-- Modal -->
+                                <div class="modal fade" id="deleteCartModal" tabindex="-1" aria-labelledby="deleteCartLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="deleteCartLabel">確定要刪除嗎?</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                                <button type="button" class="btn btn-primary">確定</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal -->
                                 <!-- input group -->
                                 <div class="col-4 col-md-3 col-lg-3">
                                     <div class="input-group input-spinner  ">
@@ -221,7 +229,6 @@
                     <!-- btn -->
                     <div class="d-flex justify-content-end mt-4">
                         <button class="btn btn-success" type="button">前往結帳</button>
-
                     </div>
 
                 </div>
@@ -294,7 +301,46 @@
             </div>
         </div>
     </footer>
+    <!-- OK Modal -->
+    <div class="modal fade" id="deleteOK" tabindex="-1" role="dialog" aria-labelledby="okModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="okModalLabel">商品項目刪除成功!</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- NotOK Modal -->
+    <div class="modal fade" id="deleteNotOK" tabindex="-1" role="dialog" aria-labelledby="notOkModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notOkModalLabel">商品項目刪除失敗!</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- NotOK Modal -->
+    <div class="modal fade" id="moreQty" tabindex="-1" role="dialog" aria-labelledby="moreQtyLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="moreQtyLabel">必須小於庫存數量!</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <!-- Javascript-->
@@ -343,6 +389,13 @@
                     fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
+                            this.carts = data;
+                            this.cartCount = this.carts.length > 0? this.carts.length:0;
+                        }).catch(error => {
+                            Swal.fire({
+                                title: "未登入無法收藏~",
+                                icon: "warning"
+                            });
                             // alert(data);
                             this.carts = data;
                             this.cartCount = this.carts.length > 0 ? this.carts.length : 0;
@@ -352,7 +405,6 @@
                 },
                 async clickMinus(item) {
                     item.quantity = item.quantity <= 1 ? item.quantity = 1 : item.quantity - 1;
-
                     await fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
@@ -361,7 +413,7 @@
                 },
                 async clickAdd(item) {
                     let remainingStock = productApp.remainingStock;
-                    if (item.quantity >= remainingStock) { alert("必須小於庫存數量!"); }
+                    if (item.quantity >= remainingStock) { $('#moreQty').modal('show'); }
                     else { item.quantity = item.quantity + 1; }
 
                     // let remainingStock = $("#remainingStock").text();
@@ -375,7 +427,7 @@
                 },
                 deleteCartItem(item) {
                     let _this = this;
-                    let checkagain = confirm("確定要刪除嗎?");
+                    let checkagain = $('#deleteCartModal').modal('show');
                     if (checkagain == true) {
                         fetch(`${baseAddress}/api/CartVMapi/DeleteCartItem`,
                             {
@@ -385,17 +437,20 @@
                             }).then(response => response.json())
                             .then(data => {
                                 if (data) {
-                                    alert("商品項目刪除成功!");
+                                    $('#deleteOK').modal('show');
                                     var deleteConfirmItem = document.getElementById(item.productId);
                                     deleteConfirmItem.remove();
                                     this.cartCount = $('#cartItemContainer').find('div').length;
                                 }
                             })
                             .catch(error => {
-                                alert("商品項目刪除失敗!");
+                                // Swal.fire({
+                                //     title: "商品項目刪除失敗!",
+                                //     icon: "warning"
+                                // });
+                                $('#deleteNotOK').modal('show');
                             })
                     };
-                    //remove那個元素
                 },
             },
         }).mount("#header")

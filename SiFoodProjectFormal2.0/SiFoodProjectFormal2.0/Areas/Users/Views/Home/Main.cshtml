@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css">
     <style>
+
         .highlight {
             color: green !important;
             text-decoration: underline !important;
@@ -56,7 +57,9 @@
                                             <ul class="nav flex-column ms-3">
                                                 <!-- nav item -->
                                                 <li class="nav-item" v-for="(region,regionName) in Object.groupBy(area,z=>z.region)">
-                                                    <button class="nav-link" :class="name==selectedSetting.city && regionName==selectedSetting.region?'highlight':''" v-on:click="selectRegion(name,regionName,$event)">{{regionName}}</button>
+
+                                                    <button class="nav-link" :class="name==selectedSetting.city && regionName==selectedSetting.region?'highlight':''"  v-on:click="selectRegion(name,regionName,$event)">{{regionName}}</button>
+
                                                 </li>
                                             </ul>
                                         </div>
@@ -234,18 +237,23 @@
 @section Scripts{
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         var baseAddress = "https://localhost:7042";
         var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         const storeApp = Vue.createApp({
             data: function () {
+
                 return {
+
                     stores: [],
                     storeCount: "",
                     selectedSetting: {
                         city: "",
                         region: "",
-                        category: [],
+                        category:[],
                         isStoreActive: false,
                         isRemain: false,
                     },
@@ -259,7 +267,7 @@
             computed: {
                 total() {
                     return Math.ceil(this.showStores.length / this.page.countPerPage);
-                },
+                },   
                 filterCard() {
                     var start = (this.page.pageNumber - 1) * this.page.countPerPage;
                     var end = start + this.page.countPerPage;
@@ -309,7 +317,7 @@
                     } else {
                         return stores.filter(s => localHours >= parseInt(s.weekendOpeningTime.slice(0, 2)) && localMinutes >= 0 && localHours < parseInt(s.weekendClosingTime.slice(0, 2)) && localMinutes >= 0);
                         // _this.showStore = weekendopenstores.map(x => ({ ...x, opened: true }));
-                    }
+                    }                    
                 },
                 filtercategory(stores) {
                     if (this.selectedSetting.category.length < 1) return stores;
@@ -324,9 +332,10 @@
                     e.stopPropagation();
                     console.log(region)
                     let isBoth = (city == this.selectedSetting.city && region == this.selectedSetting.region);
-                    this.selectedSetting.city = isBoth ? "" : city;
-                    this.selectedSetting.region = isBoth ? "" : region;
+                    this.selectedSetting.city = isBoth? "":city;
+                    this.selectedSetting.region = isBoth ? "" : region;                    
                 },
+
                 getStoreapi() {
                     let _this = this;
                     fetch(`${baseAddress}/api/Storeapi/Main2`, { method: "GET" })
@@ -349,15 +358,16 @@
                 },
                 getFavoriteStore() {
                     let _this = this;
-                    if (!isLogin) { return _this.stores = _this.stores.map(store => ({ ...store, noHeart: true })); }
+                    if (!isLogin) {return _this.stores = _this.stores.map(store => ({ ...store, noHeart: true }));  }
+
                     fetch(`${baseAddress}/api/Storeapi/GetFavoriteStoreId`, { method: "GET" })
                         .then(response => response.json()
                         )
                         .then(data => {
-                            _this.stores = _this.stores.map(store => {
-                                if (data.includes(store.storeId)) { return { ...store, noHeart: false }; }
-                                else return { ...store, noHeart: true }
-                            });
+                                _this.stores = _this.stores.map(store => {
+                                    if (data.includes(store.storeId)) { return { ...store, noHeart: false }; }
+                                    else return { ...store, noHeart: true }
+                                });
                         }).catch(error => { alert(error); });
                 },
                 toggle(storeId) {

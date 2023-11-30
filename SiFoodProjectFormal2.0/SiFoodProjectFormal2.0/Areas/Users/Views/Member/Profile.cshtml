@@ -160,7 +160,7 @@
         <hr class="my-10">
 
 
-@*                             <!-- 密碼區 -->
+                            <!-- 密碼區 -->
                             <div class="pe-lg-14 mb-15">
                                 <h5 class="mb-4">密碼</h5>
 
@@ -193,13 +193,13 @@
                                     想要更新密碼嗎?
                                     <a href="javascript:void(0)" id="reset-password-link">按這裡重設密碼</a>
                                 </p>
-                            </div> *@
+                            </div> 
 
         <!-- 一般性錯誤消息 -->
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
  
                         
-@*                         <hr class="my-10">
+                        @*  <hr class="my-10">
                         <div class="ms-10 mb-10">
                             <!-- heading -->
                             <h5 class="mb-4">刪除帳號</h5>
@@ -207,7 +207,7 @@
                             <p class="mb-5">刪除帳號就沒辦法再享有實惠又環保的愛惜食物購買平台喔～</p>
                             <!-- btn -->
                             <a href="#" class="btn btn-outline-danger">我確定要刪除帳號</a>
-                        </div> *@
+                        </div>
                     
             </div>
         </div>
@@ -268,7 +268,10 @@
             </ul>
         </div>
     </div>
-</div>
+</div> *@
+
+
+
 
 @section Scripts{
     @{
@@ -291,7 +294,7 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
-    <script>
+    @* <script>
         $(document).ready(function () {
             $('#reset-password-link').click(function (e) {
                 e.preventDefault(); // 阻止鏈接默認動作
@@ -307,25 +310,25 @@
 
                 var formData = $(this).serialize(); // 序列化表單數據
 
-                $.ajax({
-                    url: '@Url.Action("ChangePassword", "Member")', // 確保這裡的路徑是正確的
-                    type: 'POST',
-                    data: formData,
-                    success: function (response) {
-                        if (response.success) {
-                            alert("密碼修改成功");
-                            window.location.href = '@Url.Action("Profile", "Member")';
-                        } else {
-                            alert("現在密碼錯誤，請重新確認");
-                        }
-                    },
-                    error: function () {
-                        alert("發生錯誤，請稍後再試");
-                    }
-                });
+                // $.ajax({
+                //     url: '@Url.Action("ChangePassword", "Member")', // 確保這裡的路徑是正確的
+                //     type: 'POST',
+                //     data: formData,
+                //     success: function (response) {
+                //         if (response.success) {
+                //             alert("密碼修改成功");
+                //             window.location.href = '@Url.Action("Profile", "Member")';
+                //         } else {
+                //             alert("現在密碼錯誤，請重新確認");
+                //         }
+                //     },
+                //     error: function () {
+                //         alert("發生錯誤，請稍後再試");
+                //     }
+                // });
             });
         });
-    </script>
+    </script> *@
 
 
 }

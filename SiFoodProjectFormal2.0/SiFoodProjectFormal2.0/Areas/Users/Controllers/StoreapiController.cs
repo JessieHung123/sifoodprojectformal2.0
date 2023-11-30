@@ -64,7 +64,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         {
             if (favorite == null) return false;
 
-
             try
             {
                 string userId = _userIdentityService.GetUserId();
@@ -114,8 +113,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 LogoPath = s.LogoPath,
                 City = s.City,
                 Region = s.Region,
-                Latitude= s.Latitude,
-                Longitude= s.Longitude,
+                Latitude= (decimal)s.Latitude,
+                Longitude= (decimal)s.Longitude,
             });
 
         }
@@ -129,8 +128,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     LogoPath = z.LogoPath,
                     City = z.City,
                     Region = z.Region,
-                    Latitude=z.Latitude==null?0: z.Latitude,
-                    Longitude=z.Longitude==null?0:z.Longitude,
+                    Latitude=(decimal)z.Latitude==null?0:(decimal) z.Latitude,
+                    Longitude= (decimal)z.Longitude==null?0: (decimal)z.Longitude,
                 CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
                 CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
             }).ToList();
