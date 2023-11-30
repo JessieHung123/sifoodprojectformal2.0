@@ -4,6 +4,7 @@ using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
 using SiFoodProjectFormal2._0.Helper;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -222,14 +223,50 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
    
 
-public IActionResult Favorite()
+        public IActionResult Favorite()
         {
             return View();
         }
-        public IActionResult HistoryOrders()
+        public IActionResult HistoryOrders(string searchTerm = null, int pageSize = 20)
         {
-            return View();
+            IQueryable<Order> historyOrdersQuery = _context.Orders
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .Include(o => o.Status);
+
+                //關鍵字搜尋
+                if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                historyOrdersQuery = historyOrdersQuery.Where(o =>
+                    o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)));
+            }
+
+            // 計算總訂單數
+            var totalOrdersCount = historyOrdersQuery.Count();
+
+             // 將總訂單數傳遞給視圖
+            ViewBag.TotalOrdersCount = totalOrdersCount;
+
+            //下拉控制顯示筆數
+            var historyOrders = historyOrdersQuery
+
+            // 使用 pageSize 來限制返回的結果數量
+            .Take(pageSize) 
+            .Select(o => new HistoryOrderVM
+            {
+                    StoreId = o.StoreId,
+                    OrderId = o.OrderId,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status.StatusName,
+                    Quantity = o.OrderDetails.Sum(od => od.Quantity),
+                    TotalPrice = o.TotalPrice ?? 0,
+                    FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
+                    FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
+                }).ToList();
+
+            return View(historyOrders);
         }
+
         public IActionResult Address()
         {
             return View();
