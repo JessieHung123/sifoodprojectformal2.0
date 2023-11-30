@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using SiFoodProjectFormal2._0.ViewModels.Users;
+using System.Text.Json; 
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -42,86 +43,79 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> JoinUs([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,OpeningDay,PhotosPath,LogoPath")] JoinUsViewModel joinus)
+        public async Task<string> JoinUsSubmit([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,ClosingDay,PhotosPath,PhotosPath2,PhotosPath3,LogoPath")] JoinUsViewModel joinus)
         {
             if (ModelState.IsValid)
             {
-                var store = new Store
+                try
                 {
-                    // 將joinus 的數據映射到 store 實體
-                    // 賦值
-                    StoreName = joinus.StoreName,
-                    ContactName = joinus.ContactName,
-                    Email = joinus.Email,
-                    Phone = joinus.Phone,
-                    TaxId = joinus.TaxId,
-                    City = joinus.City,
-                    Region = joinus.Region,
-                    Address = joinus.Address,
-                    Description = joinus.Description,
-                    ClosingDay = joinus.ClosingDay,
-                    OpeningTime = joinus.OpeningTime,
-                    LogoPath = joinus.LogoPath,
-                    PhotosPath = joinus.PhotosPath,
-                };
+                    // 處理 Logo 圖片上傳
+                    string logoPathInDb = await SavePhoto(joinus.LogoPath, "logo");
 
-                _context.Add(store);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(JoinUs));
-            }
-            return View(joinus);
+                    // 處理三張店家照片上傳
+                    string photoPathInDb = await SavePhoto(joinus.PhotosPath, "photo");
+                    string photoPath2InDb = await SavePhoto(joinus.PhotosPath2, "photo");
+                    string photoPath3InDb = await SavePhoto(joinus.PhotosPath3, "photo");
+
+                                        //創建store實體
+
+                    var store = new Store
+                    {
+                        // 將joinus 的數據映射到 store 實體
+                        // 賦值
+                        StoreName = joinus.StoreName,
+                        ContactName = joinus.ContactName,
+                        Email = joinus.Email,
+                        Phone = joinus.Phone,
+                        TaxId = joinus.TaxId,
+                        City = joinus.City,
+                        Region = joinus.Region,
+                        Address = joinus.Address,
+                        Description = joinus.Description,
+                        ClosingDay = joinus.ClosingDay,
+                        OpeningTime = joinus.OpeningTime,
+                        LogoPath = logoPathInDb,
+                        PhotosPath = photoPathInDb,
+                        PhotosPath2 = photoPath2InDb,
+                        PhotosPath3 = photoPath3InDb,
+                    };
+
+                    _context.Add(store);
+                    await _context.SaveChangesAsync();
+                    return "成功";
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"錯誤: {ex.Message}");
+                }
+
+                }
+            // 如果模型狀態無效，返回 JSON 錯誤信息
+            return "失敗";
+ 
         }
 
 
-        //之前寫的老版本
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")]JoinUsViewModel joinUsViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        return RedirectToAction("JoinUs");
-        //    }
-        //   return View(joinUsViewModel);
-        //}
+        //儲存照片專用方法
+        private async Task<string> SavePhoto(IFormFile photo, string folderName)
+        {
+            if (photo != null)
+            {
+                var fileName = Path.GetFileName(photo.FileName);
+                var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Stores", folderName, fileName);
 
-        //之前寫的for AJAX版本
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> JoinUs([Bind("StoreName, ContactName,TaxID,Email,Phone,Address,Description,OpeningTime,OpeningDay")] JoinUsViewModel joinUsViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // 創建一個新的 Store 實例
-        //        var joinus = new Store
-        //        {
-        //            StoreName = joinUsViewModel.StoreName,
-        //            ContactName = joinUsViewModel.ContactName,
-        //            TaxId = joinUsViewModel.TaxId,
-        //            Email = joinUsViewModel.Email,
-        //            Phone= joinUsViewModel.Phone,
-        //            OpeningDay = joinUsViewModel.OpeningDay,
-        //            OpeningTime = joinUsViewModel.OpeningTime,
-        //            Address = joinUsViewModel.Address,
-        //            Description = joinUsViewModel.Description,
+                using (var stream = new FileStream(savePath, FileMode.Create))
+                {
+                    await photo.CopyToAsync(stream);
+                }
 
-        //        };
+                return $"/images/Stores/{folderName}/{fileName}";
+            }
 
-        //        // 將 joinus 實例添加到數據庫上下文的 Stores 集合中
-        //        _context.Stores.Add(joinus);
+            return null;
+        }
 
-        //        // 保存更改到數據庫
-        //        await _context.SaveChangesAsync();
-
-        //        // 返回 JSON 響應
-        //        return Json(new { success = true, message = "申請已成功提交！" });
-        //    }
-        //    else
-        //    {
-        //        // 返回包含錯誤信息的 JSON 響應
-        //        return Json(new { success = false, message = "表單驗證失敗，請檢查輸入內容。" });
-        //    }
-        //}
 
 
 

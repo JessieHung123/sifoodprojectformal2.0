@@ -43,7 +43,6 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
- 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
@@ -236,7 +235,6 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderDetails_Products");
         });
 

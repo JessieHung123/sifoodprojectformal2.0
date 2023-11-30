@@ -1,28 +1,21 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
+﻿@section Styles{
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Codescandy" name="author">
-    <title>Account Address eCommerce HTML Template - FreshCart </title>
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
-
 
     <!-- Libs CSS -->
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
 
-
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
     <!-- Google tag (gtag.js) -->
     <!-- End Tag -->
-</head>
+}
+@{
+    ViewData["Title"] = "UserAddresses";
+}
 
 <body>
 
@@ -439,7 +432,7 @@
             </div>
         </div>
     </div>
-    <main>
+    <main id="userAddressesApp">
         <!-- section -->
         <section>
             <!-- container -->
@@ -510,75 +503,67 @@
                         <div class="py-6 p-md-6 p-lg-10">
                             <div class="d-flex justify-content-between mb-6">
                                 <!-- heading -->
-                                <h2 class="mb-0">Address</h2>
+                                <h2 class="mb-0">地址管理</h2>
                                 <!-- button -->
                                 <a href="#" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
-                                    Add a
-                                    new address
+                                    新增地址
                                 </a>
                             </div>
                             <div class="row">
                                 <!-- col -->
-                                <div class="col-lg-5 col-xxl-4 col-12 mb-4">
-                                    <!-- form -->
-                                    <div class="card">
-                                        <div class="card-body p-6">
-                                            <div class="form-check mb-4">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
-                                                <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
-                                                    住址一
-                                                </label>
-                                            </div>
-                                            <!-- address -->
-                                            <p class="mb-6">
-
-                                                4450 North Avenue Oakland, <br>
-
-                                                Nebraska, United States,<br>
-
-                                                402-776-1106
-                                            </p>
-                                            <!-- btn -->
-                                            <a href="#" class="btn btn-info btn-sm">Default address</a>
-                                            <div class="mt-4">
-                                                <a href="#" class="text-inherit">Edit </a>
-                                                <a href="#" class="text-danger ms-3" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-5 col-xxl-4 col-12 mb-4">
-                                    <!-- input -->
-                                    <div class="card">
-                                        <div class="card-body p-6">
-                                            <div class="form-check mb-4">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="officeRadio">
-                                                <label class="form-check-label text-dark fw-semi-bold" for="officeRadio">
-                                                    住址二
-                                                </label>
-                                            </div>
-                                            <!-- nav item -->
-                                            <p class="mb-6">
-
-                                                3853 Coal Road <br>
-
-                                                Tannersville, Pennsylvania, 18372, United States <br>
-
-                                                402-776-1106
-                                            </p>
-                                            <!-- link -->
-                                            <a href="#" class="link-primary">Set as Default</a>
-                                            <div class="mt-4">
-                                                <a href="#" class="text-inherit">Edit </a>
+                                <div class="col-lg-5 col-xxl-4 col-12 mb-4" v-for="(item, index) in addresses">
+                                    <template v-if="item.Edit==true">
+                                        <!-- form -->
+                                        <div class="card">
+                                            <div class="card-body p-6">
+                                                <div class="form-check mb-4">
+                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
+                                                    <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
+                                                        住址{{index + 1}}
+                                                    </label>
+                                                </div>
+                                                <!-- address --><p class="card-text"></p>
+                                                <p class="mb-6">
+                                                    <input v-model="item.userDetailAddress" /><br>
+                                                    {{item.userPhone}}
+                                                </p>
                                                 <!-- btn -->
-                                                <a href="#" class="text-danger ms-3" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                                    Delete
-                                                </a>
+                                                <a v-if="!item.isDefault" href="#" class="link-primary">設定為預設地址</a>
+                                                <a v-else href="#" class="btn btn-info btn-sm">預設地址</a>
+                                                <div class="mt-4">
+                                                    <a href="#" class="text-inherit" @@click="update(item)">修改 </a>
+                                                    <a href="#" class="text-danger ms-3" @@click="cancel(item)">取消</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </template>
+                                    <template v-else>
+                                        <!-- form -->
+                                        <div class="card">
+                                            <div class="card-body p-6">
+                                                <div class="form-check mb-4">
+                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
+                                                    <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
+                                                        住址{{index + 1}}
+                                                    </label>
+                                                </div>
+                                                <!-- address -->
+                                                <p class="mb-6">
+                                                    {{item.userDetailAddress}}<br>
+                                                    {{item.userPhone}}
+                                                </p>
+                                                <!-- btn -->                                            
+                                                <a v-if="!item.isDefault" href="#" class="link-primary">設定為預設地址</a>
+                                                <a v-else href="#" class="btn btn-info btn-sm">預設地址</a>
+                                                <div class="mt-4">
+                                                    <a href="#" class="text-inherit" @@click="edit(item.userAddressId)">編輯 </a>
+                                                    <a href="#" class="text-danger ms-3" data-bs-toggle="modal" data-bs-target="#deleteModal" @@click="deleteAddressModal(item)">
+                                                        刪除
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
                         </div>
@@ -586,117 +571,99 @@
                 </div>
             </div>
         </section>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <!-- modal content -->
+                <div class="modal-content">
+                    <!-- modal header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">刪除地址</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- modal body -->
+                    <div class="modal-body">
+                        <h6>是否確定刪除此地址?</h6>
+                        <p class="mb-6" v-if="addressToDelete">
+                            Jitu Chauhan<br>
+                            {{addressToDelete.userDetailAddress}}<br>
+                            {{addressToDelete.userPhone}}
+                        </p>
+                    </div>
+                    <!-- modal footer -->
+                    <div class="modal-footer">
+                        <!-- btn -->
+                        <button type="button" class="btn btn-outline-gray-400" data-bs-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger" @@click="deleteAddress">刪除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <!-- modal content -->
+                <div class="modal-content">
+                    <!-- modal body -->
+                    <div class="modal-body p-6">
+                        <div class="d-flex justify-content-between mb-5">
+                            <div>
+                                <!-- heading -->
+                                <h5 class="mb-1" id="addAddressModalLabel">新收件地址</h5>
+                                <p class="small mb-0">為您的訂單新增新的寄送地址</p>
+                            </div>
+                            <div>
+                                <!-- button -->
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                        </div>
+                        <!-- row -->
+                        <div class="row g-3">
+                            <!-- col -->
+                            <div class="col-12">
+                                <!-- input -->
+                                <input type="text" class="form-control" placeholder="請輸入地址" v-model="addressLine">
+                            </div>
+                            <!-- col -->
+                            <div class="col-12">
+                                <!-- form select -->
+                                <select class="form-select" v-model="selectedRegion">
+                                    <option value="南港區" selected="">南港區</option>
+                                    <option value="文山區">文山區</option>
+                                </select>
+                            </div>
+                            <!-- col -->
+                            <div class="col-12">
+                                <!-- form select -->
+                                <select class="form-select" v-model="selectedCity">
+                                    <option value="台北市" selected="">台北市</option>
+                                    <option value="新北市">新北市</option>
+                                </select>
+                            </div>
+                            <!-- col -->
+
+                            <div class="col-12">
+                                <!-- form check -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="isDefaultAddress">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        設定為預設地址
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- col -->
+                            <div class="col-12 text-end">
+                                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">取消</button>
+                                <button class="btn btn-primary" type="button" @@click="insert">儲存地址</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <!-- modal content -->
-            <div class="modal-content">
-                <!-- modal header -->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Delete address</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <!-- modal body -->
-                <div class="modal-body">
-                    <h6>Are you sure you want to delete this address?</h6>
-                    <p class="mb-6">
-                        Jitu Chauhan<br>
-
-                        4450 North Avenue Oakland, <br>
-
-                        Nebraska, United States,<br>
-
-                        402-776-1106
-                    </p>
-                </div>
-                <!-- modal footer -->
-                <div class="modal-footer">
-                    <!-- btn -->
-                    <button type="button" class="btn btn-outline-gray-400" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <!-- modal content -->
-            <div class="modal-content">
-                <!-- modal body -->
-                <div class="modal-body p-6">
-                    <div class="d-flex justify-content-between mb-5">
-                        <div>
-                            <!-- heading -->
-                            <h5 class="mb-1" id="addAddressModalLabel">New Shipping Address</h5>
-                            <p class="small mb-0">Add new shipping address for your order delivery.</p>
-                        </div>
-                        <div>
-                            <!-- button -->
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                    </div>
-                    <!-- row -->
-                    <div class="row g-3">
-                        <!-- col -->
-                        @* <div class="col-12"> *@
-                        <!-- input -->
-                        @* <input type="text" class="form-control" placeholder="name" aria-label="name" required=""> *@
-                        @* </div> *@
-                        <!-- col -->
-                        @* <div class="col-12"> *@
-                        <!-- input -->
-                        @* </div> *@
-                        <!-- col -->
-                        <div class="col-12">
-                            <!-- input -->
-                            <input type="text" class="form-control" placeholder="Address Line 2">
-                        </div>
-                        <!-- col -->
-                        <div class="col-12">
-                            <!-- form select -->
-                            <select class="form-select">
-                                <option selected="">南港區</option>
-                                <option value="2">文山區</option>
-                            </select>
-                        </div>
-                        <!-- col -->
-                        <div class="col-12">
-                            <!-- form select -->
-                            <select class="form-select">
-                                <option selected="">台北</option>
-                                <option value="1">新北</option>
-                            </select>
-                        </div>
-                        <!-- col -->
-                        @* <div class="col-12"> *@
-                        <!-- input -->
-                        @*                             <input type="text" class="form-control" placeholder="Zip Code">
-                        </div>
-                        *@                        <!-- col -->
-
-                        <div class="col-12">
-                            <!-- form check -->
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Set as Default
-                                </label>
-                            </div>
-                        </div>
-                        <!-- col -->
-                        <div class="col-12 text-end">
-                            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-primary" type="button">Save Address</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- modal -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasAccount" aria-labelledby="offcanvasAccountLabel">
         <!-- offcanvac header -->
@@ -752,18 +719,142 @@
     </div>
 
 
+    @section Scripts{
+        <!-- Javascript-->
+        <!-- Libs JS -->
+        <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+        @* <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
-    <!-- Javascript-->
-    <!-- Libs JS -->
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+        <!-- Theme JS -->
+        <script src="~/assets/js/theme.min.js"></script>
+        <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
 
-    <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js"></script>
-
-
-
+        <script>
+            var baseAddress = "https://localhost:7042";
+            const storeProductApp = Vue.createApp({
+                data: function () {
+                    return {
+                        addresses: [],
+                        addressToDelete: null,
+                        addressOriginal: "",
+                        addressLine: "",
+                        selectedRegion: "",
+                        selectedCity: "",
+                        isDefaultAddress: false
+                    }
+                },
+                computed: {
+                },
+                mounted: function () {
+                    let _this = this;
+                    _this.getUserAddresses();
+                },
+                methods: {
+                    update: function (item) {
+                        let _this = this;
+                        axios.put(`${baseAddress}/api/UserAddressesapi/${item.userAddressId}`, {
+                            UserAddressId: item.userAddressId,
+                            UserDetailAddress: item.userDetailAddress,
+                            UserId: item.userId,
+                            UserCity: item.userCity,
+                            UserRegion: item.userRegion,
+                        }).then(response => {
+                            alert("更新地址成功!");
+                            _this.getUserAddresses();
+                        }).catch(err => {
+                            alert("地址更新發生錯誤!");
+                            console.error(err);
+                        });
+                    },
+                    cancel: function (item) {
+                        let _this = this;
+                        item.Edit = false;
+                        item.userDetailAddress = _this.userAddressOriginal
+                    },
+                    edit: function (userAddressId) {
+                        let _this = this;
+                        for (var i = 0; i < _this.addresses.length; i++) {
+                            var item = _this.addresses[i];
+                            if (userAddressId == _this.addresses[i].userAddressId) {
+                                item.Edit = true;
+                                _this.userAddressOriginal = item.userDetailAddress;
+                            }
+                        }
+                    },
+                    deleteAddressModal: function (item) {
+                        this.addressToDelete = item;
+                    },
+                    deleteAddress: function () {
+                        let _this = this;
+                        if (this.addressToDelete) {
+                            axios.delete(`${baseAddress}/api/UserAddressesapi/${this.addressToDelete.userAddressId}`).then(response => {
+                                _this.getUserAddresses();
+                                $('#deleteModal').modal('hide');
+                                $('.modal-backdrop').remove();
+                                alert(response.data);
+                            }).catch(err => {
+                                alert(err);
+                            })
+                        }
+                    },
+                    insert: function () {
+                        let _this = this;
+                        var form = new FormData();
+                        var combinedAddress = _this.selectedCity + _this.selectedRegion + _this.addressLine
+                        form.append("UserAddressId", 0)
+                        form.append("UserId", _this.addresses[0].userId)
+                        form.append("UserCity", _this.selectedCity)
+                        form.append("UserRegion", _this.selectedRegion)
+                        form.append("UserDetailAddress", combinedAddress)
+                        form.append("IsDefault", _this.isDefaultAddress)
+                        // let addressInfo = {
+                        //     UserAddressId: -1,
+                        //     UserId: _this.addresses[0].userId,
+                        //     UserCity: _this.selectedCity,
+                        //     UserRegion: _this.selectedRegion,
+                        //     UserDetailAddress: combinedAddress
+                        // }
+                        axios.post(`${baseAddress}/api/UserAddressesapi`, form, {
+                            headers: {
+                                "Content-Type": "multipart/form-data"
+                            }
+                        }).then(response => {
+                            $('#addAddressModal').modal('hide');
+                            $('.modal-backdrop').remove();
+                            _this.getUserAddresses();
+                            _this.selectedCity = "";
+                            _this.selectedRegion = "";
+                            _this.addressLine = "";
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                    },
+                    getUserAddresses() {
+                        let _this = this;
+                        var userId = "U001"
+                        fetch(`${baseAddress}/api/UserAddressesapi/${userId}`, { method: "GET" })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                _this.addresses = data;
+                                for (var i = 0; i < _this.addresses.length; i++) {
+                                    var item = _this.addresses[i];
+                                    item.Edit = false;
+                                }
+                            }).catch(error => {
+                                alert(error);
+                                console.log('error', error);
+                            });
+                    },
+                }
+            }).mount("#userAddressesApp")
+        </script>
+    }
 </body>
 
 

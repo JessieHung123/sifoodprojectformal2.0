@@ -2,7 +2,7 @@
 {
     public class CommentVM
     {
-        public short CommentRank { get; set; }
+        public short? CommentRank { get; set; }
 
         public string? Contents { get; set; }
 

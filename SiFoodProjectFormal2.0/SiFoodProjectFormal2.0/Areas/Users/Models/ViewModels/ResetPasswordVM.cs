@@ -3,7 +3,6 @@
     public class ResetPasswordVM
     {
         public string? UserConfirmEmail { get; set; }
-
-        public byte[]? NewPassword { get; set; }
+        public string? NewPassword { get; set; }
     }
 }

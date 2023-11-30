@@ -14,7 +14,6 @@ using System.Security.Cryptography;
 using System.Data.SqlTypes;
 using System.Collections.Generic;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
@@ -201,7 +200,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Account/ResetPassword")]
-        public string ResetPassword([FromBody] ResetPasswordVM model)
+
+        public string ResetPassword([FromForm] ResetPasswordVM model)
         {
             User? user = _context.Users.FirstOrDefault(x => x.UserEmail == model.UserConfirmEmail);
 
@@ -213,12 +213,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     ran.GetBytes(NewSaltBytes);
                 }
                 user.UserPasswordSalt = NewSaltBytes;
-
                 SHA256 Sha256 = SHA256.Create();
                 byte[] PasswordBytes = Encoding.ASCII.GetBytes($"{model?.NewPassword}{NewSaltBytes}");
                 byte[] NewHashBytes = Sha256.ComputeHash(PasswordBytes);
                 user.UserPasswordHash = NewHashBytes;
-
                 _context.SaveChanges();
                 return "密碼重設成功, 即將回到登入畫面";
             }
