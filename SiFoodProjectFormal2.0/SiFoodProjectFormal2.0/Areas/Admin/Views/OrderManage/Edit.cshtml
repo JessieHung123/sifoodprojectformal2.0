@@ -1,15 +1,14 @@
-﻿@model SiFoodProjectFormal2._0.Models.OrderManageViewModel
-       SiFoodProjectFormal2._0.Models.OrderDetail
+﻿@model SiFoodProjectFormal2._0.Areas.Admin.Views.Models.OrderManageVM
+      
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "修改訂單明細";
+    Layout = "_AdminLayout";
+    <link rel="shortcut icon" href="~/images/sifood_logo_bgclear.png">
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
     <link href="~/assets/css/theme.min.css" rel="stylesheet" />
 }
-
-
-
 
 <h1>修改</h1>
 
@@ -56,15 +55,14 @@
                 </dd>
             </div>
             <div class="form-group">
-                <input type="submit" value="儲存" class="btn btn-primary" />
-            </div>
+                <input type="submit" onclick='return confirm("確定要修改嗎?")' value="儲存" class="btn btn-primary" />|
+            <a asp-action="Index">回上頁</a>
+            </div>     
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">回上頁</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
