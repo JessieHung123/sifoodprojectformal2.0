@@ -138,6 +138,10 @@
                         <!-- accordion -->
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <!-- accordion item -->
+                            <div class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                <i class="fa-solid fa-user"></i> &nbsp;訂購人 : <span>{{checkoutData.userName}}</span>
+                            </div>
+                            <!-- accordion item -->
                             <div class="accordion-item py-4">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <!-- heading one -->
@@ -150,35 +154,19 @@
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
                                     <div class="mt-5">
                                         <div class="row">
-                                            <div class="col-lg-6 col-12 mb-4  d-flex align-items-stretch">
-                                                <div class="card card-body p-6 ">
+                                            <div class="col-lg-6 col-12 mb-4  d-flex align-items-stretch" v-for="item in checkoutData.userAddress">
+                                                <div class="card card-body p-6">
                                                     <div class="form-check mb-4">
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault1" id="homeRadio3" value="詳細地址" v-model="selectAddress">
+                                                        <input class="form-check-input" type="radio" name="flexRadioDefault1" id="homeRadio3" @@click="sendAddress(item)">
                                                         <label class="form-check-label text-dark" for="homeRadio3">
                                                             地址1
                                                         </label>
                                                     </div>
                                                     <!-- address -->
                                                     <address>
-                                                        <div>{{checkoutData.userAddress}}</div>
+                                                        <div>{{item}}</div>
                                                     </address>
                                                     <span class="text-danger">預設地址</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-12 mb-4  d-flex align-items-stretch ">
-                                                <!-- input -->
-                                                <div class="card card-body p-6">
-                                                    <div class="form-check mb-4">
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault1" id="officeRadio" value="Tannersville, Pennsylvania, 18372, USA," v-model="selectAddress">
-                                                        <label class="form-check-label text-dark" for="officeRadio">
-                                                            地址2
-                                                        </label>
-                                                    </div>
-                                                    <address>
-                                                        <strong>Nitu Chauhan</strong> <br> 3853 Coal Road, <br>
-                                                        Tannersville, Pennsylvania, 18372, USA,<br>
-                                                        <abbr title="Phone">P: 402-776-1106</abbr>
-                                                    </address>
                                                 </div>
                                             </div>
                                         </div>
@@ -190,7 +178,7 @@
                                 <h5>
                                     <i class="feather-icon icon-clock me-2 text-muted"></i>預定送達時間
                                 </h5>
-                                <input type="text" class="border border-1" style="width:200px" readonly />
+                                <input type="text" class="border border-1" style="width:200px" readonly v-model="orderTime" />
                             </div>
                             <!-- accordion item -->
                             <div class="accordion-item py-4">
@@ -341,6 +329,7 @@
                     sendBackProductDetail: [],
                     sendBackTotalPrice: null,
                     loading: false,
+                    sendBackShippingFee: "",
                 }
             },
             computed: {
@@ -370,6 +359,7 @@
                     var _this = this;
                     axios.get(`/Transaction/GetCheckoutData`)
                         .then(response => {
+                            alert(JSON.stringify(response.data))
                             _this.checkoutDatas = response.data;
                             _this.checkoutData = response.data[0];
                         })
@@ -419,6 +409,32 @@
                         alert(err);
                     })
                 },
+                createTakeOutOrder: function () {
+                    var _this = this;
+                    _this.loading = true
+                    axios.post(`/Transaction/TakeOutOrder`, {
+                        StoreName: _this.sendBackStoreName,
+                        UserName: _this.sendBackUserName,
+                        ProductDetails: _this.sendBackProductDetail,
+                        TotalPrice: _this.sendBackTotalPrice,
+                        UserAddress: _this.selectAddress,
+                        ShippingFee: _this.sendBackShippingFee,
+                    }, {
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }).then(response => {
+                        //return response.data;
+                        alert(response.data);
+                        var success = "訂單下訂成功!";
+                        if (response.data === success) {
+                            window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
+                        }
+                        _this.loading = false
+                    }).catch(err => {
+                        alert(err);
+                    })
+                },
                 getOrderTime: function () {
                     var _this = this;
                     var currentDate = new Date();
@@ -430,6 +446,10 @@
                     var minutes = currentDate.getMinutes();
                     var stringDateTime = year + '-' + month + '-' + day + '  ' + hours + ':' + minutes;
                     _this.orderTime = stringDateTime;
+                },
+                sendAddress: function(item){
+                    var _this = this;
+                    _this.selectAddress = item;
                 },
             },
         }

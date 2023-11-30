@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SiFoodProjectFormal2._0;
 using SiFoodProjectFormal2._0.Areas.Users.Models.SPGatewayModels;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
@@ -11,8 +12,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
     public class TransactionController : Controller
     {
         private readonly Sifood3Context _context;
-        public TransactionController(Sifood3Context context)
+        private readonly IUserIdentityService _userIdentityService;
+        public TransactionController(Sifood3Context context, IUserIdentityService userIdentityService)
         {
+            _userIdentityService = userIdentityService;
             _context = context;
         }
         private BankInfoModel _bankInfoModel = new BankInfoModel
@@ -35,10 +38,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public IQueryable<CheckOutVM> GetCheckoutData()
         {
             string id = "U002";
+            //string userId = _userIdentityService.GetUserId();
+
             var CheckOutData = _context.Carts.Include(x => x.User).Where(y => y.UserId == id).Select(y => new CheckOutVM
             {
                 UserName = y.User.UserName,
-                UserAddress = y.User.UserAddresses.Select(y => y.UserDetailAddress).FirstOrDefault(),
+                UserAddress = y.User.UserAddresses.Select(y => y.UserDetailAddress).ToList(),
                 ProductId = y.ProductId,
                 ProductName = _context.Products.Where(c => c.ProductId == y.ProductId).Select(x => x.ProductName).Single(),
                 Quantity = y.Quantity,
@@ -51,7 +56,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Transaction/TakeOutOrder")]
-        public string TakeOutOrder([FromBody] CreateOrderVM model)
+        public string TakeOutOrder([FromBody] CreateTakeOutOrderVM model)
         {
             string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
             string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
@@ -158,9 +163,38 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
         [HttpPost]
-        public string DeliverOrder(CreateOrderVM model)
+        public string DeliverOrder(CreateDeliverOrderVM model)
         {
-            return "新增外送訂單成功";
+            string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
+            string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
+            Order order = new Order
+            {
+                OrderDate = DateTime.Now,
+                StoreId = StoreId,
+                UserId = UserId,
+                DeliveryMethod = "外送",
+                StatusId = 1,
+                TotalPrice = model.TotalPrice,
+                ShippingFee = model.ShippingFee,
+                Address = model.UserAddress
+            };
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+            foreach (var item in model.ProductDetails)
+            {
+                int productId = GetProductIdByName(item.ProductName);
+                OrderDetail orderDetail = new OrderDetail
+                {
+                    OrderId = order.OrderId,
+                    ProductId = productId,
+                    Quantity = item.Quantity,
+                };
+                _context.OrderDetails.Add(orderDetail);
+            }
+            _context.SaveChanges();
+
+            return "訂單下訂成功!";
         }
 
         public IActionResult Payment()
