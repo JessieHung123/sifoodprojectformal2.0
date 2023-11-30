@@ -27,17 +27,17 @@ namespace SiFoodProjectFormal2._0.ViewModels.Users
         [DataType(DataType.Date)]
         public DateTime? UserBirthDate { get; set; }
 
-        //[DataType(DataType.Password)]
-        //[Display(Name = "當前密碼")]
-        //public string CurrentPassword { get; set; }
+        [DataType(DataType.Password)]
+        [Display(Name = "當前密碼")]
+        public string CurrentPassword { get; set; }
 
-        //[DataType(DataType.Password)]
-        //[Display(Name = "新密碼")]
-        //public string NewPassword { get; set; }
+        [DataType(DataType.Password)]
+        [Display(Name = "新密碼")]
+        public string NewPassword { get; set; }
 
-        //[DataType(DataType.Password)]
-        //[Display(Name = "確認新密碼")]
-        //[Compare("NewPassword", ErrorMessage = "新密碼和確認密碼不匹配")]
-        //public string ConfirmPassword { get; set; }
+        [DataType(DataType.Password)]
+        [Display(Name = "確認新密碼")]
+        [Compare("NewPassword", ErrorMessage = "新密碼和確認密碼不匹配")]
+        public string ConfirmPassword { get; set; }
     }
 }
