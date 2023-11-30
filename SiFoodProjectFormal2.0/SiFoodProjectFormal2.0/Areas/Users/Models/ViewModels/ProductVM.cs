@@ -6,21 +6,20 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
     {
         public int ProductId { get; set; }
 
-        public string ProductName { get; set; }
-        [DisplayFormat(DataFormatString = "{0:0}")]
+        public string ProductName { get; set; } = null!;
         public decimal UnitPrice { get; set; }
 
-        public string StoreName { get; set; }
+        public string StoreName { get; set; } = null!;
 
-        public string Address { get; set; }
+        public string Address { get; set; } = null!;
 
-        public string Description { get; set; }
+        public string? Description { get; set; } 
 
-        public string PhotoPath { get; set; }
+        public string? PhotoPath { get; set; }
 
-        public string SuggestPickUpTime { get; set; }
+        public string SuggestPickUpTime { get; set; } = null!;
 
-        public string SuggestPickEndTime { get; set; }
+        public string SuggestPickEndTime { get; set; } = null!;
 
         public int ReleasedQty { get; set; }
 
