@@ -105,7 +105,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             Product prodct = new Product
             {
                 StoreId = targetStoreId,
-                ProductId = addProductDTO.ProductId,
                 ProductName = addProductDTO.ProductName,
                 CategoryId = addProductDTO.CategoryId,
                 Description = addProductDTO.Description,
