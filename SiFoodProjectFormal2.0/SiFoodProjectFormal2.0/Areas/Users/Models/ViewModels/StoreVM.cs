@@ -29,8 +29,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         public string WeekendOpeningTime { get; set; } = null!;
 
         public string WeekendClosingTime { get; set; } = null!;
-
-
         public int? Inventory { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
     }
 }
