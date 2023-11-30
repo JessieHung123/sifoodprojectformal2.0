@@ -293,10 +293,7 @@
                     suggestPickEndTime:null,
                 }
             },
-            watch: {
-            },
             computed: {
-
             },
             mounted: function () {
                 let _this = this;
@@ -309,9 +306,6 @@
                         .then(response => response.json())
                         .then(data => _this.ProductInfo = data)
                         .catch(error => alert(error));
-                },
-                showModal: function () {
-                    alert("")
                 },
                 editProduct(item) {
                     this.selectedToEdit = item
@@ -333,12 +327,12 @@
                     }
                 },
                 insertFileChange: function (inputFile) {
-                    alert("insertFileChange")
+                    // alert("加入圖片")
                     let _this = this;
                     _this.readURL(inputFile, inputFile.previousElementSibling);
                 },
                 insertProduct(produt) {
-                    alert("insert")
+                    // alert("新增")
                     let _this = this;
                     var form = new FormData();
                     form.append("ProductId", -1);
@@ -353,12 +347,13 @@
                     console.log(Object.fromEntries(form.entries()));
                     fetch(`${baseAddress}/api/ProductManage/postProduct`, { method: "Post", body: form })
                     .then(response => {
-                        alert(response.data);
+                        console.log(response.data);                      
                     }).catch(err => {
+                        alert(response),
                         console.log(err),
                         alert(err);
                     });
-                    $("#insertModal").modal('hide');
+                    $("#insertModal").modal('hide')
                 },
                 deleteProduct(productId) {
                     console.log(productId)
@@ -366,8 +361,8 @@
                     fetch(`${baseAddress}/api/ProductManage/deleteProduct/${productId}`, { method: "Delete" })
                         // .then(response => response.json())
                         .then(response => {
-                            console.log(response),
-                            alert(response)
+                            console.log(response)
+                            // alert(response)
                         })
                         .catch(error => alert(error));
                 },
