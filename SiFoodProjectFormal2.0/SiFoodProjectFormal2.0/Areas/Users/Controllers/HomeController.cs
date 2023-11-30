@@ -8,7 +8,7 @@ using System.Text.Json;
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
     [Area("Users")]
-    
+
     public class HomeController : Controller
     {
         Sifood3Context _context;
@@ -20,7 +20,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         public IActionResult Main()
         {
-            
+
             return View();
         }
 
@@ -30,7 +30,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
         [HttpGet]
 
-        public IActionResult UserFAQ()
+        public IActionResult FAQ()
         {
             return View();
 
@@ -58,7 +58,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     string photoPath2InDb = await SavePhoto(joinus.PhotosPath2, "photo");
                     string photoPath3InDb = await SavePhoto(joinus.PhotosPath3, "photo");
 
-                                        //創建store實體
+                    //創建store實體
 
                     var store = new Store
                     {
@@ -91,10 +91,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     Console.WriteLine($"錯誤: {ex.Message}");
                 }
 
-                }
+            }
             // 如果模型狀態無效，返回 JSON 錯誤信息
             return "失敗";
- 
+
         }
 
 
@@ -133,8 +133,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //{
         //    return View();
         //}
-        
-        
+
+        [Route("Products/{ProductId?}")]
         public IActionResult Products(int ProductId)
         {
             var IdToString = ProductId.ToString();
@@ -169,7 +169,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             List<string> ProductList = new List<string>();
             if (ProductCookieValue != null)
             {
-                ProductList.AddRange(ProductCookieValue.Split(',')); ;
+                ProductList.AddRange(ProductCookieValue.Split(','));
             }
             return ProductList;//{"32","33","34"}
         }
@@ -183,7 +183,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             Response.Cookies.Append("Records", RecentBrowse, CO);
         }
         [HttpGet]
-        public IActionResult UserRealTimeOrders()
+        public IActionResult RealTimeOrders()
         {
             return View();
         }
