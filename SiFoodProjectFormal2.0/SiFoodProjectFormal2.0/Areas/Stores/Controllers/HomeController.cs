@@ -40,20 +40,25 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             ViewBag.status2 = status2Count;
             ViewBag.status3 = status3Count;
             ViewBag.status4 = status4Count;
+            ViewBag.Storephoto = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.PhotosPath).FirstOrDefaultAsync();
             ViewBag.SumReleasedQty = SumReleasedQty;
             return View(await sifoodContext.ToListAsync());
         }
 
         public async Task<IActionResult> Main2()
         {
-            var sifoodContext2 = _context.OrderDetails.Include(d => d.Product)
-                .Select(x => new { 
-                    StoreId = x.Product.StoreId,
-                    UnitPrice = x.Product.UnitPrice,
-                    OrderId = x.OrderId,
-                    ProductId = x.ProductId,
-                    ProductName = x.Product.ProductName })
-                .Where(e => e.StoreId == targetStoreId);
+            var sifoodContext2 = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new
+            {
+                StoreId = x.Product.StoreId,
+                UnitPrice = x.Product.UnitPrice,
+                OrderId = x.OrderId,
+                OrderDetailId = x.OrderDetailId,
+                ProductId = x.ProductId,
+                Quantity = x.Quantity,
+                ProductName = x.Product.ProductName,
+                OrderStatus = x.Order.StatusId
+            })
+                .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7);
             return Json(sifoodContext2);
         }
 
