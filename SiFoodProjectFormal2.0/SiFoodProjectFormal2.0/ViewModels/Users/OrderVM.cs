@@ -2,13 +2,15 @@
 {
     public class OrderVM
     {
-        public string OrderId { get; set; } 
+        public string OrderId { get; set; }
 
-        //public DateTime OrderDate { get; set; }
+        public double OrderDuration { get; set; }
 
         public string OrderDate { get; set; }
 
         public string OrderTime { get; set; }
+
+        public string DeliveryMethod { get; set; }
 
         public string Address { get; set; } = null!;
 
@@ -24,13 +26,17 @@
 
         public string? PaymentMethodＮame { get; set; }
 
-        public DateTime PaymentTime { get; set; } 
+        //public DateTime PaymentTime { get; set; }
+
+        public string PaymentDate { get; set; }
+
+        public string PaymentTime { get; set; }
 
         public IEnumerable<OrderDetailsVM> OrderDetails { get; set; }
 
-        public string DriverFullName { get; set; } 
+        public string DriverFullName { get; set; }
 
-        public decimal ShippingFee { get; set; }
+        public decimal? ShippingFee { get; set; }
 
         public decimal Subtotal { get; set; }
 

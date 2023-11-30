@@ -15,6 +15,8 @@ public partial class Sifood3Context : DbContext
     {
     }
 
+    public virtual DbSet<Admin> Admins { get; set; }
+
     public virtual DbSet<Cart> Carts { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -41,10 +43,21 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<UserAddress> UserAddresses { get; set; }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
+
+        modelBuilder.Entity<Admin>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Admin");
+
+            entity.Property(e => e.Account).HasMaxLength(30);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Name).HasMaxLength(30);
+            entity.Property(e => e.Password).HasMaxLength(30);
+        });
 
         modelBuilder.Entity<Cart>(entity =>
         {
@@ -252,6 +265,7 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.Description).HasMaxLength(15);
+            entity.Property(e => e.IsDelete).HasDefaultValueSql("((1))");
             entity.Property(e => e.PhotoPath).HasMaxLength(50);
             entity.Property(e => e.ProductName).HasMaxLength(15);
             entity.Property(e => e.RealeasedTime).HasColumnType("datetime");
