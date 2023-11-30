@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
-using SiFoodProjectFormal2._0.ViewModels.Users;
-using System.Text.Json; 
+using System.Text.Json;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -29,12 +28,14 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             return View();
         }
-        public IActionResult FAQ()
+        [HttpGet]
+        [Route("/Home/UserFAQ")]
+        public IActionResult UserFAQ()
         {
             return View();
 
         }
-
+        [Route("JoinUs")]
         [HttpGet]
         public IActionResult JoinUs()
         {
@@ -43,7 +44,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<string> JoinUsSubmit([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,ClosingDay,PhotosPath,PhotosPath2,PhotosPath3,LogoPath")] JoinUsViewModel joinus)
+        public async Task<string> JoinUsSubmit([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,ClosingDay,PhotosPath,PhotosPath2,PhotosPath3,LogoPath")] JoinUsVM joinus)
         {
             if (ModelState.IsValid)
             {
@@ -118,11 +119,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
 
 
-
+        [Route("MemberShip")]
         public IActionResult MemberShip()
         {
             return View();
         }
+        [Route("Stores")]
         public IActionResult Stores()
         {
             return View();
@@ -180,9 +182,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             CO.Secure = true;
             Response.Cookies.Append("Records", RecentBrowse, CO);
         }
-
-
-        public IActionResult RealTimeOrders()
+        [HttpGet]
+        [Route("/Home/UserRealTimeOrders")]
+        public IActionResult UserRealTimeOrders()
         {
             return View();
         }

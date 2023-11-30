@@ -114,7 +114,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 _context.UserAddresses.Remove(userAddress);
                 await _context.SaveChangesAsync();
             }
-           catch (DbUpdateException ex)
+           catch (DbUpdateException)
             {
                 return "刪除地址關聯紀錄失敗!";
             }

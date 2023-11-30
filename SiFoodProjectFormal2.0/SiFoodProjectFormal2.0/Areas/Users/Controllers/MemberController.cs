@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
-using SiFoodProjectFormal2._0.ViewModels.Users;
-using SiFoodProjectFormal2._0.Helper;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
@@ -99,7 +96,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //    return RedirectToAction("Profile");
         //}
 
-
+        [Route("/Member/Profile")]
         //11/23新版
         [HttpGet]
         public async Task<IActionResult> Profile()
@@ -116,7 +113,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             if (user != null)
             {
                 // 創建 ViewModel 並填充資料
-                var viewModel = new ProfileViewModel
+                var viewModel = new ProfileVM
                 {
                     //填充欄位資料
                     UserName = user.UserName,
@@ -132,11 +129,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return RedirectToAction("ErrorPage"); // 或其他適當的錯誤處理方式
         }
 
-
+        
         //11/23新版
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Profile(string id, [Bind("UserName,UserEmail,UserPhone,UserBirthDate")] ProfileViewModel profileViewModel)
+        public async Task<IActionResult> Profile(string id, [Bind("UserName,UserEmail,UserPhone,UserBirthDate")] ProfileVM profileViewModel)
         {
             //if (ModelState.IsValid)
             //{
@@ -172,7 +169,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Route("/Member/ChangePassword")]
-        public async Task<IActionResult> ChangePassword(ProfileViewModel model)
+        public async Task<IActionResult> ChangePassword(ProfileVM model)
         {
             // 驗證模型
             if (!ModelState.IsValid)
@@ -192,15 +189,15 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             }
 
             // 驗證當前密碼
-            bool validPassword = PasswordHelper.VerifyPassword(model.CurrentPassword, user.UserPasswordHash, user.UserPasswordSalt);
-            if (!validPassword)
-            {
-                ModelState.AddModelError("CurrentPassword", "當前密碼不正確");
-                return View("Profile", model);
-            }
+            //bool validPassword = PasswordHelper.VerifyPassword(model.CurrentPassword, user.UserPasswordHash, user.UserPasswordSalt);
+            //if (!validPassword)
+            //{
+            //    ModelState.AddModelError("CurrentPassword", "當前密碼不正確");
+            //    return View("Profile", model);
+            //}
 
             // 更新用戶的密碼
-            (user.UserPasswordHash, user.UserPasswordSalt) = PasswordHelper.CreatePasswordHash(model.NewPassword);
+            //(user.UserPasswordHash, user.UserPasswordSalt) = PasswordHelper.CreatePasswordHash(model.NewPassword);
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
@@ -210,23 +207,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return RedirectToAction("Profile");
         }
 
-
-
-
-        public IActionResult Products()
-        {
-            return View();
-        }
-        public IActionResult RealTimeOrders()
-        {
-            return View();
-        }
-   
-
+        [Route("/Member/Favorite")]
         public IActionResult Favorite()
         {
             return View();
         }
+        [Route("/Member/HistoryOrders")]
         public IActionResult HistoryOrders(string searchTerm = null, int pageSize = 20)
         {
             IQueryable<Order> historyOrdersQuery = _context.Orders
@@ -266,7 +252,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             return View(historyOrders);
         }
-
+        [Route("/Member/Address")]
         public IActionResult Address()
         {
             return View();

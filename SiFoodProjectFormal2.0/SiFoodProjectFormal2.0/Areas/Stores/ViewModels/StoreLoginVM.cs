@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SiFoodProjectFormal2._0.ViewModels.Stores
+namespace SiFoodProjectFormal2._0.Areas.Stores.ViewModels
 {
     public class StoreLoginVM
     {

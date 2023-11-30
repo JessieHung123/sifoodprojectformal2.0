@@ -1,6 +1,6 @@
-﻿namespace SiFoodProjectFormal2._0.DTO
+﻿namespace SiFoodProjectFormal2._0.Areas.Stores.ViewModels
 {
-    public class AddProductDTO
+    public class AddProductVM
     {
         public int ProductId { get; set; }
 

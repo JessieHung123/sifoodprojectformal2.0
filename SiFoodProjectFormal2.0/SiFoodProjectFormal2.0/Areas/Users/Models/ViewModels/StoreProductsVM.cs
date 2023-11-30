@@ -1,4 +1,4 @@
-﻿namespace SiFoodProjectFormal2._0.ViewModels.Users
+﻿namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 {
     public class StoreProductsVM
     {
