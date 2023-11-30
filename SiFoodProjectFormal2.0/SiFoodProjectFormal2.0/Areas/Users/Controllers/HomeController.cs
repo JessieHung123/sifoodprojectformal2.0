@@ -17,25 +17,25 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-        [Route("MainPage")]
+
         public IActionResult Main()
         {
             
             return View();
         }
-        [Route("MapFind")]
+
         public IActionResult MapFind()
         {
             return View();
         }
         [HttpGet]
-        [Route("/Home/UserFAQ")]
+
         public IActionResult UserFAQ()
         {
             return View();
 
         }
-        [Route("JoinUs")]
+
         [HttpGet]
         public IActionResult JoinUs()
         {
@@ -119,12 +119,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
 
 
-        [Route("MemberShip")]
+
         public IActionResult MemberShip()
         {
             return View();
         }
-        [Route("Stores")]
+
         public IActionResult Stores()
         {
             return View();
@@ -133,7 +133,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //{
         //    return View();
         //}
-        [Route("Products/{ProductId?}")]
+        
         
         public IActionResult Products(int ProductId)
         {
@@ -183,7 +183,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             Response.Cookies.Append("Records", RecentBrowse, CO);
         }
         [HttpGet]
-        [Route("/Home/UserRealTimeOrders")]
         public IActionResult UserRealTimeOrders()
         {
             return View();
