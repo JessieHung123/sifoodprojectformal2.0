@@ -10,9 +10,8 @@
 
     <title>@ViewData["Title"] - sifoodprojectformal2.0</title>
     <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
-
-
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/sifood_logo_bgclear.png">
+    
     <!-- Libs CSS -->
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
@@ -34,11 +33,11 @@
                 <div class="row w-100 align-items-center gx-lg-2 gx-0">
                     <div class="col-xxl-2 col-lg-3">
                         <a class="navbar-brand d-none d-lg-block" href="./index.html">
-                        <img src="~/assets\images\logo\freshcart-logo.svg" width="60%" height="60%" alt="eCommerce HTML Template">
+                        <img src="~/images/sifood_logo_bgclear.png" width="40%" height="40%" alt="eCommerce HTML Template">
                     </a>
                         <div class="d-flex justify-content-between w-100 d-lg-none">
                             <a class="navbar-brand" href="./index.html">
-                                <img src="./assets/images/logo/freshcart-logo.svg" alt="eCommerce HTML Template">
+                            <img src="~/images/sifood_logo_bgclear.png" alt="eCommerce HTML Template">
 
                             </a>
 
@@ -84,24 +83,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xxl-5 col-lg-5 d-none d-lg-block">
-                        <form action="#">
-                            <div class="input-group ">
-                                <input class="form-control rounded" type="search" placeholder="Search for products">
-                                <span class="input-group-append">
-                                    <button class="btn bg-white border border-start-0 ms-n10 rounded-0 rounded-end" type="button">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                             class="feather feather-search">
-                                            <circle cx="11" cy="11" r="8"></circle>
-                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                        </svg>
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-md-3 offset-md-1">
+
+                <div class="col-md-3 offset-md-6">
                         <ul class="list-unstyled d-flex align-items-center mb-0 ms-5 ms-lg-0">
 
                             <li class="dropdown-center ">
@@ -308,7 +291,7 @@
                                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                            aria-expanded="false">商家</a>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="./pages/store-list.html">商家審核</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Storemanage" asp-action="StoreConfirm">商家審核</a></li>
                                         <li><a class="dropdown-item" asp-controller="Storemanage" asp-action="Index">商家資料</a></li>
                                     </ul>
                                     </li>
@@ -360,6 +343,9 @@
         <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
         <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+        <script src="~/lib/datatables/js/jquery.datatables.js"></script>
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.datatables.min.js"></script>
 
         <!-- Theme JS -->
         <script src="~/assets/js/theme.min.js"></script>
