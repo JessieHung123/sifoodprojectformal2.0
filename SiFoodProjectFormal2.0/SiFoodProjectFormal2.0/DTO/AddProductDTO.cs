@@ -6,15 +6,15 @@
 
         public string ProductName { get; set; } = null!;
 
-        public string StoreId { get; set; } = null!;
+        //public string StoreId { get; set; } = null!;
 
         public int CategoryId { get; set; }
 
         public int ReleasedQty { get; set; }
 
-        public int OrderedQty { get; set; }
+        //public int OrderedQty { get; set; }
 
-        public string? PhotoPath { get; set; }
+        //public string? PhotoPath { get; set; }
 
         public string? Description { get; set; }
 
@@ -26,7 +26,8 @@
 
         public decimal UnitPrice { get; set; }
 
-        public string CategoryName { get; set; } = null!;
+        //public string CategoryName { get; set; } = null!;
+
         public IFormFile ImageFile { get; set; }
 
 

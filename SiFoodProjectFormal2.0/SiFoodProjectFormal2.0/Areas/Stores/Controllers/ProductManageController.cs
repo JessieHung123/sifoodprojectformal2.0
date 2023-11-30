@@ -104,9 +104,11 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         {
             Product prodct = new Product
             {
+                StoreId = targetStoreId,
+                ProductId = addProductDTO.ProductId,
                 ProductName = addProductDTO.ProductName,
-                Description = addProductDTO.Description,
                 CategoryId = addProductDTO.CategoryId,
+                Description = addProductDTO.Description,
                 ReleasedQty = addProductDTO.ReleasedQty,
                 UnitPrice = addProductDTO.UnitPrice,
                 SuggestPickUpTime=addProductDTO.SuggestPickUpTime,
