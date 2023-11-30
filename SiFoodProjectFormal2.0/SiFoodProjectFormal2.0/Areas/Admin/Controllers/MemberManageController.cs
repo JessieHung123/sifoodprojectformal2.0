@@ -20,7 +20,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         }
         //分頁+查詢
         public IActionResult Index(int page = 1, int pageSize = 5, string searchUsers = null)
-        {            
+        {
             if (!string.IsNullOrEmpty(searchUsers))
             {
                 TempData["searchUsers"] = searchUsers;
@@ -57,14 +57,14 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             User user = _context.Users.Where(x => x.UserId == UserId).FirstOrDefault();
             return PartialView("_Details", user);
         }
-        
+
         public IActionResult Edit1(string UserId)
         {
             User user = _context.Users.Where(x => x.UserId == UserId).FirstOrDefault();
             return PartialView("_Edit", user);
         }
-        
-        [HttpPost]       
+
+        [HttpPost]
         public IActionResult Edit1(User user)
         {
             _context.Users.Update(user);

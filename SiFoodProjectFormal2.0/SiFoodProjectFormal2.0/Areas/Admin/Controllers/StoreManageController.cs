@@ -18,8 +18,40 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         {
             _context = context;
         }
+        public IActionResult StoreConfirm(int page = 1, int pageSize = 5, string searchStores = null)
+        {
+            if (!string.IsNullOrEmpty(searchStores))
+            {
+                TempData["SearchStores"] = searchStores;
+            }
+            else
+            {
+                searchStores = TempData["SearchStores"] as string ?? "";
+            }
+
+            var query = _context.Stores.Where(s => s.StoreIsAuthenticated == 0).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchStores))
+            {
+                query = query.Where(u => u.StoreName.Contains(searchStores) || u.ContactName.Contains(searchStores));
+            }
+
+            var totalEntries = query.Count();
+            var stores = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var entriesStart = (page - 1) * pageSize + 1;
+            var entriesEnd = entriesStart + stores.Count - 1;
+
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalEntries / (double)pageSize);
+            ViewBag.EntriesStart = entriesStart;
+            ViewBag.EntriesEnd = entriesEnd;
+            ViewBag.TotalEntries = totalEntries;
+
+            return View(stores);
+        }
         public IActionResult Index(int page = 1, int pageSize = 5, string searchStores = null)
-        {            
+        {
             if (!string.IsNullOrEmpty(searchStores))
             {
                 TempData["SearchStores"] = searchStores;
