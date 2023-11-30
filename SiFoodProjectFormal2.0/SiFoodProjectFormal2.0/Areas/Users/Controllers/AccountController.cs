@@ -90,7 +90,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 {
                     ran.GetBytes(saltBytes);
                 }
-                
+
                 SHA256 sha256 = SHA256.Create();
                 byte[] passwordBytes = Encoding.ASCII.GetBytes($"{model?.Password}{saltBytes}");
                 byte[] hashBytes = sha256.ComputeHash(passwordBytes);
@@ -200,6 +200,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Account/ResetPassword")]
+
         public string ResetPassword([FromForm] ResetPasswordVM model)
         {
             User? user = _context.Users.FirstOrDefault(x => x.UserEmail == model.UserConfirmEmail);
