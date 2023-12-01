@@ -21,7 +21,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             _context = context;
             _webHostEnvironment = webHostenvironment;
         }
-        [Route("Main")]
+        //[Route("Main")]
         // GET: Products
         [HttpGet] //uri:/
         public async Task<IActionResult> Main()
@@ -71,7 +71,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             return View();
         }
-        [Route("ProductManage")]
+        //[Route("ProductManage")]
         public IActionResult ProductManage()
         {
             return View();

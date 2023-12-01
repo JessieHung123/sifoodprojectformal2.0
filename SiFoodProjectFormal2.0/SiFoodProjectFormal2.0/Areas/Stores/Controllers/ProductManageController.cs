@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
+using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 
 namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
@@ -138,9 +139,42 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             return null;
         }
 
+        [HttpPut("{id}")]
 
-
-
+        public async Task<string> putProduct(int id,[FromForm] PutProductVM putProductVM)
+        {
+            if (id != putProductVM.ProductId)
+            {
+                return "修改商品失敗!";
+            }
+            Product product = await _context.Products.FindAsync(id);
+            product.StoreId = targetStoreId;
+            product.ProductName = putProductVM.ProductName;
+            product.CategoryId = putProductVM.CategoryId;
+            product.Description = putProductVM.Description;
+            product.ReleasedQty = putProductVM.ReleasedQty;
+            product.UnitPrice = putProductVM.UnitPrice;
+            product.SuggestPickUpTime = putProductVM.SuggestPickUpTime;
+            product.SuggestPickEndTime = putProductVM.SuggestPickEndTime;
+            product.PhotoPath = await SavePhoto(putProductVM.ImageFile);
+            _context.Entry(product).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(id))
+                {
+                    return "修改商品失敗!";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return "修改商品成功!";
+        }
     }
 }
 
