@@ -81,9 +81,8 @@
 
                                                         </label>
                                                     </div>
-                                                </th><!--改-->
+                                                </th>
                                                 <th>訂單序號</th>
-                                                @* <th>商品名稱</th> *@
                                                 <th>商品數量</th>
                                                 <th>訂單產生時間</th>
                                                 <th>取餐方式</th>
@@ -115,7 +114,6 @@
                                                         <i class="feather-icon icon-eye"></i>
                                                     </a>
                                                 </td>
-                                                @* <td>雞肉飯</td> *@
                                                 <td>{{item.totalQuantity}}</td>
 
                                                 <td>{{item.orderDate}}</td>
@@ -242,30 +240,33 @@
                                                                                                 <td>{{product.quantity}}</td>
                                                                                                 <td>${{product.total}}</td>
                                                                                             </tr>
-                                                                                            <tr>
-                                                                                                <td class="border-bottom-0 pb-0"></td>
-                                                                                                <td class="border-bottom-0 pb-0"></td>
-                                                                                                <td colspan="1" class="fw-medium text-dark ">
-                                                                                                    <!-- text -->
-                                                                                                    小計 :
-                                                                                                </td>
-                                                                                                <td class="fw-medium text-dark ">
-                                                                                                    <!-- text -->
-                                                                                                    ${{item.subtotal}}
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                            <tr>
-                                                                                                <td class="border-bottom-0 pb-0"></td>
-                                                                                                <td class="border-bottom-0 pb-0"></td>
-                                                                                                <td colspan="1" class="fw-medium text-dark ">
-                                                                                                    <!-- text -->
-                                                                                                    運費
-                                                                                                </td>
-                                                                                                <td class="fw-medium text-dark  ">
-                                                                                                    <!-- text -->
-                                                                                                    ${{item.shippingFee}}
-                                                                                                </td>
-                                                                                            </tr>
+                                                                                            <template v-if="item.deliveryMethod === '外送'">
+                                                                                                <tr>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td colspan="1" class="fw-medium text-dark ">
+                                                                                                        <!-- text -->
+                                                                                                        小計 :
+                                                                                                    </td>
+                                                                                                    <td class="fw-medium text-dark ">
+                                                                                                        <!-- text -->
+                                                                                                        ${{item.subtotal}}
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td colspan="1" class="fw-medium text-dark ">
+                                                                                                        <!-- text -->
+                                                                                                        運費
+                                                                                                    </td>
+                                                                                                    <td class="fw-medium text-dark  ">
+                                                                                                        <!-- text -->
+                                                                                                        ${{item.shippingFee}}
+                                                                                                    </td>
+                                                                                                </tr>
+
+                                                                                            </template>
                                                                                             <tr>
                                                                                                 <td></td>
                                                                                                 <td></td>
@@ -336,12 +337,10 @@
                     }
                 },
                 computed: {
-
                 },
                 mounted: function () {
                     let _this = this;
                     _this.getOrder();
-
                 },
                 methods: {
                     searchOrder() {
@@ -353,15 +352,6 @@
                                 this.cancelOrder(item);
                             }
                         }
-                        // else {
-                        //     if (item.deliveryMethod === "自取") {
-                        //         this.updateOrderStatus(item, 3);
-                        //     }
-                        //     else {
-                        //         this.updateOrderStatus(item, 2);
-                        //     }
-                        //     // alert("取消時間已過")
-                        // }
                     },
                     confirmAcceptOrder(item) {
                         if (window.confirm("是否確定接受訂單?")) {
@@ -419,10 +409,7 @@
                                 return response.json();
                             })
                             .then(data => {
-                                // alert(JSON.stringify(data));
-
                                 _this.orders = data;
-                                // _this.orderDetails = data[0].orderDetails;
 
                             }).catch(error => {
                                 alert(error);
