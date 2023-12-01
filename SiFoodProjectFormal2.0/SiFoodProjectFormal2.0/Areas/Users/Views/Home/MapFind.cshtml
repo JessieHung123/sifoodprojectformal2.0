@@ -6,13 +6,16 @@
 }
 @section Styles{
     <style>
+        aside {
+            width: 100%;
+        }
+
         #map {
             width: 100%;
-            height: 75%;
+            height: 50vh;
         }
-        /** Optional: Makes the sample page fill the window.*/
-        html,
-        body {
+
+        html, body {
             height: 100%;
             margin: 0;
             padding: 0;
@@ -36,46 +39,56 @@
             }
     </style>
 }
-<section class="container" id="showMap">
-    <div class="container p-5 row">
+<section class="container pt-1" id="showMap">
 
-        <!-- col -->
-        <aside class="col-lg-3 col-md-4 ">
-            <div class="offcanvas offcanvas-start offcanvas-collapse w-md-50 " tabindex="-1" id="offcanvasCategory" aria-labelledby="offcanvasCategoryLabel">
-
-                <div class="offcanvas-header d-lg-none">
-                    <h5 class="offcanvas-title" id="offcanvasCategoryLabel">Filter</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body ps-lg-2 pt-lg-0">
-                    <div class="mb-8">
-                        <!-- title -->
-                        <h5 class="mb-3">依地區探索</h5>
+        <div class="container row mapShow">
+            <div id="map"></div>
+        </div>
+        <div class="row">
+    <!-- Carousel wrapper -->
+    <div id="carouselMultiItemExample" class="carousel slide carousel-dark text-center mt-1" data-mdb-ride="carousel">
+        <!-- Controls -->
+        <div class="d-flex justify-content-center mb-4">
+                <button type="button" class="btn btn-outline-info" @@click="prev">Prev</button>
+                <button type="button" class="btn btn-outline-info" @@click="next">Next</button>
+        </div>
+        <!-- Inner -->
+        <div class=" py-1">
+            <!-- Single item -->
+            <aside v-for="(group, index) in storeGroup" :key="index" class="carousel-item row">
+                <div class="container">
+                    <div class="row">
                         <!-- Image on Top -->
-                        <div class="card" v-for="item in storeData">
-                            <img src="../assets/images/blog/blog-img-1.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">
-                                    {{item.storeName}}
+                        <div class="card col-4 border border-success" v-for="item in group">
+                          <div class="row">
+                            <div class="col-6">
+                                   <img :src="item.logoPath" class="card-img-top img-fluid" />
+                            </div>
+                                    <div class="card-body col-6 align-content-between ">
+                                <h5 class="card-title text-primary">{{item.storeName}}</h5>
+                                <p class="card-text text-body">
+                                    {{item.description}}
                                 </p>
-                                <p class="card-text">
-                                    <small class="text-muted">
-                                        {{item.description}}
-                                    </small>
+                                        <p class="card-text">
+                                    <div class="d-flex align-items-center align-bottom mt-3">
+                                        <div>
+                                            <small class="text-warning">
+                                                <i class="bi bi-star-fill"></i>
+                                            </small> <span class="text-muted">{{item.commentRank}} ({{item.commentCount}})</span>
+                                        </div>
+                                    </div>
                                 </p>
                             </div>
+                           </div>
                         </div>
                     </div>
-                   
                 </div>
-            </div>
-        </aside>
-        <div class="col-lg-9 col-md12 mb-6 mb-md-0">
-            <div id="map" style="height:800px"></div>
+            </aside>
         </div>
+        <!-- Inner -->
     </div>
-
+    <!-- Carousel wrapper -->
+    </div>
 </section>
 
 @section Scripts{
@@ -87,92 +100,111 @@
             data: function () {
                 return {
                     storeData: [],
-                    map:null,
-                    infowindow:null,
+                    map: null,
+                    infowindow: null,
+                    current: null,
+                    filteredLocations: [],
                 }
             },
+            computed:{
+                storeGroup() {
+                    var itemCount = 3;
+                    var store=[];
+                    for (let i = 0; i < this.filteredLocations.length; i += itemCount) {
+                        store.push(this.filteredLocations.slice(i, i + itemCount));
+                    }
+                    console.log(store);
+                    return store;
+                }
+            
+            },
             mounted: function () {
-                
+                this.getLocation();
                 this.getStoreOnMapApi();
-                
                 window.addEventListener('load', () => {
                     this.initMap();
                 });
-
-               
             },
             methods: {
-                createPoint(lat,lng,storeName) {
+                prev() {
+                
+                
+                },
+                next() { },
+                createPoint(lat, lng, storeName) {
                     // console.log(lat, lng);
                     let m = new google.maps.Marker({
                         position: {
                             lat: lat, // 經度
                             lng: lng // 緯度
                         },
-                        icon: "https://akveo.github.io/eva-icons/outline/png/128/gift-outline.png",
                         map: this.map
                     });
                     let infowindow = new google.maps.InfoWindow({
                         content: `<h6>${storeName}</h6>` // 支援html
                     });
-
                     // 監聽 marker click 事件
                     m.addListener('click', e => {
                         infowindow.open(this.map, m);
-                    });
-                    console.log(m);
-                },                
-                selectStore(item) { 
 
-               
+                    });
+                    // console.log(m);
+                },
+                getLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(this.showPosition);
+                    }
+                    else {
+                        alert("不支持你的地理位置。");
+                    }
+                },
+                showPosition(position) {
+                    this.current = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    }
                 },
                 initMap() {
-                    // 先確認使用者裝置能不能抓地點
-                    if (navigator.geolocation) {
+                    let location = {
+                        lat: 25.0374865, // 經度
+                        lng: 121.5647688 // 緯度
+                    };
+                    this.map = new google.maps.Map(document.getElementById('map'), {
+                        center: this.current == null ? location : this.current,
+                        zoom: 16,
+                        mapTypeId: 'terrain'
+                    });
+                    let currentLocation = new google.maps.Marker({
+                        position: this.current == null ? location : this.current,
+                        icon: "https://img.onl/195tB0",
+                        map: this.map
+                    });
+                    google.maps.event.addListener(this.map, 'idle', this.updateStores);
+                },
+                updateStores() {
+                    let bounds = this.map.getBounds();
+                    let NorthEast = bounds.getNorthEast();
+                    let SouthWest = bounds.getSouthWest();
 
-                        // 使用者不提供權限，或是發生其它錯誤
-                        function error() {
-                            alert('無法取得你的位置');
-                        }
-
-                        // 使用者允許抓目前位置，回傳經緯度
-                        function success(position) {
-                            this.map = new google.maps.Map(document.getElementById('map'), {
-                                // center: this.currentlocation,
-                                center: {
-                                    lat: position.coords.latitude,
-                                    lng: position.coords.longitude
-                                },
-                                zoom: 16,
-                                mapTypeId: 'terrain'
-                            });
-                            let marker = new google.maps.Marker({
-                                position: {
-                                    lat: position.coords.latitude,
-                                    lng: position.coords.longitude
-                                },
-                                // icon:require('@@/images/Users/locationnow.png'), // 自定義圖標，google也有提供5個預設的圖標，參考下方*1
-                                map: this.map
-                            });
-
-
-                        }
-                        // 跟使用者拿所在位置的權限
-                        navigator.geolocation.getCurrentPosition(success, error);
-
-                    } else {
-                        alert('Sorry, 你的裝置不支援地理位置功能。')
-                    }
+                    this.filteredLocations = this.storeData.filter(location => {
+                        return (
+                            location.latitude >= SouthWest.lat() &&
+                            location.latitude <= NorthEast.lat() &&
+                            location.longitude >= SouthWest.lng() &&
+                            location.longitude <= NorthEast.lng()
+                        );
+                    });
                 },
                 getStoreOnMapApi: function () {
                     fetch(`${baseAddress}/api/Storeapi/FilterInMap`, { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
                             this.storeData = data;
-                            this.storeData.forEach(x => { 
-                                this.createPoint(x.latitude, x.longitude,x.storeName);
+                            this.storeData.forEach(x => {
+                                x.commentRank = x.commentCount > 0 ? x.commentRank / x.commentCount : 0;
+                                this.createPoint(x.latitude, x.longitude, x.storeName);
                             });
-                            
+
                         })
                         .catch(error => {
                             alert(error);
