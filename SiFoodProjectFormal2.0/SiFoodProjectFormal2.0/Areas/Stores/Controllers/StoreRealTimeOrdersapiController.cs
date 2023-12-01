@@ -38,6 +38,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             DateTime taiwanTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, taiwanTimeZone);
             //List<int> StatusIdToCheck = new List<int> {1, 2, 3, 4};
             //var order = await _context.Orders.FindAsync(id);
+            CheckUnconfirmedOrders(taiwanTime);
             return _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Where(c => c.UserId == id && c.Status.StatusId != 5 && c.Status.StatusId != 6 && c.Status.StatusId != 7)
                  .Select(z => new OrderVM
                  {
@@ -100,7 +101,16 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             return "已完成";
 
         }
-
+        private void CheckUnconfirmedOrders(DateTime currentTaiwanTime)
+        {
+            var unconfirmedOrders = _context.Orders.Where(o => o.Status.StatusId == 1 &&  o.OrderDate.AddMinutes(15) < currentTaiwanTime);
+            foreach (Order? order in unconfirmedOrders)
+            {
+                order.StatusId = 7; 
+                _context.Entry(order).State = EntityState.Modified;
+            }
+            _context.SaveChanges();
+        }
         // POST: api/StoreRealTimeOrdersapi
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
