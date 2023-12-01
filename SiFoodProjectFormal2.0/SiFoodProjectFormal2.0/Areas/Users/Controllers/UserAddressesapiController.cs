@@ -55,7 +55,22 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 return "修改地址失敗!";
             }
             UserAddress? userAddresses = await _context.UserAddresses.FindAsync(id);
+            if (userAddresses == null)
+            {
+                return "修改地址失敗!";
+            }
+            if (userAddressesVM.IsDefault)
+            {
+                var existingDefaultAddresses = await _context.UserAddresses.Where(a => a.UserId == userAddressesVM.UserId && a.IsDefault && a.UserAddressId != id).ToListAsync();
+
+                foreach (var existingDefaultAddress in existingDefaultAddresses)
+                {
+                    existingDefaultAddress.IsDefault = false;
+                    _context.Entry(existingDefaultAddress).State = EntityState.Modified;
+                }
+            }
             userAddresses.UserDetailAddress = userAddressesVM.UserDetailAddress;
+            userAddresses.IsDefault = userAddressesVM.IsDefault;
             _context.Entry(userAddresses).State = EntityState.Modified;
 
             try
@@ -90,9 +105,17 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 UserCity = userAddressesVM.UserCity,
                 IsDefault = userAddressesVM.IsDefault
             };
+            if (userAddresses.IsDefault)
+            {
+                var existingDefaultAddresses = await _context.UserAddresses.Where(a => a.UserId == userAddresses.UserId && a.IsDefault).ToListAsync();
+                foreach (var existingDefaultAddress in existingDefaultAddresses)
+                {
+                    existingDefaultAddress.IsDefault = false;
+                    _context.Entry(existingDefaultAddress).State = EntityState.Modified;
+                }
+            }
             _context.UserAddresses.Add(userAddresses);
             await _context.SaveChangesAsync();
-
             return "新增商品種類成功";
         }
 

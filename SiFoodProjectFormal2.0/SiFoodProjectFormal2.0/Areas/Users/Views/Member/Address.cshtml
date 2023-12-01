@@ -528,7 +528,7 @@
                                                     {{item.userPhone}}
                                                 </p>
                                                 <!-- btn -->
-                                                <a v-if="!item.isDefault" href="#" class="link-primary">設定為預設地址</a>
+                                                <a v-if="!item.isDefault" href="#" class="link-primary" @@click="setDefaultAddress(item)">設定為預設地址</a>
                                                 <a v-else href="#" class="btn btn-info btn-sm">預設地址</a>
                                                 <div class="mt-4">
                                                     <a href="#" class="text-inherit" @@click="update(item)">修改 </a>
@@ -553,7 +553,7 @@
                                                     {{item.userPhone}}
                                                 </p>
                                                 <!-- btn -->                                            
-                                                <a v-if="!item.isDefault" href="#" class="link-primary">設定為預設地址</a>
+                                                <a v-if="!item.isDefault" href="#" class="link-primary" @@click="setDefaultAddress(item)">設定為預設地址</a>
                                                 <a v-else href="#" class="btn btn-info btn-sm">預設地址</a>
                                                 <div class="mt-4">
                                                     <a href="#" class="text-inherit" @@click="edit(item.userAddressId)">編輯 </a>
@@ -621,27 +621,24 @@
                         <div class="row g-3">
                             <!-- col -->
                             <div class="col-12">
-                                <!-- input -->
-                                <input type="text" class="form-control" placeholder="請輸入地址" v-model="addressLine">
+                                <!-- form select -->
+                                <select class="form-select" v-model="selectedCity">
+                                    <option value="" disabled selected>請選擇縣市</option>
+                                    <option v-for="(districts, city) in districts" :key="city" :value="city">{{city}}</option>
+                                </select>
                             </div>
-                            <!-- col -->
                             <div class="col-12">
                                 <!-- form select -->
                                 <select class="form-select" v-model="selectedRegion">
-                                    <option value="南港區" selected="">南港區</option>
-                                    <option value="文山區">文山區</option>
+                                    <option value="" disabled selected>請選擇行政區</option>
+                                    <option v-for="district in districts[selectedCity]" :key="district" :value="district">{{district}}</option>
                                 </select>
                             </div>
                             <!-- col -->
                             <div class="col-12">
-                                <!-- form select -->
-                                <select class="form-select" v-model="selectedCity">
-                                    <option value="台北市" selected="">台北市</option>
-                                    <option value="新北市">新北市</option>
-                                </select>
-                            </div>
-                            <!-- col -->
-
+                                <!-- input -->
+                                <input type="text" class="form-control" placeholder="請輸入地址" v-model="addressLine">
+                            </div>                          
                             <div class="col-12">
                                 <!-- form check -->
                                 <div class="form-check">
@@ -741,7 +738,11 @@
                         addressLine: "",
                         selectedRegion: "",
                         selectedCity: "",
-                        isDefaultAddress: false
+                        isDefaultAddress: false,
+                        districts: {
+                            '台北市': ['中正區', '大同區', '中山區', '松山區', '大安區', '萬華區', '信義區', '士林區', '北投區', '內湖區', '南港區', '文山區'],
+                            '新北市': ['萬里區', '金山區', '板橋區', '汐止區', '深坑區', '石碇區', '瑞芳區', '平溪區', '雙溪區', '貢寮區', '新店區', '坪林區', '烏來區', '永和區', '中和區', '土城區', '三峽區', '樹林區', '鶯歌區', '三重區', '新莊區', '泰山區', '林口區', '蘆洲區', '五股區', '八里區', '淡水區', '三芝區', '石門區'],
+                        }
                     }
                 },
                 computed: {
@@ -751,6 +752,23 @@
                     _this.getUserAddresses();
                 },
                 methods: {
+                    setDefaultAddress(item) {
+                        let _this = this;
+                        axios.put(`${baseAddress}/api/UserAddressesapi/${item.userAddressId}`, {
+                            UserAddressId: item.userAddressId,
+                            UserDetailAddress: item.userDetailAddress,
+                            UserId: item.userId,
+                            UserCity: item.userCity,
+                            UserRegion: item.userRegion,
+                            IsDefault: true
+                        }).then(response => {
+                            // alert("更新地址成功!");
+                            _this.getUserAddresses();
+                        }).catch(err => {
+                            alert("發生錯誤!");
+                            console.error(err);
+                        });
+                    },
                     update: function (item) {
                         let _this = this;
                         axios.put(`${baseAddress}/api/UserAddressesapi/${item.userAddressId}`, {
