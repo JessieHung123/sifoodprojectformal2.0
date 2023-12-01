@@ -82,13 +82,14 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 byte[] hashBytes = sha256.ComputeHash(passwordBytes);
                 account.PasswordSalt = saltBytes;
                 account.PasswordHash = hashBytes;
+                account.StoreIsAuthenticated = 1;
                 _context.SaveChanges();
                 return "密碼設定成功，請重新登入";
             }
         }
 
         [HttpGet]
-        [Route("/Account/StroeLogout")]
+        [Route("/Account/StoreLogout")]
         public async Task<IActionResult> StoreLogout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
