@@ -168,7 +168,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
         [HttpPost]
-        public string DeliverOrder(CreateDeliverOrderVM model)
+        [Route("/Transaction/DeliverOrder")]
+        public string DeliverOrder([FromBody]CreateDeliverOrderVM model)
         {
             string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
             string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
@@ -180,12 +181,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 DeliveryMethod = "外送",
                 StatusId = 1,
                 TotalPrice = model.TotalPrice,
-                ShippingFee = model.ShippingFee,
+                ShippingFee = 40,
                 Address = model.UserAddress
             };
             _context.Orders.Add(order);
             _context.SaveChanges();
-
             foreach (var item in model.ProductDetails)
             {
                 int productId = GetProductIdByName(item.ProductName);
@@ -198,7 +198,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 _context.OrderDetails.Add(orderDetail);
             }
             _context.SaveChanges();
-
             return "訂單下訂成功!";
         }
 

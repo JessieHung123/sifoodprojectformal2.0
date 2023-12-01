@@ -279,7 +279,7 @@
                                             外送費
                                         </div>
                                         <div class="fw-bold">
-                                            0$
+                                            40$
                                         </div>
                                     </div>
                                 </li>
@@ -347,8 +347,7 @@
                 this.processUserName(this.checkoutData.userName);
                 this.processStoreName(this.checkoutData.storeName);
                 this.processTotalPrice(this.totalPrice);
-                this.sendBackProductDetail = this.checkoutDatas.map(item => ({ productName: item.productName, quantity: item.quantity }));
-
+                this.sendBackProductDetail = this.checkoutDatas.map(item => ({ productName: item.productName, quantity: item.quantity }));                
             },
             mounted: function () {
                 var _this = this;
@@ -360,7 +359,7 @@
                     var _this = this;
                     axios.get(`/Transaction/GetCheckoutData`)
                         .then(response => {
-                            alert(JSON.stringify(response.data))
+                            //alert(JSON.stringify(response.data))
                             _this.checkoutDatas = response.data;
                             _this.checkoutData = response.data[0];
                         })
@@ -410,16 +409,16 @@
                         alert(err);
                     })
                 },
-                createTakeOutOrder: function () {
+                createDeliverOrder: function () {
                     var _this = this;
                     _this.loading = true
-                    axios.post(`/Transaction/TakeOutOrder`, {
+                    axios.post(`/Transaction/DeliverOrder`, {
                         StoreName: _this.sendBackStoreName,
                         UserName: _this.sendBackUserName,
                         ProductDetails: _this.sendBackProductDetail,
                         TotalPrice: _this.sendBackTotalPrice,
                         UserAddress: _this.selectAddress,
-                        ShippingFee: _this.sendBackShippingFee,
+                        //ShippingFee: _this.sendBackShippingFee,
                     }, {
                         headers: {
                             "Content-Type": "application/json"
