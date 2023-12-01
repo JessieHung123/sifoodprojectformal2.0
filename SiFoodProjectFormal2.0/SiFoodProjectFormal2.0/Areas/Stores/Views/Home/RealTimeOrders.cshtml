@@ -93,7 +93,7 @@
                                             </tr>
                                         </thead>
                                         <tbody v-for="item in orders">
-                                            <tr >
+                                            <tr>
 
                                                 <td>
                                                     <div class="form-check">
@@ -108,7 +108,7 @@
                                                     {{item.orderId}}
                                                     <a href="#" class="text-inherit"
                                                        data-bs-toggle="collapse"
-                                                       :data-bs-target="'#orderDetails' + item.orderId"                                                        
+                                                       :data-bs-target="'#orderDetails' + item.orderId"
                                                        data-bs-toggle="tooltip"
                                                        data-bs-placement="top"
                                                        data-bs-title="View">
@@ -135,14 +135,16 @@
                                                 <td>${{item.subtotal+item.shippingFee}}</td>
 
                                                 <td>
-                                                    <!-- Accept Order Button -->
-                                                    <button class="btn btn-success btn-sm">接單</button>
-                                                    <!-- Decline Order Button -->
-                                                    <button class="btn btn-danger btn-sm">退單</button>
+                                                    <template v-if="item.statusId === 1">
+                                                        <!-- Accept Order Button -->
+                                                        <button v-on:click="confirmAcceptOrder(item)" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" :title="'接單時限: ' + (10-Math.round(item.orderDuration)) + '分鐘'">接單</button>
+                                                        <!-- Decline Order Button -->
+                                                        <button v-on:click="confirmCancelOrder(item)" class="btn btn-danger btn-sm">退單</button>
+                                                    </template>
                                                 </td>
                                             </tr>
                                             <!-- Add a collapsible row for order details -->
-                                            <tr >
+                                            <tr>
                                                 <td colspan="8" class="p-0">
                                                     <div class="collapse" :id="'orderDetails' + item.orderId">
                                                         <div class="p-3">
@@ -161,12 +163,6 @@
 
                                                                                     <!-- button -->
                                                                                     <div class="ms-md-3">
-                                                                                        <template v-if="item.statusId === 1">
-                                                                                            <a v-on:click="confirmCancelOrder(item)" href="#" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" :title="'取消時限: ' + (10-Math.round(item.orderDuration)) + '分鐘'">取消</a>
-                                                                                        </template>
-                                                                                        <template v-else>
-                                                                                            <a v-on:click="confirmCompleteOrder(item)" href="#" class="btn btn-success">完成訂單</a>
-                                                                                        </template>
                                                                                         <a href="#" class="btn btn-secondary">下載明細</a>
                                                                                     </div>
                                                                                 </div>
@@ -245,7 +241,7 @@
                                                                                                 <td><span class="text-body">${{product.unitPrice}}</span></td>
                                                                                                 <td>{{product.quantity}}</td>
                                                                                                 <td>${{product.total}}</td>
-                                                                                            </tr>                                                                                           
+                                                                                            </tr>
                                                                                             <tr>
                                                                                                 <td class="border-bottom-0 pb-0"></td>
                                                                                                 <td class="border-bottom-0 pb-0"></td>
@@ -288,14 +284,14 @@
                                                                             </div>
                                                                         </div>
                                                                         @* <div class="card-body p-6">
-                                                                            <div class="row">
-                                                                                <div class="col-md-3 mb-4 mb-lg-0 ">
-                                                                                    <h6>付款資訊</h6>
-                                                                                    <span class="d-block">{{item.paymentMethodＮame}}</span>
-                                                                                    <span class="d-block">{{item.paymentDate}} {{item.paymentTime}}</span>
-                                                                                </div>
-                                                                               
-                                                                            </div>
+                                                                        <div class="row">
+                                                                        <div class="col-md-3 mb-4 mb-lg-0 ">
+                                                                        <h6>付款資訊</h6>
+                                                                        <span class="d-block">{{item.paymentMethodＮame}}</span>
+                                                                        <span class="d-block">{{item.paymentDate}} {{item.paymentTime}}</span>
+                                                                        </div>
+
+                                                                        </div>
                                                                         </div> *@
                                                                     </div>
                                                                 </div>
@@ -305,139 +301,139 @@
                                                 </td>
                                             </tr>
 
-@*                                             <tr>
+                                            @*                                             <tr>
 
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
+                                            <td>
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                            id="orderOne">
+                                            <label class="form-check-label" for="orderOne">
 
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
-                                                <td>1</td>
+                                            </label>
+                                            </div>
+                                            </td>
+                                            <td>O001</td>
+                                            <td>雞肉飯</td>
+                                            <td>1</td>
 
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
+                                            <td>01 May 2023 (10:12 am)</td>
+                                            <td>外送</td>
 
-                                                <td>
-                                                    <span class="badge bg-light-warning text-dark-primary">待確認</span>
-                                                </td>
-                                                <td>$12.99</td>
+                                            <td>
+                                            <span class="badge bg-light-warning text-dark-primary">待確認</span>
+                                            </td>
+                                            <td>$12.99</td>
 
-                                                <td>
-                                                    <!-- Accept Order Button -->
-                                                    <button class="btn btn-success btn-sm">接單</button>
-                                                    <!-- Decline Order Button -->
-                                                    <button class="btn btn-danger btn-sm">退單</button>
-                                                </td>
+                                            <td>
+                                            <!-- Accept Order Button -->
+                                            <button class="btn btn-success btn-sm">接單</button>
+                                            <!-- Decline Order Button -->
+                                            <button class="btn btn-danger btn-sm">退單</button>
+                                            </td>
                                             </tr>
                                             <tr>
 
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
+                                            <td>
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                            id="orderOne">
+                                            <label class="form-check-label" for="orderOne">
 
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
-                                                <td>1</td>
+                                            </label>
+                                            </div>
+                                            </td>
+                                            <td>O001</td>
+                                            <td>雞肉飯</td>
+                                            <td>1</td>
 
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
+                                            <td>01 May 2023 (10:12 am)</td>
+                                            <td>外送</td>
 
-                                                <td>
-                                                    <span class="badge bg-light-warning text-dark-primary">待確認</span>
-                                                </td>
-                                                <td>$12.99</td>
+                                            <td>
+                                            <span class="badge bg-light-warning text-dark-primary">待確認</span>
+                                            </td>
+                                            <td>$12.99</td>
 
-                                                <td>
-                                                    <!-- Accept Order Button -->
-                                                    <button class="btn btn-success btn-sm">接單</button>
-                                                    <!-- Decline Order Button -->
-                                                    <button class="btn btn-danger btn-sm">退單</button>
-                                                </td>
+                                            <td>
+                                            <!-- Accept Order Button -->
+                                            <button class="btn btn-success btn-sm">接單</button>
+                                            <!-- Decline Order Button -->
+                                            <button class="btn btn-danger btn-sm">退單</button>
+                                            </td>
                                             </tr>
                                             <tr>
 
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
+                                            <td>
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                            id="orderOne">
+                                            <label class="form-check-label" for="orderOne">
 
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
-                                                <td>1</td>
+                                            </label>
+                                            </div>
+                                            </td>
+                                            <td>O001</td>
+                                            <td>雞肉飯</td>
+                                            <td>1</td>
 
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
+                                            <td>01 May 2023 (10:12 am)</td>
+                                            <td>外送</td>
 
-                                                <td>
-                                                    <span class="badge bg-light-info text-dark-primary">待取餐</span>
-                                                </td>
-                                                <td>$12.99</td>
+                                            <td>
+                                            <span class="badge bg-light-info text-dark-primary">待取餐</span>
+                                            </td>
+                                            <td>$12.99</td>
 
-
-                                            </tr>
-                                            <tr>
-
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
-
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O003</td>
-                                                <td>控肉飯</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-info text-dark-primary">待配送</span>
-                                                </td>
-                                                <td>$12.99</td>
 
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
 
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O004</td>
-                                                <td>臭豆腐</td>
-                                                <td>1</td>
+                                            <td>
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                            id="orderOne">
+                                            <label class="form-check-label" for="orderOne">
 
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
+                                            </label>
+                                            </div>
+                                            </td>
+                                            <td>O003</td>
+                                            <td>控肉飯</td>
+                                            <td>1</td>
 
-                                                <td>
-                                                    <span class="badge bg-light-primary text-dark-primary">配送中</span>
-                                                </td>
-                                                <td>$12.99</td>
+                                            <td>01 May 2023 (10:12 am)</td>
+                                            <td>外送</td>
+
+                                            <td>
+                                            <span class="badge bg-light-info text-dark-primary">待配送</span>
+                                            </td>
+                                            <td>$12.99</td>
 
                                             </tr>
- *@                                            <!-- 改 -->
+                                            <tr>
+                                            <td>
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                            id="orderOne">
+                                            <label class="form-check-label" for="orderOne">
+
+                                            </label>
+                                            </div>
+                                            </td>
+                                            <td>O004</td>
+                                            <td>臭豆腐</td>
+                                            <td>1</td>
+
+                                            <td>01 May 2023 (10:12 am)</td>
+                                            <td>外送</td>
+
+                                            <td>
+                                            <span class="badge bg-light-primary text-dark-primary">配送中</span>
+                                            </td>
+                                            <td>$12.99</td>
+
+                                            </tr>
+                                            *@                                            <!-- 改 -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -490,6 +486,67 @@
 
                 },
                 methods: {
+                    confirmCancelOrder(item) {
+                        if (item.orderDuration <= 10) {
+                            if (window.confirm("是否確定取消訂單?")) {
+                                this.cancelOrder(item);
+                            }
+                        }
+                        // else {
+                        //     if (item.deliveryMethod === "自取") {
+                        //         this.updateOrderStatus(item, 3);
+                        //     }
+                        //     else {
+                        //         this.updateOrderStatus(item, 2);
+                        //     }
+                        //     // alert("取消時間已過")
+                        // }
+                    },
+                    confirmAcceptOrder(item) {
+                        if (window.confirm("是否確定接受訂單?")) {
+                            this.acceptOrder(item);
+                        }
+                    },
+                    cancelOrder(item) {
+                        this.updateOrderStatus(item, 7)
+                        item.statusId = 7;
+                        this.orders = this.orders.filter(order => order.orderId !== item.orderId);
+                    },
+                    acceptOrder(item) {
+                        if (item.deliveryMethod === '自取') {
+                            this.updateOrderStatus(item, 3)
+                            item.statusId = 3;
+                            item.status = "待領取";
+                        } else {
+                            this.updateOrderStatus(item, 2)
+                            item.statusId = 2;
+                            item.status = "待配送";
+                        }
+                    },
+                    // **asynchronous nature of the fetch operation**
+                    updateOrderStatus(item, newStatusId) {
+
+                        fetch(`${baseAddress}/api/StoreRealTimeOrdersapi/${item.orderId}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                orderId: item.orderId,
+                                statusId: newStatusId,
+                            }),
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                                alert("成功");
+                            }
+                        }).then(data => {
+                            // console.log(data)
+                        }).catch(error => {
+                            console.error("PUT 請求發生錯誤:", error);
+                            // console.log(error);
+                        });
+                    },
                     getOrder() {
                         let _this = this;
                         var userId = "U001"
