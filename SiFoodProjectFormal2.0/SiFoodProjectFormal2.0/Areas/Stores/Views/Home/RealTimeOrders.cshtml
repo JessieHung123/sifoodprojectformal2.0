@@ -51,7 +51,7 @@
                                     <div class="col-md-4 col-12 mb-2 mb-md-0">
                                         <!-- form -->
                                         <form class="d-flex" role="search">
-                                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                            <input class="form-control" type="search" placeholder="Search" aria-label="Search" v-model="searchKeyWords" @@keyup.enter="searchOrder">
 
                                         </form>
                                     </div>
@@ -332,6 +332,7 @@
                     return {
                         orders: [],
                         orderDetails: [],
+                        searchKeyWords:""
                     }
                 },
                 computed: {
@@ -343,6 +344,9 @@
 
                 },
                 methods: {
+                    searchOrder() {
+                        this.getOrder();
+                    },
                     confirmCancelOrder(item) {
                         if (item.orderDuration <= 10) {
                             if (window.confirm("是否確定取消訂單?")) {
@@ -407,7 +411,7 @@
                     getOrder() {
                         let _this = this;
                         var userId = "U001"
-                        fetch(`${baseAddress}/api/StoreRealTimeOrdersapi/${userId}`, { method: "GET" })
+                        fetch(`${baseAddress}/api/StoreRealTimeOrdersapi/${userId}?searchKeyWords=${_this.searchKeyWords}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);
