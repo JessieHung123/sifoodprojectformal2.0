@@ -45,8 +45,6 @@
             <div id="map"></div>
         </div>
         <div class="row">
-    <!-- Carousel wrapper -->
-    <div id="carouselMultiItemExample" class="carousel slide carousel-dark text-center mt-1" data-mdb-ride="carousel">
         <!-- Controls -->
         <div class="d-flex justify-content-center mb-4">
                 <button type="button" class="btn btn-outline-info" @@click="prev">Prev</button>
@@ -55,8 +53,7 @@
         <!-- Inner -->
         <div class=" py-1">
             <!-- Single item -->
-            <aside v-for="(group, index) in storeGroup" :key="index" class="carousel-item row">
-                <div class="container">
+                <aside v-for="(group, index) in storeGroup" :key="index" class="row" v-show="index === currentGroupIndex">
                     <div class="row">
                         <!-- Image on Top -->
                         <div class="card col-4 border border-success" v-for="item in group">
@@ -80,14 +77,135 @@
                                 </p>
                             </div>
                            </div>
+
                         </div>
                     </div>
-                </div>
             </aside>
         </div>
         <!-- Inner -->
     </div>
-    <!-- Carousel wrapper -->
+@* 
+    <!-- Modal -->
+    <div class="modal fade" v-for="item in storeData" :id="item.storeId" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalCenterTitle">{{item.storeName}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+            </div>
+        </div>
+    </div> *@
+    <div class="modal fade" v-for="item in storeData" :id="item.storeId" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body p-8">
+                    <div class="position-absolute top-0 end-0 me-3 mt-3">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <!-- img slide -->
+                            <div class="tns-outer" id="productModal-ow">
+                                <div class="tns-liveregion tns-visually-hidden" aria-live="polite" aria-atomic="true">slide <span class="current">4</span>  of 4</div><div id="productModal-mw" class="tns-ovh">
+                                    <div class="tns-inner" id="productModal-iw">
+                                        <div class="product productModal  tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal" id="productModal" style="transform: translate3d(-75%, 0px, 0px);">
+                                            <div class="zoom tns-item" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath})`, backgroundPosition: '55.9633% 97.2477%'}" id="productModal-item0" aria-hidden="true" tabindex="-1">
+                                                <!-- img -->
+                                                <img :src="item.photosPath" alt="">
+                                            </div>
+                                            <div class="tns-item" id="productModal-item1" tabindex="-1">
+                                                <div class="zoom" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath2})`}">
+                                                    <!-- img -->
+                                                    <img :src="item.photosPath2" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="tns-item" id="productModal-item2"  tabindex="-1">
+                                                <div class="zoom" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath3})`}">
+                                                    <!-- img -->
+                                                    <img :src="item.photosPath3" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- product tools -->
+                            <div class="product-tools">
+                                <div class="thumbnails row g-3" id="productModalThumbnails" aria-label="Carousel Pagination">
+                                    <div class="col-3" data-nav="0" aria-label="Carousel Page 1" aria-controls="productModal" tabindex="-1">
+                                        <div class="thumbnails-img">
+                                            <!-- img -->
+                                            <img :src="item.photosPath" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="col-3" data-nav="1" aria-label="Carousel Page 2" aria-controls="productModal" tabindex="-1">
+                                        <div class="thumbnails-img">
+                                            <!-- img -->
+                                            <img :src="item.photosPath2" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="col-3" data-nav="2" aria-label="Carousel Page 3" aria-controls="productModal" tabindex="-1">
+                                        <div class="thumbnails-img">
+                                            <!-- img -->
+                                            <img :src="item.photosPath3" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="ps-lg-8 mt-6 mt-lg-0">
+                                <a href="#!" class="mb-4 d-block">{{item.address}}</a>
+                                <h2 class="mb-1 h1">{{item.storeName}}</h2>
+                                <div class="mb-4">
+                                    <small class="text-warning">
+                                        <i class="bi bi-star-fill"></i>
+                                    </small><a href="#" class="ms-2">{{item.commentRank}} ({{item.commentCount}})</a>
+                                </div>
+
+                                <hr class="my-6">
+                                <div>
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                            <tr>
+                                                <td>平日營業時間:</td>
+                                                <td>{{item.weekdayOpeningTime}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>假日營業時間:</td>
+                                                <td>{{item.weekendOpeningTime}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>公休日:</td>
+                                                <td>{{item.closingDay}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>電話:</td>
+                                                <td>
+                                                    {{item.phone}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>種類:</td>
+                                                <td>
+                                                    <span v-for="category in item.categoryList">{{category}}&nbsp;</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -104,6 +222,7 @@
                     infowindow: null,
                     current: null,
                     filteredLocations: [],
+                    currentGroupIndex:0,
                 }
             },
             computed:{
@@ -113,7 +232,7 @@
                     for (let i = 0; i < this.filteredLocations.length; i += itemCount) {
                         store.push(this.filteredLocations.slice(i, i + itemCount));
                     }
-                    console.log(store);
+                    console.log(store); 
                     return store;
                 }
             
@@ -127,26 +246,27 @@
             },
             methods: {
                 prev() {
-                
+                    this.currentGroupIndex = Math.max(0, this.currentGroupIndex - 1);
                 
                 },
-                next() { },
-                createPoint(lat, lng, storeName) {
+                next() { this.currentGroupIndex = Math.min(this.storeGroup.length - 1, this.currentGroupIndex + 1); },
+                createPoint(x) {
                     // console.log(lat, lng);
+                    // console.log(storeData);
                     let m = new google.maps.Marker({
                         position: {
-                            lat: lat, // 經度
-                            lng: lng // 緯度
+                            lat: x.latitude, // 經度
+                            lng: x.longitude // 緯度
                         },
                         map: this.map
                     });
                     let infowindow = new google.maps.InfoWindow({
-                        content: `<h6>${storeName}</h6>` // 支援html
+                        content: `<h6>${x.storeName}</h6>` // 支援html
                     });
                     // 監聽 marker click 事件
                     m.addListener('click', e => {
                         infowindow.open(this.map, m);
-
+                        $(`#${x.storeId}`).modal('show');
                     });
                     // console.log(m);
                 },
@@ -171,7 +291,7 @@
                     };
                     this.map = new google.maps.Map(document.getElementById('map'), {
                         center: this.current == null ? location : this.current,
-                        zoom: 16,
+                        zoom: 14,
                         mapTypeId: 'terrain'
                     });
                     let currentLocation = new google.maps.Marker({
@@ -202,7 +322,7 @@
                             this.storeData = data;
                             this.storeData.forEach(x => {
                                 x.commentRank = x.commentCount > 0 ? x.commentRank / x.commentCount : 0;
-                                this.createPoint(x.latitude, x.longitude, x.storeName);
+                                this.createPoint(x);
                             });
 
                         })

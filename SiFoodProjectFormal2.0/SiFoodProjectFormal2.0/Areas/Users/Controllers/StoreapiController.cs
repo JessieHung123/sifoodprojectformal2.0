@@ -27,6 +27,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [EnableQuery]
         public object Main2()
         {
+            //var c = DateTime.Today;
+            //var a = DateTime.Now.TimeOfDay;
             return _context.Stores.Include(x => x.Products).ThenInclude(x => x.Category).Include(x => x.Orders)
                 .ThenInclude(x => x.Comment)
                 .Select(z => new StoreVM
@@ -37,14 +39,14 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     LogoPath = z.LogoPath,
                     CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
                     CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
-                    Inventory = z.Products.Where(x => x.RealeasedTime.Date == DateTime.Now.Date && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.ReleasedQty - x.OrderedQty).Sum(),
+                    Inventory = z.Products.Where(x => x.RealeasedTime.Date == DateTime.Now.Date && x.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay &&  x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.ReleasedQty - x.OrderedQty).Sum(),
                     WeekdayOpeningTime = z.OpeningTime.Substring(3, 5),
                     WeekdayClosingTime = z.OpeningTime.Substring(11, 5),
                     WeekendOpeningTime = z.OpeningTime.Substring(20, 5),
                     WeekendClosingTime = z.OpeningTime.Substring(28, 5),
                     City = z.City,
                     Region = z.Region,
-                    CategoryName = z.Products.Where(x => x.RealeasedTime.Date == DateTime.Today && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.Category.CategoryName).Distinct(),
+                    CategoryName = z.Products.Where(x => x.RealeasedTime.Date == DateTime.Today && x.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.Category.CategoryName).Distinct(),
                 }).ToList();
         }
 
@@ -132,6 +134,18 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     Longitude= (decimal)z.Longitude==null?0: (decimal)z.Longitude,
                 CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
                 CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
+                PhotosPath = z.PhotosPath,
+                PhotosPath2 = z.PhotosPath2,
+                PhotosPath3= z.PhotosPath3,
+                Address = z.Address,
+                ClosingDay = z.ClosingDay,
+                WeekdayOpeningTime = z.OpeningTime.Substring(3, 13),
+                WeekendOpeningTime = z.OpeningTime.Substring(20, 13),
+                Phone = $"{z.Phone.Substring(0, 2)} {z.Phone.Substring(2)}",
+                CategoryList = z.Products.Where(p => p.RealeasedTime.Date == DateTime.Today &&
+                                                        p.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay &&
+                                                     p.SuggestPickEndTime > DateTime.Now.TimeOfDay)
+                                         .Select(y => y.Category.CategoryName).Distinct().ToArray(),
             }).ToList();
         }
 
