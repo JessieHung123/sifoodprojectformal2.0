@@ -246,7 +246,7 @@
                                                                                                     <td class="border-bottom-0 pb-0"></td>
                                                                                                     <td colspan="1" class="fw-medium text-dark ">
                                                                                                         <!-- text -->
-                                                                                                        小計 :
+                                                                                                        小計 
                                                                                                     </td>
                                                                                                     <td class="fw-medium text-dark ">
                                                                                                         <!-- text -->
@@ -297,7 +297,7 @@
                                 </div>
                             </div>
                             <div class="border-top d-md-flex justify-content-between align-items-center p-6">
-                                <span>Showing 1 to 8 of 12 entries</span>
+                                <span>Showing 1 to 8 of {{ordersCount}} entries</span>
                                 <nav class="mt-2 mt-md-0">
                                     <ul class="pagination mb-0 ">
                                         <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
@@ -333,7 +333,8 @@
                     return {
                         orders: [],
                         orderDetails: [],
-                        searchKeyWords:""
+                        searchKeyWords:"",
+                        ordersCount : 0
                     }
                 },
                 computed: {
@@ -410,7 +411,7 @@
                             })
                             .then(data => {
                                 _this.orders = data;
-
+                                _this.ordersCount = _this.orders.length;
                             }).catch(error => {
                                 alert(error);
                             });
