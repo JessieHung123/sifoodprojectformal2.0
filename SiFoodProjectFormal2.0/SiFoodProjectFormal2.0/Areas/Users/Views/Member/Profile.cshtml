@@ -157,7 +157,7 @@
                                 </div>
                                 <!-- 更新密碼按鈕 -->
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-danger">更新密碼</button>
+                                    <button type="submit" class="btn btn-danger" @@click="SendPasswordBack()">更新密碼</button>
                                 </div>
                             </div>
                         </div>
@@ -167,12 +167,83 @@
                             <button class="btn btn-primary d-flex align-items-center justify-content-center" @@click="allowEnter = !allowEnter" style="height:30px;width:135px">按這裡輸入密碼</button>
                         </p>
                     </div>
-                    {{userEmail}}
+
+                    <!-- 一般性錯誤消息 -->
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @*  <hr class="my-10">
+                    <div class="ms-10 mb-10">
+                    <!-- heading -->
+                    <h5 class="mb-4">刪除帳號</h5>
+                    <p class="mb-2">你想要刪除在惜食的帳號嗎？</p>
+                    <p class="mb-5">刪除帳號就沒辦法再享有實惠又環保的愛惜食物購買平台喔～</p>
+                    <!-- btn -->
+                    <a href="#" class="btn btn-outline-danger">我確定要刪除帳號</a>
+                    </div>
+
+                    </div>
+                    </div>
+                    </section>
+                    </main>
+
+                    <!-- modal -->
+                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasAccount" aria-labelledby="offcanvasAccountLabel">
+                    <!-- offcanvas header -->
+                    <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasAccountLabel">Offcanvas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <!-- offcanvas body -->
+                    <div class="offcanvas-body">
+                    <ul class="nav flex-column nav-pills nav-pills-dark">
+                    <!-- nav item -->
+                    <li class="nav-item">
+                    <a class="nav-link " aria-current="page" href="account-orders.html">
+                    <i class="feather-icon icon-shopping-bag me-2"></i>Your Orders
+                    </a>
+                    </li>
+                    <!-- nav item -->
+
+                    <li class="nav-item">
+                    <a class="nav-link active" href="account-settings.html">
+                    <i class="feather-icon icon-settings me-2"></i>Settings
+                    </a>
+                    </li>
+                    <!-- nav item -->
+
+                    <li class="nav-item">
+                    <a class="nav-link" href="account-address.html"><i class="feather-icon icon-map-pin me-2"></i>Address</a>
+                    </li>
+                    <!-- nav item -->
+
+                    <li class="nav-item">
+                    <a class="nav-link" href="account-payment-method.html">
+                    <i class="feather-icon icon-credit-card me-2"></i>Payment Method
+                    </a>
+                    </li>
+                    <!-- nav item -->
+
+                    <li class="nav-item">
+                    <a class="nav-link" href="account-notification.html">
+                    <i class="feather-icon icon-bell me-2"></i>Notification
+                    </a>
+                    </li>
+                    </ul>
+                    <hr class="my-6">
+                    <div>
+                    <!-- navs -->
+                    <ul class="nav flex-column nav-pills nav-pills-dark">
+                    <!-- nav item -->
+                    <li class="nav-item">
+                    <a class="nav-link " href="../index.html"><i class="feather-icon icon-log-out me-2"></i>Log out</a>
+                    </li>
+                    </ul>
+                    </div>
+                    </div>
+                    </div> *@
                 </div>
             </div>
     </div>
 </div>
-
 
 @section Scripts {
     @{
@@ -209,17 +280,23 @@
                 SendPasswordBack() {
                     var _this = this;
                     axios.post(`/Member/ChangePassword`, {
-
+                        UserEmail:_this.userEmail,
+                        OldPassword: _this.oldPassword,
+                        NewPassword: _this.newPassword,
                     }, {
                         headers: {
                             'Content-Type': 'application/json'
                         }
                     }).then(response => {
                         alert(response.data);
+                        window.location.href = 'https://localhost:7042/Users/Member/Profile'
                     }).catch(err => {
                         alert(err);
                     })
-                },
+                },                  
+            },
+            mounted() {
+                this.userEmail = document.querySelector("#email").value;
             },
         }).mount("#userProfileApp")
     </script>

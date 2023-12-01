@@ -31,7 +31,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             //    return NotFound();
             //}
 
-            var loginuserId = "U001";
+            var loginuserId = "U011";
             //先測試寫死ID，之後要改成取當前登入者的資料
             var user = await _context.Users.Where(u => u.UserId == loginuserId).SingleAsync();
 
@@ -64,7 +64,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             //if (ModelState.IsValid)
             //{
 
-            var loginuserId = "U002";
+            var loginuserId = "U001";
             var userToUpdate = await _context.Users.FindAsync(loginuserId);
             if (userToUpdate == null)
             {
@@ -88,7 +88,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Member/ChangePassword")]
-        public string ChangePassword([FromBody]UserPwdChange model)
+        public string ChangePassword([FromBody]UserPwdChange model) 
         {
             User? user = _context.Users.Where(x => x.UserEmail == model.UserEmail).FirstOrDefault();
 
@@ -96,24 +96,28 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             byte[] passwordBytes = Encoding.ASCII.GetBytes($"{model?.OldPassword}{user?.UserPasswordSalt}");
             byte[] hashBytes = sha256.ComputeHash(passwordBytes);
 
-            if (passwordBytes != user?.UserPasswordHash)
+            if (user != null)
             {
-                return "新密碼與舊密碼不符";
-            }
-            else
-            {
-                byte[] saltBytes = new byte[8];
-                using (RandomNumberGenerator ran = RandomNumberGenerator.Create())
+                if (Enumerable.SequenceEqual(hashBytes, user.UserPasswordHash))
                 {
-                    ran.GetBytes(saltBytes);
+                    byte[] saltBytes = new byte[8];
+                    using (RandomNumberGenerator ran = RandomNumberGenerator.Create())
+                    {
+                        ran.GetBytes(saltBytes);
+                    }
+                    user.UserPasswordSalt = saltBytes;
+                    byte[] NewPasswordBytes = Encoding.ASCII.GetBytes($"{model?.NewPassword}{saltBytes}");
+                    byte[] NewHashBytes = sha256.ComputeHash(NewPasswordBytes);
+                    user.UserPasswordHash = NewHashBytes;
+                    _context.SaveChanges();
+                    return "密碼修改成功";
                 }
-                user.UserPasswordSalt = saltBytes;
-                byte[] NewPasswordBytes = Encoding.ASCII.GetBytes($"{model?.NewPassword}{saltBytes}");
-                byte[] NewHashBytes = sha256.ComputeHash(NewPasswordBytes);
-                user.UserPasswordHash = NewHashBytes;
-                _context.SaveChanges();
-                return "密碼修改成功";
+                else
+                {
+                    return "新密碼與舊密碼不符";
+                }
             }
+            return "找不到此使用者";
         }
 
         public IActionResult Products()
