@@ -188,7 +188,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                            <button type="button" class="btn btn-primary" @@click="insertProduct">確定</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @@click="insertProduct">確定</button>
                         </div>
                     </div>
                 </div>
@@ -212,7 +212,7 @@
                                 <!-- input -->
                                 <div class="mb-3 col-lg-6">
                                     <label class="form-label">商品種類</label>
-                                    <select class="form-select" v-model="selectedToEdit.categoryName">
+                                    <select class="form-select" v-model="selectedToEdit.categoryId">
                                         <option :value="1">生鮮</option>
                                         <option :value="2">飲料</option>
                                         <option :value="3">甜點麵包</option>
@@ -243,7 +243,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <img id="insertFilePreview" src="~/images/Noimage.png" title="待上傳" style="width:300px;width:240px" />
+                                    <img id="insertFilePreview" :src="selectedToEdit.photoPath" title="待上傳" style="width:300px;width:240px" />
                                     <input type="file" id="updateFile" class="form-control" @@change="updateFileChange($event.target)" accept="image/*" />
                                 </div>
                                 <div class="mb-3 col-lg-12 mt-5">
@@ -256,7 +256,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                            <button type="button" class="btn btn-primary" @@click="updateProduct">確定</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @@click="updateProduct">確定</button>
                         </div>
                     </div>
                 </div>
@@ -336,12 +336,11 @@
                     let _this = this;
                     _this.readURL(inputFile, inputFile.previousElementSibling);
                 },
-
                 insertProduct(produt) {
                     // alert("新增")
                     let _this = this;
                     var form = new FormData();
-                    form.append("ProductId", _this.Id);
+                    form.append("ProductId", -1);
                     form.append("ProductName", _this.productName);
                     form.append("CategoryId", _this.categoryId);
                     form.append("Description", _this.description);
@@ -351,7 +350,7 @@
                     form.append("SuggestPickUpTime", _this.suggestPickUpTime);
                     form.append("ImageFile", document.querySelector("#insertFile").files[0]);
                     console.log(Object.fromEntries(form.entries()));
-                    fetch(`${baseAddress}/api/ProductManage/putProduct`, { method: "Post", body: form })
+                    fetch(`${baseAddress}/api/ProductManage/postProduct`, { method: "Post", body: form })
                     .then(response => {
                         console.log(response.data);                      
                     }).catch(err => {
