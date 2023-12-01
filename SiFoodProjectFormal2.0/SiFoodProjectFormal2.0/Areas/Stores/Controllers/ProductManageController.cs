@@ -25,7 +25,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         {
             return await _context.Products
                 .Include(p => p.Category)
-                .Where(e => e.StoreId == targetStoreId).Select(x => new ProductManageVM
+                .Where(e => e.StoreId == targetStoreId && e.IsDelete==1).Select(x => new ProductManageVM
                 {
                     StoreId = x.StoreId,
                     UnitPrice = x.UnitPrice,
@@ -45,7 +45,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 
         public async Task<List<ProductManageVM>> Filter(string? text)
         {
-            var query = _context.Products.Include(p => p.Category).Where(e => e.StoreId == targetStoreId);
+            var query = _context.Products.Include(p => p.Category).Where(e => e.StoreId == targetStoreId && e.IsDelete ==1);
 
             if (!string.IsNullOrEmpty(text))
             {
@@ -69,32 +69,64 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             }).ToListAsync();
         }
 
-        [HttpDelete("{productId}")]
-        public async Task<string> deleteProduct(int productId)
+
+        [HttpPut("{id}")]
+        public async Task<string> SoftDelete(int id)
         {
-            if (_context.Products == null)
-            {
-                return "刪除商品失敗!";
-            }
-            var product = await _context.Products.FindAsync(productId);
+            var product = await _context.Products.FindAsync(id);
+
             if (product == null)
             {
-                return "刪除商品失敗!";
+                return "找不到產品！";
             }
+
+            product.IsDelete = 0;
+            _context.Entry(product).State = EntityState.Modified;
+
             try
             {
-                _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
-
+                return "更新成功！";
             }
-            catch (DbUpdateException)
+            catch (DbUpdateConcurrencyException)
             {
-                return "刪除商品關聯紀錄失敗!";
+                if (!ProductExists(id))
+                {
+                    return "找不到產品！";
+                }
+                else
+                {
+                    throw;
+                }
             }
-            return "刪除商品成功!";
         }
 
-        private bool ProductExists(int productId)
+        [HttpDelete("{productId}")]
+    public async Task<string> deleteProduct(int productId)
+    {
+        if (_context.Products == null)
+        {
+            return "刪除商品失敗!";
+        }
+        var product = await _context.Products.FindAsync(productId);
+        if (product == null)
+        {
+            return "刪除商品失敗!";
+        }
+        try
+        {
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+        }
+        catch (DbUpdateException)
+        {
+            return "刪除商品關聯紀錄失敗!";
+        }
+        return "刪除商品成功!";
+    }
+
+    private bool ProductExists(int productId)
         {
             return (_context.Products?.Any(e => e.ProductId == productId)).GetValueOrDefault();
         }
@@ -140,7 +172,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         }
 
         [HttpPut("{id}")]
-
         public async Task<string> putProduct(int id,[FromForm] PutProductVM putProductVM)
         {
             if (id != putProductVM.ProductId)
@@ -156,7 +187,11 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             product.UnitPrice = putProductVM.UnitPrice;
             product.SuggestPickUpTime = putProductVM.SuggestPickUpTime;
             product.SuggestPickEndTime = putProductVM.SuggestPickEndTime;
-            product.PhotoPath = await SavePhoto(putProductVM.ImageFile);
+           if (putProductVM.ImageFile != null)
+            {
+                product.PhotoPath = await SavePhoto(putProductVM.ImageFile);
+            }
+
             _context.Entry(product).State = EntityState.Modified;
             try
             {
