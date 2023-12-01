@@ -30,7 +30,7 @@
         <!-- navbar vertical -->
         <!-- main -->
         <main class="main-content-wrapper">
-            <div class="container">
+            <div class="container" id="reviewapp">
                 <div class="row mb-8">
                     <div class="col-md-12">
                         <div>
@@ -70,22 +70,18 @@
                             <div class="card-body p-0">
                                 <!-- table -->
                                 <div class="table-responsive">
-                                    <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
+                                    <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap" v-for="item in ReviewInfo">
                                         <thead class="bg-light">
                                             <tr>
-
                                                 <th>客戶名稱</th>
                                                 <th>評論內容</th>
                                                 <th>評分</th>
                                                 <th>日期</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-
-                                                <td>Barry McKenzie</td>
-
+                                                <td>{{item.userName}}</td>
                                                 <td>
                                                     <span class="text-truncate">Nice &amp; fresh oranges with value for money..</span>
                                                 </td>
@@ -101,217 +97,10 @@
                                                 <td>
                                                     23 Nov,2022
                                                 </td>
-
-                                            </tr>
-                                            <tr>
-
-
-
-                                                <td>Dale Jenkins</td>
-
-                                                <td>
-                                                    <span class="text-truncate">Nice product 👌 quality 👌...</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-light"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    23 Nov,2022
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-
-
-
-                                                <td>Michael Phillips</td>
-
-                                                <td>
-                                                    <span class="text-truncate">Good quality product delivered...</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    23 Nov,2022
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-
-
-
-                                                <td>James Parker</td>
-
-                                                <td>
-                                                    <span class="text-truncate">Excellent Quality by an Indian company..</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    23 Nov,2022
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-
-
-
-                                                <td>William Hansen</td>
-
-                                                <td>
-                                                    <span class="text-truncate">Very expensive. Cheaper at local stores...</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-light"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    23 Nov,2022
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-
-                                                <td>Helen Speller</td>
-
-                                                <td>
-                                                    <span class="text-truncate">Etiam in felis eget eros dictum</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    23 Nov,2022
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-
-
-
-                                                <td>Larry Anderson</td>
-
-                                                <td>
-                                                    <span class="text-truncate">is good but had to wait for a late delivery.</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-light"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    23 Nov,2022
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-
-
-
-                                                <td>William McCulloch</td>
-
-                                                <td>
-                                                    <span class="text-truncate">Very expensive. Cheaper at local stores</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    23 Nov,2022
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-
-
-                                                <td>Louise Brown</td>
-
-                                                <td>
-                                                    <span class="text-truncate">My toddler loved the flavor and enjoys...</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-light"></i></span>
-                                                        <span><i class="bi bi-star-fill text-light"></i></span>
-                                                        <span><i class="bi bi-star-fill text-light"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    23 Nov,2022
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-
-
-
-                                                <td>John Meyer</td>
-
-                                                <td>
-                                                    <span class="text-truncate">Good Product but packaging needs...</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-light"></i></span>
-                                                        <span><i class="bi bi-star-fill text-light"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    23 Nov,2022
-                                                </td>
-
                                             </tr>
                                         </tbody>
                                     </table>
-
                                 </div>
-
                                 <div class="border-top d-md-flex justify-content-between align-items-center p-6">
                                     <span>Showing 1 to 8 of 12 entries</span>
                                     <nav class="mt-2 mt-md-0">
@@ -325,38 +114,59 @@
                                     </nav>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
         </main>
-
     </div>
-
-
-    <!-- Libs JS -->
-    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/libs/simplebar/dist/simplebar.min.js"></script>
-
-    <!-- Theme JS -->
-    <script src="/assets/js/theme.min.js"></script>
-
-
-    <!-- Visual Studio Browser Link -->
-    <script type="text/javascript" src="/_vs/browserLink" async="async" id="__browserLink_initializationData" data-requestid="2f5a7dd90325443196819a586f019be1" data-requestmappingfromserver="false" data-connecturl="http://localhost:61567/549414066c8c4b829972c6f5055a8617/browserLink"></script>
-    <!-- End Browser Link -->
-
-    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
-
-
-    <!-- Visual Studio Browser Link -->
-    <script type="text/javascript" src="/_vs/browserLink" async="async" id="__browserLink_initializationData" data-requestid="3089df0821034d5c9bccdfdb59cbdbac" data-requestmappingfromserver="false" data-connecturl="http://localhost:61567/549414066c8c4b829972c6f5055a8617/browserLink"></script>
-    <!-- End Browser Link -->
-
-    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
 </body>
 
 </html>
+
+@section scripts{
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/libs/simplebar/dist/simplebar.min.js"></script>
+    <script src="/assets/js/theme.min.js"></script>
+    <script type="text/javascript" src="/_vs/browserLink" async="async" id="__browserLink_initializationData" data-requestid="2f5a7dd90325443196819a586f019be1" data-requestmappingfromserver="false" data-connecturl="http://localhost:61567/549414066c8c4b829972c6f5055a8617/browserLink"></script>
+    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+    <script type="text/javascript" src="/_vs/browserLink" async="async" id="__browserLink_initializationData" data-requestid="3089df0821034d5c9bccdfdb59cbdbac" data-requestmappingfromserver="false" data-connecturl="http://localhost:61567/549414066c8c4b829972c6f5055a8617/browserLink"></script>
+    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+    <script>
+        var baseAddress = "https://localhost:7042";
+        const StoreMainApp = Vue.createApp({
+            data: function () {
+                return {
+                    ReviewInfo: [],
+                    userName:"",
+                    contents:"",
+                    commentTime:"",
+                    commentRank:"",
+                }
+            },
+            computed: {
+            },
+            mounted: function () {
+                let _this = this;
+                _this.getReviewAPI();
+            },
+            methods: {
+                startSeach() {
+                    let _this = this;
+                    fetch(`${baseAddress}/api/Review/Filter?text=${_this.searchText}`)
+                        .then(response => response.json())
+                        .then(data => _this.ReviewInfo = data)
+                        .catch(error => alert(error));
+                },
+                getReviewAPI: function () {
+                    let _this = this;
+                    fetch(`${baseAddress}/api/Review/getAll`)
+                        .then(response => response.json())
+                        .then(data => _this.ReviewInfo = data)
+                        .catch(error => alert(error));
+                }
+            },
+        }).mount("#reviewapp")
+    </script>
+    }
