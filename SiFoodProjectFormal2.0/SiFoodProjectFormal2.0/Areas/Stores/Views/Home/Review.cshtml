@@ -79,7 +79,7 @@
                                                 <th>日期</th>
                                             </tr>
                                         </thead>
-                                        <tbody v-for="item in ReviewInfo">
+                                        <tbody v-for="item in filterList">
                                             <tr>
                                                 <td>{{item.userName}}</td>
                                                 <td>
@@ -102,13 +102,16 @@
                                 <div class="border-top d-md-flex justify-content-between align-items-center p-6">
                                     <span>Showing 1 to 8 of 12 entries</span>
                                     <nav class="mt-2 mt-md-0">
-                                        <ul class="pagination mb-0 ">
-                                            <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                                            <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                        </ul>
+                                        <paginate :page-count="total"
+                                                  :click-handler="pageClick"
+                                                  :force-page="page.pageNumber"
+                                                  :prev-text="'<'"
+                                                  :next-text="'>'"
+                                                  :page-link-class="'page-link mx-1'"
+                                                  :prev-link-class="'page-link mx-1'"
+                                                  :next-link-class="'page-link mx-1'"
+                                                  :container-class="'pagination justify-content-center'">
+                                        </paginate>
                                     </nav>
                                 </div>
                             </div>
@@ -132,7 +135,7 @@
     <script type="text/javascript" src="/_vs/browserLink" async="async" id="__browserLink_initializationData" data-requestid="3089df0821034d5c9bccdfdb59cbdbac" data-requestmappingfromserver="false" data-connecturl="http://localhost:61567/549414066c8c4b829972c6f5055a8617/browserLink"></script>
     <script src="/_framework/aspnetcore-browser-refresh.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
+    <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
     <script>
         var baseAddress = "https://localhost:7042";
         const StoreMainApp = Vue.createApp({
@@ -144,10 +147,22 @@
                     contents:"",
                     commentTime:null,
                     commentRank:null,
-                    starNum:0
+                    starNum:0,
+                    page: {
+                        countPerPage: 6,
+                        pageNumber: 1,
+                    },
                 }
             },
             computed: {
+                total() {
+                    return Math.ceil(this.ReviewInfo.length / this.page.countPerPage);
+                },
+                filterList() {
+                    var start = (this.page.pageNumber - 1) * this.page.countPerPage;
+                    var end = start + this.page.countPerPage;
+                    return this.ReviewInfo.slice(start, end);
+                }
             },
             mounted: function () {
                 let _this = this;
@@ -179,6 +194,6 @@
                         .catch(error => alert(error));
                 }
             },
-        }).mount("#reviewapp")
+        }).component("paginate", VuejsPaginateNext).mount("#reviewapp")
     </script>
     }
