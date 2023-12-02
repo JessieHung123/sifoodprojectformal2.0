@@ -58,7 +58,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     string photoPath2InDb = await SavePhoto(joinus.PhotosPath2, "photo");
                     string photoPath3InDb = await SavePhoto(joinus.PhotosPath3, "photo");
 
-                                        //創建store實體
+                    //創建store實體
 
                     var store = new Store
                     {
@@ -92,13 +92,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 }
 
                 }
-            // 如果模型狀態無效，返回 JSON 錯誤信息
+            // 如果模型狀態無效，返回錯誤信息
             return "失敗";
  
         }
 
 
-        //儲存照片專用方法
+        //儲存照片專用方法SavePhoto()
         private async Task<string> SavePhoto(IFormFile photo, string folderName)
         {
             if (photo != null)
