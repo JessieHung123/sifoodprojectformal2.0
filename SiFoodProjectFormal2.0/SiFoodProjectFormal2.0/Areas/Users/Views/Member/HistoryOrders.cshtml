@@ -496,6 +496,8 @@
                                     
                                     <!-- select option -->
                                     <form id="orderForm" action="@Url.Action("HistoryOrders", "Member")" method="get">
+                                        <!-- 加入一個隱藏的輸入欄位來保存 searchTerm -->
+                                        <input type="hidden" name="searchTerm" value="@ViewBag.SearchTerm">
                                         <!-- 顯示筆數選擇 -->
                                         <select class="form-select" name="pageSize" aria-label="Default select example" onchange="this.form.submit()">
                                             <option value="" selected>顯示筆數</option>

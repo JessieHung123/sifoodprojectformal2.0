@@ -144,45 +144,43 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public IActionResult HistoryOrders(string searchTerm = null, int pageSize = 20)
         {
             IQueryable<Order> historyOrdersQuery = _context.Orders
-                .Include(o => o.OrderDetails)
-                    .ThenInclude(od => od.Product)
-                .Include(o => o.Status);
+            .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+            .Include(o => o.Status);
 
-            //關鍵字搜尋
+            // 應用關鍵字過濾
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 historyOrdersQuery = historyOrdersQuery.Where(o =>
                     o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)));
             }
 
-            //讓關鍵字搜尋的關鍵字本身停留在搜尋條中
+            // 計算經過關鍵字過濾後的結果數量
+            var filteredTotalCount = historyOrdersQuery.Count();
+            ViewBag.TotalOrdersCount = filteredTotalCount;
+
+            // 在過濾後的結果上應用分頁
+            var historyOrders = historyOrdersQuery
+                .Take(pageSize)
+                .Select(o => new HistoryOrderVM
+                {
+                    // ViewModel的初始化
+                    StoreId = o.StoreId,
+                    OrderId = o.OrderId,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status.StatusName,
+                    Quantity = o.OrderDetails.Sum(od => od.Quantity),
+                    TotalPrice = o.TotalPrice ?? 0,
+                    FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
+                    FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
+                }).ToList();
+
+            //保持搜尋關鍵字在搜尋欄
             ViewBag.SearchTerm = searchTerm;
 
-            // 計算總訂單數
+            //計算總訂單數
             var totalOrdersCount = historyOrdersQuery.Count();
-
-            // 將總訂單數傳遞給View
             ViewBag.TotalOrdersCount = totalOrdersCount;
-
-            //下拉控制顯示筆數
-            var historyOrders = historyOrdersQuery
-                //讓下拉這邊和搜尋結果連動
-                .Where(o => string.IsNullOrEmpty(searchTerm) || o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)))
-                .Take(pageSize)
-
-            // 使用 pageSize 來限制返回的結果數量
-            .Take(pageSize)
-            .Select(o => new HistoryOrderVM
-            {
-                StoreId = o.StoreId,
-                OrderId = o.OrderId,
-                OrderDate = o.OrderDate,
-                Status = o.Status.StatusName,
-                Quantity = o.OrderDetails.Sum(od => od.Quantity),
-                TotalPrice = o.TotalPrice ?? 0,
-                FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
-                FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
-            }).ToList();
 
             return View(historyOrders);
         }
