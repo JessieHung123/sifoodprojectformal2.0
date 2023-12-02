@@ -3,25 +3,25 @@
 
 }
     <h2>訂單列表</h2>
-    <div class="order-category" id="waitfordelivery" style="display:block">
-    <h4 @@click="clickwaitfordelivery">待配送訂單▽&emsp;&emsp;&emsp;共有{{waitForDeliveryOrderSimple.length}}筆</h4>
-        <div class="order-details">
-        <div class="order-details1" v-for="item in waitForDeliveryOrderSimpleFormal" v-show="clicked">
+    <div class="order-category" id="waitfordelivery" >
+    <h4 @@click="toggle">待配送訂單▽&emsp;&emsp;&emsp;共有{{waitForDeliveryOrderSimple.length}}筆</h4>
+        <div class="order-details" v-if="categoryOne">
+            <div class="order-details1" v-for="item in waitForDeliveryOrderSimpleFormal">
                 <p>
                     <div>訂單編號：{{item.orderId}}&emsp;用戶姓名：{{item.userName}}</div>
                     <div>取餐餐廳：{{item.storeName}}</div>
                     <div>取餐地址:{{item.storeAddress}}</div>
                     <div>送達地址:{{item.address}}</div>
-                <div>距離:{{item.distancetext}}&emsp;時間{{item.distancetime}}</div>
+                    <div>距離:{{item.distancetext}}&emsp;時間{{item.distancetime}}</div>
                     <button type="button" class="btn btn-success">查看詳情</button>
                 </p>
             </div>
         </div>
     </div>
     <br>
-    <div class="order-category">
-        <h4>配送中訂單▽</h4>
-        <div class="order-details">
+<div class="order-category">
+    <h4 @@click="toggle">配送中訂單▽</h4>
+        <div class="order-details" v-else>
             <div class="order-details1">
                 <p>
                     台北市信義區&emsp;2023/10/30&nbsp;PM12:30 <br>
@@ -44,7 +44,27 @@
     </div>
 
 @section Scripts{
-   
+   @*  <script>
+        var categories = document.querySelectorAll('.order-category');
+        var firstDetails = categories[0];
+        var secondDetails = categories[1];
+        var details = document.querySelector('.order-details:first-child');
+        var details2 = document.querySelector('.order-details:last-child');
+        // categories.forEach(category => {
+        //     category.addEventListener('click', () => {
+        //         var details = category.querySelector('.order-details');
+        //         details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        //     });
+        // });
+        categories[0].addEventListener('click', () => {
+            details.style.display = 'block';
+            details2.style.display = 'none';
+        });
+        categories[1].addEventListener('click', () => {
+            details.style.display = 'none';
+            details2.style.display = 'block';
+        });
+    </script> *@
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
     @* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI" async defer></script> *@
     <script>
@@ -53,10 +73,10 @@
         var OrderList = Vue.createApp({
             data: function () {
                 return {
+                    categoryOne:true,
                     waitForDeliveryOrderSimple: [],
                     location: [],
                     waitForDeliveryOrderSimpleFormal:[],
-                    clicked:false,
                 }
             },
             mounted: async function () {
@@ -67,8 +87,8 @@
 
             },
             methods: {
-                clickwaitfordelivery() {
-                    this.clicked = !this.clicked
+                toggle() {
+                    this.categoryOne = !this.categoryOne;
                 },
                 async findWaitForDeliveryOrderSimple() {
                     await fetch(`${baseAddress}/api/DeliveryOrderapi/WaitForDeliveryOrderSimple`, { method: "GET" })
@@ -76,7 +96,6 @@
                         .then(data => {
                             this.waitForDeliveryOrderSimple = data;
                             this.location = data.map(o => ({ lat: o.latitude, lng: o.longitude }));
-                            // this.getDistance();
                             console.log(this.location);
                         })
                 },
@@ -92,24 +111,20 @@
                             avoidHighways: true,
                             avoidTolls: true
                         }, this.getDistanceResult);
-                    console.log(this.location);
-                    console.log(setDriverMap.current);
-                    console.log(currentArray);
+                    // console.log(this.location);
+                    // console.log(currentArray);
                 },
                 getDistanceResult(response, status) {
                     if (status !== google.maps.DistanceMatrixStatus.OK) {
                         window.alert('Error was' + status);
                     } else {
+                        console.log(response);
                         for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
-                           
-                            this.waitForDeliveryOrderSimple = this.waitForDeliveryOrderSimple.map(item => ({
-                                ...item,
-                                distance: response.rows[0].elements[i].distance.value,
-                                distancetext: response.rows[0].elements[i].distance.text,
-                                distancetime: response.rows[0].elements[i].duration.text
-                            }));
-                            
+                            this.waitForDeliveryOrderSimple[i].distance = response.rows[0].elements[i].distance.value;
+                            this.waitForDeliveryOrderSimple[i].distancetext = response.rows[0].elements[i].distance.text;
+                            this.waitForDeliveryOrderSimple[i].distancetime = response.rows[0].elements[i].duration.text;
                         }
+                        console.log(this.waitForDeliveryOrderSimple);
                         this.waitForDeliveryOrderSimpleFormal = this.waitForDeliveryOrderSimple.sort((a, b) => a.distance - b.distance);
                     }
                 }
