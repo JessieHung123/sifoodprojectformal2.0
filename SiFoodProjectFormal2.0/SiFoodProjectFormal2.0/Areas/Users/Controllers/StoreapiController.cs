@@ -105,24 +105,9 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 return false;
             }
         }
-        [HttpGet]
-        public IEnumerable<StoreVM> GetStoreOnMap()
-        {
-            return  _context.Stores.Select(s=>new StoreVM { 
-                StoreId = s.StoreId,
-                StoreName = s.StoreName,
-                Description = s.Description,
-                LogoPath = s.LogoPath,
-                City = s.City,
-                Region = s.Region,
-                Latitude= (decimal)s.Latitude,
-                Longitude= (decimal)s.Longitude,
-            });
-
-        }
         public object FilterInMap()
         {
-            return _context.Stores.Include(x => x.Orders).ThenInclude(x => x.Comment).Select(z => new StoreLocationVM
+            return _context.Stores.Include(x => x.Orders).ThenInclude(x => x.Comment).Where(x => x.StoreIsAuthenticated == 1).Select(z => new StoreLocationVM
                 {
                     StoreId = z.StoreId,
                     StoreName = z.StoreName,
