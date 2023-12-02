@@ -2,80 +2,6 @@
     ViewData["Title"] = "外送員";
 
 }
-
-@section Styles{
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #89f1ce;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 420px;
-            margin: 20px auto;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        .order-category {
-            cursor: pointer;
-            background-color: rgb(217, 240, 170);
-        }
-
-        .order-details {
-            display: none;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-top: 20px;
-            overflow: auto;
-            max-height: 200px;
-        }
-
-        .order-details1 {
-            display: 0;
-            padding: 10px;
-            background-color: #ffffff;
-            border: 1px solid #98e99b;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        .order-details2 {
-            display: 0;
-            padding: 10px;
-            background-color: #ffffff;
-            border: 1px solid #7bc896;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        .box0 {
-            background-color: #E8FFF5;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-            .box0 img {
-                height: 40px;
-            }
-
-                .box0 img:last-child,
-                .box0 button {
-                    margin-left: auto;
-                    height: 40px;
-                }
-    </style>
-}
-
     <h2>訂單列表</h2>
     <div class="order-category">
         <h4>待配送訂單▽</h4>
@@ -102,14 +28,14 @@
     <div class="order-category">
         <h4>配送中訂單▽</h4>
         <div class="order-details">
-            <div class="order-details2">
+            <div class="order-details1">
                 <p>
                     台北市信義區&emsp;2023/10/30&nbsp;PM12:30 <br>
                     餐廳：印度風情&emsp;1.00KM<br>
                     訂單編號：O001 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger">配送進度</button>
                 </p>
             </div>
-            <div class="order-details2">
+            <div class="order-details1">
                 <p>
                     台北市中山區&emsp;2023/10/30&nbsp;PM1:30 <br>
                     餐廳：大食堂 &emsp;0.08KM<br>
