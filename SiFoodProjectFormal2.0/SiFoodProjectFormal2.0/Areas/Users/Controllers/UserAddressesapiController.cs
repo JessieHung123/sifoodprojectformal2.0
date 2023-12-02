@@ -97,6 +97,16 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpPost]
         public async Task<string> PostUserAddress([FromForm] UserAddressesVM userAddressesVM)
         {
+            int minLength = 5; 
+            int maxLength = 100;
+            if (string.IsNullOrEmpty(userAddressesVM.UserRegion) || string.IsNullOrEmpty(userAddressesVM.UserCity))
+            {
+                return "請選擇縣市和行政區";
+            }
+            if (userAddressesVM.UserDetailAddress.Length < minLength || userAddressesVM.UserDetailAddress.Length > maxLength)
+            {
+                return $"地址長度為{minLength}到{maxLength}之間";
+            }
             UserAddress userAddresses = new UserAddress
             {
                 UserId = userAddressesVM.UserId,
