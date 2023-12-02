@@ -90,7 +90,7 @@
                                                 <th>是否接單</th>
                                             </tr>
                                         </thead>
-                                        <tbody v-for="item in orders">
+                                        <tbody v-for="item in filterOrders">
                                             <tr>
 
                                                 <td>
@@ -298,7 +298,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="border-top d-md-flex justify-content-between align-items-center p-6">
+                            @* <div class="border-top d-md-flex justify-content-between align-items-center p-6">
                                 <span>Showing 1 to 8 of {{ordersCount}} entries</span>
                                 <nav class="mt-2 mt-md-0">
                                     <ul class="pagination mb-0 ">
@@ -308,6 +308,21 @@
                                         <li class="page-item"><a class="page-link" href="#!">3</a></li>
                                         <li class="page-item"><a class="page-link" href="#!">Next</a></li>
                                     </ul>
+                                </nav>
+                            </div> *@
+                            <div class="border-top d-md-flex justify-content-between align-items-center p-6">
+                                <span>Showing 1 to 8 of {{ordersCount}} entries</span>
+                                <nav class="mt-2 mt-md-0">
+                                    <paginate :page-count="total"
+                                              :click-handler="pageClick"
+                                              :force-page="page.pageNumber"
+                                              :prev-text="'<'"
+                                              :next-text="'>'"
+                                              :page-link-class="'page-link mx-1'"
+                                              :prev-link-class="'page-link mx-1'"
+                                              :next-link-class="'page-link mx-1'"
+                                              :container-class="'pagination justify-content-center'">
+                                    </paginate>
                                 </nav>
                             </div>
                         </div>
@@ -327,6 +342,7 @@
 
         <!-- Theme JS -->
         <script src="~/assets/js/theme.min.js"></script>
+        <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
         <script>
             var baseAddress = "https://localhost:7042";
 
@@ -336,16 +352,33 @@
                         orders: [],
                         orderDetails: [],
                         searchKeyWords:"",
-                        ordersCount : 0
+                        ordersCount : 0,
+                        page: {
+                            countPerPage: 2,
+                            pageNumber: 1,
+                        },
                     }
                 },
                 computed: {
+                    total() {
+                        let _this = this;
+                        return Math.ceil(_this.ordersCount / this.page.countPerPage);
+                    },
+                    filterOrders() {
+                        let _this = this;
+                        var start = (this.page.pageNumber - 1) * this.page.countPerPage;
+                        var end = start + this.page.countPerPage;
+                        return _this.orders.slice(start, end);
+                    },
                 },
                 mounted: function () {
                     let _this = this;
                     _this.getOrder();
                 },
                 methods: {
+                    pageClick(num) {
+                        this.page.pageNumber = num;
+                    },
                     searchOrder() {
                         this.getOrder();
                     },
@@ -413,13 +446,14 @@
                             })
                             .then(data => {
                                 _this.orders = data;
+                                _this.page.pageNumber = 1;
                                 _this.ordersCount = _this.orders.length;
                             }).catch(error => {
                                 alert(error);
                             });
                     },
                 }
-            }).mount("#orderApp")
+            }).component("paginate", VuejsPaginateNext).mount("#orderApp")
         </script>
     }
 
