@@ -456,10 +456,9 @@
         <div class="container">
             <!-- row -->
             <div class="row">
-                <!--以下div是原本的左邊側邊欄，先註解掉-->
-
+                <!--以下div是原本的左邊側邊欄-->
                 <!-- col -->
-                <div class="col-12">
+                @* <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center d-md-none py-4">
                         <!-- heading -->
                         <h3 class="fs-5 mb-0">Account Setting</h3>
@@ -516,10 +515,10 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> *@
 
                 <!--改加PartialView-->
-                @* <partial name="_MembershipPartial"></partial> *@
+                <partial name="_MembershipPartial"></partial>
               
                 <div class="col-lg-9 col-md-8 col-12">
                     <div class="py-6 p-md-6 p-lg-10">
@@ -534,7 +533,7 @@
                                         <p class="mb-0">共 <span class="text-dark">@ViewBag.TotalOrdersCount </span> 筆</p>
                                     </div>
 
-                                    <!-- 自製搜尋 start -->
+                                    <!-- text搜尋-->
                                     <div class="col-xxl-4 col-lg-4 d-none d-lg-block">
                                         <form action="@Url.Action("HistoryOrders", "Member")" method="get">
                                             <div class="input-group">
@@ -552,69 +551,40 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <!-- 自製搜尋 end-->
-                                    <!-- icon -這段太難做，先註解掉->
-                                    @* <div class="d-md-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="">
-                                                <a href="../../pages/shop-list.html" class="text-muted me-3"><i class="bi bi-list-ul"></i></a>
-                                                <a href="../../pages/shop-grid.html" class=" me-3 active"><i class="bi bi-grid"></i></a>
-                                                <a href="../../pages/shop-grid-3-column.html" class="me-3 text-muted"><i class="bi bi-grid-3x3-gap"></i></a>
-                                            </div>
-                                            <div class="ms-2 d-lg-none">
-                                                <a class="btn btn-outline-gray-400 text-muted" data-bs-toggle="offcanvas" href="#offcanvasCategory" role="button" aria-controls="offcanvasCategory">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-filter me-2">
-                                                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                                                    </svg>
-                                                    Filters
-                                                </a>
-                                            </div>
-                                        </div> *@
-                                        <div class="d-flex mt-2 mt-lg-0">
-                                            <div class="me-2 flex-grow-1">
-                                                <!-- 顯示筆數 -->
+                                    
+                                    <!-- select option -->
+                                    <form id="orderForm" action="@Url.Action("HistoryOrders", "Member")" method="get">
+                                        <!-- 顯示筆數選擇 -->
+                                        <select class="form-select" name="pageSize" aria-label="Default select example" onchange="this.form.submit()">
+                                            <option value="" selected>顯示筆數</option>
+                                            <option value="5">顯示: 5</option>
+                                            <option value="10">顯示:10</option>
+                                            <option value="20">顯示:20</option>
+                                            <option value="30">顯示:30</option>
+                                        </select>
+                                    </form>
+
+                                    <!-- Sort顯示 -->
+                                    <div>
                                         <!-- select option -->
-                                        <form id="orderForm" action="@Url.Action("HistoryOrders", "Member")" method="get">
-                                            <!-- 其他搜索欄位... -->
-                                            <!-- 顯示筆數選擇 -->
-                                            <select class="form-select" name="pageSize" aria-label="Default select example" onchange="this.form.submit()">
-                                                <option value="" selected>顯示筆數</option>
-                                                <option value="5">顯示: 5</option>
-                                                <option value="10">顯示:10</option>
-                                                <option value="20">顯示:20</option>
-                                                <option value="30">顯示:30</option>
-                                            </select>
-                                        </form>
-                                        <div>
-                                            <!-- Sort顯示 -->
-                                            <!-- select option -->
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>Sort by: 訂單狀態</option>
-                                                <option value="Low to High">金額：由低到高</option>
-                                                <option value="High to Low"> 金額: 由高到低</option>
-                                                <option value="Release Date"> 訂購日期：由新到舊</option>
-                                                <option value="Avg. Rating"> 訂購日期：由舊到新</option>
-                                            </select>
-                                        </div>
-
-
-                                            </div>
-                                            
-                                        </div>
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected>Sort by: 訂單狀態</option>
+                                            <option value="Low to High">金額：由低到高</option>
+                                            <option value="High to Low"> 金額: 由高到低</option>
+                                            <option value="Release Date"> 訂購日期：由新到舊</option>
+                                            <option value="Avg. Rating"> 訂購日期：由舊到新</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <br>
-
-                        <div class="table-responsive-xxl border-0">
+                        <div class="mt-10 table-responsive-xxl border-0">
                             <!-- Table -->
                             <table class="table mb-0 text-nowrap table-centered ">
                                 <!-- Table Head -->
                                 <thead class="bg-light">
                                     <tr>
+                                        <th>明細|評論</th>
                                         <th>&nbsp;</th>
                                         <th>商品</th>
                                         <th>訂單編號</th>
@@ -622,7 +592,7 @@
                                         <th>件數</th>
                                         <th>訂單狀態</th>
                                         <th>金額</th>
-                                        <th>明細|評論</th>
+                                        
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -630,6 +600,11 @@
                                     @foreach (var order in Model)
                                     {
                                         <tr>
+                                            <td class="text-muted align-middle border-top-0">
+                                                <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View">
+                                                    <i class="feather-icon icon-eye"></i>
+                                                </a>
+                                            </td>
                                             <td class="align-middle border-top-0 w-0">
                                                 <a href="#">
                                                     <img src="@Url.Content($"{order.FirstProductPhotoPath}")" alt="Ecommerce" class="icon-shape icon-xl">
@@ -651,7 +626,7 @@
                                                 @order.Quantity
                                             </td>
                                             <td class="align-middle border-top-0">
-                                                    <!--依據不同訂單裝狀態給顏色-->
+                                                <!--依據不同訂單裝狀態給顏色-->
                                                 @{
                                                     string badgeClass = order.Status switch
                                                     {
@@ -660,7 +635,7 @@
                                                         "已取消" => "badge text-bg-dark",
 
                                                         // 預設值
-                                                        _ => "badge text-bg-primary" 
+                                                        _ => "badge text-bg-primary"
                                                     };
                                                 }
                                                 <span class="@badgeClass">@order.Status</span>
@@ -668,19 +643,30 @@
                                             <td class="align-middle border-top-0">
                                                 $@order.TotalPrice
                                             </td>
-                                            <td class="text-muted align-middle border-top-0">
-                                                <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View">
-                                                    <i class="feather-icon icon-eye"></i>
-                                                </a>
-                                            </td>
+                                            
                                         </tr>
                                     }
                                 </tbody>
                             </table>
                         </div>
+                    
+                    
                     </div>
                 </div>
+                
+
+
             </div>
+            <br>
+
+            
+            
+                   
+
+              
+
+           
+
         </div>
     </section>
 
