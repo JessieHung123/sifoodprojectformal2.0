@@ -21,14 +21,16 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.Controllers
         {
 
             //Distance 前端算後端算?
-            return _context.Orders.Where(o => o.StatusId == 2).Include(o => o.User).Include(o => o.Store).Select(o => new DeliveryOrderVM
+            return _context.Orders.Where(o => o.StatusId == 2 && o.DeliveryMethod=="外送").Include(o => o.User).Include(o => o.Store).Select(o => new DeliveryOrderVM
             {
                 OrderId = o.OrderId,
                 OrderDate = o.OrderDate.ToString(),
                 Address = o.Address,
                 StoreName = o.Store.StoreName,
+                StoreAddress=o.Store.Address,
                 UserName = o.User.UserName,
-
+                Latitude=(decimal)o.Store.Latitude,
+                Longitude= (decimal)o.Store.Longitude
             });
 
             

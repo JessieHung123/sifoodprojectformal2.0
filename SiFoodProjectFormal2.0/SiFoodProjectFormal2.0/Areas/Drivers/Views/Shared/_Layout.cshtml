@@ -131,16 +131,9 @@
     <script src="~/assets/js/theme.min.js" asp-append-version="true"></script>
     <script src="~/assets/libs/jquery-countdown/dist/jquery.countdown.min.js" asp-append-version="true"></script>
     <script src="~/assets/js/vendors/countdown.js" asp-append-version="true"></script>
-    <script src="~/assets/libs/slick-carousel/slick/slick.min.js" asp-append-version="true"></script>
-    <script src="~/assets/js/vendors/slick-slider.js" asp-append-version="true"></script>
-    <script src="~/assets/libs/tiny-slider/dist/min/tiny-slider.js" asp-append-version="true"></script>
-    <script src="~/assets/js/vendors/tns-slider.js" asp-append-version="true"></script>
-    <script src="~/assets/js/vendors/zoom.js" asp-append-version="true"></script>
     <script src="~/assets/js/vendors/increment-value.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    @await RenderSectionAsync("Scripts", required: false)
-
+    
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI" async defer></script>
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
@@ -196,6 +189,7 @@
         }).mount("#driverMap");
 
     </script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
 

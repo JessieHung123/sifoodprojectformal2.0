@@ -7,7 +7,7 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.NewFolder3
         public string OrderId { get; set; } = null!;
 
         public string? Address { get; set; }
-
+        public string? StoreAddress { get; set; }
         public string OrderDate { get; set; }
         public string StoreId { get; set; } = null!;
 
@@ -24,7 +24,8 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.NewFolder3
 
         public IEnumerable<OrderDetailsVM> OrderDetails { get; set; }
 
-        public string Distance {  get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
 
     }
 }
