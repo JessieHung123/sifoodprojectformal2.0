@@ -59,7 +59,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
                 Products = z.Products.Where(p => p.RealeasedTime.Date == today &&
                                                  p.RealeasedTime.TimeOfDay < currentTime &&
-                                                 p.SuggestPickEndTime > currentTime)
+                                                 p.SuggestPickEndTime > currentTime &&
+                                                 p.IsDelete == 1)
                                      .Select(p => new ProductsVM
                                      {
                                          UnitPrice = p.UnitPrice,
@@ -74,7 +75,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
                 CategoryList = z.Products.Where(p => p.RealeasedTime.Date == today &&
                                                      p.RealeasedTime.TimeOfDay < currentTime &&
-                                                     p.SuggestPickEndTime > currentTime)
+                                                     p.SuggestPickEndTime > currentTime &&
+                                                     p.IsDelete == 1)
                                          .Select(y => y.Category.CategoryName).Distinct().ToArray(),
 
                 Comment = z.Orders
@@ -149,6 +151,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                             p.RealeasedTime.Date == today &&
                             p.RealeasedTime.TimeOfDay < currentTime &&
                             p.SuggestPickEndTime > currentTime &&
+                            p.IsDelete == 1 &&
                             (string.IsNullOrEmpty(query) ||
                              p.ProductName.Contains(query) ||
                              p.Category.CategoryName.Contains(query)))
