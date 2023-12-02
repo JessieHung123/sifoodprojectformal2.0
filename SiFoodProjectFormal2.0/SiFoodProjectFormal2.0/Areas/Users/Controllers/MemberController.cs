@@ -124,8 +124,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             //await _context.SaveChangesAsync();
 
             // 密碼更新成功後，你可能想要重導向用戶到個人資料頁面，或顯示一個成功消息
-            TempData["SuccessMessage"] = "密碼更新成功";
-            return RedirectToAction("Profile");
+            //TempData["SuccessMessage"] = "密碼更新成功";
+           return RedirectToAction("Profile");
         }
 
 
@@ -140,7 +140,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return View();
         }
 
-
+        //=========歷史訂單========//
         public IActionResult HistoryOrders(string searchTerm = null, int pageSize = 20)
         {
             IQueryable<Order> historyOrdersQuery = _context.Orders
@@ -158,7 +158,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             // 計算總訂單數
             var totalOrdersCount = historyOrdersQuery.Count();
 
-            // 將總訂單數傳遞給視圖
+            // 將總訂單數傳遞給View
             ViewBag.TotalOrdersCount = totalOrdersCount;
 
             //下拉控制顯示筆數
