@@ -56,12 +56,12 @@
                                     <div class="col-lg-2 col-md-4 col-12">
                                         <!-- main -->
                                         <select class="form-select" v-model="starNum" @@change="selectStars">
-                                            <option selected="">篩選評分</option>
-                                            <option value="1">一星</option>
-                                            <option value="2">二星</option>
-                                            <option value="3">三星</option>
-                                            <option value="4">四星</option>
-                                            <option value="5">五星</option>
+                                            <option :value="0">篩選評分</option>
+                                            <option :value="1">一星</option>
+                                            <option :value="2">二星</option>
+                                            <option :value="3">三星</option>
+                                            <option :value="4">四星</option>
+                                            <option :value="5">五星</option>
                                         </select>
                                     </div>
                                 </div>
@@ -146,7 +146,7 @@
                     contents:"",
                     commentTime:null,
                     commentRank:null,
-                    starNum:null
+                    starNum:0
                 }
             },
             computed: {

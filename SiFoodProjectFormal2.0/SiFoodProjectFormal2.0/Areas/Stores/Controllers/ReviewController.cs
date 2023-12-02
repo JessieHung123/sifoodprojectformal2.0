@@ -72,7 +72,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                 .Include(p => p.User)
                 .Where(x => x.Comment != null)
                 .Where(e => e.StoreId == targetStoreId);
-            if (num != null)
+            if (num != 0)
             {
                 review = review.Where(e => e.Comment.CommentRank == num);
             }
