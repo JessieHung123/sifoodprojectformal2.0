@@ -58,15 +58,15 @@
                         <!-- Image on Top -->
                         <div class="card col-4 border border-success" v-for="item in group">
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-5">
                                    <img :src="item.logoPath" class="card-img-top img-fluid" />
                             </div>
-                                    <div class="card-body col-6 align-content-between ">
+                                    <div class="card-body col-7 align-content-between ">
                                 <h5 class="card-title text-primary">{{item.storeName}}</h5>
                                 <p class="card-text text-body">
                                     {{item.description}}
                                 </p>
-                                        <p class="card-text">
+                                
                                     <div class="d-flex align-items-center align-bottom mt-3">
                                         <div>
                                             <small class="text-warning">
@@ -74,7 +74,7 @@
                                             </small> <span class="text-muted">{{item.commentRank}} ({{item.commentCount}})</span>
                                         </div>
                                     </div>
-                                </p>
+                                
                             </div>
                            </div>
 
