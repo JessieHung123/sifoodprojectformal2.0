@@ -201,7 +201,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary">確定</button>
+                                                <button type="button" class="btn btn-primary" @@click="deleteConfirm(item)">確定</button>
                                             </div>
                                         </div>
                                     </div>
@@ -428,7 +428,10 @@
                 deleteCartItem(item) {
                     let _this = this;
                     let checkagain = $('#deleteCartModal').modal('show');
-                    if (checkagain == true) {
+                    $('.modal-backdrop').remove();
+                   
+                },
+                deleteConfirm(item) {
                         fetch(`${baseAddress}/api/CartVMapi/DeleteCartItem`,
                             {
                                 method: "DELETE",
@@ -444,14 +447,10 @@
                                 }
                             })
                             .catch(error => {
-                                // Swal.fire({
-                                //     title: "商品項目刪除失敗!",
-                                //     icon: "warning"
-                                // });
                                 $('#deleteNotOK').modal('show');
                             })
-                    };
-                },
+                  
+                }
             },
         }).mount("#header")
     </script>
