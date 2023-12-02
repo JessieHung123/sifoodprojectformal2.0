@@ -43,7 +43,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             var CheckOutData = _context.Carts.Include(x => x.User).Where(y => y.UserId == id).Select(y => new CheckOutVM
             {
                 UserName = y.User.UserName,
-               // UserAddress = y.User.UserAddresses.Select(y => y.UserDetailAddress).ToList(),
                 UserAddressList = (List<AddressItemVM>)y.User.UserAddresses.Select(x => new AddressItemVM
                 {
                     UserAddress = x.UserDetailAddress,
