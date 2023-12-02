@@ -456,6 +456,8 @@
         <div class="container">
             <!-- row -->
             <div class="row">
+                <!--以下div是原本的左邊側邊欄，先註解掉-->
+
                 <!-- col -->
                 <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center d-md-none py-4">
@@ -469,6 +471,7 @@
                     </div>
                 </div>
                 <!-- col -->
+              
                 <div class="col-lg-3 col-md-4 col-12 border-end  d-none d-md-block">
                     <div class="pt-10 pe-lg-10">
                         <!-- nav -->
@@ -514,6 +517,10 @@
                         </ul>
                     </div>
                 </div>
+
+                <!--改加PartialView-->
+                @* <partial name="_MembershipPartial"></partial> *@
+              
                 <div class="col-lg-9 col-md-8 col-12">
                     <div class="py-6 p-md-6 p-lg-10">
                         <!-- heading -->
@@ -543,7 +550,6 @@
                                                     </button>
                                                 </span>
                                             </div>
-
                                         </form>
                                     </div>
                                     <!-- 自製搜尋 end-->
@@ -569,31 +575,33 @@
                                         <div class="d-flex mt-2 mt-lg-0">
                                             <div class="me-2 flex-grow-1">
                                                 <!-- 顯示筆數 -->
-                                                <!-- select option -->
-                                                <form id="orderForm" action="@Url.Action("HistoryOrders", "Member")" method="get">
-                                                    <!-- 其他搜索欄位... -->
-                                                    <!-- 顯示筆數選擇 -->
-                                                    <select class="form-select" name="pageSize" aria-label="Default select example" onchange="this.form.submit()">
-                                                        <option value="" selected>顯示筆數</option>
-                                                        <option value="5">顯示: 5</option>
-                                                        <option value="10">顯示:10</option>
-                                                        <option value="20">顯示:20</option>
-                                                        <option value="30">顯示:30</option>
-                                                    </select>
-                                                </form>
-                                            </div>
-                                            <div>
+                                        <!-- select option -->
+                                        <form id="orderForm" action="@Url.Action("HistoryOrders", "Member")" method="get">
+                                            <!-- 其他搜索欄位... -->
+                                            <!-- 顯示筆數選擇 -->
+                                            <select class="form-select" name="pageSize" aria-label="Default select example" onchange="this.form.submit()">
+                                                <option value="" selected>顯示筆數</option>
+                                                <option value="5">顯示: 5</option>
+                                                <option value="10">顯示:10</option>
+                                                <option value="20">顯示:20</option>
+                                                <option value="30">顯示:30</option>
+                                            </select>
+                                        </form>
+                                        <div>
+                                            <!-- Sort顯示 -->
+                                            <!-- select option -->
+                                            <select class="form-select" aria-label="Default select example">
+                                                <option selected>Sort by: 訂單狀態</option>
+                                                <option value="Low to High">金額：由低到高</option>
+                                                <option value="High to Low"> 金額: 由高到低</option>
+                                                <option value="Release Date"> 訂購日期：由新到舊</option>
+                                                <option value="Avg. Rating"> 訂購日期：由舊到新</option>
+                                            </select>
+                                        </div>
 
-                                                <!-- Sort顯示 -->
-                                                <!-- select option -->
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Sort by: 訂單狀態</option>
-                                                    <option value="Low to High">金額：由低到高</option>
-                                                    <option value="High to Low"> 金額: 由高到低</option>
-                                                    <option value="Release Date"> 訂購日期：由新到舊</option>
-                                                    <option value="Avg. Rating"> 訂購日期：由舊到新</option>
-                                                </select>
+
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
