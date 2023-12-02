@@ -2,7 +2,7 @@
 {
     public class AddressItemVM
     {
-        public string? UserAdress { get; set; }
+        public string? UserAddress { get; set; }
         public bool? AdressIsDefault { get; set; }
     }
 }

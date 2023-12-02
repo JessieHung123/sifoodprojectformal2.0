@@ -153,7 +153,7 @@
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                     <div class="mt-5">
                                         <div class="row">
-                                            <div class="col-lg-6 col-12 mb-4  d-flex align-items-stretch" v-for="(item, index) in checkoutData.userAddress">
+                                            <div class="col-lg-6 col-12 mb-4  d-flex align-items-stretch" v-for="(item, index) in checkoutData.userAddressList">
                                                 <div class="card card-body p-6">
                                                     <div class="form-check mb-4">
                                                         <input class="form-check-input" type="radio" name="flexRadioDefault" :id="'homeRadio' + index" @@click="sendAddress(item)">
@@ -163,11 +163,12 @@
                                                     </div>
                                                     <!-- address -->
                                                     <address>
-                                                        <div>{{item}}</div>
+                                                        <div>{{item.userAddress}}</div>
                                                     </address>
-                                                    <div>
+                                                    <div v-if="item.adressIsDefault == true">
                                                         <span class="text-danger">預設地址</span>
                                                     </div>
+                                                    <div v-else></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -359,7 +360,7 @@
                     var _this = this;
                     axios.get(`/Transaction/GetCheckoutData`)
                         .then(response => {
-                            //alert(JSON.stringify(response.data))
+                            alert(JSON.stringify(response.data))
                             _this.checkoutDatas = response.data;
                             _this.checkoutData = response.data[0];
                         })
