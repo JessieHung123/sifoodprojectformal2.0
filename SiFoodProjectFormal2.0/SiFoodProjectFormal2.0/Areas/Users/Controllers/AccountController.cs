@@ -32,7 +32,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             return View();
         }
-        [Route("/Account/LoginRegister")]
+        
         [HttpPost]
         public async Task<IActionResult> LoginRegister(LoginVM model)
         {
