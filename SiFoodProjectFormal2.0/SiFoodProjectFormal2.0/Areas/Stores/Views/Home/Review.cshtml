@@ -86,13 +86,11 @@
                                                     <span class="text-truncate">{{item.contents}}</span>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-warning"></i></span>
-                                                        <span><i class="bi bi-star-fill text-light"></i></span>
-                                                    </div>
+                                                    <span :class="{'bi bi-star-fill text-warning': item.commentRank >= 1, 'bi bi-star-fill text-light': item.commentRank < 1}"></span>
+                                                    <span :class="{'bi bi-star-fill text-warning': item.commentRank >= 2, 'bi bi-star-fill text-light': item.commentRank < 2}"></span>
+                                                    <span :class="{'bi bi-star-fill text-warning': item.commentRank >= 3, 'bi bi-star-fill text-light': item.commentRank < 3}"></span>
+                                                    <span :class="{'bi bi-star-fill text-warning': item.commentRank >= 4, 'bi bi-star-fill text-light': item.commentRank < 4}"></span>
+                                                    <span :class="{'bi bi-star-fill text-warning': item.commentRank >= 5, 'bi bi-star-fill text-light': item.commentRank < 5}"></span>
                                                 </td>
                                                 <td>
                                                     {{item.commentTime}}
