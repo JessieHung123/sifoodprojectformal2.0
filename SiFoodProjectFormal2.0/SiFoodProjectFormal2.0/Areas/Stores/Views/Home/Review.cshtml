@@ -49,19 +49,19 @@
                                 <div class="row justify-content-between">
                                     <div class="col-md-4 col-12 mb-2 mb-md-0">
                                         <!-- form -->
-                                        <form class="d-flex" role="search">
-                                            <input class="form-control" type="search" placeholder="搜尋評論" aria-label="Search">
-                                        </form>
+                                        <div class="d-flex" role="search">
+                                            <input class="form-control" type="search" placeholder="搜尋評論" aria-label="Search" v-model.lazy="searchText" @@keyup.enter="startSeach">
+                                        </div>
                                     </div>
                                     <div class="col-lg-2 col-md-4 col-12">
                                         <!-- main -->
-                                        <select class="form-select">
+                                        <select class="form-select" v-model="starNum" @@change="selectStars">
                                             <option selected="">篩選評分</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                            <option value="4">Four</option>
-                                            <option value="5">Five</option>
+                                            <option value="1">一星</option>
+                                            <option value="2">二星</option>
+                                            <option value="3">三星</option>
+                                            <option value="4">四星</option>
+                                            <option value="5">五星</option>
                                         </select>
                                     </div>
                                 </div>
@@ -70,7 +70,7 @@
                             <div class="card-body p-0">
                                 <!-- table -->
                                 <div class="table-responsive">
-                                    <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap" v-for="item in ReviewInfo">
+                                    <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap" >
                                         <thead class="bg-light">
                                             <tr>
                                                 <th>客戶名稱</th>
@@ -79,11 +79,11 @@
                                                 <th>日期</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-for="item in ReviewInfo">
                                             <tr>
                                                 <td>{{item.userName}}</td>
                                                 <td>
-                                                    <span class="text-truncate">Nice &amp; fresh oranges with value for money..</span>
+                                                    <span class="text-truncate">{{item.contents}}</span>
                                                 </td>
                                                 <td>
                                                     <div>
@@ -95,7 +95,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    23 Nov,2022
+                                                    {{item.commentTime}}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -133,32 +133,46 @@
     <script src="/_framework/aspnetcore-browser-refresh.js"></script>
     <script type="text/javascript" src="/_vs/browserLink" async="async" id="__browserLink_initializationData" data-requestid="3089df0821034d5c9bccdfdb59cbdbac" data-requestmappingfromserver="false" data-connecturl="http://localhost:61567/549414066c8c4b829972c6f5055a8617/browserLink"></script>
     <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
     <script>
         var baseAddress = "https://localhost:7042";
         const StoreMainApp = Vue.createApp({
             data: function () {
                 return {
                     ReviewInfo: [],
+                    searchText:"",
                     userName:"",
                     contents:"",
-                    commentTime:"",
-                    commentRank:"",
+                    commentTime:null,
+                    commentRank:null,
+                    starNum:null
                 }
             },
             computed: {
             },
             mounted: function () {
                 let _this = this;
-                _this.getReviewAPI();
+                _this.startSeach();
             },
             methods: {
                 startSeach() {
                     let _this = this;
+                    console.log(`Search Text: ${_this.searchText}`);
                     fetch(`${baseAddress}/api/Review/Filter?text=${_this.searchText}`)
                         .then(response => response.json())
                         .then(data => _this.ReviewInfo = data)
                         .catch(error => alert(error));
                 },
+                selectStars() {
+                    let _this = this;
+                    console.log(`Star Number: ${_this.starNum}`);
+                    fetch(`${baseAddress}/api/Review/SelectStars?num=${_this.starNum}`)
+                        .then(response => response.json())
+                        .then(data => _this.ReviewInfo = data)
+                        .catch(error => alert(error));
+                },
+
                 getReviewAPI: function () {
                     let _this = this;
                     fetch(`${baseAddress}/api/Review/getAll`)

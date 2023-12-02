@@ -16,12 +16,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.ViewModels
 
         public string StoreId { get; set; } = null!;
 
-        public virtual Order Order { get; set; } = null!;
-
-        public virtual Store Store { get; set; } = null!;
-
         public string? UserName { get; set; }
-
-
     }
 }
