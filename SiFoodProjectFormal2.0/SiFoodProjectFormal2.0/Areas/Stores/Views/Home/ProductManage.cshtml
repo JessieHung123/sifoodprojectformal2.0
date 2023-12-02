@@ -57,7 +57,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="item in ProductInfo">
+                                            <tr v-for="item in filterList">
                                                 <td>
                                                     <a href="#!">
                                                         <img :src="item.photoPath" alt=""
@@ -81,13 +81,16 @@
                             <div class=" border-top d-md-flex justify-content-between align-items-center px-6 py-6">
                                 <span>Showing 1 to 8 of 12 entries</span>
                                 <nav class="mt-2 mt-md-0">
-                                    <ul class="pagination mb-0 ">
-                                        <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                                        <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                    </ul>
+                                    <paginate :page-count="total"
+                                              :click-handler="pageClick"
+                                              :force-page="page.pageNumber"
+                                              :prev-text="'<'"
+                                              :next-text="'>'"
+                                              :page-link-class="'page-link mx-1'"
+                                              :prev-link-class="'page-link mx-1'"
+                                              :next-link-class="'page-link mx-1'"
+                                              :container-class="'pagination justify-content-center'">
+                                    </paginate>
                                 </nav>
                             </div>
                         </div>
@@ -230,6 +233,7 @@
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="~/assets/js/theme.min.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
     <script>
         var baseAddress = "https://localhost:7042";
         const StoreMainApp = Vue.createApp({
@@ -246,15 +250,30 @@
                     categoryId:null,
                     suggestPickUpTime:null,
                     suggestPickEndTime:null,
+                    page: {
+                        countPerPage: 6,
+                        pageNumber: 1,
+                    },
                 }
             },
             computed: {
+                total() {
+                    return Math.ceil(this.ProductInfo.length / this.page.countPerPage);
+                },
+                filterList() {
+                    var start = (this.page.pageNumber - 1) * this.page.countPerPage;
+                    var end = start + this.page.countPerPage;
+                    return this.ProductInfo.slice(start, end);
+                }
             },
             mounted: function () {
                 let _this = this;
                 _this.startSeach();
             },
             methods: {
+                pageClick(num) {
+                    this.page.pageNumber = num;
+                },
                 startSeach() {
                     let _this = this;
                     fetch(`${baseAddress}/api/ProductManage/Filter?text=${_this.searchText}`)
@@ -377,6 +396,6 @@
                         });
                 }
             },
-        }).mount("#productapp")
+        }).component("paginate", VuejsPaginateNext).mount("#productapp")
     </script>
 }
