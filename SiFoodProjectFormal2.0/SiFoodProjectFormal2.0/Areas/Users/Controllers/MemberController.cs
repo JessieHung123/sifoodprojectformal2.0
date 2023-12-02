@@ -155,6 +155,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)));
             }
 
+            //讓關鍵字搜尋的關鍵字本身停留在搜尋條中
+            ViewBag.SearchTerm = searchTerm;
+
             // 計算總訂單數
             var totalOrdersCount = historyOrdersQuery.Count();
 
@@ -163,6 +166,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             //下拉控制顯示筆數
             var historyOrders = historyOrdersQuery
+                //讓下拉這邊和搜尋結果連動
+                .Where(o => string.IsNullOrEmpty(searchTerm) || o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)))
+                .Take(pageSize)
 
             // 使用 pageSize 來限制返回的結果數量
             .Take(pageSize)

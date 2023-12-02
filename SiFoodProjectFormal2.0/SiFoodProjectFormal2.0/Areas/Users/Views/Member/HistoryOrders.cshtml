@@ -531,7 +531,9 @@
                                     <div class="col-xxl-4 col-lg-4 d-none d-lg-block">
                                         <form action="@Url.Action("HistoryOrders", "Member")" method="get">
                                             <div class="input-group">
-                                                <input class="form-control rounded" name="searchTerm" type="search" placeholder="Search for products">
+                                                @* <!--維持搜尋關鍵字於欄位中: 加上 value="@ViewBag.SearchTerm"--> *@
+                                                <input class="form-control rounded" name="searchTerm" type="search"
+                                                          placeholder="Search for products" value="@ViewBag.SearchTerm">
                                                 <span class="input-group-append">
                                                     <button class="btn bg-white border border-start-0 ms-n10 rounded-0 rounded-end" type="submit">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
@@ -641,7 +643,19 @@
                                                 @order.Quantity
                                             </td>
                                             <td class="align-middle border-top-0">
-                                                <span class="badge style="依據不同狀態給顏色">@order.Status</span>
+                                                    <!--依據不同訂單裝狀態給顏色-->
+                                                @{
+                                                    string badgeClass = order.Status switch
+                                                    {
+                                                        "已送達" => "badge text-bg-secondary",
+                                                        "已領取" => "badge text-bg-info",
+                                                        "已取消" => "badge text-bg-dark",
+
+                                                        // 預設值
+                                                        _ => "badge text-bg-primary" 
+                                                    };
+                                                }
+                                                <span class="@badgeClass">@order.Status</span>
                                             </td>
                                             <td class="align-middle border-top-0">
                                                 $@order.TotalPrice
