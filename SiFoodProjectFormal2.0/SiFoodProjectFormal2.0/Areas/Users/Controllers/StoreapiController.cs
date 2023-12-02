@@ -28,7 +28,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         public object Main2()
         {
             return _context.Stores.Include(x => x.Products).ThenInclude(x => x.Category).Include(x => x.Orders)
-                .ThenInclude(x => x.Comment)
+                .ThenInclude(x => x.Comment).Where(x=>x.StoreIsAuthenticated==1)
                 .Select(z => new StoreVM
                 {
                     StoreId = z.StoreId,
