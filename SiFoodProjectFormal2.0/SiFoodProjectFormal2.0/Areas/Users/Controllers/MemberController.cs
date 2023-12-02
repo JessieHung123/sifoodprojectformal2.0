@@ -141,7 +141,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
         //=========歷史訂單========//
-        public IActionResult HistoryOrders(string searchTerm = null, int pageSize = 20)
+        public IActionResult HistoryOrders(string searchTerm = null, string sortOption = "Status" ,int pageSize = 20)
         {
             IQueryable<Order> historyOrdersQuery = _context.Orders
             .Include(o => o.OrderDetails)
@@ -156,8 +156,40 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             }
 
             // 計算經過關鍵字過濾後的結果數量
-            var filteredTotalCount = historyOrdersQuery.Count();
-            ViewBag.TotalOrdersCount = filteredTotalCount;
+            //var filteredTotalCount = historyOrdersQuery.Count();
+            //ViewBag.TotalOrdersCount = filteredTotalCount;
+                        
+            //保持搜尋關鍵字在搜尋欄
+            ViewBag.SearchTerm = searchTerm;
+
+            //計算總訂單數
+            var totalOrdersCount = historyOrdersQuery.Count();
+            ViewBag.TotalOrdersCount = totalOrdersCount;
+
+
+            // Sort排序
+            switch (sortOption)
+            {
+                case "Status":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.Status.StatusName);
+                    break;
+                case "Low to High":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.TotalPrice);
+                    break;
+                case "High to Low":
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.TotalPrice);
+                    break;
+                case "Newest":
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.OrderDate);
+                    break;
+                case "Oldest":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.OrderDate);
+                    break;
+                default:
+                    // 默認排序：按訂購日期由新到舊排序
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.OrderDate);
+                    break;
+            }
 
             // 在過濾後的結果上應用分頁
             var historyOrders = historyOrdersQuery
@@ -174,13 +206,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
                     FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
                 }).ToList();
-
-            //保持搜尋關鍵字在搜尋欄
-            ViewBag.SearchTerm = searchTerm;
-
-            //計算總訂單數
-            var totalOrdersCount = historyOrdersQuery.Count();
-            ViewBag.TotalOrdersCount = totalOrdersCount;
 
             return View(historyOrders);
         }

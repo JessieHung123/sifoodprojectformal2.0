@@ -164,10 +164,9 @@
             <!-- row -->
             <div class="row">
                 <!-- col -->
-
                 <!--改加PartialView-->
                 <partial name="_MembershipPartial"></partial>
-              
+
                 <!--Title-->
                 <div class="col-lg-9 col-md-8 col-12">
                     <div class="py-6 p-md-6 p-lg-10">
@@ -203,7 +202,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                                                                                            
+
                                     <!-- select option -->
                                     <form id="orderForm" action="@Url.Action("HistoryOrders", "Member")" method="get">
                                         <!-- 加入一個隱藏的輸入欄位來保存 searchTerm -->
@@ -220,14 +219,17 @@
 
                                     <!-- Sort顯示 -->
                                     <div>
-                                        <!-- select option -->
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option selected>Sort by: 訂單狀態</option>
-                                            <option value="Low to High">金額：由低到高</option>
-                                            <option value="High to Low"> 金額: 由高到低</option>
-                                            <option value="Release Date"> 訂購日期：由新到舊</option>
-                                            <option value="Avg. Rating"> 訂購日期：由舊到新</option>
-                                        </select>
+                                            <form method="get" action="@Url.Action("HistoryOrders", "Member")">
+                                            <!-- Sort選擇 -->
+                                            <select class="form-select" name="sortOption" aria-label="Default select example" onchange="this.form.submit()">
+                                                <option value="=">排序</option>           
+                                                <option value="Status">訂單狀態</option>
+                                                <option value="Low to High">金額：由低到高</option>
+                                                <option value="High to Low">金額: 由高到低</option>
+                                                <option value="Newest">訂購日期：由新到舊</option>
+                                                <option value="Oldest">訂購日期：由舊到新</option>
+                                            </select>
+                                            </form>
                                     </div>
                                 </div>
                             </div>
@@ -246,7 +248,7 @@
                                         <th>件數</th>
                                         <th>訂單狀態</th>
                                         <th>金額</th>
-                                        
+
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -390,7 +392,20 @@
             });
         });
     </script>
-    <!--顯示筆數下拉選單 end-->
+
+
+    <!--Sort-->
+    <script>
+        document.getElementById('sortSelect').addEventListener('change', function () {
+            var selectedValue = this.value;
+            // 假設您希望保持目前頁面的其他參數不變，只改變sortOption
+            var currentUrl = new URL(window.location);
+            currentUrl.searchParams.set('sortOption', selectedValue);
+            window.location.href = currentUrl.href;
+        });
+    </script>
+
+
     <!-- Javascript-->
     <!-- Libs JS -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
