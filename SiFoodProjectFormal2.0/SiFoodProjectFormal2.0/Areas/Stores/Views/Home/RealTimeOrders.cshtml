@@ -50,10 +50,9 @@
                                 <div class="row justify-content-between">
                                     <div class="col-md-4 col-12 mb-2 mb-md-0">
                                         <!-- form -->
-                                        <form class="d-flex" role="search">
+                                        <div class="d-flex" role="search">
                                             <input class="form-control" type="search" placeholder="Search" aria-label="Search" v-model="searchKeyWords" @@keyup.enter="searchOrder">
-
-                                        </form>
+                                        </div>
                                     </div>
                                     <div class="col-lg-2 col-md-4 col-12">
                                         <!-- select -->
@@ -123,8 +122,11 @@
                                                     <template v-if="item.statusId === 1">
                                                         <span class="badge bg-warning">{{item.status}}</span>
                                                     </template>
-                                                    <template v-else-if="item.statusId === 2 ||item.statusId === 3 ">
+                                                    <template v-else-if="item.statusId === 2 ">
                                                         <span class="badge bg-info">{{item.status}}</span>
+                                                    </template>
+                                                    <template v-else-if="item.statusId === 3 ">
+                                                        <span class="badge bg-secondary">{{item.status}}</span>
                                                     </template>
                                                     <template v-else-if="item.statusId === 4">
                                                         <span class="badge bg-primary">{{item.status}}</span>
