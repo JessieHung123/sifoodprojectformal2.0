@@ -1,13 +1,9 @@
-﻿
-@{<head>
-    <meta charset="UTF-8">
-    <link rel="shortcut icon" href="~/assets/images/logo/sifood_logo_bgclear.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+﻿@{
+    ViewData["Title"] = "外送員";
 
-    <title>外送員</title>
+}
 
+@section Styles{
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -78,13 +74,13 @@
                     height: 40px;
                 }
     </style>
-</head>
 }
+
 <body>
     <div class="container">
         <div class="box0">
-            <img src="~/images/sifood_logo_bgclear.png" alt="logo"/>
-            <img src="~/images/drivers/23718262.png" alt="user"/>
+            <img src="~/images/sifood_logo_bgclear.png" alt="logo" />
+            <img src="~/images/drivers/23718262.png" alt="user" />
             <button class="btn btn-primary">登出</button>
         </div>
         <div>
@@ -92,67 +88,69 @@
                     width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
+
+    </div>
+
+
+
+    <h2>訂單列表</h2>
+    <div class="order-category">
+        <h4>待配送訂單▽</h4>
+        <div class="order-details">
+
+            <div class="order-details1">
+                <p>
+                    台北市信義區&emsp;2023/10/30&nbsp;PM12:30 <br>
+                    餐廳：印度風情&emsp;1.00KM<br>
+                    訂單編號：O001 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-success">查看詳情</button>
+                </p>
+            </div>
+            <div class="order-details1">
+                <p>
+                    台北市中山區&emsp;2023/10/30&nbsp;PM1:30 <br>
+                    餐廳：大食堂 &emsp;0.08KM<br>
+                    訂單編號：O002 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-success">查看詳情</button>
+                </p>
+            </div>
+
         </div>
-        <h2>訂單列表</h2>
-        <div class="order-category">
-            <h4>待配送訂單▽</h4>
-            <div class="order-details">
-
-                <div class="order-details1">
-                    <p>
-                        台北市信義區&emsp;2023/10/30&nbsp;PM12:30 <br>
-                        餐廳：印度風情&emsp;1.00KM<br>
-                        訂單編號：O001 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-success">查看詳情</button>
-                    </p>
-                </div>
-                <div class="order-details1">
-                    <p>
-                        台北市中山區&emsp;2023/10/30&nbsp;PM1:30 <br>
-                        餐廳：大食堂 &emsp;0.08KM<br>
-                        訂單編號：O002 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-success">查看詳情</button>
-                    </p>
-                </div>
-
+    </div>
+    <br>
+    <div class="order-category">
+        <h4>配送中訂單▽</h4>
+        <div class="order-details">
+            <div class="order-details2">
+                <p>
+                    台北市信義區&emsp;2023/10/30&nbsp;PM12:30 <br>
+                    餐廳：印度風情&emsp;1.00KM<br>
+                    訂單編號：O001 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger">配送進度</button>
+                </p>
+            </div>
+            <div class="order-details2">
+                <p>
+                    台北市中山區&emsp;2023/10/30&nbsp;PM1:30 <br>
+                    餐廳：大食堂 &emsp;0.08KM<br>
+                    訂單編號：O002 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger">配送進度</button>
+                </p>
             </div>
         </div>
-        <br>
-        <div class="order-category">
-            <h4>配送中訂單▽</h4>
-            <div class="order-details">
-                <div class="order-details2">
-                    <p>
-                        台北市信義區&emsp;2023/10/30&nbsp;PM12:30 <br>
-                        餐廳：印度風情&emsp;1.00KM<br>
-                        訂單編號：O001 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger">配送進度</button>
-                    </p>
-                </div>
-                <div class="order-details2">
-                    <p>
-                        台北市中山區&emsp;2023/10/30&nbsp;PM1:30 <br>
-                        餐廳：大食堂 &emsp;0.08KM<br>
-                        訂單編號：O002 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger">配送進度</button>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="order-category">
-            <h4><a href="#" class="link-primary">歷史訂單</a></h4>
-        </div>
+    </div>
+    <br>
+    <div class="order-category">
+        <h4><a href="#" class="link-primary">歷史訂單</a></h4>
+    </div>
 
 
 
-        <script>
-            const categories = document.querySelectorAll('.order-category');
+    <script>
+        const categories = document.querySelectorAll('.order-category');
 
-            categories.forEach(category => {
-                category.addEventListener('click', () => {
-                    const details = category.querySelector('.order-details');
-                    details.style.display = details.style.display === 'none' ? 'block' : 'none';
-                });
+        categories.forEach(category => {
+            category.addEventListener('click', () => {
+                const details = category.querySelector('.order-details');
+                details.style.display = details.style.display === 'none' ? 'block' : 'none';
             });
+        });
 
-        </script>
+    </script>
 </body>
-
-</html>

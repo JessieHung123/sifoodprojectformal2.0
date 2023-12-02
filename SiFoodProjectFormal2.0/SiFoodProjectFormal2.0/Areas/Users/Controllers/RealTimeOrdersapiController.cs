@@ -64,7 +64,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                          Quantity = p.Quantity,
                          Total = p.Quantity * p.Product.UnitPrice,
                      }),
-                     ShippingFee = z.ShippingFee,
+                     ShippingFee = (decimal)z.ShippingFee,
                      Subtotal = z.OrderDetails.Sum(p => p.Quantity * p.Product.UnitPrice),
                      TotalQuantity = z.OrderDetails.Sum(p => p.Quantity),
                      DriverFullName = z.Driver.FullName
