@@ -257,8 +257,9 @@
                                     {
                                         <tr>
                                             <td class="text-muted align-middle border-top-0">
-                                                <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View">
+                                                <a href="#" onclick="loadOrderDetails('@order.OrderId')" type="button" class="text-inherit" data-bs-toggle="modal" data-bs-placement="top" data-bs-title="View" data-bs-target=".gd-example-modal-lg">
                                                     <i class="feather-icon icon-eye"></i>
+                                                    <partial name="_OrderDetailPartial"></partial>
                                                 </a>
                                             </td>
                                             <td class="align-middle border-top-0 w-0">
@@ -398,11 +399,29 @@
     <script>
         document.getElementById('sortSelect').addEventListener('change', function () {
             var selectedValue = this.value;
-            // 假設您希望保持目前頁面的其他參數不變，只改變sortOption
+            // 假設希望保持目前頁面的其他參數不變，只改變sortOption
             var currentUrl = new URL(window.location);
             currentUrl.searchParams.set('sortOption', selectedValue);
             window.location.href = currentUrl.href;
         });
+    </script>
+
+
+    <!--處理Modal for Orderdetail-->
+    <script>
+        function loadOrderDetails(orderId) {
+            // 使用Ajax向後端發送請求
+            $.ajax({
+                url: '@Url.Action("GetOrderDetails", "Member")', // 控制器的方法
+                data: { orderId: orderId },
+                success: function (response) {
+                    // 將返回的視圖填充到模態框中
+                    $('#exampleModalScrollable .modal-body').html(response);
+                    // 顯示模態框
+                    $('#exampleModalScrollable').modal('show');
+                }
+            });
+        }
     </script>
 
 

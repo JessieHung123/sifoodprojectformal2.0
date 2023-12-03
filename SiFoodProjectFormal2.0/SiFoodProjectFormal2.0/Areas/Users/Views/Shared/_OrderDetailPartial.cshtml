@@ -1,186 +1,103 @@
-﻿<!-- Modal從這div複製 -->
+﻿<!-- Modal -->
+<div class="modal fade gd-example-modal-lg" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabelexampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalScrollableTitle">明細&評論</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!--Modal Body-->
+            <div class="modal-body">
+                <!-- Modal從這div複製 -->
+                <div class="col-12">
+                    <div class="py-6 p-md-6 p-lg-10">
+                        <!-- heading -->
+                        <h2 class="mb-6">訂單明細</h2>
+                    </div>
+                    <!-- 訂單明細 -->
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+                            <div class="mt-4 mt-lg-0">
+                                <div class="card shadow-sm">
+                                    <h5 class="px-6 py-4 bg-transparent mb-0">Order Details</h5>
+                                    <ul class="list-group list-group-flush">
 
-<div class="col-lg-9 col-md-8 col-12">
-    <div class="py-6 p-md-6 p-lg-10">
-        <!-- heading -->
-        <h2 class="mb-6">訂單明細</h2>
-    </div>
+                                        <!-- list group item -->
+                                        <li class="list-group-item px-4 py-3">
+                                            <div class="d-flex align-items-center justify-content-between   mb-2">
+                                                <div>
+                                                    金額小計
+                                                </div>
+                                                <div class="fw-bold">
+                                                    $70.00
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between  ">
+                                                <div>
+                                                    運費<i class="feather-icon icon-info text-muted" data-bs-toggle="tooltip"
+                                                         title="Default tooltip"></i>
+                                                </div>
+                                                <div class="fw-bold">
+                                                    $3.00
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- list group item -->
+                                        <li class="list-group-item px-4 py-3">
+                                            <div class="d-flex align-items-center justify-content-between fw-bold">
+                                                <div>
+                                                    Subtotal
+                                                </div>
+                                                <div>
+                                                    $73.00
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- 星星區塊第二種 -->
+                    <div class="card py-6 p-md-6 p-lg-10 ">
+                        <div class="card-body">
+                            <!-- rating -->
+                            <h3 class="mb-5">請給店家評分</h3>
+                            <div class="border-bottom py-4 mb-4">
+                                <div id="rater" class="star-rating" style="width: 100px; height: 20px; background-size: 20px;"
+                                     title="4/5">
+                                    <div class="star-value" style="background-size: 20px; width: 0%;"></div>
+                                </div>
+                            </div>
+                            <div class="border-bottom py-4 mb-4">
+                                <h4 class="mb-0">各項評分</h4>
+                                <div class="my-5">
+                                    <h5>美味程度</h5>
+                                    <div id="rate-2" class="star-rating" style="width: 100px; height: 20px; background-size: 20px;"
+                                         title="3/5">
+                                        <div class="star-value" style="background-size: 20px; width: 0%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-    <!-- 訂單明細 -->
-    <div class="row">
-        <div class="col-12 col-md-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
-            <div class="mt-4 mt-lg-0">
-                <div class="card shadow-sm">
-                    <h5 class="px-6 py-4 bg-transparent mb-0">Order Details</h5>
-                    <ul class="list-group list-group-flush">
-                        <!-- list group item -->
-                        <li class="list-group-item px-4 py-3">
-                            <div class="row align-items-center">
-                                <div class="col-2 col-md-2">
-                                    <img src="../assets/images/products/product-img-1.jpg" alt="Ecommerce" class="img-fluid">
-                                </div>
-                                <div class="col-5 col-md-5">
-                                    <h6 class="mb-0">Haldiram's Sev Bhujia</h6>
-                                    <span><small class="text-muted">.98 / lb</small></span>
-                                </div>
-                                <div class="col-2 col-md-2 text-center text-muted">
-                                    <span>1</span>
-                                </div>
-                                <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                    <span class="fw-bold">$5.00</span>
-                                </div>
-                            </div>
-                        </li>
-                        <!-- list group item -->
-                        <li class="list-group-item px-4 py-3">
-                            <div class="row align-items-center">
-                                <div class="col-2 col-md-2">
-                                    <img src="../assets/images/products/product-img-2.jpg" alt="Ecommerce" class="img-fluid">
-                                </div>
-                                <div class="col-5 col-md-5">
-                                    <h6 class="mb-0">NutriChoice Digestive</h6>
-                                    <span><small class="text-muted">250g</small></span>
-                                </div>
-                                <div class="col-2 col-md-2 text-center text-muted">
-                                    <span>1</span>
-                                </div>
-                                <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                    <span class="fw-bold">$20.00</span>
-                                    <div class="text-decoration-line-through text-muted small">$26.00</div>
-                                </div>
-                            </div>
-                        </li>
-                        <!-- list group item -->
-                        <li class="list-group-item px-4 py-3">
-                            <div class="row align-items-center">
-                                <div class="col-2 col-md-2">
-                                    <img src="../assets/images/products/product-img-3.jpg" alt="Ecommerce" class="img-fluid">
-                                </div>
-                                <div class="col-5 col-md-5">
-                                    <h6 class="mb-0">Cadbury 5 Star Chocolate</h6>
-                                    <span><small class="text-muted">1 kg</small></span>
-                                </div>
-                                <div class="col-2 col-md-2 text-center text-muted">
-                                    <span>1</span>
-                                </div>
-                                <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                    <span class="fw-bold">$15.00</span>
-                                    <div class="text-decoration-line-through text-muted small">$20.00</div>
-                                </div>
-                            </div>
-                        </li>
-                        <!-- list group item -->
-                        <li class="list-group-item px-4 py-3">
-                            <div class="row align-items-center">
-                                <div class="col-2 col-md-2">
-                                    <img src="../assets/images/products/product-img-4.jpg" alt="Ecommerce" class="img-fluid">
-                                </div>
-                                <div class="col-5 col-md-5">
-                                    <h6 class="mb-0">Onion Flavour Potato</h6>
-                                    <span><small class="text-muted">250g</small></span>
-                                </div>
-                                <div class="col-2 col-md-2 text-center text-muted">
-                                    <span>1</span>
-                                </div>
-                                <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                    <span class="fw-bold">$15.00</span>
-                                    <div class="text-decoration-line-through text-muted small">$20.00</div>
-                                </div>
-                            </div>
-                        </li>
-                        <!-- list group item -->
-                        <li class="list-group-item px-4 py-3">
-                            <div class="d-flex align-items-center justify-content-between   mb-2">
-                                <div>
-                                    金額小計
-                                </div>
-                                <div class="fw-bold">
-                                    $70.00
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between  ">
-                                <div>
-                                    運費<i class="feather-icon icon-info text-muted" data-bs-toggle="tooltip"
-                                         title="Default tooltip"></i>
-                                </div>
-                                <div class="fw-bold">
-                                    $3.00
-                                </div>
-                            </div>
-                        </li>
-                        <!-- list group item -->
-                        <li class="list-group-item px-4 py-3">
-                            <div class="d-flex align-items-center justify-content-between fw-bold">
-                                <div>
-                                    Subtotal
-                                </div>
-                                <div>
-                                    $73.00
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                    <!--modal-body-->
+                    <!--  Modeal從這div複製 結束-->
+                </div>
+            </div>
+
+            <!--modal-footer-->
+            <div class="modal-footer">
+                <!-- button -->
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">送出評價</button>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-    <hr>
-    <!-- 星星區塊第二種 -->
-
-    <div class="card py-6 p-md-6 p-lg-10 ">
-
-        <div class="card-body">
-            <!-- rating -->
-            <h3 class="mb-5">請給店家評分</h3>
-            <div class="border-bottom py-4 mb-4">
-
-                <div id="rater" class="star-rating" style="width: 100px; height: 20px; background-size: 20px;"
-                     title="4/5">
-                    <div class="star-value" style="background-size: 20px; width: 0%;"></div>
-                </div>
-            </div>
-            <div class="border-bottom py-4 mb-4">
-                <h4 class="mb-0">各項評分</h4>
-                <div class="my-5">
-                    <h5>美味程度</h5>
-                    <div id="rate-2" class="star-rating" style="width: 100px; height: 20px; background-size: 20px;"
-                         title="3/5">
-                        <div class="star-value" style="background-size: 20px; width: 0%;"></div>
-                    </div>
-                </div>
-                <div class="my-5">
-                    <h5>價格</h5>
-                    <div id="rate-3" class="star-rating" style="width: 100px; height: 20px; background-size: 20px;"
-                         title="1/5">
-                        <div class="star-value" style="background-size: 20px; width: 0%;"></div>
-                    </div>
-                </div>
-                <div class="my-5">
-                    <h5>服務</h5>
-                    <div id="rate-4" class="star-rating" style="width: 100px; height: 20px; background-size: 20px;">
-                        <div class="star-value" style="background-size: 20px; width: 0px;"></div>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <div class=" py-4 mb-4">
-                <!-- heading -->
-                <h5>給店家的評語</h5>
-                <textarea class="form-control" rows="3" placeholder="請輸入小於30字"></textarea>
-
-            </div>
-            <!-- button -->
-            <div class="d-flex justify-content-end">
-                <a href="#" class="btn btn-primary">送出評價</a>
-            </div>
-        </div>
-
-
-    </div>
-
-    <!--  Modeal從這div複製 結束-->
+</div>
