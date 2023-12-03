@@ -44,6 +44,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                  {
                      OrderId = z.OrderId,
                      OrderDuration = (taiwanTime - z.OrderDate).TotalMinutes,
+                     OrderDateTime = z.OrderDate,
                      OrderDate = z.OrderDate.ToString("yyyy-MM-dd"),
                      OrderTime = z.OrderDate.ToString("HH:mm"),
                      DeliveryMethod = z.DeliveryMethod,

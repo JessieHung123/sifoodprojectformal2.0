@@ -541,10 +541,10 @@
 
                                                                                 <!-- button -->
                                                                                 <div class="ms-md-3">
-                                                                                    <template v-if="item.statusId === 1">
+                                                                                    <template v-if="item.statusId === 1&&item.orderDuration<=10">
                                                                                         <a v-on:click="confirmCancelOrder(item)" href="#" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" :title="'取消時限: ' + (10-Math.round(item.orderDuration)) + '分鐘'">取消</a>
                                                                                     </template>
-                                                                                    <template v-else>
+                                                                                    <template v-else-if="item.statusId === 3||item.statusId === 4">
                                                                                         <a v-on:click="confirmCompleteOrder(item)" href="#" class="btn btn-success">完成訂單</a>
                                                                                     </template>
                                                                                     <a href="#" class="btn btn-secondary" style="margin-left: 3px;">下載明細</a>
@@ -763,7 +763,7 @@
                 data: function () {
                     return {
                         orders: [],
-                        orderDetails: [],
+                        // orderDetails: [],
                     }
                 },
                 computed: {
@@ -776,19 +776,17 @@
                 },
                 methods: {
                     confirmCancelOrder(item) {
-                        if (item.orderDuration <= 10) {
+                        const orderDateTime = new Date(item.orderDateTime);
+                        const currentTime = new Date();
+                        const orderDuration = Math.floor((currentTime - orderDateTime) / (1000 * 60));
+                        if (orderDuration <= 10) {
                             if (window.confirm("是否確定取消訂單?")) {
                                 this.cancelOrder(item);
                             }
                         }
                         else {
-                            if (item.deliveryMethod === "自取") {
-                                this.updateOrderStatus(item, 3);
-                            }
-                            else {
-                                this.updateOrderStatus(item, 2);
-                            }
-                            // alert("取消時間已過")
+                            alert("取消時間已過");
+                            item.orderDuration = orderDuration;
                         }
                     },
                     confirmCompleteOrder(item) {
