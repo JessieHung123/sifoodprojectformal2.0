@@ -360,7 +360,7 @@
                     var _this = this;
                     axios.get(`/Transaction/GetCheckoutData`)
                         .then(response => {
-                            alert(JSON.stringify(response.data))
+                            //alert(JSON.stringify(response.data))
                             _this.checkoutDatas = response.data;
                             _this.checkoutData = response.data[0];
                         })
@@ -388,7 +388,7 @@
                 },
                 createTakeOutOrder: function () {
                     var _this = this;
-                    _this.loading = true
+                    //_this.loading = true
                     axios.post(`/Transaction/TakeOutOrder`, {
                         StoreName: _this.sendBackStoreName,
                         UserName: _this.sendBackUserName,
@@ -399,20 +399,20 @@
                             "Content-Type": "application/json"
                         }
                     }).then(response => {
-                        //return response.data;
-                        alert(response.data);
-                        var success = "訂單下訂成功!";
-                        if (response.data === success) {
-                            window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
-                        }
-                        _this.loading = false
+                        return response.data;
+                        // alert(response.data);
+                        // var success = "訂單下訂成功!";
+                        // if (response.data === success) {
+                        //     window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
+                        // }
+                        // _this.loading = false
                     }).catch(err => {
                         alert(err);
                     })
                 },
                 createDeliverOrder: function () {
                     var _this = this;
-                    _this.loading = true
+                    _this.loading = true;
                     axios.post(`/Transaction/DeliverOrder`, {
                         StoreName: _this.sendBackStoreName,
                         UserName: _this.sendBackUserName,
@@ -425,13 +425,13 @@
                             "Content-Type": "application/json"
                         }
                     }).then(response => {
-                        //return response.data;
-                        alert(response.data);
-                        var success = "訂單下訂成功!";
-                        if (response.data === success) {
-                            window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
-                        }
-                        _this.loading = false
+                        return response.data;
+                        // alert(response.data);
+                        // var success = "訂單下訂成功!";
+                        // if (response.data === success) {
+                        //     window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
+                        // }
+                        //_this.loading = false
                     }).catch(err => {
                         alert(err);
                     })
