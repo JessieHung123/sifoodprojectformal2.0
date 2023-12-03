@@ -22,20 +22,17 @@
     </div>
     <br>
     <div class="order-category">
-    <h4 @@click="toggle">配送中訂單▽</h4>
+        <h4 @@click="toggle">配送中訂單▽&emsp;&emsp;&emsp;共有{{onTheWayOrder.length}}筆</h4>
         <div class="order-details" v-if="!categoryOne" >
-            <div class="order-details1">
+            <div class="order-details1" v-for="item in onTheWayOrder">
                 <p>
-                    台北市信義區&emsp;2023/10/30&nbsp;PM12:30 <br>
-                    餐廳：印度風情&emsp;1.00KM<br>
-                    訂單編號：O001 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger">配送進度</button>
-                </p>
-            </div>
-            <div class="order-details1">
-                <p>
-                    台北市中山區&emsp;2023/10/30&nbsp;PM1:30 <br>
-                    餐廳：大食堂 &emsp;0.08KM<br>
-                    訂單編號：O002 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger">配送進度</button>
+                    <div>訂單編號：{{item.orderId}}&emsp;用戶姓名：{{item.userName}}</div>
+                    <div>用戶電話：{{item.userPhone}}</div>
+                    <div>訂單時間：{{item.orderDate}}&emsp;{{item.orderTime}}</div>
+                    <div>取餐餐廳：{{item.storeName}}</div>
+                    <div>取餐地址:{{item.storeAddress}}</div>
+                    <div>送達地址:{{item.address}}</div>
+                    <a :href="' /Drivers/Home/ChooseOrder/' + item.orderId"><button type="button" class="btn btn-success">查看詳情</button></a>
                 </p>
             </div>
         </div>
@@ -55,10 +52,12 @@
                     waitForDeliveryOrderSimple: [],
                     arrivingLocation: [],
                     waitForDeliveryOrderSimpleFormal:[],
+                    onTheWayOrder:[],
                 }
             },
             mounted: async function () {
                await this.findWaitForDeliveryOrderSimple();
+                await this.onTheWay();
                 this.getDistance();
                 this.getDistanceToStore();
             },
@@ -96,7 +95,6 @@
                     } else {
                         console.log(response);
                         for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
-                            this.waitForDeliveryOrderSimple[i].distancetostore = response.rows[0].elements[i].distance.value;
                             this.waitForDeliveryOrderSimple[i].distancetexttostore = response.rows[0].elements[i].distance.text;
                             this.waitForDeliveryOrderSimple[i].distancetimetostore = response.rows[0].elements[i].duration.text;
                         }
@@ -130,7 +128,14 @@
                     this.waitForDeliveryOrderSimpleFormal = this.waitForDeliveryOrderSimple.sort((a, b) => (a.distancetime
                     + a.distancetimetostore)-(b.distancetime+ b.distancetimetostore));
                     }
-                }
+                },
+                async onTheWay() {
+                await fetch(`${baseAddress}/api/DeliveryOrderapi/OnTheWayOrder`, { method: "GET" })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.onTheWayOrder = data;
+                    })
+            },
 
             }
     }).mount("#waitfordelivery")

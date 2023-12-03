@@ -5,7 +5,7 @@
 }
 
 <div class="box2 border border-success rounded" id="chooseOrder">
-            <div>
+    <div>
         <h4 font-weight><span class="badge bg-info text-dark">訂單編號:{{waitForDeliveryOrder.orderId}}</span></h4>
                 <div>
                     預估完成時間：{{expectedtime}}分鐘<br>
@@ -16,24 +16,40 @@
                     顧客姓名：{{waitForDeliveryOrder.userName}}<br>
                 </div>
                 <hr />
+                取餐明細:<br>
                 <div v-for="item in waitForDeliveryOrder.orderDetails">
-                    取餐明細:{{item.productName}}&emsp;數量:{{item.quantity}}
+                    {{item.productName}}&emsp;數量:{{item.quantity}}
                 </div>
-                <template v-if="isAccept==true">
+                <template v-if="waitForDeliveryOrder.statusId==4||isAccept==true">
                     <div class="text-center">
-                        <button type="button" class="btn btn-primary btn-group-lg">與顧客聊天</button>&emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger btn-group-lg">送達完成</button>
+                <button type="button" class="btn btn-primary btn-group-lg" @@click="direction">導航</button>&emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger btn-group-lg" data-bs-toggle="modal" data-bs-target="finishModal" @@click="finishOrder">送達完成</button>&emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-primary btn-group-lg" @@click="directToPage">回首頁</button>
                     </div>
                 </template>
                 <template v-else>
                     <div class="text-center">
-                <button type="button" class="btn btn-primary btn-group-lg" @@click="accept">接受</button>&emsp;&emsp;&emsp;&emsp;<a href="/Drivers/Home/OrderList"><button type="button" class="btn btn-danger btn-group-lg">回首頁</button></a>
+                <button type="button" class="btn btn-primary btn-group-lg" @@click="accept">接受</button>&emsp;&emsp;&emsp;&emsp;<a href="/Drivers/Home/OrderList"><button type="button" class="btn btn-danger btn-group-lg" @@click="directToPage">取消</button></a>
                     </div>
                 </template>
             </div>
+    <!--Modal-->
+    <div class="modal" tabindex="-1" id="finishModal" aria-labelledby="finishModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>感謝!已送達完成</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal" @@click="directToPage">回首頁</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal-->
 </div>
+
 <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
 <script>
-    var baseAddress = "https://localhost:7042";
+    // var baseAddress = "https://localhost:7042";
     var chooseOrder = Vue.createApp({
         data: function () {
             return {
@@ -46,74 +62,80 @@
         },
         mounted: async function () {
             await this.getWaitForDeliveryOrder();
-            await this.getDistance();
-            await this.getDistanceToStore();
+            await this.AllGetDistanceToStore();
         },
         methods: {
             async getWaitForDeliveryOrder() {
                 var orderId = window.location.pathname.slice("26");
-                await fetch(`${baseAddress}/api/DeliveryOrderapi/WaitForDeliveryOrderDetails/${orderId}`, { method: "GET" })
+                await fetch(`/api/DeliveryOrderapi/WaitForDeliveryOrderDetails/${orderId}`, { method: "GET" })
                     .then(response => response.json())
                     .then(data => {
                         this.waitForDeliveryOrder = data[0];
-                        this.toStorelocation = data.map(o=>o.storeAddress);
-                        this.arrivingLocation = data.map(o => o.address);
-                    })
-            }, 
-            getDistanceToStore() {
+                        this.toStorelocation = data[0].storeAddress;
+                        this.arrivingLocation = data[0].address;
+                    }).catch(error => alert("請至配送中頁面查看"));
+            },
+            AllGetDistanceToStore() {
                 var service = new google.maps.DistanceMatrixService();
-                var currentArray = [setDriverMap.current];
+                var oridinArray = [setDriverMap.current, this.toStorelocation];
+                var destinationArray = [this.toStorelocation, this.arrivingLocation];
+                console.log(oridinArray);
+                console.log(destinationArray);
                 service.getDistanceMatrix(
                     {
-                        origins: currentArray,//陣列
-                        destinations: this.toStorelocation,//陣列
+                        origins: oridinArray,//陣列
+                        destinations: destinationArray,//陣列
                         travelMode: 'DRIVING',
                         avoidHighways: true,
                         avoidTolls: true
-                    }, this.getDistanceResultToStore);
+                    }, this.AllGetDistanceToStoreResult);
             },
-            getDistanceResultToStore(response, status) {
+            AllGetDistanceToStoreResult(response, status) {
                 if (status !== google.maps.DistanceMatrixStatus.OK) {
-                    window.alert('Error was' + status);
+                    alert("請至配送中頁面查看");
                 } else {
                     console.log(response);
-                    this.waitForDeliveryOrder.distancetostore = response.rows[0].elements[0].distance.value;
                     this.waitForDeliveryOrder.distancetexttostore = response.rows[0].elements[0].distance.text;
-                    this.waitForDeliveryOrder.distancetimetostore = response.rows[0].elements[0].duration.text;       
-                }
-                    this.expectedFinishTimeAndDistance();
-            },
-            getDistance() {
-                var service = new google.maps.DistanceMatrixService();
-                var currentArray = [setDriverMap.current]
-                service.getDistanceMatrix(
-                    {
-                        origins: this.toStorelocation,//陣列
-                        destinations: this.arrivingLocation,//陣列
-                        travelMode: 'DRIVING',
-                        avoidHighways: true,
-                        avoidTolls: true
-                    }, this.getDistanceResult);
-            },
-            getDistanceResult(response, status) {
-                if (status !== google.maps.DistanceMatrixStatus.OK) {
-                    window.alert('Error was' + status);
-                } else {
-                    console.log(response);
-                    this.waitForDeliveryOrder.distance = response.rows[0].elements[0].distance.value;
-                    this.waitForDeliveryOrder.distancetext = response.rows[0].elements[0].distance.text;
-                    this.waitForDeliveryOrder.distancetime = response.rows[0].elements[0].duration.text;
+                    this.waitForDeliveryOrder.distancetimetostore = response.rows[0].elements[0].duration.text;
+                    this.waitForDeliveryOrder.distancetext = response.rows[1].elements[1].distance.text;
+                    this.waitForDeliveryOrder.distancetime = response.rows[1].elements[1].duration.text;
                 }
                 this.expectedFinishTimeAndDistance();
-            }, 
+            },
             expectedFinishTimeAndDistance() {
-                console.log(this.waitForDeliveryOrder.distancetimetostore);
-                console.log(this.waitForDeliveryOrder.distancetime);
                 this.expectedtime = Number(this.waitForDeliveryOrder.distancetimetostore.slice(0, -3)) + Number(this.waitForDeliveryOrder.distancetime.slice(0, -3));
                 this.expecteddistance = Number(this.waitForDeliveryOrder.distancetext.slice(0, -3)) + Number(this.waitForDeliveryOrder.distancetexttostore.slice(0, -3));
-                console.log(this.expectedtime);
             },
-            accept() {//狀態要變
+            async accept() {//狀態要變
+                let directionsService = new google.maps.DirectionsService();
+                var orderId = window.location.pathname.slice("26");
+                directionsService.route(
+                    {
+                        origin: setDriverMap.current,//字串
+                        destination: this.arrivingLocation.toString(),//字串
+                        travelMode: 'DRIVING',
+                        waypoints: [
+                            {
+                                location: this.toStorelocation.toString(),//字串
+                                stopover: true
+                            }],
+                        avoidHighways: true,
+                    }, this.getRoute);
+
+                await fetch(`/api/DeliveryOrderapi/UpdateOrderStatus/${orderId}`, {
+                    method: "PUT",
+                }).then(response => response).catch(error => alert(error));
+            },
+            getRoute(response, status) {
+                if (status == 'OK') {
+                    let directionsDisplay = new google.maps.DirectionsRenderer({
+                        map: setDriverMap.map,
+                        directions: response,
+                    });
+                    this.isAccept = true;
+                };
+            },
+            direction() {
                 let directionsService = new google.maps.DirectionsService();
                 directionsService.route(
                     {
@@ -128,16 +150,16 @@
                         avoidHighways: true,
                     }, this.getRoute);
             },
-            getRoute(response, status) {
-                if (status == 'OK') {
-                    let directionsDisplay = new google.maps.DirectionsRenderer({
-                        map: setDriverMap.map,
-                        directions: response,
-                    });
-                    this.isAccept = true;
-                };
+            directToPage(){
+                window.location.href = '../OrderList';
             },
-
+            async finishOrder() {
+                var orderId = window.location.pathname.slice("26");
+                await fetch(`/api/DeliveryOrderapi/FinishOrder/${orderId}`, {
+                    method: "PUT",
+                }).then(response => response).catch(error => alert(error));
+                $("#finishModal").modal("show");
+            },
         }
     }).mount("#chooseOrder")
 </script>

@@ -23,42 +23,76 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.Controllers
             return _context.Orders.Where(o => o.StatusId == 2 && o.DeliveryMethod=="外送" && o.OrderDate.Date == DateTime.Today).Include(o => o.User).Include(o => o.Store).Select(o => new DeliveryOrderVM
             {
                 OrderId = o.OrderId,
-                OrderDate = o.OrderDate.ToString(),
                 Address = o.Address,
                 StoreName = o.Store.StoreName,
                 StoreAddress=o.Store.Address,
                 UserName = o.User.UserName,
                 Latitude=(decimal)o.Store.Latitude,
-                Longitude= (decimal)o.Store.Longitude
+                Longitude= (decimal)o.Store.Longitude,
+                StatusId = o.StatusId,
             });
-
-            
         }
         [HttpGet("{id}")]
         public object WaitForDeliveryOrderDetails(string id)
         {
-            return _context.Orders.Where(o => o.StatusId == 2&&o.OrderId==id&&o.OrderDate.Date == DateTime.Today && o.DeliveryMethod == "外送").Include(o => o.User).Include(o => o.Store).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Select(o => new ChooseOrderVM
+            return _context.Orders.Where(o=>o.OrderId==id&&o.OrderDate.Date == DateTime.Today && o.DeliveryMethod == "外送").Include(o => o.User).Include(o => o.Store).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Select(o => new ChooseOrderVM
             {
                 OrderId = o.OrderId,
-                OrderDate = o.OrderDate.ToString(),
+                StatusId=o.StatusId,
                 Address = o.Address,
-                StatusId = o.StatusId,
                 StoreName = o.Store.StoreName,
                 StoreAddress = o.Store.Address,
                 Latitude = (decimal)o.Store.Latitude,
                 Longitude = (decimal)o.Store.Longitude,
-                UserName = o.User.UserName,
-                UserPhone = o.User.UserPhone,
-                UserId = o.UserId,
+                UserName = o.User.UserName == null ? "NotFind" : o.User.UserName,
+                UserPhone = o.User.UserPhone == null ? "NotFind" : o.User.UserPhone,
                 OrderDetails = o.OrderDetails.Select(p => new OrderDetailsVM
                 {
                     ProductName = p.Product.ProductName,
                     Quantity = p.Quantity,
                 })
             });
-
-            
         }
-
+        [HttpPut("{orderId}")]
+        public async Task<bool> UpdateOrderStatus(string orderId)
+        {
+            Order? order = await _context.Orders.FindAsync(orderId); ;
+            order.StatusId = 4;
+            _context.Entry(order).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception) { return false; }
+        }
+        public object OnTheWayOrder()
+        {
+            return _context.Orders.Where(o => o.StatusId == 4 && o.DeliveryMethod == "外送" && o.OrderDate.Date == DateTime.Today).Include(o => o.User).Include(o => o.Store).Select(o => new DeliveryOrderVM
+            {
+                OrderId = o.OrderId,
+                Address = o.Address,
+                StoreName = o.Store.StoreName,
+                StoreAddress = o.Store.Address,
+                UserName = o.User.UserName == null ? "NotFind" : o.User.UserName,
+                StatusId = o.StatusId,
+                UserPhone = o.User.UserPhone == null ? "NotFind" : o.User.UserPhone,
+                OrderDate = o.OrderDate.ToString("yyyy-MM-dd"),
+                OrderTime=o.OrderDate.ToShortTimeString(),
+            }) ;
+        }
+        [HttpPut("{orderId}")]
+        public async Task<bool> FinishOrder(string orderId)
+        {
+            Order? order = await _context.Orders.FindAsync(orderId); ;
+            order.StatusId = 5;
+            _context.Entry(order).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception) { return false; }
+        }
     }
 }
