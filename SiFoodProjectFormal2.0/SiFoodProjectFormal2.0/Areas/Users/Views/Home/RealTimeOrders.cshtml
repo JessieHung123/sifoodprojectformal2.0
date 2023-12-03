@@ -441,8 +441,9 @@
                 <!-- row -->
                 <div class="row">
                     <!-- col -->
-                    <partial name="_MembershipPartial" />
-                    <div class="col-lg-9 col-md-8 col-12">
+                    @* <partial name="_MembershipPartial" /> *@
+                    @* <div class="col-lg-9 col-md-8 col-12"> *@
+                    <div>
                         <div class="py-6 p-md-6 p-lg-10">
                             <!-- heading -->
                             <div class="d-flex justify-content-between">
@@ -466,6 +467,7 @@
                                             <th>訂單編號</th>
                                             <th>訂單日期</th>
                                             <th>數量</th>
+                                            <th>取餐方式</th>
                                             <th>訂單狀態</th>
                                             <th>訂購總額</th>
                                             <th></th>
@@ -486,6 +488,10 @@
                                             </td>
                                             <td class="align-middle border-top-0">
                                                 {{item.totalQuantity}}
+
+                                            </td>
+                                            <td class="align-middle border-top-0">
+                                                {{item.deliveryMethod}}
 
                                             </td>
                                             <td class="align-middle border-top-0">
@@ -624,12 +630,13 @@
                                                                                             <td>{{product.quantity}}</td>
                                                                                             <td>${{product.total}}</td>
                                                                                         </tr>
+                                                                                        <template v-if="item.deliveryMethod === '外送'">
                                                                                         <tr>
                                                                                             <td class="border-bottom-0 pb-0"></td>
                                                                                             <td class="border-bottom-0 pb-0"></td>
                                                                                             <td colspan="1" class="fw-medium text-dark ">
                                                                                                 <!-- text -->
-                                                                                                小計 :
+                                                                                                小計 
                                                                                             </td>
                                                                                             <td class="fw-medium text-dark ">
                                                                                                 <!-- text -->
@@ -648,7 +655,7 @@
                                                                                                 ${{item.shippingFee}}
                                                                                             </td>
                                                                                         </tr>
-
+                                                                                        </template>
                                                                                         <tr>
                                                                                             <td></td>
                                                                                             <td></td>
@@ -799,11 +806,13 @@
                         this.updateOrderStatus(item, 7)
                         item.statusId = 7;
                         this.orders = this.orders.filter(order => order.orderId !== item.orderId);
+                        alert("訂單已取消!")
                     },
                     completeOrder(item) {
                         this.updateOrderStatus(item, 6)
                         item.statusId = 6;
                         this.orders = this.orders.filter(order => order.orderId !== item.orderId);
+                        alert("訂單已完成!")
                     },
                     // **asynchronous nature of the fetch operation**
                     updateOrderStatus(item, newStatusId) {
