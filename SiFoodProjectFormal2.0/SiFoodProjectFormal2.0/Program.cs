@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.OData;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
 
@@ -30,6 +31,11 @@ namespace SiFoodProjectFormal2._0
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddTransient<IUserIdentityService, UserIdentityService>();
             builder.Services.AddTransient<IStoreIdentityService, StoreIdentityService>();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
+
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>

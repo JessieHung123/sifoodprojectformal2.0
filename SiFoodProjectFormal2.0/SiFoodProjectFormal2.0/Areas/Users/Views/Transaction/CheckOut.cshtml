@@ -121,7 +121,7 @@
                                             </div>
                                             <!-- Button -->
                                             <div class="mt-5 d-flex justify-content-end">
-                                                <button class="btn btn-primary ms-2" @@click="createTakeOutOrder">訂購</button>
+                                                <button class="btn btn-primary ms-2" @@click="callNewebPayApi('VACC')">訂購</button>
                                             </div>
                                         </div>
                                     </div>
@@ -332,6 +332,13 @@
                     sendBackTotalPrice: null,
                     loading: false,
                     sendBackShippingFee: "",
+                    addForm: {
+                        MerchantID: '@ViewData["MerchantID"]' //商品代號
+                        , MerchantOrderNo: '15453412424424414413414'
+                        , ReturnURL: '@ViewData["ReturnURL"]'
+                        , NotifyURL: '@ViewData["NotifyURL"]'
+                        , ClientBackURL: '@ViewData["ClientBackURL"]'
+                    }
                 }
             },
             computed: {
@@ -348,7 +355,7 @@
                 this.processUserName(this.checkoutData.userName);
                 this.processStoreName(this.checkoutData.storeName);
                 this.processTotalPrice(this.totalPrice);
-                this.sendBackProductDetail = this.checkoutDatas.map(item => ({ productName: item.productName, quantity: item.quantity }));                
+                this.sendBackProductDetail = this.checkoutDatas.map(item => ({ productName: item.productName, quantity: item.quantity }));
             },
             mounted: function () {
                 var _this = this;
@@ -386,9 +393,67 @@
                 chooseDeliver: function () {
                     this.checkRadio = false;
                 },
-                createTakeOutOrder: function () {
+                convertKeysToCamelCase(obj) {
+                    if (obj === null || typeof obj !== 'object') {
+                        return obj;
+                    }
+
+                    if (Array.isArray(obj)) {
+                        return obj.map(item => this.convertKeysToCamelCase(item));
+                    }
+
+                    return Object.keys(obj).reduce((acc, key) => {
+                        const camelCaseKey = key.charAt(0).toLowerCase() + key.slice(1);
+                        acc[camelCaseKey] = this.convertKeysToCamelCase(obj[key]);
+                        return acc;
+                    }, {});
+                },
+
+                // Function to handle the NewebPay API call
+                callNewebPayApi(ChannelID) {
                     var _this = this;
-                    //_this.loading = true
+                    var postData = {};
+
+                    postData['ChannelID'] = ChannelID;
+                    postData['MerchantID'] = _this.addForm.MerchantID;
+                    postData['MerchantOrderNo'] = _this.addForm.MerchantOrderNo;
+                    postData['ItemDesc'] = 123;
+                    postData['Amt'] = 100;
+                    postData['ReturnURL'] = _this.addForm.ReturnURL;
+                    postData['NotifyURL'] = _this.addForm.NotifyURL;
+                    postData['ClientBackURL'] = _this.addForm.ClientBackURL;
+                    $.ajax({
+                        url: '@Url.Content("~/Transaction/SendToNewebPay")',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: { inModel: postData },
+                        success: function (returnObj) {
+                            // 呼叫藍新金流 API
+                            const form = document.createElement('form');
+                            form.method = 'post';
+                            form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway';//藍新金流驗證網址(測試環境)
+                             
+                            for (const key in returnObj) {
+                                if (returnObj.hasOwnProperty(key)) {
+                                    const hiddenField = document.createElement('input');
+                                    hiddenField.type = 'hidden';
+                                    hiddenField.name = key;
+                                    hiddenField.value = returnObj[key];
+                                    form.appendChild(hiddenField);
+                                }
+                            }
+                            document.body.appendChild(form);
+                            form.submit();
+                        },
+                        error: function (err) {
+                            alert(err.status + " " + err.statusText + '\n' + err.responseText);
+                        }
+                    });
+                },
+
+                // Function to create and send the TakeOutOrder API request
+                createTakeOutOrder(ChannelID) {
+                    var _this = this;
                     axios.post(`/Transaction/TakeOutOrder`, {
                         StoreName: _this.sendBackStoreName,
                         UserName: _this.sendBackUserName,
@@ -398,18 +463,34 @@
                         headers: {
                             "Content-Type": "application/json"
                         }
-                    }).then(response => {
-                        return response.data;
-                        // alert(response.data);
-                        // var success = "訂單下訂成功!";
-                        // if (response.data === success) {
-                        //     window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
-                        // }
-                        // _this.loading = false
-                    }).catch(err => {
-                        alert(err);
                     })
+                        .then(response => {
+                            // Convert keys to camelCase
+                            const camelCaseResponse = this.convertKeysToCamelCase(response.data);
+
+                            // Second API call to SendToNewebPay
+                            var postData = {};
+  
+                            postData['ChannelID'] = ChannelID;
+                            postData['MerchantID'] = _this.addForm.MerchantID;
+                            postData['MerchantOrderNo'] = _this.addForm.MerchantOrderNo;
+                            postData['ItemDesc'] = _this.addForm.ItemDesc;
+                            postData['Amt'] = _this.addForm.Amt;
+                            postData['ReturnURL'] = _this.addForm.ReturnURL;
+                            postData['NotifyURL'] = _this.addForm.NotifyURL;
+                            postData['ClientBackURL'] = _this.addForm.ClientBackURL;
+                            
+                                
+                            // Call NewebPay API
+                            this.callNewebPayApi(postData);
+                        })
+                        .catch(err => {
+                            alert(err);
+                        });
                 },
+
+
+
                 createDeliverOrder: function () {
                     var _this = this;
                     _this.loading = true;
@@ -425,13 +506,12 @@
                             "Content-Type": "application/json"
                         }
                     }).then(response => {
-                        return response.data;
-                        // alert(response.data);
-                        // var success = "訂單下訂成功!";
-                        // if (response.data === success) {
-                        //     window.location.href = 'https://localhost:7042/Users/Home/RealTimeOrders'
-                        // }
-                        //_this.loading = false
+                        alert(response.data);
+                        var success = "訂單下訂成功!";
+                        if (response.data === success) {
+                            window.location.href = '/Users/Home/RealTimeOrders';
+                        }
+                        _this.loading = false
                     }).catch(err => {
                         alert(err);
                     })
@@ -448,7 +528,7 @@
                     var stringDateTime = year + '-' + month + '-' + day + '  ' + hours + ':' + minutes;
                     _this.orderTime = stringDateTime;
                 },
-                sendAddress: function(item){
+                sendAddress: function (item) {
                     var _this = this;
                     _this.selectAddress = item;
                 },
