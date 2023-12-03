@@ -757,7 +757,7 @@
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
 
         <script>
-            var baseAddress = "https://localhost:7042";
+            // var baseAddress = "https://localhost:7042";
 
             const orderApp = Vue.createApp({
                 data: function () {
@@ -810,7 +810,7 @@
                     // **asynchronous nature of the fetch operation**
                     updateOrderStatus(item, newStatusId) {
 
-                        fetch(`${baseAddress}/api/RealTimeOrdersapi/${item.orderId}`, {
+                        fetch(`/api/RealTimeOrdersapi/${item.orderId}`, {
                             method: "PUT",
                             headers: {
                                 "Content-Type": "application/json"
@@ -834,7 +834,7 @@
                     getOrder() {
                         let _this = this;
                         var userId = "U001"
-                        fetch(`${baseAddress}/api/RealTimeOrdersapi/${userId}`, { method: "GET" })
+                        fetch(`/api/RealTimeOrdersapi/${userId}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);
