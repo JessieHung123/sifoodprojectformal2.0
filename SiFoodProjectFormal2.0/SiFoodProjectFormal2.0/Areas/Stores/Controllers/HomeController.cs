@@ -24,7 +24,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         public async Task<IActionResult> Main()
         {
             //var sifoodContext = _context.Products.Include(p => p.Category).Include(p => p.Store).Where(p => p.Store.StoreId == targetStoreId);
-            var sifoodContext = _context.Products.Where(p => p.StoreId == targetStoreId);
+            var products = _context.Products.Where(p => p.StoreId == targetStoreId);
             string storeName = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.StoreName).FirstOrDefaultAsync();
             int SumReleasedQty = _context.Products.Where(p => p.StoreId == targetStoreId).Sum(p => p.OrderedQty);
             //int ReleasedQty = await _context.Products.Where(od => od.StoreId == targetStoreId).Sum(od => od.ReleasedQty);
@@ -39,12 +39,12 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             ViewBag.status4 = status4Count;
             ViewBag.Storephoto = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.PhotosPath).FirstOrDefaultAsync();
             ViewBag.SumReleasedQty = SumReleasedQty;
-            return View(await sifoodContext.ToListAsync());
+            return View(await products.ToListAsync());
         }
 
-        public async Task<IActionResult> Main2()
+        public async Task<IActionResult> SaleInfo()
         {
-            var sifoodContext2 = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new 
+            var Sales = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new 
             { StoreId = x.Product.StoreId,
                 UnitPrice = x.Product.UnitPrice,
                 OrderId = x.OrderId,
@@ -55,7 +55,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 OrderStatus = x.Order.StatusId
             })
                 .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7);
-            return Json(sifoodContext2);
+            return Json(Sales);
 
         }
 
