@@ -332,7 +332,7 @@
         <script src="~/assets/js/theme.min.js"></script>
         <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
         <script>
-            var baseAddress = "https://localhost:7042";
+            // var baseAddress = "https://localhost:7042";
 
             const orderApp = Vue.createApp({
                 data: function () {
@@ -371,11 +371,9 @@
                         this.getOrder();
                     },
                     confirmCancelOrder(item) {
-                        if (item.orderDuration <= 10) {
                             if (window.confirm("是否確定取消訂單?")) {
                                 this.cancelOrder(item);
                             }
-                        }
                     },
                     confirmAcceptOrder(item) {
                         if (window.confirm("是否確定接受訂單?")) {
@@ -401,7 +399,7 @@
                     // **asynchronous nature of the fetch operation**
                     updateOrderStatus(item, newStatusId) {
 
-                        fetch(`${baseAddress}/api/StoreRealTimeOrdersapi/${item.orderId}`, {
+                        fetch(`/api/StoreRealTimeOrdersapi/${item.orderId}`, {
                             method: "PUT",
                             headers: {
                                 "Content-Type": "application/json"
@@ -424,8 +422,8 @@
                     },
                     getOrder() {
                         let _this = this;
-                        var userId = "U001"
-                        fetch(`${baseAddress}/api/StoreRealTimeOrdersapi/${userId}?searchKeyWords=${_this.searchKeyWords}`, { method: "GET" })
+                        var storeId = "S001"
+                        fetch(`/api/StoreRealTimeOrdersapi/${storeId}?searchKeyWords=${_this.searchKeyWords}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);

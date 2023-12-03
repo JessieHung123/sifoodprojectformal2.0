@@ -40,7 +40,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             //var order = await _context.Orders.FindAsync(id);
             CheckUnconfirmedOrders(taiwanTime);
             return _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product)
-                                                 .Where(c => c.UserId == id &&
+                                                 .Where(c => c.StoreId == id &&
                                                  c.Status.StatusId != 5 &&
                                                  c.Status.StatusId != 6 &&
                                                  c.Status.StatusId != 7&&
