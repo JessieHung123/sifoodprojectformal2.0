@@ -125,7 +125,6 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <script>
-        var baseAddress = "https://localhost:7042";
         const StoreMainApp = Vue.createApp({
             data: function () {
                 return {
@@ -149,7 +148,7 @@
             methods: {
                 getStoreInfoAPI: function () {
                     let _this = this; /* test */
-                    var uri = `${baseAddress}/Stores/Home/SaleInfo`;
+                    var uri = `/Stores/Home/SaleInfo`;
                     fetch(uri, { method: "GET" })
                         .then(response => {
                             if (response.ok) {
