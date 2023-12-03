@@ -5,53 +5,49 @@
     ViewData["Title"] = "歷史訂單";
 }
 
-<div class="order-category">
-    <h4>歷史訂單列表▽</h4>
-    <div class="order-details">
+@section Styles{
 
-        <div class="order-details1">
-            <p>
-                台北市信義區&emsp;2023/10/30&nbsp;PM12:30 <br>
-                餐廳：印度風情&emsp;1.00KM<br>
-                訂單編號：O001 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-success btn-sm">進行中</button>
-            </p>
-        </div>
-        <div class="order-details1">
-            <p>
-                台北市中山區&emsp;2023/10/30&nbsp;PM1:30 <br>
-                餐廳：大食堂 &emsp;0.08KM<br>
-                訂單編號：O002 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger btn-sm" disabled>已完成</button>
-            </p>
-        </div>
-        <div class="order-details1">
-            <p>
-                台北市信義區&emsp;2023/10/25&nbsp;PM12:30 <br>
-                餐廳：印度風情&emsp;1.00KM<br>
-                訂單編號：O001 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger btn-sm" disabled>已完成</button>
-            </p>
-        </div>
-        <div class="order-details1">
-            <p>
-                台北市中山區&emsp;2023/10/24&nbsp;PM1:30 <br>
-                餐廳：大食堂 &emsp;0.08KM<br>
-                訂單編號：O002 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger btn-sm" disabled>已完成</button>
-            </p>
-        </div>
-        <div class="order-details1">
-            <p>
-                台北市信義區&emsp;2023/9/25&nbsp;PM12:30 <br>
-                餐廳：印度風情&emsp;1.00KM<br>
-                訂單編號：O001 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger btn-sm" disabled>已完成</button>
-            </p>
-        </div>
-        <div class="order-details1">
-            <p>
-                台北市中山區&emsp;2023/8/24&nbsp;PM1:30 <br>
-                餐廳：大食堂 &emsp;0.08KM<br>
-                訂單編號：O002 &emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-secondary btn-sm" disabled>已取消</button>
-            </p>
-        </div>
-    </div>
+}
+
+<div class="order-category">
+    <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">歷史訂單列表</button>
+    <table class="table collapse" id="collapseExample">
+        <thead>
+            <tr>
+                <th scope="col">訂單編號</th>
+                <th scope="col">訂單日期</th>
+                <th scope="col">外送地址</th>
+                <th scope="col">顧客</th>
+                <th scope="col">店家</th>
+                <th scope="col">外送費</th>
+                <th scope="col">總價</th>
+                <th scope="col">訂單狀態</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">U001</th>
+                <td>安安</td>
+                <td>哈囉</td>
+                <td>你好</td>
+                <td>你好</td>
+                <td>你好</td>
+                <td>你好</td>
+                <td>你好</td>
+            </tr>           
+        </tbody>        
+    </table>
 </div>
 
-歷史訂單
+
+@section Scripts {
+    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+    <script src="~/assets/js/theme.min.js"></script>
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+
+    </script>
+}

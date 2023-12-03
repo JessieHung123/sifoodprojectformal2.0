@@ -5,10 +5,6 @@ namespace sifoodprojectformal2._0.Areas.Drivers.Controllers
     [Area("Drivers")]
     public class HomeController : Controller
     {
-        public IActionResult Login()
-        {
-            return View();
-        }
         public IActionResult OrderList()
         {
             return View();
