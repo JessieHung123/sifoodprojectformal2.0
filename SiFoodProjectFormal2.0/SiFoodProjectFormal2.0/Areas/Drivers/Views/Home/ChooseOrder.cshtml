@@ -4,14 +4,13 @@
     Layout = "~/Areas/Drivers/Views/Shared/_Layout.cshtml";
 }
 
-<body>
-        <div class="box2">
-            <div class="">
-                <h5 font-weight>訂單編號:O001</h5>
+<div class="box2" id="chooseOrder">
+            <div>
+            <h5 font-weight>訂單編號:{{OrderList.waitForDeliveryOrderSimpleFormal.item.orderId}}</h5>
                 <p>
-                    預估完成時間：2023/10/30&nbsp;PM12:45 <br>
-                    取餐餐廳：印度風情<br>
-                    配送距離：800公尺<br>
+                    預估完成時間：{{OrderList.waitForDeliveryOrderSimpleFormal.item.distancetimetostore+OrderList.waitForDeliveryOrderSimpleFormal.item.distancetime}}<br>
+            取餐餐廳：{{OrderList.waitForDeliveryOrderSimpleFormal.item.storeName}}<br>
+            配送距離：{{OrderList.waitForDeliveryOrderSimpleFormal.item.distancetext+OrderList.waitForDeliveryOrderSimpleFormal.item.distancetexttostore}}<br>
                     取餐地址：台北市信義區松高路19號<br>
                     配送地址：台北市信義區松高路300號<br>
                     顧客姓名：王先生
@@ -21,4 +20,35 @@
                 </div>
             </div>
         </div>
-</body>
+
+<script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+<script>
+    var baseAddress = "https://localhost:7042";
+    var chooseOrder = Vue.createApp({
+        data: function () {
+            return {
+
+            }
+        },
+        mounted: async function () {
+
+        },
+        computed: {
+
+        },
+        methods: {
+            async getWaitForDeliveryOrderSimple() {
+                var orderId = window.location.pathname.slice("10");
+                await fetch(`${baseAddress}/api/DeliveryOrderapi/WaitForDeliveryOrderDetails/${orderId}`, { method: "GET" })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.waitForDeliveryOrderSimple = data;
+                        this.toStorelocation = data.map(o => ({ lat: o.latitude, lng: o.longitude }));
+                        this.arrivingLocation = data.map(o => o.address);
+                        // console.log(this.location);
+                    })
+            },
+        }
+    }).mount("#chooseOrder")
+</script>
+

@@ -2,26 +2,28 @@
     ViewData["Title"] = "外送員";
 
 }
+<div id="waitfordelivery">
     <h2>訂單列表</h2>
-    <div class="order-category" id="waitfordelivery" >
+    <div class="order-category"  >
     <h4 @@click="toggle">待配送訂單▽&emsp;&emsp;&emsp;共有{{waitForDeliveryOrderSimple.length}}筆</h4>
-        <div class="order-details" v-if="categoryOne">
+    <div class="order-details" v-if="categoryOne">
             <div class="order-details1" v-for="item in waitForDeliveryOrderSimpleFormal">
                 <p>
                     <div>訂單編號：{{item.orderId}}&emsp;用戶姓名：{{item.userName}}</div>
                     <div>取餐餐廳：{{item.storeName}}</div>
                     <div>取餐地址:{{item.storeAddress}}</div>
                     <div>送達地址:{{item.address}}</div>
-                    <div>距離:{{item.distancetext}}&emsp;時間{{item.distancetime}}</div>
-                    <button type="button" class="btn btn-success">查看詳情</button>
+                    <div>現在位置距離餐廳:{{item.distancetexttostore}}&emsp;抵達餐廳時間:{{item.distancetimetostore}}</div>
+                    <div>餐廳距離送達地址:{{item.distancetext}}&emsp;餐廳距離送達地址時間:{{item.distancetime}}</div>
+                    <a asp-area="Drivers" asp-controller="Home" asp-action="ChooseOrder" :asp-route-OrderId="item.orderId"><button type="button" class="btn btn-success">查看詳情</button></a>
                 </p>
             </div>
-        </div>
+    </div>
     </div>
     <br>
-<div class="order-category">
+    <div class="order-category">
     <h4 @@click="toggle">配送中訂單▽</h4>
-        <div class="order-details" v-else>
+        <div class="order-details" v-if="!categoryOne" >
             <div class="order-details1">
                 <p>
                     台北市信義區&emsp;2023/10/30&nbsp;PM12:30 <br>
@@ -39,32 +41,12 @@
         </div>
     </div>
     <br>
+</div>
     <div class="order-category">
         <h4><a href="#" class="link-primary">歷史訂單</a></h4>
     </div>
 
-@section Scripts{
-   @*  <script>
-        var categories = document.querySelectorAll('.order-category');
-        var firstDetails = categories[0];
-        var secondDetails = categories[1];
-        var details = document.querySelector('.order-details:first-child');
-        var details2 = document.querySelector('.order-details:last-child');
-        // categories.forEach(category => {
-        //     category.addEventListener('click', () => {
-        //         var details = category.querySelector('.order-details');
-        //         details.style.display = details.style.display === 'none' ? 'block' : 'none';
-        //     });
-        // });
-        categories[0].addEventListener('click', () => {
-            details.style.display = 'block';
-            details2.style.display = 'none';
-        });
-        categories[1].addEventListener('click', () => {
-            details.style.display = 'none';
-            details2.style.display = 'block';
-        });
-    </script> *@
+
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
     @* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI" async defer></script> *@
     <script>
@@ -75,16 +57,20 @@
                 return {
                     categoryOne:true,
                     waitForDeliveryOrderSimple: [],
-                    location: [],
+                    arrivingLocation: [],
                     waitForDeliveryOrderSimpleFormal:[],
                 }
             },
             mounted: async function () {
                await this.findWaitForDeliveryOrderSimple();
                 this.getDistance();
+                this.getDistanceToStore();
             },
             computed: {
-
+                // waitForDeliveryOrderSimpleFormal() {
+                // this.waitForDeliveryOrderSimple.sort((a, b) => (a.distancetime
+                //     + a.distancetimetostore)-(b.distancetime+ b.distancetimetostore))
+                // },
             },
             methods: {
                 toggle() {
@@ -95,23 +81,51 @@
                         .then(response => response.json())
                         .then(data => {
                             this.waitForDeliveryOrderSimple = data;
-                            this.location = data.map(o => ({ lat: o.latitude, lng: o.longitude }));
-                            console.log(this.location);
+                            this.toStorelocation = data.map(o => ({ lat: o.latitude, lng: o.longitude }));
+                            this.arrivingLocation = data.map(o => o.address);
+                            // console.log(this.location);
                         })
                 },
-                getDistance() {
+                getDistanceToStore() {
                     var service = new google.maps.DistanceMatrixService();
-
                     var currentArray = [setDriverMap.current]
                     service.getDistanceMatrix(
                         {
                             origins: currentArray,
-                            destinations: this.location,
+                            destinations: this.toStorelocation,
+                            travelMode: 'DRIVING',
+                            avoidHighways: true,
+                            avoidTolls: true
+                    }, this.getDistanceResultToStore);
+                    // console.log(this.arrivingLocation);
+                    // // console.log(currentArray);
+                },
+                getDistanceResultToStore(response, status) {
+                    if (status !== google.maps.DistanceMatrixStatus.OK) {
+                        window.alert('Error was' + status);
+                    } else {
+                        console.log(response);
+                        for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
+                            this.waitForDeliveryOrderSimple[i].distancetostore = response.rows[0].elements[i].distance.value;
+                            this.waitForDeliveryOrderSimple[i].distancetexttostore = response.rows[0].elements[i].distance.text;
+                            this.waitForDeliveryOrderSimple[i].distancetimetostore = response.rows[0].elements[i].duration.text;
+                        }
+                        // console.log(this.waitForDeliveryOrderSimple);
+                        
+                    }
+                },
+                getDistance() {
+                    var service = new google.maps.DistanceMatrixService();
+                    var currentArray = [setDriverMap.current]
+                    service.getDistanceMatrix(
+                        {
+                            origins: this.toStorelocation,
+                            destinations: this.arrivingLocation,
                             travelMode: 'DRIVING',
                             avoidHighways: true,
                             avoidTolls: true
                         }, this.getDistanceResult);
-                    // console.log(this.location);
+                    // console.log(this.arrivingLocation);
                     // console.log(currentArray);
                 },
                 getDistanceResult(response, status) {
@@ -124,18 +138,13 @@
                             this.waitForDeliveryOrderSimple[i].distancetext = response.rows[0].elements[i].distance.text;
                             this.waitForDeliveryOrderSimple[i].distancetime = response.rows[0].elements[i].duration.text;
                         }
-                        console.log(this.waitForDeliveryOrderSimple);
-                        this.waitForDeliveryOrderSimpleFormal = this.waitForDeliveryOrderSimple.sort((a, b) => a.distance - b.distance);
+                        // console.log(this.waitForDeliveryOrderSimple);
+                    this.waitForDeliveryOrderSimpleFormal = this.waitForDeliveryOrderSimple.sort((a, b) => (a.distancetime
+                    + a.distancetimetostore)-(b.distancetime+ b.distancetimetostore));
                     }
                 }
 
             }
-
-
-
-
-
     }).mount("#waitfordelivery")
     </script>
 
-}
