@@ -1,7 +1,5 @@
 ﻿namespace SiFoodProjectFormal2._0.Areas.Users.Models.SPGatewayModels;
 using Microsoft.Extensions.Configuration;
-
-
 public class ConfigurationUtility
 {
     private readonly IConfiguration _configuration;

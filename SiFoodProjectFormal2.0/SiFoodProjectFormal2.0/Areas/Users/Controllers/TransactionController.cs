@@ -76,14 +76,14 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             _context.Orders.Add(order);
             _context.SaveChanges();
 
-            foreach (var item in model.ProductDetails)
+            foreach (var Items in model.ProductDetails)
             {
-                int productId = GetProductIdByName(item.ProductName);
+                int productId = GetProductIdByName(Items.ProductName);
                 OrderDetail orderDetail = new OrderDetail
                 {
                     OrderId = order.OrderId,
                     ProductId = productId,
-                    Quantity = item.Quantity,
+                    Quantity = Items.Quantity,
                 };
                 _context.OrderDetails.Add(orderDetail);
             }
