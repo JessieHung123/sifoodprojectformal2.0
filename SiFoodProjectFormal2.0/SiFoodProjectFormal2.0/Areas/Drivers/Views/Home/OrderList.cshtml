@@ -15,7 +15,7 @@
                     <div>送達地址:{{item.address}}</div>
                     <div>現在位置距離餐廳:{{item.distancetexttostore}}&emsp;抵達餐廳時間:{{item.distancetimetostore}}</div>
                     <div>餐廳距離送達地址:{{item.distancetext}}&emsp;餐廳距離送達地址時間:{{item.distancetime}}</div>
-                    <a asp-area="Drivers" asp-controller="Home" asp-action="ChooseOrder" :asp-route-OrderId="item.orderId"><button type="button" class="btn btn-success">查看詳情</button></a>
+                    <a :href="' /Drivers/Home/ChooseOrder/' + item.orderId"><button type="button" class="btn btn-success">查看詳情</button></a>
                 </p>
             </div>
     </div>
@@ -45,12 +45,8 @@
     <div class="order-category">
         <h4><a href="#" class="link-primary">歷史訂單</a></h4>
     </div>
-
-
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
-    @* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI" async defer></script> *@
     <script>
-   // 司機現在位置 setDriverMap.current
         var baseAddress = "https://localhost:7042";
         var OrderList = Vue.createApp({
             data: function () {
@@ -67,10 +63,6 @@
                 this.getDistanceToStore();
             },
             computed: {
-                // waitForDeliveryOrderSimpleFormal() {
-                // this.waitForDeliveryOrderSimple.sort((a, b) => (a.distancetime
-                //     + a.distancetimetostore)-(b.distancetime+ b.distancetimetostore))
-                // },
             },
             methods: {
                 toggle() {
@@ -81,9 +73,9 @@
                         .then(response => response.json())
                         .then(data => {
                             this.waitForDeliveryOrderSimple = data;
-                            this.toStorelocation = data.map(o => ({ lat: o.latitude, lng: o.longitude }));
+                            // this.toStorelocation = data.map(o => ({ lat: o.latitude, lng: o.longitude }));
+                            this.toStorelocation = data.map(o =>o.storeAddress);
                             this.arrivingLocation = data.map(o => o.address);
-                            // console.log(this.location);
                         })
                 },
                 getDistanceToStore() {
@@ -97,8 +89,6 @@
                             avoidHighways: true,
                             avoidTolls: true
                     }, this.getDistanceResultToStore);
-                    // console.log(this.arrivingLocation);
-                    // // console.log(currentArray);
                 },
                 getDistanceResultToStore(response, status) {
                     if (status !== google.maps.DistanceMatrixStatus.OK) {
@@ -110,8 +100,6 @@
                             this.waitForDeliveryOrderSimple[i].distancetexttostore = response.rows[0].elements[i].distance.text;
                             this.waitForDeliveryOrderSimple[i].distancetimetostore = response.rows[0].elements[i].duration.text;
                         }
-                        // console.log(this.waitForDeliveryOrderSimple);
-                        
                     }
                 },
                 getDistance() {

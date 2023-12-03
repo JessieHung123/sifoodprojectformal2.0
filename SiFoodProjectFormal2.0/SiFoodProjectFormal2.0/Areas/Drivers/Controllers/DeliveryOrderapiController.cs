@@ -20,7 +20,7 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.Controllers
         }
         public object WaitForDeliveryOrderSimple()
         {
-            return _context.Orders.Where(o => o.StatusId == 2 && o.DeliveryMethod=="外送").Include(o => o.User).Include(o => o.Store).Select(o => new DeliveryOrderVM
+            return _context.Orders.Where(o => o.StatusId == 2 && o.DeliveryMethod=="外送" && o.OrderDate.Date == DateTime.Today).Include(o => o.User).Include(o => o.Store).Select(o => new DeliveryOrderVM
             {
                 OrderId = o.OrderId,
                 OrderDate = o.OrderDate.ToString(),
@@ -37,7 +37,7 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.Controllers
         [HttpGet("{id}")]
         public object WaitForDeliveryOrderDetails(string id)
         {
-            return _context.Orders.Where(o => o.StatusId == 2&&o.OrderId==id).Include(o => o.User).Include(o => o.Store).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Select(o => new ChooseOrderVM
+            return _context.Orders.Where(o => o.StatusId == 2&&o.OrderId==id&&o.OrderDate.Date == DateTime.Today && o.DeliveryMethod == "外送").Include(o => o.User).Include(o => o.Store).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Select(o => new ChooseOrderVM
             {
                 OrderId = o.OrderId,
                 OrderDate = o.OrderDate.ToString(),

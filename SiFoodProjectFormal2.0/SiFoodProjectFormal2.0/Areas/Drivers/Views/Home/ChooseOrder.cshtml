@@ -4,50 +4,140 @@
     Layout = "~/Areas/Drivers/Views/Shared/_Layout.cshtml";
 }
 
-<div class="box2" id="chooseOrder">
+<div class="box2 border border-success rounded" id="chooseOrder">
             <div>
-            <h5 font-weight>訂單編號:{{OrderList.waitForDeliveryOrderSimpleFormal.item.orderId}}</h5>
-                <p>
-                    預估完成時間：{{OrderList.waitForDeliveryOrderSimpleFormal.item.distancetimetostore+OrderList.waitForDeliveryOrderSimpleFormal.item.distancetime}}<br>
-            取餐餐廳：{{OrderList.waitForDeliveryOrderSimpleFormal.item.storeName}}<br>
-            配送距離：{{OrderList.waitForDeliveryOrderSimpleFormal.item.distancetext+OrderList.waitForDeliveryOrderSimpleFormal.item.distancetexttostore}}<br>
-                    取餐地址：台北市信義區松高路19號<br>
-                    配送地址：台北市信義區松高路300號<br>
-                    顧客姓名：王先生
-                </p>
-                <div class="text-center">
-                    <button type="button" class="btn btn-primary btn-group-lg">接受</button>&emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger btn-group-lg">拒絕</button>
+        <h4 font-weight><span class="badge bg-info text-dark">訂單編號:{{waitForDeliveryOrder.orderId}}</span></h4>
+                <div>
+                    預估完成時間：{{expectedtime}}分鐘<br>
+                    取餐餐廳：{{waitForDeliveryOrder.storeName}}<br>
+                    取餐地址：{{waitForDeliveryOrder.storeAddress}}<br>
+                    配送地址：{{waitForDeliveryOrder.address}}<br>
+                    總路程距離：{{expecteddistance}}公里<br>
+                    顧客姓名：{{waitForDeliveryOrder.userName}}<br>
                 </div>
+                <hr />
+                <div v-for="item in waitForDeliveryOrder.orderDetails">
+                    取餐明細:{{item.productName}}&emsp;數量:{{item.quantity}}
+                </div>
+                <template v-if="isAccept==true">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary btn-group-lg">與顧客聊天</button>&emsp;&emsp;&emsp;&emsp;<button type="button" class="btn btn-danger btn-group-lg">送達完成</button>
+                    </div>
+                </template>
+                <template v-else>
+                    <div class="text-center">
+                <button type="button" class="btn btn-primary btn-group-lg" @@click="accept">接受</button>&emsp;&emsp;&emsp;&emsp;<a href="/Drivers/Home/OrderList"><button type="button" class="btn btn-danger btn-group-lg">回首頁</button></a>
+                    </div>
+                </template>
             </div>
-        </div>
-
+</div>
 <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
 <script>
     var baseAddress = "https://localhost:7042";
     var chooseOrder = Vue.createApp({
         data: function () {
             return {
-
+                waitForDeliveryOrder: {},
+                toStorelocation: "",
+                arrivingLocation:"",
+                expectedtime:null,
+                isAccept:false,
             }
         },
         mounted: async function () {
-
-        },
-        computed: {
-
+            await this.getWaitForDeliveryOrder();
+            await this.getDistance();
+            await this.getDistanceToStore();
         },
         methods: {
-            async getWaitForDeliveryOrderSimple() {
-                var orderId = window.location.pathname.slice("10");
+            async getWaitForDeliveryOrder() {
+                var orderId = window.location.pathname.slice("26");
                 await fetch(`${baseAddress}/api/DeliveryOrderapi/WaitForDeliveryOrderDetails/${orderId}`, { method: "GET" })
                     .then(response => response.json())
                     .then(data => {
-                        this.waitForDeliveryOrderSimple = data;
-                        this.toStorelocation = data.map(o => ({ lat: o.latitude, lng: o.longitude }));
+                        this.waitForDeliveryOrder = data[0];
+                        this.toStorelocation = data.map(o=>o.storeAddress);
                         this.arrivingLocation = data.map(o => o.address);
-                        // console.log(this.location);
                     })
+            }, 
+            getDistanceToStore() {
+                var service = new google.maps.DistanceMatrixService();
+                var currentArray = [setDriverMap.current];
+                service.getDistanceMatrix(
+                    {
+                        origins: currentArray,//陣列
+                        destinations: this.toStorelocation,//陣列
+                        travelMode: 'DRIVING',
+                        avoidHighways: true,
+                        avoidTolls: true
+                    }, this.getDistanceResultToStore);
             },
+            getDistanceResultToStore(response, status) {
+                if (status !== google.maps.DistanceMatrixStatus.OK) {
+                    window.alert('Error was' + status);
+                } else {
+                    console.log(response);
+                    this.waitForDeliveryOrder.distancetostore = response.rows[0].elements[0].distance.value;
+                    this.waitForDeliveryOrder.distancetexttostore = response.rows[0].elements[0].distance.text;
+                    this.waitForDeliveryOrder.distancetimetostore = response.rows[0].elements[0].duration.text;       
+                }
+                    this.expectedFinishTimeAndDistance();
+            },
+            getDistance() {
+                var service = new google.maps.DistanceMatrixService();
+                var currentArray = [setDriverMap.current]
+                service.getDistanceMatrix(
+                    {
+                        origins: this.toStorelocation,//陣列
+                        destinations: this.arrivingLocation,//陣列
+                        travelMode: 'DRIVING',
+                        avoidHighways: true,
+                        avoidTolls: true
+                    }, this.getDistanceResult);
+            },
+            getDistanceResult(response, status) {
+                if (status !== google.maps.DistanceMatrixStatus.OK) {
+                    window.alert('Error was' + status);
+                } else {
+                    console.log(response);
+                    this.waitForDeliveryOrder.distance = response.rows[0].elements[0].distance.value;
+                    this.waitForDeliveryOrder.distancetext = response.rows[0].elements[0].distance.text;
+                    this.waitForDeliveryOrder.distancetime = response.rows[0].elements[0].duration.text;
+                }
+                this.expectedFinishTimeAndDistance();
+            }, 
+            expectedFinishTimeAndDistance() {
+                console.log(this.waitForDeliveryOrder.distancetimetostore);
+                console.log(this.waitForDeliveryOrder.distancetime);
+                this.expectedtime = Number(this.waitForDeliveryOrder.distancetimetostore.slice(0, -3)) + Number(this.waitForDeliveryOrder.distancetime.slice(0, -3));
+                this.expecteddistance = Number(this.waitForDeliveryOrder.distancetext.slice(0, -3)) + Number(this.waitForDeliveryOrder.distancetexttostore.slice(0, -3));
+                console.log(this.expectedtime);
+            },
+            accept() {//狀態要變
+                let directionsService = new google.maps.DirectionsService();
+                directionsService.route(
+                    {
+                        origin: setDriverMap.current,//字串
+                        destination: this.arrivingLocation.toString(),//字串
+                        travelMode: 'DRIVING',
+                        waypoints: [
+                            {
+                                location: this.toStorelocation.toString(),//字串
+                                stopover: true
+                            }],
+                        avoidHighways: true,
+                    }, this.getRoute);
+            },
+            getRoute(response, status) {
+                if (status == 'OK') {
+                    let directionsDisplay = new google.maps.DirectionsRenderer({
+                        map: setDriverMap.map,
+                        directions: response,
+                    });
+                    this.isAccept = true;
+                };
+            },
+
         }
     }).mount("#chooseOrder")
 </script>
