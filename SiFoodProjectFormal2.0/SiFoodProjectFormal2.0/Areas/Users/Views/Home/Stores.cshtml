@@ -652,7 +652,7 @@
     @section Scripts{
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
         <script>
-            var baseAddress = "https://localhost:7042";
+            // var baseAddress = "https://localhost:7042";
             var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
             const storeProductApp = Vue.createApp({
                 data: function () {
@@ -738,7 +738,7 @@
                         let _this = this;
                         const storeId = "S001"
                         // const userId = "U001"
-                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/status/${storeId}`)
+                        fetch(`/api/StoreProductsapi/favorite/status/${storeId}`)
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
@@ -769,7 +769,7 @@
                                 },
                                 body: JSON.stringify(raw),
                             };
-                            fetch(`${baseAddress}/api/StoreProductsapi/favorite/add`,
+                            fetch(`/api/StoreProductsapi/favorite/add`,
                                 requestOptions
                             )
                                 .then(response => {
@@ -802,7 +802,7 @@
                             },
                             body: raw,
                         };
-                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/remove`, requestOptions)
+                        fetch(`/api/StoreProductsapi/favorite/remove`, requestOptions)
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
@@ -820,7 +820,7 @@
                     getStoreInfo() {
                         let _this = this;
                         let storeId = "S001"
-                        fetch(`${baseAddress}/api/StoreProductsapi/${storeId}`, { method: "GET" })
+                        fetch(`/api/StoreProductsapi/${storeId}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
