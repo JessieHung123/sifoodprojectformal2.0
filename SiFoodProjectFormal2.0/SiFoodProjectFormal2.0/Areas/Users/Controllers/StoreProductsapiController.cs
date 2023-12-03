@@ -48,7 +48,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 StoreName = z.StoreName,
                 StoreId = z.StoreId,
                 Email = z.Email,
-                Phone = $"{z.Phone.Substring(0, 2)} {z.Phone.Substring(2)}",
+                Phone = $"{z.Phone.Substring(0, 2)} {z.Phone.Substring(2,4)} {z.Phone.Substring(4,4)}",
                 Address = z.Address,
                 OpeningTime = z.OpeningTime,
                 PhotosPath = z.PhotosPath,
