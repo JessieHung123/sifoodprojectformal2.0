@@ -16,11 +16,12 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public StoreProductsapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
+        private readonly IUserIdentityService _userIdentityService;
+        public StoreProductsapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IUserIdentityService userIdentityService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _userIdentityService = userIdentityService;
         }
 
         // GET: api/StoreProductsapi
@@ -90,17 +91,19 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     })
             });
         }
-        [HttpGet("favorite/status/{userId}/{storeId}")]
-        public object GetFavoriteStatus(string userId, string storeId)
+        [HttpGet("favorite/status/{storeId}")]
+        public object GetFavoriteStatus(string storeId)
         {
+            string userId = _userIdentityService.GetUserId();
             //return _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
             bool isFavorite = _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
             return Ok(new { IsFavorite = isFavorite });
         }
         [HttpPost("favorite/add")]
-        public async Task<string> SaveToFavorites([FromBody] FavoriteVM favoriteVM)
+        public async Task<string> SaveToFavorites([FromBody] StoreFavoriteVM favoriteVM)
         {
-            string userId = favoriteVM.UserId;
+            //string userId = favoriteVM.UserId;
+            string userId = _userIdentityService.GetUserId();
             string storeId = favoriteVM.StoreId;
             if (favoriteVM == null || string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(storeId))
             {
@@ -110,24 +113,26 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             {
                 Favorite favorite = new Favorite
                 {
-                    UserId = favoriteVM.UserId,
+                    UserId = userId,
                     StoreId = favoriteVM.StoreId
                 };
                 _context.Favorites.Add(favorite);
                 await _context.SaveChangesAsync();
+                return "收藏成功!";
             }
             return "收藏成功!";
         }
         [HttpDelete("favorite/remove")]
-        public async Task<string> RemoveFromFavorites([FromBody] FavoriteVM favoriteVM)
+        public async Task<string> RemoveFromFavorites([FromBody] StoreFavoriteVM favoriteVM)
         {
-            if (favoriteVM == null || string.IsNullOrEmpty(favoriteVM.UserId) || string.IsNullOrEmpty(favoriteVM.StoreId))
+            string userId = _userIdentityService.GetUserId();
+            if (favoriteVM == null || string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(favoriteVM.StoreId))
             {
                 return "未收藏";
             }
 
             var existingFavorite = _context.Favorites
-                .FirstOrDefault(f => f.UserId == favoriteVM.UserId && f.StoreId == favoriteVM.StoreId);
+                .FirstOrDefault(f => f.UserId == userId && f.StoreId == favoriteVM.StoreId);
 
             if (existingFavorite != null)
             {

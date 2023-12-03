@@ -219,12 +219,13 @@
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
-                                    <a v-if="this.isFavorite" @@click="removeFromFavorites" class="btn btn-primary btn-sm">
+                                    <button class="btn btn-primary btn-sm" @@click="removeFromFavorites" v-if="this.isFavorite">
+                                    @* <button style="border-style:none; color:white; background-color:darkgreen" @@click="removeFromFavorites" v-if="this.isFavorite"> *@
                                         <strong>取消收藏</strong>
-                                    </a>
-                                    <a v-else @@click="saveToFavorites" class="btn btn-primary btn-sm">
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" @@click="saveToFavorites" v-else>
                                         <strong>收藏</strong>
-                                    </a>                                  
+                                    </button>                                  
                                     <a href="#" class="btn btn-info btn-sm ms-2"><strong>分享</strong></a>
                                     <a href="#" class="btn btn-success btn-sm ms-2"><strong>導航</strong></a>
                                 </div>
@@ -652,6 +653,7 @@
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
         <script>
             var baseAddress = "https://localhost:7042";
+            var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
             const storeProductApp = Vue.createApp({
                 data: function () {
                     return {
@@ -665,6 +667,7 @@
                         productsQty: 0,
                         isFavorite: false,
                         searchKeyWords:""
+
                     }
                 },
                 computed: {                  
@@ -683,8 +686,9 @@
                         let filteredProducts = this.products;
                         // filtering based on selected category
                         if (this.selectedCategory && this.selectedCategory !== "全部") {
-                            this.searchKeyWords = "";
+                            // this.searchKeyWords = "";//改
                             filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
+                            // this.selectedCategory = "";
                         }
                         // if (this.selectedCategory) {
                         //     this.searchKeyWords = "";
@@ -694,6 +698,7 @@
                         // }
                         //search filter
                         if (this.searchKeyWords &&this.searchKeyWords.trim() !== "") {
+                            // this.selectedCategory = "";//改
                             const searchQuery = this.searchKeyWords.toLowerCase();
                             filteredProducts = filteredProducts.filter(item =>
                                 item.productName.toLowerCase().includes(searchQuery) ||
@@ -722,16 +727,18 @@
                 },
                 methods: {
                     categoriesFilter(category) {
+                        this.searchKeyWords = "";
                         this.selectedCategory = category;
                     },
                     searchProducts() {
+                        this.selectedCategory = "";
                         this.searchKeyWords = this.keyWords;
                     },
                     getFavoriteStatus() {
                         let _this = this;
                         const storeId = "S001"
-                        const userId = "U001"
-                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/status/${userId}/${storeId}`)
+                        // const userId = "U001"
+                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/status/${storeId}`)
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
@@ -748,35 +755,41 @@
                             });
                     },
                     saveToFavorites() {
-                        const storeId = "S001"; 
-                        const userId = "U001";
-                        let raw = {
-                            userId: userId,
-                            storeId: storeId,
+                        if (isLoggedIn) {
+                            const storeId = "S001";
+                            // const userId = "U001";
+                            let raw = {
+                                // userId: userId,
+                                storeId: storeId,
+                            }
+                            var requestOptions = {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(raw),
+                            };
+                            fetch(`${baseAddress}/api/StoreProductsapi/favorite/add`,
+                                requestOptions
+                            )
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(`${response.status}`);
+                                    }
+                                    return response.text();
+                                })
+                                .then(result => {
+                                    alert(result);
+                                    this.isFavorite = true;
+                                })
+                                .catch(error => {
+                                    console.error('Error', error);
+                                });
                         }
-                        var requestOptions = {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(raw),
-                        };
-                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/add`, 
-                            requestOptions
-                        )
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(`${response.status}`);
-                                }
-                                return response.text();
-                            })
-                            .then(result => {
-                                // alert(result);
-                                this.isFavorite = true;
-                            })
-                            .catch(error => {
-                                console.error('Error', error);
-                            });
+                        else {
+                            alert("請先登入")
+                        }
+                       
                     },
                     removeFromFavorites() {
                         const storeId = "S001"; 
@@ -821,7 +834,9 @@
                                 _this.comment = data[0].comment;                              
                                 _this.storeCategoryList = [..._this.stores.categoryList].filter(category => category !== "其他")
                                 _this.stores.categoryList.unshift("全部");
-                                _this.getFavoriteStatus();
+                                if (isLoggedIn) {
+                                    _this.getFavoriteStatus();
+                                }                              
                                 // console.table(_this.stores)
                             }).catch(error => {
                                 alert(error);
