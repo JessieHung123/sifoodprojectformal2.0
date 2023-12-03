@@ -552,7 +552,7 @@
                                                     {{item.userDetailAddress}}<br>
                                                     {{item.userPhone}}
                                                 </p>
-                                                <!-- btn -->                                            
+                                                <!-- btn -->
                                                 <a v-if="!item.isDefault" href="#" class="link-primary" @@click="setDefaultAddress(item)">設定為預設地址</a>
                                                 <a v-else href="#" class="btn btn-info btn-sm">預設地址</a>
                                                 <div class="mt-4">
@@ -638,7 +638,7 @@
                             <div class="col-12">
                                 <!-- input -->
                                 <input type="text" class="form-control" placeholder="請輸入地址" v-model="addressLine">
-                            </div>                          
+                            </div>
                             <div class="col-12">
                                 <!-- form check -->
                                 <div class="form-check">
@@ -728,7 +728,7 @@
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
 
         <script>
-            var baseAddress = "https://localhost:7042";
+            // var baseAddress = "https://localhost:7042";
             const storeProductApp = Vue.createApp({
                 data: function () {
                     return {
@@ -754,7 +754,7 @@
                 methods: {
                     setDefaultAddress(item) {
                         let _this = this;
-                        axios.put(`${baseAddress}/api/UserAddressesapi/${item.userAddressId}`, {
+                        axios.put(`/api/UserAddressesapi/${item.userAddressId}`, {
                             UserAddressId: item.userAddressId,
                             UserDetailAddress: item.userDetailAddress,
                             UserId: item.userId,
@@ -771,7 +771,7 @@
                     },
                     update: function (item) {
                         let _this = this;
-                        axios.put(`${baseAddress}/api/UserAddressesapi/${item.userAddressId}`, {
+                        axios.put(`/api/UserAddressesapi/${item.userAddressId}`, {
                             UserAddressId: item.userAddressId,
                             UserDetailAddress: item.userDetailAddress,
                             UserId: item.userId,
@@ -806,7 +806,7 @@
                     deleteAddress: function () {
                         let _this = this;
                         if (this.addressToDelete) {
-                            axios.delete(`${baseAddress}/api/UserAddressesapi/${this.addressToDelete.userAddressId}`).then(response => {
+                            axios.delete(`/api/UserAddressesapi/${this.addressToDelete.userAddressId}`).then(response => {
                                 _this.getUserAddresses();
                                 $('#deleteModal').modal('hide');
                                 $('.modal-backdrop').remove();
@@ -833,7 +833,7 @@
                         //     UserRegion: _this.selectedRegion,
                         //     UserDetailAddress: combinedAddress
                         // }
-                        axios.post(`${baseAddress}/api/UserAddressesapi`, form, {
+                        axios.post(`/api/UserAddressesapi`, form, {
                             headers: {
                                 "Content-Type": "multipart/form-data"
                             }
@@ -852,7 +852,7 @@
                     getUserAddresses() {
                         let _this = this;
                         var userId = "U001"
-                        fetch(`${baseAddress}/api/UserAddressesapi/${userId}`, { method: "GET" })
+                        fetch(`/api/UserAddressesapi/${userId}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
