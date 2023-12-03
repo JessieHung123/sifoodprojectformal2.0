@@ -30,122 +30,6 @@
 
 <body>
 
-    <!-- Modal -->
-    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-4">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fs-3 fw-bold" id="userModalLabel">Sign Up</h5>
-
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="fullName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter Your Name" required="">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter Email address" required="">
-                        </div>
-
-                        <div class="mb-5">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Enter Password" required="">
-                            <small class="form-text">
-                                By Signup, you agree to our <a href="#!">Terms of Service</a> & <a href="#!">Privacy Policy</a>
-                            </small>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Sign Up</button>
-                    </form>
-                </div>
-                <div class="modal-footer border-0 justify-content-center">
-
-                    Already have an account? <a href="#">Sign in</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    
-    <!-- Modal -->
-    <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered">
-            <div class="modal-content">
-
-                <div class="modal-body p-6">
-                    <div class="d-flex justify-content-between align-items-start ">
-                        <div>
-                            <h5 class="mb-1" id="locationModalLabel">Choose your Delivery Location</h5>
-                            <p class="mb-0 small">Enter your address and we will specify the offer you area. </p>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="my-5">
-                        <input type="search" class="form-control" placeholder="Search your area">
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="mb-0">Select Location</h6>
-                        <a href="#" class="btn btn-outline-gray-400 text-muted btn-sm">Clear All</a>
-
-
-                    </div>
-                    <div>
-                        <div data-simplebar style="height:300px;">
-                            <div class="list-group list-group-flush">
-
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action active">
-                                    <span>Alabama</span><span>Min:$20</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Alaska</span><span>Min:$30</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Arizona</span><span>Min:$50</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>California</span><span>Min:$29</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Colorado</span><span>Min:$80</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Florida</span><span>Min:$90</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Arizona</span><span>Min:$50</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>California</span><span>Min:$29</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Colorado</span><span>Min:$80</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Florida</span><span>Min:$90</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <!-- section-->
     <main id="storeProductsApp">
         <div class="mt-4">
@@ -198,34 +82,47 @@
                                     {{stores.phone}}
                                 </div>
                                 <div>
-                                    @* <span> *@
-                                    <small><a href="#!">{{stores.weekdayOpeningTime}}</a></small>
+                                    <small v-if="stores.openForBusiness" style="color: #32de84;">
+                                        <a>{{ stores.weekdayOpeningTime }}</a>
+                                    </small>
+                                    <small v-else style="color: red;">
+                                        <a>{{ stores.weekdayOpeningTime }}</a>
+                                    </small>
                                     <br />
-                                    <small><a href="#!">{{stores.weekendOpeningTime}}</a></small>
+                                    <small v-if="stores.openForBusiness" style="color: #32de84;">
+                                        <a>{{ stores.weekendOpeningTime }}</a>
+                                    </small>
+                                    <small v-else style="color: red">
+                                        <a>{{ stores.weekendOpeningTime }}</a>
+                                    </small>
                                     <br />
-                                    <small><a href="#!">(Open Now***)</a></small>
-                                    @* </span> *@
+                                    <small v-if="stores.openForBusiness" style="color: #32de84;">
+                                        <a>(營業中)</a>
+                                    </small>
+                                    <small v-else style="color: red;">
+                                        <a>(休息中)</a>
+                                    </small>
                                 </div>
                                 <!-- rating -->
                                 <div class="mt-2">
                                     <!-- rating -->
                                     <small class="text-warning">
                                         <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
+@*                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-half"></i>
-                                    </small><span class="ms-2">{{stores.commentRank/stores.commentCount}}</span>
+ *@                                    </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10}}</span>
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
                                     <button class="btn btn-primary btn-sm" @@click="removeFromFavorites" v-if="this.isFavorite">
-                                    @* <button style="border-style:none; color:white; background-color:darkgreen" @@click="removeFromFavorites" v-if="this.isFavorite"> *@
+                                        @* <button style="border-style:none; color:white; background-color:darkgreen" @@click="removeFromFavorites" v-if="this.isFavorite"> *@
                                         <strong>取消收藏</strong>
                                     </button>
                                     <button class="btn btn-primary btn-sm" @@click="saveToFavorites" v-else>
                                         <strong>收藏</strong>
-                                    </button>                                  
+                                    </button>
                                     <a href="#" class="btn btn-info btn-sm ms-2"><strong>分享</strong></a>
                                     <a href="#" class="btn btn-success btn-sm ms-2"><strong>導航</strong></a>
                                 </div>
@@ -258,7 +155,7 @@
                                 <div class="position-relative">
                                     <input v-model.lazy="keyWords" type="search" class="form-control" placeholder="搜尋店家商品" @@keyup.enter="searchProducts">
                                     <span class="position-absolute end-0 top-0 mt-2 me-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
                                             <circle cx="11" cy="11" r="8"></circle>
                                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                         </svg>
@@ -296,7 +193,7 @@
                         </div>
                         <!-- row -->
                         <div class="row g-4 row-cols-xl-3 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
-                            <div class="col  align-items-stretch" v-for="item in filteredProducts">
+                            <div class="col  align-items-stretch" v-for="item in productsCards">
                                 <!-- card -->
                                 <div class="card card-product">
                                     <div class="card-body">
@@ -311,31 +208,6 @@
                                                                  class="mb-3 img-fluid rounded" />
                                             </a>
                                             <!-- btn action -->
-                                            <div class="card-product-action">
-                                                <a href="#!"
-                                                   class="btn-action"
-                                                   data-bs-toggle="modal"
-                                                   data-bs-target="#quickViewModal">
-                                                    <i class="bi bi-eye"
-                                                       data-bs-toggle="tooltip"
-                                                       data-bs-html="true"
-                                                       title="Quick View"></i>
-                                                </a>
-                                                <a href="#!"
-                                                   class="btn-action"
-                                                   data-bs-toggle="tooltip"
-                                                   data-bs-html="true"
-                                                   title="Wishlist">
-                                                    <i class="bi bi-heart"></i>
-                                                </a>
-                                                <a href="#!"
-                                                   class="btn-action"
-                                                   data-bs-toggle="tooltip"
-                                                   data-bs-html="true"
-                                                   title="Compare">
-                                                    <i class="bi bi-arrow-left-right"></i>
-                                                </a>
-                                            </div>
                                         </div>
                                         <div class="text-small mb-1">
                                             <a href="#!" class="text-decoration-none text-muted"><small>{{item.categoryName}}</small></a>
@@ -359,7 +231,7 @@
                                                 <span class="text-dark">${{item.unitPrice}}</span>
                                                 @****二期 <span class="text-decoration-line-through text-muted">$***</span> *@
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -370,35 +242,16 @@
                             <div class="col">
                                 <!-- nav -->
                                 <nav>
-                                    <ul class="pagination">
-                                        <li class="page-item disabled">
-                                            <a class="page-link mx-1 "
-                                               href="#"
-                                               aria-label="Previous">
-                                                <i class="feather-icon icon-chevron-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link mx-1 active" href="#">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link mx-1 text-body" href="#">2</a>
-                                        </li>
-
-                                        <li class="page-item">
-                                            <a class="page-link mx-1 text-body" href="#">...</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link mx-1 text-body" href="#">12</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link mx-1 text-body"
-                                               href="#"
-                                               aria-label="Next">
-                                                <i class="feather-icon icon-chevron-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <paginate :page-count="total"
+                                              :click-handler="pageClick"
+                                              :force-page="page.pageNumber"
+                                              :prev-text="'<'"
+                                              :next-text="'>'"
+                                              :page-link-class="'page-link mx-1'"
+                                              :prev-link-class="'page-link mx-1'"
+                                              :next-link-class="'page-link mx-1'"
+                                              :container-class="'pagination justify-content-center'">
+                                    </paginate>
                                 </nav>
                             </div>
                         </div>
@@ -435,12 +288,14 @@
                                             {{person.contents}}
                                         </p>
                                         <ul class="list-unstyled d-flex justify-content-center text-warning mb-0">
+                                            
+                                            <li><i class="fas fa-star fa-sm"></i></li>
+                                            {{person.commentRank}}
+@*                                             <li><i class="fas fa-star fa-sm"></i></li>//二期
                                             <li><i class="fas fa-star fa-sm"></i></li>
                                             <li><i class="fas fa-star fa-sm"></i></li>
                                             <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                        </ul>
+ *@                                        </ul>
                                     </div>
 
                                 </div>
@@ -455,202 +310,27 @@
         </section>
     </main>
 
-    <!-- Modal -->
-    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body p-8">
-                    <div class="position-absolute top-0 end-0 me-3 mt-3">
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <!-- img slide -->
-                            <div class="product productModal" id="productModal">
-                                <div class="zoom"
-                                     onmousemove="zoom(event)"
-                                     style="
-                  background-image: url(~/assets/images/products/product-single-img-1.jpg);
-                ">
-                                    <!-- img -->
-                                    <img src="~/assets/images/products/product-single-img-1.jpg"
-                                         alt="">
-                                </div>
-                                <div>
-                                    <div class="zoom"
-                                         onmousemove="zoom(event)"
-                                         style="
-                    background-image: url(~/assets/images/products/product-single-img-2.jpg);
-                  ">
-                                        <!-- img -->
-                                        <img src="~/assets/images/products/product-single-img-2.jpg"
-                                             alt="">
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="zoom"
-                                         onmousemove="zoom(event)"
-                                         style="
-                    background-image: url(~/assets/images/products/product-single-img-3.jpg);
-                  ">
-                                        <!-- img -->
-                                        <img src="~/assets/images/products/product-single-img-3.jpg"
-                                             alt="">
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="zoom"
-                                         onmousemove="zoom(event)"
-                                         style="
-                    background-image: url(~/assets/images/products/product-single-img-4.jpg);
-                  ">
-                                        <!-- img -->
-                                        <img src="~/assets/images/products/product-single-img-4.jpg"
-                                             alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- product tools -->
-                            <div class="product-tools">
-                                <div class="thumbnails row g-3" id="productModalThumbnails">
-                                    <div class="col-3" class="tns-nav-active">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img src="~/assets/images/products/product-single-img-1.jpg"
-                                                 alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img src="~/assets/images/products/product-single-img-2.jpg"
-                                                 alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img src="~/assets/images/products/product-single-img-3.jpg"
-                                                 alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img src="~/assets/images/products/product-single-img-4.jpg"
-                                                 alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="ps-lg-8 mt-6 mt-lg-0">
-                                <a href="#!" class="mb-4 d-block">Bakery Biscuits</a>
-                                <h2 class="mb-1 h1">Napolitanke Ljesnjak</h2>
-                                <div class="mb-4">
-                                    <small class="text-warning">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-half"></i>
-                                    </small><a href="#" class="ms-2">(30 reviews)</a>
-                                </div>
-                                <div class="fs-4">
-                                    <span class="fw-bold text-dark">$32</span>
-                                    <span class="text-decoration-line-through text-muted">$35</span><span><small class="fs-6 ms-2 text-danger">26% Off</small></span>
-                                </div>
-                                <hr class="my-6">
-                                <div class="mb-4">
-                                    <button type="button" class="btn btn-outline-secondary">
-                                        250g
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary">
-                                        500g
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary">
-                                        1kg
-                                    </button>
-                                </div>
-                                <div>
-
-                                    <!-- input -->
-                                    <div class="input-group input-spinner  ">
-                                        <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                        <input type="number" step="1" max="10" value="1" name="quantity" class="quantity-field form-control-sm form-input   ">
-                                        <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                    </div>
-                                </div>
-                                <div class="mt-3 row justify-content-start g-2 align-items-center">
-
-                                    <div class="col-lg-4 col-md-5 col-6 d-grid">
-                                        <!-- button -->
-                                        <!-- btn -->
-                                        <button type="button" class="btn btn-primary">
-                                            <i class="feather-icon icon-shopping-bag me-2"></i>Add to
-                                            cart
-                                        </button>
-                                    </div>
-                                    <div class="col-md-4 col-5">
-                                        <!-- btn -->
-                                        <a class="btn btn-light"
-                                           href="#"
-                                           data-bs-toggle="tooltip"
-                                           data-bs-html="true"
-                                           aria-label="Compare">
-                                            <i class="bi bi-arrow-left-right"></i>
-                                        </a>
-                                        <a class="btn btn-light"
-                                           href="#!"
-                                           data-bs-toggle="tooltip"
-                                           data-bs-html="true"
-                                           aria-label="Wishlist">
-                                            <i class="feather-icon icon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <hr class="my-6">
-                                <div>
-                                    <table class="table table-borderless">
-                                        <tbody>
-                                            <tr>
-                                                <td>Product Code:</td>
-                                                <td>FBB00255</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Availability:</td>
-                                                <td>In Stock</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Type:</td>
-                                                <td>Fruits</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Shipping:</td>
-                                                <td>
-                                                    <small>
-                                                        01 day shipping.<span class="text-muted">( Free pickup today)</span>
-                                                    </small>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     @section Scripts{
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+        <!-- Javascript-->
+        <!-- Libs JS -->
+        <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+        <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+
+        <!-- Theme JS -->
+        <script src="~/assets/js/theme.min.js"></script>
+        <script src="~/assets/libs/tiny-slider/dist/min/tiny-slider.js"></script>
+        <script src="~/assets/js/vendors/tns-slider.js"></script>
+        <script src="~/assets/js/vendors/increment-value.js"></script>
+        @* Carousel *@
+        <!-- MDB -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+        <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+
+
         <script>
             // var baseAddress = "https://localhost:7042";
             var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
@@ -666,12 +346,22 @@
                         sortingOptions: 'PriceLowToHigh',
                         productsQty: 0,
                         isFavorite: false,
-                        searchKeyWords:""
-
+                        searchKeyWords: "",
+                        page: {
+                            countPerPage: 6,
+                            pageNumber: 1
+                        },
                     }
                 },
-                computed: {                  
-                            
+                computed: {
+                    total() {
+                        return Math.ceil(this.productsQty / this.page.countPerPage);
+                    },
+                    productsCards() {
+                        var start = (this.page.pageNumber - 1) * this.page.countPerPage;
+                        var end = start + this.page.countPerPage;
+                        return this.filteredProducts.slice(start, end);
+                    },
                     groupedPeople() {
                         const groupSize = 3;
                         const grouped = [];
@@ -694,10 +384,10 @@
                         //     this.searchKeyWords = "";
                         //     if (this.selectedCategory !== "全部") {
                         //         filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
-                        //     }                         
+                        //     }
                         // }
                         //search filter
-                        if (this.searchKeyWords &&this.searchKeyWords.trim() !== "") {
+                        if (this.searchKeyWords && this.searchKeyWords.trim() !== "") {
                             // this.selectedCategory = "";//改
                             const searchQuery = this.searchKeyWords.toLowerCase();
                             filteredProducts = filteredProducts.filter(item =>
@@ -716,7 +406,7 @@
                         } else if (this.sortingOptions === "QtyHighToLow") {
                             filteredProducts = filteredProducts.sort((a, b) => b.avalibleQty - a.avalibleQty);
                         }
-                        
+                        this.page.pageNumber = 1;
                         this.productsQty = filteredProducts.length;
                         return filteredProducts;
                     }
@@ -726,6 +416,9 @@
                     _this.getStoreInfo();
                 },
                 methods: {
+                    pageClick(num) {
+                        this.page.pageNumber = num;
+                    },
                     categoriesFilter(category) {
                         this.searchKeyWords = "";
                         this.selectedCategory = category;
@@ -745,7 +438,7 @@
                                 }
                                 // return response;
                                 return response.json()
-                            })                          
+                            })
                             .then(result => {
                                 // _this.isFavorite = result;
                                 _this.isFavorite = result.isFavorite;
@@ -789,11 +482,11 @@
                         else {
                             alert("請先登入")
                         }
-                       
+
                     },
                     removeFromFavorites() {
-                        const storeId = "S001"; 
-                        const userId = "U001"; 
+                        const storeId = "S001";
+                        const userId = "U001";
                         var raw = JSON.stringify({ userId, storeId });
                         const requestOptions = {
                             method: 'DELETE',
@@ -807,7 +500,7 @@
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
                                 }
-                                return response.text(); 
+                                return response.text();
                             })
                             .then(result => {
                                 alert(result);
@@ -831,12 +524,12 @@
                                 // alert(JSON.stringify(data));
                                 _this.stores = data[0];
                                 _this.products = data[0].products;
-                                _this.comment = data[0].comment;                              
+                                _this.comment = data[0].comment;
                                 _this.storeCategoryList = [..._this.stores.categoryList].filter(category => category !== "其他")
                                 _this.stores.categoryList.unshift("全部");
                                 if (isLoggedIn) {
                                     _this.getFavoriteStatus();
-                                }                              
+                                }
                                 // console.table(_this.stores)
                             }).catch(error => {
                                 alert(error);
@@ -864,24 +557,9 @@
                     //         });
                     // }
                 }
-            }).mount("#storeProductsApp")
+            }).component("paginate", VuejsPaginateNext).mount("#storeProductsApp")
         </script>
 
-        <!-- Javascript-->
-        <!-- Libs JS -->
-        <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-        <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-
-        <!-- Theme JS -->
-        <script src="~/assets/js/theme.min.js"></script>
-        <script src="~/assets/libs/tiny-slider/dist/min/tiny-slider.js"></script>
-        <script src="~/assets/js/vendors/tns-slider.js"></script>
-        <script src="~/assets/js/vendors/increment-value.js"></script>
-        @* Carousel *@
-        <!-- MDB -->
-        <script type="text/javascript"
-                src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
     }
 
 </body>

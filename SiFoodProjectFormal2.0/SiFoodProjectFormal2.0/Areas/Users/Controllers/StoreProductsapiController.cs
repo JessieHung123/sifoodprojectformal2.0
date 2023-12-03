@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -57,7 +58,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
                 WeekdayOpeningTime = z.OpeningTime.Substring(0, 16),
                 WeekendOpeningTime = z.OpeningTime.Substring(17, 16),
-
+                OpenForBusiness = CheckOpenTime(z.OpeningTime, currentTime),
                 Products = z.Products.Where(p => p.RealeasedTime.Date == today &&
                                                  p.RealeasedTime.TimeOfDay < currentTime &&
                                                  p.SuggestPickEndTime > currentTime &&
@@ -144,6 +145,29 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             return "未收藏";
 
         }
+        private static bool CheckOpenTime(string openingTime, TimeSpan currentTime)
+        {
+            var weekdaysOpeningTime = openingTime.Substring(3, 13);
+            var weekendsOpeningTime = openingTime.Substring(20, 13);
+
+            var applicableOpeningTime = DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday ? weekendsOpeningTime : weekdaysOpeningTime;
+
+            var parsedOpeningTime = TimeSpan.Parse(applicableOpeningTime.Substring(0, 5));
+            var parsedClosingTime = TimeSpan.Parse(applicableOpeningTime.Substring(8, 5));
+
+            return  parsedOpeningTime <= currentTime && currentTime <= parsedClosingTime;
+
+            //var weekdaysOpeningTime = openingTime.Substring(3, 11);
+            //var weekendsOpeningTime = openingTime.Substring(20, 11);
+            //if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
+            //{
+            //    return TimeSpan.Parse(weekendsOpeningTime.Substring(0, 5)) <= currentTime && currentTime <= TimeSpan.Parse(weekendsOpeningTime.Substring(8, 5));
+            //}
+            //else
+            //{
+            //    return TimeSpan.Parse(weekdaysOpeningTime.Substring(0, 5)) <= currentTime && currentTime <= TimeSpan.Parse(weekdaysOpeningTime.Substring(8, 5));
+            //}
+        }
         //[HttpGet("Search")]
         //public async Task<object> SearchProducts(string? query)
         //{
@@ -185,7 +209,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         //    };
 
         //    return searchResults;
-        
+
         //}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStore(string id, Store store)
