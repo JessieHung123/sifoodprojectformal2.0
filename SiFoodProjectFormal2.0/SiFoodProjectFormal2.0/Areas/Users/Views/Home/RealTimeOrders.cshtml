@@ -3,12 +3,10 @@
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
 
-
     <!-- Libs CSS -->
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
@@ -19,9 +17,6 @@
 }
 
 <body>
-
-
-    <!-- Modal -->
     <main>
         <!-- section -->
         <section id="orderApp">
@@ -64,8 +59,6 @@
                                     <tbody v-for="item in orders">
                                         <!-- Table body -->
                                         <tr>
-
-
                                             <td class="align-middle border-top-0">
                                                 <a href="#" class="text-inherit">{{item.orderId}}</a>
 
@@ -219,30 +212,30 @@
                                                                                             <td>${{product.total}}</td>
                                                                                         </tr>
                                                                                         <template v-if="item.deliveryMethod === '外送'">
-                                                                                        <tr>
-                                                                                            <td class="border-bottom-0 pb-0"></td>
-                                                                                            <td class="border-bottom-0 pb-0"></td>
-                                                                                            <td colspan="1" class="fw-medium text-dark ">
-                                                                                                <!-- text -->
-                                                                                                小計 
-                                                                                            </td>
-                                                                                            <td class="fw-medium text-dark ">
-                                                                                                <!-- text -->
-                                                                                                ${{item.subtotal}}
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td class="border-bottom-0 pb-0"></td>
-                                                                                            <td class="border-bottom-0 pb-0"></td>
-                                                                                            <td colspan="1" class="fw-medium text-dark ">
-                                                                                                <!-- text -->
-                                                                                                運費
-                                                                                            </td>
-                                                                                            <td class="fw-medium text-dark  ">
-                                                                                                <!-- text -->
-                                                                                                ${{item.shippingFee}}
-                                                                                            </td>
-                                                                                        </tr>
+                                                                                            <tr>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td colspan="1" class="fw-medium text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    小計
+                                                                                                </td>
+                                                                                                <td class="fw-medium text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    ${{item.subtotal}}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td colspan="1" class="fw-medium text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    運費
+                                                                                                </td>
+                                                                                                <td class="fw-medium text-dark  ">
+                                                                                                    <!-- text -->
+                                                                                                    ${{item.shippingFee}}
+                                                                                                </td>
+                                                                                            </tr>
                                                                                         </template>
                                                                                         <tr>
                                                                                             <td></td>
@@ -282,7 +275,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                        </tr>                                        
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -291,9 +284,7 @@
                 </div>
             </div>
         </section>
-
     </main>
-
 
 
 
