@@ -202,7 +202,7 @@
             },
             methods: {
                 getProductApi: function () {
-                    var productId=window.location.pathname.slice("10");
+                    var productId=window.location.pathname.slice("21");
                     fetch(`${baseAddress}/api/Productapi/GetProduct/${productId}`, { method: "GET" })//寫死
                         .then(response => response.json())
                         .then(data => {
@@ -215,7 +215,7 @@
                             }
                         })
                         .catch(error => {
-                            alert(error);
+                            alert("查不到此商品");
                         })
                 },
                 clickMinus() {
