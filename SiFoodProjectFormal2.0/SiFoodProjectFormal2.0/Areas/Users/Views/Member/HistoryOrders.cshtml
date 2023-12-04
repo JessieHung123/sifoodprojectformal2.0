@@ -14,7 +14,9 @@
 
 <!-- CSS -->
 @section Styles{
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rater-js@1.0.1/lib/style.min.css">
+    @* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rater-js@1.0.1/lib/style.min.css"> *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
 
@@ -339,15 +341,59 @@
                             //     initializeRater();
                             // }, 500); // 延遲 500 毫秒初始化
 
-                        } else {
-                            console.error("未找到模態框元素:", modalId);
-                        }
+                            // 在模態內容加載後初始化星級評分系統
+                            initializeStarRatingSystem(modalElement);
+                            }
                     })
                     .catch(err => {
                         // 處理錯誤情況
                         console.error("發生錯誤: ", err);
                     });
             };
+
+            // 新增的初始化星級評分系統函數
+            function initializeStarRatingSystem(modalElement) {
+                const stars = modalElement.querySelector(".rating")?.children;
+                let ratingValue;
+                let index; // 目前選到的星星
+
+                if (stars) {
+                    document.getElementById("rating-value").innerHTML = "請給分";
+
+                    for (let i = 0; i < stars.length; i++) {
+                        stars[i].addEventListener("mouseover", function () {
+                            document.getElementById("rating-value").innerHTML = "正在打分數";
+                            for (let j = 0; j < stars.length; j++) {
+                                stars[j].classList.remove("fa-star"); // reset 所有星星
+                                stars[j].classList.add("fa-star-o");
+                            }
+                            for (let j = 0; j <= i; j++) {
+                                stars[j].classList.remove("fa-star-o"); // 移除空心的星星
+                                stars[j].classList.add("fa-star"); // 添加新的星星
+                            }
+                        });
+
+                        stars[i].addEventListener("click", function () {
+                            ratingValue = i + 1;
+                            index = i;
+                            document.getElementById("rating-value").innerHTML = "你打的分數是 " + ratingValue;
+                        });
+
+                        stars[i].addEventListener("mouseout", function () {
+                            for (let j = 0; j < stars.length; j++) {
+                                stars[j].classList.remove("fa-star"); // reset 所有星星
+                                stars[j].classList.add("fa-star-o");
+                            }
+                            for (let j = 0; j <= index; j++) {
+                                stars[j].classList.remove("fa-star-o");
+                                stars[j].classList.add("fa-star");
+                            }
+                        });
+                    }
+                } else {
+                    console.error("無法找到 .rating 元素");
+                }
+            }
 
                        
             // 處理評價提交
