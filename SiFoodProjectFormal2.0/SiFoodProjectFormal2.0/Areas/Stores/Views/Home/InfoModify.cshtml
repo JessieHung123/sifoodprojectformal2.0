@@ -55,9 +55,8 @@
                                         </div>
                                         <div class="mb-3 col-lg-6">
                                             <label class="form-label">地區</label>
-                                            <select class="form-select" v-model="ModifyInfo.categoryId">
-                                                <option :value="1">台北的地區</option>
-                                                <option :value="2">新北的地區</option>
+                                            <select class="form-select" v-model="ModifyInfo.region">
+                                                <option v-for="item in RegionOptions" :value="item.id">{{item.name}}</option>
                                             </select>
                                         </div>
                                         <div class="mb-3 col-lg-12">
@@ -163,9 +162,12 @@
             mounted: function () {
                 let _this = this;
                 _this.getModifyAPI();
+                _this.getRegion(_this.ModifyInfo.city);
             },
             watch: {
-
+                'ModifyInfo.city': function (newCity, oldCity) {
+                    this.getRegion(newCity);
+                }
             },
             methods: {
                 readURL: function (fileInput, img) {
@@ -184,7 +186,61 @@
                     }
                 },
                 getRegion: function (city) {
-
+                    let _this = this;
+                        // 根據縣市的選擇，更新地區選項
+                        if (city == '臺北市') {
+                        _this.RegionOptions = [
+                            { id: "中正區", name: '中正區' },
+                            { id: "大同區", name: '大同區' },
+                            { id: "中山區", name: '中山區' },
+                            { id: "松山區", name: '松山區' },
+                            { id: "大安區", name: '大安區' },
+                            { id: "萬華區", name: '萬華區' },
+                            { id: "信義區", name: '信義區' },
+                            { id: "士林區", name: '士林區' },
+                            { id: "北投區", name: '北投區' },
+                            { id: "內湖區", name: '內湖區' },
+                            { id: "南港區", name: '南港區' },
+                            { id: "文山區", name: '文山區' },
+                            ];
+                        } else if (city == '新北市') {
+                        _this.RegionOptions = [
+                            { id: "板橋區", name: '板橋區' },
+                            { id: "土城區", name: '土城區' },
+                            { id: "樹林區", name: '樹林區' },
+                            { id: "三峽區", name: '三峽區' },
+                            { id: "鶯歌區", name: '鶯歌區' },
+                            { id: "中和區", name: '中和區' },
+                            { id: "永和區", name: '永和區' },
+                            { id: "三重區", name: '三重區' },
+                            { id: "蘆洲區", name: '蘆洲區' },
+                            { id: "新莊區", name: '新莊區' },
+                            { id: "五股區", name: '五股區' },
+                            { id: "泰山區", name: '泰山區' },
+                            { id: "林口區", name: '林口區' },
+                            { id: "淡水區", name: '淡水區' },
+                            { id: "八里區", name: '八里區' },
+                            { id: "三芝區", name: '三芝區' },
+                            { id: "石門區", name: '石門區' },
+                            { id: "金山區", name: '金山區' },
+                            { id: "萬里區", name: '萬里區' },
+                            { id: "瑞芳區", name: '瑞芳區' },
+                            { id: "平溪區", name: '平溪區' },
+                            { id: "雙溪區", name: '雙溪區' },
+                            { id: "貢寮區", name: '貢寮區' },
+                            { id: "新店區", name: '新店區' },
+                            { id: "深坑區", name: '深坑區' },
+                            { id: "石碇區", name: '石碇區' },
+                            { id: "坪林區", name: '坪林區' },
+                            { id: "烏來區", name: '烏來區' },
+                            ];
+                        } else {
+                            // 若其他縣市，清空地區選項
+                        _this.RegionOptions = [];
+                        }
+                    return _this.RegionOptions;
+                    console.log(_this.RegionOptions);
+                    
                 },
                 getPath: function (path) {
                     if (path == null) {
