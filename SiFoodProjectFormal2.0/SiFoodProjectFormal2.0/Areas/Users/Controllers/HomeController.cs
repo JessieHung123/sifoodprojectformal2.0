@@ -30,7 +30,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
         [HttpGet]
 
-        public IActionResult UserFAQ()
+        public IActionResult FAQ()
         {
             return View();
 
