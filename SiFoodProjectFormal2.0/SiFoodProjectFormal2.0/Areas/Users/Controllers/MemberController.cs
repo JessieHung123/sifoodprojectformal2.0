@@ -154,10 +154,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 historyOrdersQuery = historyOrdersQuery.Where(o =>
                     o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)));
             }
-
-            // 計算經過關鍵字過濾後的結果數量
-            //var filteredTotalCount = historyOrdersQuery.Count();
-            //ViewBag.TotalOrdersCount = filteredTotalCount;
                         
             //保持搜尋關鍵字在搜尋欄
             ViewBag.SearchTerm = searchTerm;
@@ -211,6 +207,42 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
 
+        //訂單明細方法
+        public async Task<IActionResult> GetOrderDetails(string orderId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .Include(o => o.Comments) // 假設 Order 包含多個 Comment
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var orderDetailsVM = new HistoryOrderDetailsVM
+            {
+                OrderId = order.OrderId,
+                OrderDate = order.OrderDate,
+                ShippingFee = order.ShippingFee,
+                TotalPrice = order.TotalPrice,
+                Items = order.OrderDetails.Select(od => new HistoryOrderDetailItemVM
+                {
+                    PhotoPath = od.Product.PhotoPath,
+                    ProductName = od.Product.ProductName,
+                    UnitPrice = od.Product.UnitPrice,
+                    Quantity = od.Quantity
+                }).ToList(),
+                CommentRank = order.Comments.FirstOrDefault()?.Rank,
+                CommentContents = order.Comments.FirstOrDefault()?.Contents
+            };
+
+            return PartialView("_OrderDetailPartial", orderDetailsVM);
+        }
+
+
+        //=========收藏店家========//
         public async Task<IActionResult> Favorite()
         {
             // var userId = "當前用戶的ID"; // 從用戶會話或身份驗證系統獲取
