@@ -73,7 +73,7 @@
                         this.waitForDeliveryOrder = data[0];
                         this.toStorelocation = data[0].storeAddress;
                         this.arrivingLocation = data[0].address;
-                    }).catch(error => alert("請至配送中頁面查看"));
+                    }).catch(error => alert("此訂單已運送完成!"));
             },
             AllGetDistanceToStore() {
                 var service = new google.maps.DistanceMatrixService();
@@ -92,7 +92,7 @@
             },
             AllGetDistanceToStoreResult(response, status) {
                 if (status !== google.maps.DistanceMatrixStatus.OK) {
-                    alert("請至配送中頁面查看");
+                    alert("發生錯誤，請洽系統管理員");
                 } else {
                     console.log(response);
                     this.waitForDeliveryOrder.distancetexttostore = response.rows[0].elements[0].distance.text;

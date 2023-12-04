@@ -7,7 +7,7 @@
     <div class="order-category"  >
     <h4 @@click="toggle">待配送訂單▽&emsp;&emsp;&emsp;共有{{waitForDeliveryOrderSimple.length}}筆</h4>
     <div class="order-details" v-if="categoryOne">
-            <div class="order-details1" v-for="item in waitForDeliveryOrderSimpleFormal">
+            <div class="order-details1" v-for="item in waitForDeliveryOrderSimple">
                 <p>
                     <div>訂單編號：{{item.orderId}}&emsp;用戶姓名：{{item.userName}}</div>
                     <div>取餐餐廳：{{item.storeName}}</div>
@@ -51,17 +51,13 @@
                     categoryOne:true,
                     waitForDeliveryOrderSimple: [],
                     arrivingLocation: [],
-                    waitForDeliveryOrderSimpleFormal:[],
                     onTheWayOrder:[],
                 }
             },
             mounted: async function () {
                await this.findWaitForDeliveryOrderSimple();
                 await this.onTheWay();
-                this.getDistance();
-                this.getDistanceToStore();
-            },
-            computed: {
+                await this.getDistanceToStore();
             },
             methods: {
                 toggle() {
@@ -77,10 +73,10 @@
                             this.arrivingLocation = data.map(o => o.address);
                         })
                 },
-                getDistanceToStore() {
+                async getDistanceToStore() {
                     var service = new google.maps.DistanceMatrixService();
                     var currentArray = [setDriverMap.current]
-                    service.getDistanceMatrix(
+                    await service.getDistanceMatrix(
                         {
                             origins: currentArray,
                             destinations: this.toStorelocation,
@@ -88,17 +84,14 @@
                             avoidHighways: true,
                             avoidTolls: true
                     }, this.getDistanceResultToStore);
+                    await this.getDistance();
                 },
                 getDistanceResultToStore(response, status) {
-                    if (status !== google.maps.DistanceMatrixStatus.OK) {
-                        window.alert('Error was' + status);
-                    } else {
                         console.log(response);
                         for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
                             this.waitForDeliveryOrderSimple[i].distancetexttostore = response.rows[0].elements[i].distance.text;
                             this.waitForDeliveryOrderSimple[i].distancetimetostore = response.rows[0].elements[i].duration.text;
                         }
-                    }
                 },
                 getDistance() {
                     var service = new google.maps.DistanceMatrixService();
@@ -111,31 +104,32 @@
                             avoidHighways: true,
                             avoidTolls: true
                         }, this.getDistanceResult);
-                    // console.log(this.arrivingLocation);
-                    // console.log(currentArray);
                 },
                 getDistanceResult(response, status) {
-                    if (status !== google.maps.DistanceMatrixStatus.OK) {
-                        window.alert('Error was' + status);
-                    } else {
-                        console.log(response);
+                    console.log(response);
                         for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
-                            this.waitForDeliveryOrderSimple[i].distance = response.rows[0].elements[i].distance.value;
-                            this.waitForDeliveryOrderSimple[i].distancetext = response.rows[0].elements[i].distance.text;
-                            this.waitForDeliveryOrderSimple[i].distancetime = response.rows[0].elements[i].duration.text;
-                        }
-                        // console.log(this.waitForDeliveryOrderSimple);
-                    this.waitForDeliveryOrderSimpleFormal = this.waitForDeliveryOrderSimple.sort((a, b) => (a.distancetime
-                    + a.distancetimetostore)-(b.distancetime+ b.distancetimetostore));
-                    }
+                            this.waitForDeliveryOrderSimple[i].distance = response.rows[i].elements[i].distance.value;
+                            this.waitForDeliveryOrderSimple[i].distancetext = response.rows[i].elements[i].distance.text;
+                            this.waitForDeliveryOrderSimple[i].distancetime = response.rows[i].elements[i].duration.text;
+                    };
+                    this.waitForDeliveryOrderSimple = this.waitForDeliveryOrderSimple.sort((a, b) => {
+                        var distancetimeA = parseFloat(a.distancetime);
+                        var distancetimetostoreA = parseFloat(a.distancetimetostore);
+                        var distancetimeB = parseFloat(b.distancetime);
+                        var distancetimetostoreB = parseFloat(b.distancetimetostore);
+                        var sumA = distancetimeA + distancetimetostoreA;
+                        var sumB = distancetimeB + distancetimetostoreB;
+                        return sumA - sumB;
+                    });
+                        console.log(this.waitForDeliveryOrderSimple);
                 },
                 async onTheWay() {
-                await fetch(`${baseAddress}/api/DeliveryOrderapi/OnTheWayOrder`, { method: "GET" })
+                    await fetch(`${baseAddress}/api/DeliveryOrderapi/OnTheWayOrder`, { method: "GET" })
                     .then(response => response.json())
                     .then(data => {
                         this.onTheWayOrder = data;
                     })
-            },
+                },
 
             }
     }).mount("#waitfordelivery")

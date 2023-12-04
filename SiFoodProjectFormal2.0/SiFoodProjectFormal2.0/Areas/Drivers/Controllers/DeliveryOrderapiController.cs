@@ -35,7 +35,7 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.Controllers
         [HttpGet("{id}")]
         public object WaitForDeliveryOrderDetails(string id)
         {
-            return _context.Orders.Where(o=>o.OrderId==id&&o.OrderDate.Date == DateTime.Today && o.DeliveryMethod == "外送").Include(o => o.User).Include(o => o.Store).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Select(o => new ChooseOrderVM
+            return _context.Orders.Where(o=>o.OrderId==id&&o.OrderDate.Date == DateTime.Today && o.DeliveryMethod == "外送"&&( o.StatusId == 2|| o.StatusId == 4)).Include(o => o.User).Include(o => o.Store).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Select(o => new ChooseOrderVM
             {
                 OrderId = o.OrderId,
                 StatusId=o.StatusId,
@@ -58,6 +58,7 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.Controllers
         {
             Order? order = await _context.Orders.FindAsync(orderId); ;
             order.StatusId = 4;
+            order.DriverId = "D001";
             _context.Entry(order).State = EntityState.Modified;
             try
             {
