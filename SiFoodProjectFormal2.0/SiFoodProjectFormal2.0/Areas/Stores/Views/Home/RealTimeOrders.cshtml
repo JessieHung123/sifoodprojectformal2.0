@@ -81,9 +81,9 @@
                                                         </label>
                                                     </div>
                                                 </th>
-                                                <th>訂單序號</th>
+                                                <th>訂單編號</th>
                                                 <th>商品數量</th>
-                                                <th>訂單產生時間</th>
+                                                <th>訂單日期</th>
                                                 <th>取餐方式</th>
                                                 <th>狀態</th>
                                                 <th>總價</th>
@@ -139,7 +139,7 @@
                                                         <!-- Accept Order Button -->
                                                         <button v-on:click="confirmAcceptOrder(item)" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" :title="'接單時限: ' + (10-Math.round(item.orderDuration)) + '分鐘'">接單</button>
                                                         <!-- Decline Order Button -->
-                                                        <button v-on:click="confirmCancelOrder(item)" class="btn btn-danger btn-sm">退單</button>
+                                                        <button v-on:click="confirmCancelOrder(item)" class="btn btn-danger btn-sm" style="margin-left: 3px;">退單</button>
                                                     </template>
                                                 </td>
                                             </tr>
@@ -182,7 +182,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <!-- address -->
-                                                                                    <div class="col-lg-4 col-md-4 col-12">
+                                                                                    <div class="col-lg-4 col-md-4 col-12" v-if="item.deliveryMethod === '外送'">
                                                                                         <div class="mb-6">
                                                                                             <h6>收件地址</h6>
                                                                                             <p class="mb-1 lh-lg">
@@ -342,7 +342,7 @@
                         searchKeyWords:"",
                         ordersCount : 0,
                         page: {
-                            countPerPage: 2,
+                            countPerPage: 5,
                             pageNumber: 1,
                         },
                     }
