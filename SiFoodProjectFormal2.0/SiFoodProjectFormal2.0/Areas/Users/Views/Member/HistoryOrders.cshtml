@@ -40,122 +40,6 @@
     }
 
 
-<!-- Modal -->
-<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-4">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fs-3 fw-bold" id="userModalLabel">Sign Up</h5>
-
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="fullName" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="fullName" placeholder="Enter Your Name" required="">
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter Email address" required="">
-                    </div>
-
-                    <div class="mb-5">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter Password" required="">
-                        <small class="form-text">
-                            By Signup, you agree to our <a href="#!">Terms of Service</a> & <a href="#!">Privacy Policy</a>
-                        </small>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
-                </form>
-            </div>
-            <div class="modal-footer border-0 justify-content-center">
-
-                Already have an account? <a href="#">Sign in</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content">
-
-            <div class="modal-body p-6">
-                <div class="d-flex justify-content-between align-items-start ">
-                    <div>
-                        <h5 class="mb-1" id="locationModalLabel">Choose your Delivery Location</h5>
-                        <p class="mb-0 small">Enter your address and we will specify the offer you area. </p>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="my-5">
-                    <input type="search" class="form-control" placeholder="Search your area">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="mb-0">Select Location</h6>
-                    <a href="#" class="btn btn-outline-gray-400 text-muted btn-sm">Clear All</a>
-
-
-                </div>
-                <div>
-                    <div data-simplebar style="height:300px;">
-                        <div class="list-group list-group-flush">
-
-                            <a href="#"
-                               class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action active">
-                                <span>Alabama</span><span>Min:$20</span>
-                            </a>
-                            <a href="#"
-                               class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                <span>Alaska</span><span>Min:$30</span>
-                            </a>
-                            <a href="#"
-                               class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                <span>Arizona</span><span>Min:$50</span>
-                            </a>
-                            <a href="#"
-                               class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                <span>California</span><span>Min:$29</span>
-                            </a>
-                            <a href="#"
-                               class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                <span>Colorado</span><span>Min:$80</span>
-                            </a>
-                            <a href="#"
-                               class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                <span>Florida</span><span>Min:$90</span>
-                            </a>
-                            <a href="#"
-                               class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                <span>Arizona</span><span>Min:$50</span>
-                            </a>
-                            <a href="#"
-                               class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                <span>California</span><span>Min:$29</span>
-                            </a>
-                            <a href="#"
-                               class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                <span>Colorado</span><span>Min:$80</span>
-                            </a>
-                            <a href="#"
-                               class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                <span>Florida</span><span>Min:$90</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
 <!-- Main -->
 <main>
     <!-- section -->
@@ -257,9 +141,19 @@
                                     {
                                         <tr>
                                             <td class="text-muted align-middle border-top-0">
-                                                <a href="#" onclick="loadOrderDetails('@order.OrderId')" type="button" class="text-inherit" data-bs-toggle="modal" data-bs-placement="top" data-bs-title="View" data-bs-target=".gd-example-modal-lg">
-                                                    <i class="feather-icon icon-eye"></i>
+                                                <!-- 觸發模態框的按鈕 -->
+                                                <a href="#" onclick="loadOrderDetails('@order.OrderId')" type="button" class="text-inherit" data-bs-toggle="modal" data-bs-placement="top" data-bs-title="View"
+                                                   data-bs-target="#exampleModalScrollable-@order.OrderId">
+                                                 <i class="feather-icon icon-eye"></i>
                                                 </a>
+
+                                                <div class="modal fade gd-example-modal-lg" id="exampleModalScrollable-@order.OrderId" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel-@order.OrderId" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                                        <div class="modal-content">
+                                                            <!-- 部分視圖將在這裡動態加載 -->
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td class="align-middle border-top-0 w-0">
                                                 <a href="#">
@@ -311,71 +205,16 @@
     </section>
 </main>
 
-<!-- modal -->
-
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasAccount" aria-labelledby="offcanvasAccountLabel">
-    <!-- offcanvas header -->
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasAccountLabel">Offcanvas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <!-- offcanvas body -->
-    <div class="offcanvas-body">
-        <ul class="nav flex-column nav-pills nav-pills-dark">
-            <!-- nav item -->
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="account-orders.html">
-                    <i class="feather-icon icon-shopping-bag me-2"></i>Your Orders
-                </a>
-            </li>
-            <!-- nav item -->
-            <li class="nav-item">
-                <a class="nav-link " href="account-settings.html"><i class="feather-icon icon-settings me-2"></i>Settings</a>
-            </li>
-            <!-- nav item -->
-            <li class="nav-item">
-                <a class="nav-link" href="account-address.html"><i class="feather-icon icon-map-pin me-2"></i>Address</a>
-            </li>
-            <!-- nav item -->
-            <li class="nav-item">
-                <a class="nav-link" href="account-payment-method.html">
-                    <i class="feather-icon icon-credit-card me-2"></i>Payment Method
-                </a>
-            </li>
-            <!-- nav item -->
-            <li class="nav-item">
-                <a class="nav-link" href="account-notification.html">
-                    <i class="feather-icon icon-bell me-2"></i>Notification
-                </a>
-            </li>
-
-        </ul>
-        <hr class="my-6">
-        <div>
-            <!-- nav  -->
-            <ul class="nav flex-column nav-pills nav-pills-dark">
-                <!-- nav item -->
-                <li class="nav-item">
-                    <a class="nav-link " href="../index.html"><i class="feather-icon icon-log-out me-2"></i>Log out</a>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-</div>
-
-
 
 @section Scripts{
-    
+    <!--Elly測試改引用Bootstrap-->
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Libs JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
     <!-- Javascript 放jQuery後面-->
+    <script src="~/assets/libs/rater-js/lib/rater-js.js"></script>
     <script src="~/assets/libs/rater-js/index.js"></script>
     @* <script src="node-modules/rater-js/index.js"></script> *@
 
@@ -430,22 +269,55 @@
                 });
             }
 
+            //嘗試清除Modal殘餘遮罩
+            function clearModalsBackdrop() {
+                var backdrops = document.querySelectorAll('.modal-backdrop');
+                backdrops.forEach(function (backdrop) {
+                    backdrop.remove();
+                });
+            }
+
+
+
             // 處理 Modal for Orderdetail
             window.loadOrderDetails = function (orderId) {
+
+                //偵錯:查orderID
+                console.log("載入訂單詳情，訂單 ID:", orderId);
+               
+                // 構建正確的模態框 ID
+                var modalId = 'exampleModalScrollable-' + orderId;
+
+                //偵錯:查modalId
+                console.log("模態框 ID:", modalId);
+
+                // 獲取模態框元素
+                var modalElement = document.getElementById(modalId);
+                              
                 // 使用 Fetch API 向後端發送請求
                 fetch('@Url.Action("GetOrderDetails", "Member")?orderId=' + orderId)
                     .then(response => response.text())
                     .then(response => {
-                        // 將返回的視圖填充到模態框中
-                        document.querySelector('#exampleModalScrollable .modal-body').innerHTML = response;
+                        // 確保模態框元素存在
+                        if (modalElement) {
+                            // 將返回的視圖填充到模態框中
+                            modalElement.querySelector('.modal-content').innerHTML = response;
 
-                        // 顯示模態框
-                        var myModal = new bootstrap.Modal(document.getElementById('exampleModalScrollable'));
-                        myModal.show();
+                            // 初始化並顯示模態框
+                            var myModal = new bootstrap.Modal(modalElement);
+                            myModal.show();
+
+                            // 添加 hidden.bs.modal 事件監聽器
+                            modalElement.addEventListener('hidden.bs.modal', function () {
+                                clearModalsBackdrop();
+                            });
+                        } else {
+                            console.error("未找到模態框元素:", modalId);
+                        }
                     })
                     .catch(err => {
-                        document.querySelector('#error-message').innerHTML = "發生錯誤: " + err;
-                        document.querySelector('#error-message').style.display = 'block';
+                        // 處理錯誤情況
+                        console.error("發生錯誤: ", err);
                     });
             };
 
