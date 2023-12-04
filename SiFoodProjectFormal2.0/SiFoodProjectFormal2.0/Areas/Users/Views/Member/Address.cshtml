@@ -184,7 +184,7 @@
                     <div class="modal-body">
                         <h6>是否確定刪除此地址?</h6>
                         <p class="mb-6" v-if="addressToDelete">
-                            Jitu Chauhan<br>
+                            {{addressToDelete.userName}}<br>
                             {{addressToDelete.userDetailAddress}}<br>
                             {{addressToDelete.userPhone}}
                         </p>
@@ -312,6 +312,7 @@
                         }).then(response => {
                             // alert("更新地址成功!");
                             alert(response.data);
+                            // item.isDefault = true;
                             _this.getUserAddresses();
                         }).catch(err => {
                             alert("發生錯誤!");
@@ -327,10 +328,11 @@
                             UserName: item.userName,
                             UserCity: item.userCity,
                             UserRegion: item.userRegion,
+                            IsDefault: item.isDefault
                         }).then(response => {
                             alert(response.data);
                             // alert("更新地址成功!");
-                            if (response.data === "修改地址成功!") {
+                            if (response.data === "更新成功!") {
                                 _this.getUserAddresses();
                             }
                             

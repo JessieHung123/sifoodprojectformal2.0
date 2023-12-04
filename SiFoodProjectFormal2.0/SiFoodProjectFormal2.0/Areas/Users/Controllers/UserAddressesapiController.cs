@@ -106,7 +106,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 }
             }
 
-            return "修改地址成功!";
+            return "更新成功!";
         }
 
         // POST: api/UserAddressesapi
