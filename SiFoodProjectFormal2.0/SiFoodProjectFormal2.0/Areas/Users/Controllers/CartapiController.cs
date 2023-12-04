@@ -32,7 +32,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         public async Task<List<CartVM>> GetCarts()
         {
             string userId = _userIdentityService.GetUserId();
-            var cart = await _context.Carts.Where(c => c.UserId == userId).Select(c => new CartVM
+            var cart = await _context.Carts.Where(c => c.UserId == userId&&c.Product.IsDelete==1).Select(c => new CartVM
             {
                 UserId = userId,
                 ProductId = c.ProductId,
@@ -65,7 +65,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         //加入購物車:一個user的購物車只能限定一間商店，不然要alert(購物車只能放一間商店，是否要更換店家?)
         // POST: api/CartVMapi
         [HttpPost]
-        public string AddToCart([FromBody]CartVM cartVM)
+        public async Task<string> AddToCart([FromBody]CartVM cartVM)
         {
             string userId = _userIdentityService.GetUserId();
             Cart? cart = new Cart
@@ -76,8 +76,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             };
             try
             {
-                _context.Carts.Add(cart);
-                 _context.SaveChangesAsync();
+                  _context.Carts.Add(cart);
+                 await _context.SaveChangesAsync();
                     return "新增商品成功!";
             }
             catch (Exception){ return "新增商品失敗!"; }

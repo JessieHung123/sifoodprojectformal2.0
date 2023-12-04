@@ -262,7 +262,8 @@
                                 // .then(response =>response.text())
                                 .then(response => {
                                     if (response.ok) {
-                                        shoppingCart.getCart();
+                                        
+                                        console.log(shoppingCart.carts);
                                         $('#CartAddOkModal').modal('show');
                                     }
                                 })
@@ -274,7 +275,9 @@
                                 .catch(error => {
                                     alert(error.message);
                                 });
-                            
+                            shoppingCart.getCart();
+                            console.log(shoppingCart.carts);
+                            console.log(shoppingCart.cartCount);
                         }
                     }
                     else { $('#CartModal').modal('show'); }
