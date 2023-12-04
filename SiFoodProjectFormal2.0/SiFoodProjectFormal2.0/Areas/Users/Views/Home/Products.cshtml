@@ -180,7 +180,6 @@
 @section Scripts{
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
-        var baseAddress ="https://localhost:7042";
         var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         var productApp = Vue.createApp({
             data: function () {
@@ -203,7 +202,7 @@
             methods: {
                 getProductApi: function () {
                     var productId=window.location.pathname.slice("21");
-                    fetch(`${baseAddress}/api/Productapi/GetProduct/${productId}`, { method: "GET" })//寫死
+                    fetch(`/api/Productapi/GetProduct/${productId}`, { method: "GET" })//寫死
                         .then(response => response.json())
                         .then(data => {
                             if (data.length === 0) {
@@ -239,9 +238,9 @@
                             if (isChangeStore) {
                                 try {
                                     //刪除原購物車所有商品
-                                    await fetch(`${baseAddress}/api/CartVMapi/DeleteUserAllCart/`, { method: "DELETE" })
+                                    await fetch(`/api/CartVMapi/DeleteUserAllCart/`, { method: "DELETE" })
                                     //換成新店家
-                                    let response = await fetch(`${baseAddress}/api/CartVMapi/AddToCart`,
+                                    let response = await fetch(`/api/CartVMapi/AddToCart`,
                                         {
                                             method: "POST",
                                             headers: { "Content-Type": "application/json" },
@@ -254,7 +253,7 @@
                             }
                         }
                         else {
-                            await fetch(`${baseAddress}/api/CartVMapi/AddToCart`,
+                            await fetch(`/api/CartVMapi/AddToCart`,
                                 {
                                     method: "POST",
                                     headers: { "Content-Type": "application/json" },
