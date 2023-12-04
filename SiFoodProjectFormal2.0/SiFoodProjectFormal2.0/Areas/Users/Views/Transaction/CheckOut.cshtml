@@ -121,7 +121,7 @@
                                             </div>
                                             <!-- Button -->
                                             <div class="mt-5 d-flex justify-content-end">
-                                                <button class="btn btn-primary ms-2" @@click="callNewebPayApi('VACC')">訂購</button>
+                                                <button class="btn btn-primary ms-2" @@click="createTakeOutOrder('CREDIT')">訂購</button>
                                             </div>
                                         </div>
                                     </div>
@@ -333,8 +333,7 @@
                     loading: false,
                     sendBackShippingFee: "",
                     addForm: {
-                        MerchantID: '@ViewData["MerchantID"]' //商品代號
-                        , MerchantOrderNo: '15453412424424414413414'
+                        MerchantID: '@ViewData["MerchantID"]'
                         , ReturnURL: '@ViewData["ReturnURL"]'
                         , NotifyURL: '@ViewData["NotifyURL"]'
                         , ClientBackURL: '@ViewData["ClientBackURL"]'
@@ -393,45 +392,17 @@
                 chooseDeliver: function () {
                     this.checkRadio = false;
                 },
-                convertKeysToCamelCase(obj) {
-                    if (obj === null || typeof obj !== 'object') {
-                        return obj;
-                    }
-
-                    if (Array.isArray(obj)) {
-                        return obj.map(item => this.convertKeysToCamelCase(item));
-                    }
-
-                    return Object.keys(obj).reduce((acc, key) => {
-                        const camelCaseKey = key.charAt(0).toLowerCase() + key.slice(1);
-                        acc[camelCaseKey] = this.convertKeysToCamelCase(obj[key]);
-                        return acc;
-                    }, {});
-                },
-
-                // Function to handle the NewebPay API call
-                callNewebPayApi(ChannelID) {
+                callNewebPayApi(postData) {
                     var _this = this;
-                    var postData = {};
-
-                    postData['ChannelID'] = ChannelID;
-                    postData['MerchantID'] = _this.addForm.MerchantID;
-                    postData['MerchantOrderNo'] = _this.addForm.MerchantOrderNo;
-                    postData['ItemDesc'] = 123;
-                    postData['Amt'] = 100;
-                    postData['ReturnURL'] = _this.addForm.ReturnURL;
-                    postData['NotifyURL'] = _this.addForm.NotifyURL;
-                    postData['ClientBackURL'] = _this.addForm.ClientBackURL;
                     $.ajax({
                         url: '@Url.Content("~/Transaction/SendToNewebPay")',
                         method: 'POST',
                         dataType: 'json',
                         data: { inModel: postData },
                         success: function (returnObj) {
-                            // 呼叫藍新金流 API
                             const form = document.createElement('form');
                             form.method = 'post';
-                            form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway';//藍新金流驗證網址(測試環境)
+                            form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway';
                              
                             for (const key in returnObj) {
                                 if (returnObj.hasOwnProperty(key)) {
@@ -450,8 +421,6 @@
                         }
                     });
                 },
-
-                // Function to create and send the TakeOutOrder API request
                 createTakeOutOrder(ChannelID) {
                     var _this = this;
                     axios.post(`/Transaction/TakeOutOrder`, {
@@ -465,32 +434,22 @@
                         }
                     })
                         .then(response => {
-                            // Convert keys to camelCase
-                            const camelCaseResponse = this.convertKeysToCamelCase(response.data);
-
-                            // Second API call to SendToNewebPay
                             var postData = {};
-  
                             postData['ChannelID'] = ChannelID;
                             postData['MerchantID'] = _this.addForm.MerchantID;
-                            postData['MerchantOrderNo'] = _this.addForm.MerchantOrderNo;
-                            postData['ItemDesc'] = _this.addForm.ItemDesc;
-                            postData['Amt'] = _this.addForm.Amt;
+                            postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `${item.productName}: ${item.quantity}`).join(', ');
+                            postData['Amt'] = _this.sendBackTotalPrice
                             postData['ReturnURL'] = _this.addForm.ReturnURL;
                             postData['NotifyURL'] = _this.addForm.NotifyURL;
                             postData['ClientBackURL'] = _this.addForm.ClientBackURL;
+                            postData['UserName'] = _this.sendBackUserName;
                             
-                                
-                            // Call NewebPay API
-                            this.callNewebPayApi(postData);
+                            _this.callNewebPayApi(postData);
                         })
                         .catch(err => {
                             alert(err);
                         });
                 },
-
-
-
                 createDeliverOrder: function () {
                     var _this = this;
                     _this.loading = true;
