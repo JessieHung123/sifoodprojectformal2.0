@@ -232,7 +232,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 OrderId = order.OrderId,
                 OrderDate = order.OrderDate,
                 ShippingFee = order.ShippingFee,
-                TotalPrice = order.TotalPrice,
+               
                 Items = order.OrderDetails.Select(od => new HistoryOrderDetailItemVM
                 {
                     PhotoPath = od.Product.PhotoPath,

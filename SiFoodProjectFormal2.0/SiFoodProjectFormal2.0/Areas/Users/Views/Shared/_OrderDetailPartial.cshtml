@@ -20,9 +20,9 @@
                         <div class="col-12">
                             <div class="mt-4 mt-lg-0">
                                 <div class="card shadow-sm">
-                                    <h5 class="px-6 py-4 bg-transparent mb-0">@Model.OrderId</h5>
-                                        <div>
-                                            訂單包含的商品數量：@Model.Items.Count
+                                    <h5 class="px-6 py-4 bg-transparent mb-0">訂單編號- @Model.OrderId</h5>
+                                        <div class="ms-6 mb-3">
+                                            商品種類：@Model.Items.Count 種
                                         </div>
 
                                     <ul class="list-group list-group-flush">
@@ -30,19 +30,19 @@
                                         <li class="list-group-item px-4 py-3">
                                             @foreach (var item in Model.Items)
                                             {
-                                                <div class="row align-items-center">
+                                    <div class="row align-items-center mb-3">
                                                     <div class="col-2 col-md-2">
                                                             <img src="@item.PhotoPath" alt="Product" class="img-fluid">
                                                     </div>
-                                                    <div class="col-5 col-md-5">
-                                                            <h6 class="mb-0">@item.ProductName</h6>
+                                        <div class="col-5 col-md-5 mb-3">
+                                                            <h6 class="">@item.ProductName</h6>
                                                     </div>
                                                     <!--商品數量-->
-                                                    <div class="col-2 col-md-2 text-center text-muted">
+                                        <div class="col-2 col-md-2 text-center text-muted mb-3">
                                                             <span>@item.Quantity</span>
                                                     </div>
                                                     <!--商品單價-->
-                                                    <div class="col-3 text-lg-end text-start text-md-end col-md-3">
+                                        <div class="col-3 text-lg-end text-start text-md-end col-md-3 mb-3">
                                                             <span class="fw-bold">$@item.UnitPrice</span>
                                                     </div>
                                                 </div>
@@ -56,16 +56,15 @@
                                                     金額小計
                                                 </div>
                                                 <div class="fw-bold">
-                                                    $333
+                                                    $@Model.ItemsSubTotal
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between  ">
                                                 <div>
-                                                    運費<i class="feather-icon icon-info text-muted" data-bs-toggle="tooltip"
-                                                         title="Default tooltip"></i>
+                                                    運費
                                                 </div>
                                                 <div class="fw-bold">
-                                                    $3.00
+                                                    $@Model.ShippingFee
                                                 </div>
                                             </div>
                                         </li>
@@ -73,10 +72,10 @@
                                         <li class="list-group-item px-4 py-3">
                                             <div class="d-flex align-items-center justify-content-between fw-bold">
                                                 <div>
-                                                    Subtotal
+                                                    總金額
                                                 </div>
                                                 <div>
-                                                    $73.00
+                                                    $@Model.TotalPrice
                                                 </div>
                                             </div>
                                         </li>
@@ -98,7 +97,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class=" py-4 mb-4">
+                    <div class=" py-4 mb-4 ms-2">
                         <!-- heading -->
                         <h5>給店家的評語</h5>
                         <textarea id="commentContent" class="form-control" rows="3" placeholder="請輸入您的評論"></textarea>
