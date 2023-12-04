@@ -225,7 +225,7 @@
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
     <script>
-        var baseAddress = "https://localhost:7042";
+
         var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         const storeApp = Vue.createApp({
             data: function () {
@@ -318,7 +318,7 @@
                 },
                 getStoreapi() {
                     let _this = this;
-                    fetch(`${baseAddress}/api/Storeapi/Main2`, { method: "GET" })
+                    fetch(`/api/Storeapi/Main2`, { method: "GET" })
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -338,7 +338,7 @@
                 getFavoriteStore() {
                     let _this = this;
                     if (!isLogin) {return _this.stores = _this.stores.map(store => ({ ...store, noHeart: true }));  }
-                    fetch(`${baseAddress}/api/Storeapi/GetFavoriteStoreId`, { method: "GET" })
+                    fetch(`/api/Storeapi/GetFavoriteStoreId`, { method: "GET" })
                         .then(response => response.json()
                         )
                         .then(data => {
@@ -362,7 +362,7 @@
                     let favoriteData = {
                         storeId: storeId,
                     }
-                    fetch(`${baseAddress}/api/Storeapi/AddToFavorite`, {
+                    fetch(`/api/Storeapi/AddToFavorite`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(favoriteData)
@@ -377,7 +377,7 @@
                     let favoriteCancel = {
                         storeId: storeId,
                     }
-                    fetch(`${baseAddress}/api/Storeapi/DeleteFavorite`, {
+                    fetch(`/api/Storeapi/DeleteFavorite`, {
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(favoriteCancel)

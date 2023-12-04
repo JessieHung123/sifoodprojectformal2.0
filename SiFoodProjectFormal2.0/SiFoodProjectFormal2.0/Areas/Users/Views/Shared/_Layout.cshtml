@@ -304,8 +304,6 @@
     @await RenderSectionAsync("Scripts", required: false)
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
-
-        var baseAddress = "https://localhost:7042";
         var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         var shoppingCart = Vue.createApp({
             data: function () {
@@ -324,7 +322,7 @@
             },
             methods: {
                 getCart() {
-                    fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
+                    fetch(`/api/CartVMapi/GetCarts`, { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
                             this.carts = data;
@@ -343,7 +341,7 @@
                 },
                 async clickMinus(item) {
                     item.quantity = item.quantity <= 1 ? item.quantity = 1 : item.quantity - 1;
-                    await fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
+                    await fetch(`/api/CartVMapi/ChangeQty`, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(item)
@@ -357,7 +355,7 @@
                     // let remainingStock = $("#remainingStock").text();
                     // if (item.quantity >= remainingStock) {
                     //     alert("必須小於庫存數量!");
-                    await fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
+                    await fetch(`/api/CartVMapi/ChangeQty`, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(item)
@@ -370,7 +368,7 @@
                    
                 },
                 deleteConfirm(item) {
-                        fetch(`${baseAddress}/api/CartVMapi/DeleteCartItem`,
+                        fetch(`/api/CartVMapi/DeleteCartItem`,
                             {
                                 method: "DELETE",
                                 headers: { "Content-Type": "application/json" },
@@ -387,7 +385,20 @@
                             .catch(error => {
                                 $('#deleteNotOK').modal('show');
                             })
-                }
+                },
+                async logout(){
+                    await fetch(`/Account/Logout`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: 'include',
+                    }).then(response => {
+                        if (response.ok) {
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1000);
+                        }
+                    }).catch(error => alert("發生錯誤"));
+                },
             },
         }).mount("#header")
     </script>

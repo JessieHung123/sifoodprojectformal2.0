@@ -229,7 +229,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Main", "Home");
         }
 
         public IActionResult ResetPassword()
