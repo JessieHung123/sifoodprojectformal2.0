@@ -257,7 +257,7 @@
                                                                     </div>
                                                                     <div class="card-body p-6">
                                                                         <div class="row">
-                                                                            <div class="col-md-3 mb-4 mb-lg-0 ">
+                                                                            <div class="col-md-3 mb-4 mb-lg-0 " v-if="item.paymentDate">
                                                                                 <h6>付款資訊</h6>
                                                                                 <span class="d-block">{{item.paymentMethodＮame}}</span>
                                                                                 <span class="d-block">{{item.paymentDate}} {{item.paymentTime}}</span>
@@ -368,7 +368,7 @@
                     },
                     getOrder() {
                         let _this = this;
-                        var userId = "U001"
+                        var userId = "U002"
                         fetch(`/api/RealTimeOrdersapi/${userId}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
