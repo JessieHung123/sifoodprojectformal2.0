@@ -31,36 +31,30 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
         .custom-button {
             background-color: #0aad0a;
             color: #fff;
             border: 1px solid #0aad0a;
             border-radius: 0.2rem;
         }
-
             .custom-button:hover {
                 background-color: #099309;
             }
-
         .share-button {
             background-color: #f0f3f2;
             color: #000; /* Adjust text color as needed */
             border: 1px solid #f0f3f2;
             border-radius: 0.2rem;
         }
-
             .share-button:hover {
                 background-color: #cccfce;
             }
-
         .navigate-button {
             background-color: #001e2b;
             color: #fff;
             border: 1px solid #001e2b;
             border-radius: 0.2rem;
         }
-
             .navigate-button:hover {
                 background-color: #26404b;
             }
@@ -70,7 +64,6 @@
 @{
     ViewData["Title"] = "Stores";
 }
-
 
 <body>
 
@@ -104,7 +97,6 @@
                     <div class="col-12 col-lg-3 col-md-4 mb-4 mb-md-0">
                         <div class="d-flex flex-column">
                             <div>
-
                                 <!-- img -->
                                 <img :src="stores.logoPath"
                                      alt=""
@@ -161,23 +153,25 @@
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
-                                    @*                                     <button class="btn btn-primary btn-sm" @@click="removeFromFavorites" v-if="this.isFavorite" >
-                                    *@                                        @* <button style="border-style:none; color:white; background-color:darkgreen" @@click="removeFromFavorites" v-if="this.isFavorite"> *@
-                                    @*                                         <strong>取消收藏</strong>
-                                    </button>
-                                    *@                                    <button class="custom-button" @@click="removeFromFavorites" v-if="this.isFavorite">
+                                    <button class="custom-button" @@click="removeFromFavorites" v-if="this.isFavorite">
                                         <strong>取消收藏</strong>
                                     </button>
                                     <button class="custom-button" @@click="saveToFavorites" v-else>
                                         <strong>收藏</strong>
                                     </button>
-                                    <button href="#" class="share-button"><strong>分享</strong></button>
+                                    <button href="#" class="share-button">
+                                        <strong>
+                                            <a class="twitter-share-button"
+                                               :href="getTwitterIntentText()" 
+                                               data-size="large">
+                                                分享
+                                            </a>
+                                        </strong>
+                                    </button>
                                     <button href="#" class="navigate-button"><strong>導航</strong></button>
                                 </div>
                             </div>
-
                         </div>
-
                         <hr />
                         <div>
                             <ul class="nav flex-column nav-links">
@@ -211,7 +205,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="d-md-flex justify-content-between mb-3 align-items-center">
                             <div>
                                 <p class="mb-3 mb-md-0">{{productsQty}}項商品</p>
@@ -267,7 +260,6 @@
                                         <div class="mb-1">
                                             <small>剩餘數量: {{item.avalibleQty}}</small>
                                         </div>
-
                                         <!-- Estimated Pickup Time -->
                                         <div class="mb-1">
                                             <small>取貨期限: {{item.suggestPickUpTime}}</small>
@@ -425,9 +417,7 @@
                         let filteredProducts = this.products;
                         // filtering based on selected category
                         if (this.selectedCategory && this.selectedCategory !== "全部") {
-                            // this.searchKeyWords = "";//改
                             filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
-                            // this.selectedCategory = "";
                         }
                         // if (this.selectedCategory) {
                         //     this.searchKeyWords = "";
@@ -443,17 +433,21 @@
                                 item.productName.toLowerCase().includes(searchQuery) ||
                                 item.categoryName.toLowerCase().includes(searchQuery)
                             );
-                            // this.searchKeyWords = "";
                         }
-                        // sorting based on sortingOptions
-                        if (this.sortingOptions === "PriceLowToHigh") {
-                            filteredProducts = filteredProducts.sort((a, b) => a.unitPrice - b.unitPrice);
-                        } else if (this.sortingOptions === "PriceHighToLow") {
-                            filteredProducts = filteredProducts.sort((a, b) => b.unitPrice - a.unitPrice);
-                        } else if (this.sortingOptions === "QtyLowToHigh") {
-                            filteredProducts = filteredProducts.sort((a, b) => a.avalibleQty - b.avalibleQty);
-                        } else if (this.sortingOptions === "QtyHighToLow") {
-                            filteredProducts = filteredProducts.sort((a, b) => b.avalibleQty - a.avalibleQty);
+                        // Sorting based on sortingOptions
+                        switch (this.sortingOptions) {
+                            case "PriceLowToHigh":
+                                filteredProducts.sort((a, b) => a.unitPrice - b.unitPrice);
+                                break;
+                            case "PriceHighToLow":
+                                filteredProducts.sort((a, b) => b.unitPrice - a.unitPrice);
+                                break;
+                            case "QtyLowToHigh":
+                                filteredProducts.sort((a, b) => a.avalibleQty - b.avalibleQty);
+                                break;
+                            case "QtyHighToLow":
+                                filteredProducts.sort((a, b) => b.avalibleQty - a.avalibleQty);
+                                break;
                         }
                         this.page.pageNumber = 1;
                         this.productsQty = filteredProducts.length;
@@ -465,6 +459,9 @@
                     _this.getStoreInfo();
                 },
                 methods: {
+                    getTwitterIntentText() {
+                        return `https://twitter.com/intent/tweet?text=大家好🌍！今天想跟大家分享一家很不錯的剩食餐廳：${this.stores.storeName} 🍽️。這家位於${this.stores.address}的餐廳不僅提供美味的食物，還致力於減少食物浪費。絕對是個愛地球又愛美食的好選擇！🌱💚 #減少食物浪費 #剩食餐廳 #綠色生活****網址*****`;
+                    },
                     pageClick(num) {
                         this.page.pageNumber = num;
                     },
