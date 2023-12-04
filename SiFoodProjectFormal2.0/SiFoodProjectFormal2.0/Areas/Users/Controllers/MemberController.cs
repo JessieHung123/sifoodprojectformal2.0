@@ -241,10 +241,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     Quantity = od.Quantity
                 }).ToList(),
 
-                // 如果 order.Comment 是 null，這段代碼不會拋出例外，
-                // 而是將 CommentRank 設置為 0，將 CommentContents 設置為空字串。
-                CommentRank = order.Comment?.CommentRank ?? 0, // 使用 null 條件運算符和 null 合併運算符
-                CommentContents = order.Comment?.Contents ?? string.Empty // 如果 Comment 為 null，則使用空字串
+                CommentRank = order.Comment.CommentRank, 
+                CommentContents = order.Comment.Contents 
             };
 
             return PartialView("_OrderDetailPartial", historyOrderDetailsVM);

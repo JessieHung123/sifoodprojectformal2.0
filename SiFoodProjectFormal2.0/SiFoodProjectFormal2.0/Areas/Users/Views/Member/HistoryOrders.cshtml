@@ -14,6 +14,7 @@
 
 <!-- CSS -->
 @section Styles{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rater-js@1.0.1/lib/style.min.css">
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
 
@@ -207,6 +208,9 @@
 
 
 @section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/rater-js@1.0.1/index.min.js"></script>
+    <script src="~/assets/libs/rater-js/index.js"></script>
+
     <!--Elly測試改引用Bootstrap-->
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -214,9 +218,7 @@
         <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
     <!-- Javascript 放jQuery後面-->
-    <script src="~/assets/libs/rater-js/lib/rater-js.js"></script>
-    <script src="~/assets/libs/rater-js/index.js"></script>
-    @* <script src="node-modules/rater-js/index.js"></script> *@
+    
 
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
@@ -277,7 +279,20 @@
                 });
             }
 
-
+            // 定義初始化 rater-js 的函數
+            function initializeRater() {
+                if (document.querySelector("#rater")) {
+                    var raterOptions = {
+                        starSize: 32,
+                        element: document.querySelector("#rater"),
+                        rateCallback: function (rating, done) {
+                            this.setRating(rating);
+                            done();
+                        }
+                    };
+                    new Rater(raterOptions);
+                }
+            }
 
             // 處理 Modal for Orderdetail
             window.loadOrderDetails = function (orderId) {
@@ -307,20 +322,17 @@
                             var myModal = new bootstrap.Modal(modalElement);
                             myModal.show();
 
-                            // 在這裡初始化 rater-js
-                            var rater = new Rater({
-                                element: modalElement.querySelector("#rater"),
-                                rateCallback: function (rating, done) {
-                                    this.setRating(rating);
-                                    modalElement.querySelector("#ratingValue").value = rating;
-                                    done();
-                                }
-                            });
-
+                           
                             // 添加 hidden.bs.modal 事件監聽器
                             modalElement.addEventListener('hidden.bs.modal', function () {
                                 clearModalsBackdrop();
                             });
+
+                            //Rater
+                            setTimeout(function () {
+                                initializeRater();
+                            }, 500); // 延遲 500 毫秒初始化
+
                         } else {
                             console.error("未找到模態框元素:", modalId);
                         }
