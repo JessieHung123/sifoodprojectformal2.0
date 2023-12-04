@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _WebHostEnvironment;
+        int minLength = 10;
+        int maxLength = 100;
         public UserAddressesapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
@@ -37,6 +40,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             {
                 UserAddressId = x.UserAddressId,
                 UserId = x.UserId,
+                UserName = x.User.UserName,
                 UserDetailAddress = x.UserDetailAddress,
                 UserRegion = x.UserRegion,
                 UserCity = x.UserCity,
@@ -50,6 +54,19 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpPut("{id}")]
         public async Task<string> PutUserAddress(int id, [FromBody] UserAddressesVM userAddressesVM)
         {
+            if (string.IsNullOrEmpty(userAddressesVM.UserDetailAddress))
+            {
+                return "請輸入完整地址";
+            }
+            if (userAddressesVM.UserDetailAddress.Length < minLength || userAddressesVM.UserDetailAddress.Length > maxLength)
+            {
+                return $"請輸入長度為{minLength}到{maxLength}之間的地址";
+            }
+            if (!IsValidChineseAddress(userAddressesVM.UserDetailAddress))
+            {
+                return "請輸入正確中文字";
+            }
+
             if (id != userAddressesVM.UserAddressId)
             {
                 return "修改地址失敗!";
@@ -89,7 +106,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 }
             }
 
-            return "修改成功!";
+            return "修改地址成功!";
         }
 
         // POST: api/UserAddressesapi
@@ -97,15 +114,18 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [HttpPost]
         public async Task<string> PostUserAddress([FromForm] UserAddressesVM userAddressesVM)
         {
-            int minLength = 5; 
-            int maxLength = 100;
-            if (string.IsNullOrEmpty(userAddressesVM.UserRegion) || string.IsNullOrEmpty(userAddressesVM.UserCity))
+           
+            if (string.IsNullOrEmpty(userAddressesVM.UserRegion) || string.IsNullOrEmpty(userAddressesVM.UserCity) || string.IsNullOrEmpty(userAddressesVM.UserDetailAddress))
             {
-                return "請選擇縣市和行政區";
+                return "請輸入完整地址";
             }
             if (userAddressesVM.UserDetailAddress.Length < minLength || userAddressesVM.UserDetailAddress.Length > maxLength)
             {
-                return $"地址長度為{minLength}到{maxLength}之間";
+                return $"請輸入長度為{minLength}到{maxLength}之間的地址";
+            }
+            if (!IsValidChineseAddress(userAddressesVM.UserDetailAddress))
+            {
+                return "請輸入正確中文字";
             }
             UserAddress userAddresses = new UserAddress
             {
@@ -126,7 +146,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             }
             _context.UserAddresses.Add(userAddresses);
             await _context.SaveChangesAsync();
-            return "新增商品種類成功";
+            return "新增地址成功!";
         }
 
         // DELETE: api/UserAddressesapi/5
@@ -158,6 +178,11 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         private bool UserAddressExists(int id)
         {
             return (_context.UserAddresses?.Any(e => e.UserAddressId == id)).GetValueOrDefault();
+        }
+        private bool IsValidChineseAddress(string input)
+        {
+            //中文字及阿拉伯數字
+            return Regex.IsMatch(input, @"^[\u4e00-\u9fa50-9]+$");
         }
     }
 }
