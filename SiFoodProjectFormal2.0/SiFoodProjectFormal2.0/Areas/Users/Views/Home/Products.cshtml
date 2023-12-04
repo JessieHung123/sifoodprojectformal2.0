@@ -45,7 +45,7 @@
                                 <!-- input -->
                                 <div style="display:inline;" class=" input-group input-spinner  ">
                                     <input type="button" value="-" v-on:click="clickMinus" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" v-model:value="number" name="quantity" class="quantity-field form-control-sm form-input" readonly>
+                                    <input type="number" step="1" :value="number" name="quantity" class="quantity-field form-control-sm form-input" readonly>
                                     <input type="button" value="+" v-on:click="clickAdd" class="button-plus btn btn-sm " data-field="quantity">
                                 </div>
                                 <div style="display:inline;" class="mt-3 mx-3 g-2 align-items-center">
@@ -194,11 +194,11 @@
                 this.getProductApi();
             },
             watch: {
-                number(newValue) {
-                    if (newValue > this.remainingStock) {
-                        alert("必須小於庫存數量!");
-                    }
-                }
+                // number(newValue) {
+                //     if (newValue > this.remainingStock) {
+                //         alert("必須小於庫存數量!");
+                //     }
+                // }
             },
             methods: {
                 getProductApi: function () {
@@ -249,7 +249,6 @@
                                         });
                                     let data = await response.text();
                                     $('#CartAddOkModal').modal('show');
-
                                 } catch (error) { alert("發生錯誤:" + error); }
                                 shoppingCart.getCart();
                             }
@@ -260,27 +259,28 @@
                                     method: "POST",
                                     headers: { "Content-Type": "application/json" },
                                     body: JSON.stringify(addItem)
-                                }).then(response => response.text())
-                                .then(data => {
-                                    shoppingCart.getCart();
-                                    $('#CartAddOkModal').modal('show');
                                 })
+                                // .then(response =>response.text())
+                                .then(response => {
+                                    if (response.ok) {
+                                        shoppingCart.getCart();
+                                        $('#CartAddOkModal').modal('show');
+                                    }
+                                })
+                                // .then(data => {
+                                //     // alert(data);
+                                //     shoppingCart.getCart();
+                                //     // $('#CartAddOkModal').modal('show');
+                                // })
                                 .catch(error => {
-                                    alert("商品項目新增失敗!");
+                                    alert(error.message);
                                 });
+                            
                         }
                     }
                     else { $('#CartModal').modal('show'); }
-                    
                 },
             }
-
         }).mount("#product")
     </script>
-
-
-
-
-
-
 }

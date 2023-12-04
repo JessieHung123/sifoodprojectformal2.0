@@ -6,48 +6,36 @@
     <title>@ViewData["Title"] - sifoodprojectformal2._0</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SiFoodProjectFormal2.0.styles.css" asp-append-version="true" />
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @*     <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
     <link href="~/assets/libs/slick-carousel/slick/slick.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/slick-carousel/slick/slick-theme.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/tiny-slider/dist/tiny-slider.css" asp-append-version="true" rel="stylesheet" />
     <script src="https://unpkg.com/@@popperjs/core@2/dist/umd/popper.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico" />
-
-
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.ico" />
     <!-- Libs CSS -->
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
-
-
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css" />
-    
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header id="header">
         <div class=" border-bottom ">
             <div class=" py-1 container">
-
                 @await Html.PartialAsync("~/Areas/Users/Views/Shared/_LoginPartial.cshtml")
-
-
             </div>
             <!--左側邊攔-->
             <nav class="navbar navbar-expand-lg navbar-light navbar-default py-0 pb-lg-0 " aria-label="Offcanvas navbar large">
                 <div class="container">
-
-
                     <div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default" aria-labelledby="navbar-defaultLabel">
                         <div class="offcanvas-header pb-1">
                             <img style="height:75px;width:100px" src="~/images/SiFood_logo BGclear.png" alt="SiFood">
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-
-
                         <div class="d-block d-lg-none mb-4">
                             <div class="offcanvas-body ps-lg-2 pt-lg-0">
                                 <div class="mb-8">
@@ -59,9 +47,7 @@
                                             <a asp-area="Users" asp-controller="Home" asp-action="MapFind" class="nav-link" style="color:#6c757d;font-weight: bold">
                                                 地圖探索
                                             </a>
-
                                         </li>
-
                                         <li class="nav-item border-bottom w-100 ">
                                             <a asp-area="Users" asp-controller="Home" asp-action="UserRealTimeOrders" class="nav-link" style="color:#6c757d;font-weight: bold">
                                                 訂單查詢
@@ -72,10 +58,8 @@
                                                 常見問題
                                             </a>
                                         </li>
-
                                     </ul>
                                 </div>
-
                                 <div class="mb-8">
                                     <!-- title -->
                                     <h5 class="mb-3">依種類探索</h5>
@@ -86,7 +70,6 @@
                                                 便當
                                             </a>
                                         </li>
-
                                         <li class="nav-item border-bottom w-100 ">
                                             <a href="#" class="nav-link" style="color:#6c757d;font-weight: bold">
                                                 甜點麵包
@@ -107,49 +90,33 @@
                                                 素食
                                             </a>
                                         </li>
-
                                     </ul>
                                 </div>
                                 <div class="mb-8">
-
-                                    <h5 class="mb-3">店家狀態</h5>
-
-                                    <!-- form check -->
                                     <div class="form-check mb-2">
-                                        <!-- input -->
                                         <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" value="" id="DealShare">
                                         <label class="form-check-label" style="color:#6c757d;font-weight: bold" for="DealShare">
                                             營業中
                                         </label>
                                     </div>
-                                    <!-- form check -->
                                     <div class="form-check mb-2">
-                                        <!-- input -->
                                         <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" value="" id="Dmart">
                                         <label class="form-check-label" style="color:#6c757d;font-weight: bold" for="Dmart">
                                             尚有剩食庫存
                                         </label>
                                     </div>
-
-
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </nav>
-
-
         </div>
-
         <!-- Shop Cart -->
-
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header border-bottom">
                 <div class="text-start">
                     <h5 id="offcanvasRightLabel" class="mb-0 fs-4">購物車</h5>
-
                 </div>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
@@ -161,15 +128,14 @@
                         <li class="list-group-item py-3 ps-0 border-top">
                             <!-- row -->
                             <div class="row align-items-center py-2" v-for="item in carts" :id=item.productId>
-
                                 <div class="col-6 col-md-6 col-lg-7">
                                     <div class="d-flex">
-                                        <a href="./pages/shop-single.html" class="text-inherit">
+                                        <a :href="'/Users/Home/Products/'+item.productId" class="text-inherit">
                                             <img :src="item.photoPath" alt="Ecommerce" class="icon-shape icon-xxl">
                                         </a>
                                         <div class="ms-3">
                                             <!-- title -->
-                                            <a href="./pages/shop-single.html" class="text-inherit">
+                                            <a :href="'/Users/Home/Products/'+item.productId" class="text-inherit">
                                                 @* 照片網址帶處李 *@
                                                 <h6 class="mb-1">{{item.productName}}</h6>
                                             </a>
@@ -177,7 +143,7 @@
                                             <!-- text -->
                                             <div class="mt-2 small lh-1">
                                                 <div class="text-decoration-none text-inherit">
-                                                    <span class="me-1 align-text-bottom"  @@click="deleteCartItem(item)">
+                                                    <span class="me-1 align-text-bottom" @@click="deleteCartItem(item)">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 text-success">
                                                             <polyline points="3 6 5 6 21 6"></polyline>
                                                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
@@ -201,7 +167,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary">確定</button>
+                                                <button type="button" class="btn btn-success" @@click="deleteConfirm(item)">確定</button>
                                             </div>
                                         </div>
                                     </div>
@@ -219,66 +185,48 @@
                                 <!-- price -->
                                 <div class="col-2 text-lg-end text-start text-md-end col-md-2">
                                     <span class="fw-bold">${{item.unitPrice*item.quantity}}</span>
-
                                 </div>
                             </div>
-
                         </li>
-
                     </ul>
                     <!-- btn -->
                     <div class="d-flex justify-content-end mt-4">
                         <button class="btn btn-success" type="button">前往結帳</button>
                     </div>
-
                 </div>
             </div>
         </div>
-
     </header>
-
     <div class="wrapper container-fluid">
-
-
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
-
     <!-- footer -->
     <footer class="footer" style="padding:unset">
         <div class="row justify-content-between container-fluid">
             <div class="row py-4">
-
                 <div class="p-4 col-12 col-md-12 col-lg-12">
                     <div class="row justify-content-evenly">
-
                         <div class="d-none d-sm-block d-flex col-sm-6 col-md-6  align-items-center text-center ">
                             <img style="height:120px;width:160px" src="~/images/SiFood_logo BGclear.png" alt="SiFood" />
                         </div>
-
                         <div class=" d-flex col-xs-4 col-3 col-sm-3 col-md-3  align-items-center ">
-
                             <!-- list -->
                             <ul class="nav flex-column align-items-center">
                                 <li class="nav-item nav-link fw-bold" style="font-size: 20px;">Contact Us</li>
                                 <li class="nav-item"><a asp-area="Users" asp-controller="Home" asp-action="JoinUs" class="nav-link fw-bold" style="font-size: 14px;">加入我們</a></li>
                                 <li class="nav-item"><a asp-area="Users" asp-controller="Home" asp-action="FAQ" class="nav-link fw-bold" style="font-size: 14px;">常見問題</a></li>
                                 <li class="nav-item"><a href="#!" class="nav-link fw-bold" style="font-size: 14px;">成為外送夥伴</a></li>
-
                             </ul>
                         </div>
-
                         <div class="d-flex col-3 col-xs-4 col-sm-3 col-md-3  align-items-center">
-
                             <ul class="nav flex-column align-items-center">
                                 <!-- list -->
                                 <li class="nav-item nav-link fw-bold" style="font-size: 20px;">About Us</li>
                                 <li class="nav-item"><a href="#!" class="nav-link fw-bold" style="font-size: 14px;">關於我們</a></li>
                                 <li class="nav-item"><a href="#!" class="nav-link fw-bold" style="font-size: 14px;">工作機會</a></li>
                                 <li class="nav-item"><a href="#!" class="nav-link fw-bold" style="font-size: 14px;">願景展望</a></li>
-
                             </ul>
                         </div>
                     </div>
@@ -295,9 +243,7 @@
                             </span>All rights reserved. Powered by THM103.
                         </span>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </footer>
@@ -314,7 +260,6 @@
             </div>
         </div>
     </div>
-
     <!-- NotOK Modal -->
     <div class="modal fade" id="deleteNotOK" tabindex="-1" role="dialog" aria-labelledby="notOkModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -328,7 +273,7 @@
             </div>
         </div>
     </div>
-    <!-- NotOK Modal -->
+    <!-- moreQty Modal -->
     <div class="modal fade" id="moreQty" tabindex="-1" role="dialog" aria-labelledby="moreQtyLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -342,12 +287,10 @@
         </div>
     </div>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     <!-- Javascript-->
     <!-- Libs JS -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js" asp-append-version="true"></script>
-
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js" asp-append-version="true"></script>
     <script src="~/assets/libs/jquery-countdown/dist/jquery.countdown.min.js" asp-append-version="true"></script>
@@ -358,9 +301,6 @@
     <script src="~/assets/js/vendors/tns-slider.js" asp-append-version="true"></script>
     <script src="~/assets/js/vendors/zoom.js" asp-append-version="true"></script>
     <script src="~/assets/js/vendors/increment-value.js"></script>
-
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
@@ -384,21 +324,14 @@
                 }
             },
             methods: {
-
-                getCart() {
-                    fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
+                async getCart() {
+                    await fetch(`${baseAddress}/api/CartVMapi/GetCarts`, { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
                             this.carts = data;
-                            this.cartCount = this.carts.length > 0? this.carts.length:0;
-                        }).catch(error => {
-                            Swal.fire({
-                                title: "未登入無法收藏~",
-                                icon: "warning"
-                            });
-                            // alert(data);
-                            this.carts = data;
                             this.cartCount = this.carts.length > 0 ? this.carts.length : 0;
+
+                            console.log("Successfully retrieved cart data:", this.carts);
                         }).catch(error => {
                             alert("請先登入");
                         });
@@ -415,10 +348,6 @@
                     let remainingStock = productApp.remainingStock;
                     if (item.quantity >= remainingStock) { $('#moreQty').modal('show'); }
                     else { item.quantity = item.quantity + 1; }
-
-                    // let remainingStock = $("#remainingStock").text();
-                    // if (item.quantity >= remainingStock) {
-                    //     alert("必須小於庫存數量!");
                     await fetch(`${baseAddress}/api/CartVMapi/ChangeQty`, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
@@ -428,30 +357,27 @@
                 deleteCartItem(item) {
                     let _this = this;
                     let checkagain = $('#deleteCartModal').modal('show');
-                    if (checkagain == true) {
-                        fetch(`${baseAddress}/api/CartVMapi/DeleteCartItem`,
-                            {
-                                method: "DELETE",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(item)
-                            }).then(response => response.json())
-                            .then(data => {
-                                if (data) {
-                                    $('#deleteOK').modal('show');
-                                    var deleteConfirmItem = document.getElementById(item.productId);
-                                    deleteConfirmItem.remove();
-                                    this.cartCount = $('#cartItemContainer').find('div').length;
-                                }
-                            })
-                            .catch(error => {
-                                // Swal.fire({
-                                //     title: "商品項目刪除失敗!",
-                                //     icon: "warning"
-                                // });
-                                $('#deleteNotOK').modal('show');
-                            })
-                    };
+                    $('.modal-backdrop').remove();
                 },
+                deleteConfirm(item) {
+                    fetch(`${baseAddress}/api/CartVMapi/DeleteCartItem`,
+                        {
+                            method: "DELETE",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(item)
+                        }).then(response => response.json())
+                        .then(data => {
+                            if (data) {
+                                $('#deleteOK').modal('show');
+                                var deleteConfirmItem = document.getElementById(item.productId);
+                                deleteConfirmItem.remove();
+                                this.cartCount = $('#cartItemContainer').find('div').length;
+                            }
+                        })
+                        .catch(error => {
+                            $('#deleteNotOK').modal('show');
+                        })
+                }
             },
         }).mount("#header")
     </script>
