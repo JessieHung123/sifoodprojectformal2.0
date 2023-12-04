@@ -153,7 +153,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <!-- address -->
-                                                                                <div class="col-lg-4 col-md-4 col-12">
+                                                                                <div class="col-lg-4 col-md-4 col-12" v-if="item.deliveryMethod === '外送'">
                                                                                     <div class="mb-6">
                                                                                         <h6>收件地址</h6>
                                                                                         <p class="mb-1 lh-lg" style="white-space: normal;">{{item.address}}</p>
