@@ -299,7 +299,10 @@
                                 </div>
                             </div>
                             <div class="border-top d-md-flex justify-content-between align-items-center p-6">
-                                <span>Showing 1 to 8 of {{ordersCount}} entries</span>
+                                <span>
+                                    顯示第 {{ Math.min((page.countPerPage * (page.pageNumber - 1)) + 1, ordersCount) }}
+                                    至 {{ Math.min(page.countPerPage * page.pageNumber, ordersCount) }} 項，共 {{ ordersCount }} 筆訂單
+                                </span>
                                 <nav class="mt-2 mt-md-0">
                                     <paginate :page-count="total"
                                               :click-handler="pageClick"
@@ -384,17 +387,19 @@
                         this.updateOrderStatus(item, 7)
                         item.statusId = 7;
                         this.orders = this.orders.filter(order => order.orderId !== item.orderId);
+                        alert("訂單已取消!")
                     },
                     acceptOrder(item) {
                         if (item.deliveryMethod === '自取') {
                             this.updateOrderStatus(item, 3)
                             item.statusId = 3;
-                            item.status = "待領取";
+                            item.status = "待領取";                        
                         } else {
                             this.updateOrderStatus(item, 2)
                             item.statusId = 2;
                             item.status = "待配送";
                         }
+                        alert("訂單已接受!")
                     },
                     // **asynchronous nature of the fetch operation**
                     updateOrderStatus(item, newStatusId) {
