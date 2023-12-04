@@ -172,7 +172,7 @@
                     <div class="py-6 p-md-6 p-lg-10">
                         <!-- heading -->
                         <h2 class="mb-6">我的訂單</h2>
-
+                        <div id="error-message" style="color: red; display: none;"></div>
                         <!-- 加入filter -->
                         <div class="row">
                             <div class="col-12">
@@ -259,7 +259,6 @@
                                             <td class="text-muted align-middle border-top-0">
                                                 <a href="#" onclick="loadOrderDetails('@order.OrderId')" type="button" class="text-inherit" data-bs-toggle="modal" data-bs-placement="top" data-bs-title="View" data-bs-target=".gd-example-modal-lg">
                                                     <i class="feather-icon icon-eye"></i>
-                                                    <partial name="_OrderDetailPartial"></partial>
                                                 </a>
                                             </td>
                                             <td class="align-middle border-top-0 w-0">
@@ -368,72 +367,17 @@
 
 
 @section Scripts{
-
-    <!-- text搜尋-->
-    <!--分開放放大鏡和X,放大鏡維持存在,X在有文本時顯示&X按下去清除搜尋結果-->
-    <script>
-        document.getElementById('searchInput').addEventListener('input', function () {
-            var clearButton = document.getElementById('clearButton');
-            clearButton.style.display = this.value.length > 0 ? 'inline-block' : 'none';
-        });
-
-        function clearSearch() {
-            var searchInput = document.getElementById('searchInput');
-            searchInput.value = '';
-            searchInput.dispatchEvent(new Event('input')); // 觸發輸入欄位的input事件
-            document.getElementById('searchForm').submit(); // 提交表單以重新載入所有資料
-        }
-    </script>
-
-    <!--顯示筆數下拉選單 start-->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('pageSizeSelect').addEventListener('change', function () {
-                this.form.submit();
-            });
-        });
-    </script>
-
-
-    <!--Sort-->
-    <script>
-        document.getElementById('sortSelect').addEventListener('change', function () {
-            var selectedValue = this.value;
-            // 假設希望保持目前頁面的其他參數不變，只改變sortOption
-            var currentUrl = new URL(window.location);
-            currentUrl.searchParams.set('sortOption', selectedValue);
-            window.location.href = currentUrl.href;
-        });
-    </script>
-
-
-    <!--處理Modal for Orderdetail-->
-    <script>
-        function loadOrderDetails(orderId) {
-            // 使用Ajax向後端發送請求
-            $.ajax({
-                url: '@Url.Action("GetOrderDetails", "Member")', // 控制器的方法
-                data: { orderId: orderId },
-                success: function (response) {
-                    // 將返回的視圖填充到模態框中
-                    $('#exampleModalScrollable .modal-body').html(response);
-                    // 顯示模態框
-                    $('#exampleModalScrollable').modal('show');
-                }
-            });
-        }
-    </script>
-
-
-    <!-- Javascript-->
-    <script src="~/assets/libs/rater-js/index.js"></script>
-    <script src="node-modules/rater-js/index.js"></script>
-    <script src="~/assets/libs/dropzone/dist/min/dropzone.min.js"></script>
+    
 
     <!-- Libs JS -->
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+
+    <!-- Javascript 放jQuery後面-->
+    <script src="~/assets/libs/rater-js/index.js"></script>
+    @* <script src="node-modules/rater-js/index.js"></script> *@
 
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
@@ -442,7 +386,219 @@
     <script src="~/assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
     <script src="~/assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
     <script src="~/assets/js/vendors/sidebarMenu.js"></script>
-    <script src="~/assets/js/vendors/dropzone.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Text 搜索
+            var searchInput = document.getElementById('searchInput');
+            var clearButton = document.getElementById('clearButton');
+            if (searchInput && clearButton) {
+                searchInput.addEventListener('input', function () {
+                    clearButton.style.display = this.value.length > 0 ? 'inline-block' : 'none';
+                });
+            }
+
+            // 清除搜索
+            window.clearSearch = function () {
+                if (searchInput) {
+                    searchInput.value = '';
+                    searchInput.dispatchEvent(new Event('input'));
+                }
+                var searchForm = document.getElementById('searchForm');
+                if (searchForm) {
+                    searchForm.submit();
+                }
+            };
+
+            // 顯示筆數下拉選單
+            var pageSizeSelect = document.getElementById('pageSizeSelect');
+            if (pageSizeSelect) {
+                pageSizeSelect.addEventListener('change', function () {
+                    this.form.submit();
+                });
+            }
+
+            // 排序
+            var sortSelect = document.getElementById('sortSelect');
+            if (sortSelect) {
+                sortSelect.addEventListener('change', function () {
+                    var selectedValue = this.value;
+                    var currentUrl = new URL(window.location);
+                    currentUrl.searchParams.set('sortOption', selectedValue);
+                    window.location.href = currentUrl.href;
+                });
+            }
+
+            // 處理 Modal for Orderdetail
+            window.loadOrderDetails = function (orderId) {
+                // 使用 Fetch API 向後端發送請求
+                fetch('@Url.Action("GetOrderDetails", "Member")?orderId=' + orderId)
+                    .then(response => response.text())
+                    .then(response => {
+                        // 將返回的視圖填充到模態框中
+                        document.querySelector('#exampleModalScrollable .modal-body').innerHTML = response;
+
+                        // 顯示模態框
+                        var myModal = new bootstrap.Modal(document.getElementById('exampleModalScrollable'));
+                        myModal.show();
+                    })
+                    .catch(err => {
+                        document.querySelector('#error-message').innerHTML = "發生錯誤: " + err;
+                        document.querySelector('#error-message').style.display = 'block';
+                    });
+            };
+
+            // 初始化 rater-js
+            $(document).ready(function () {
+                $('#rating').rater();
+            });
+            
+            // 處理評價提交
+            window.submitRating = function () {
+                var orderId = document.getElementById('exampleModalScrollable').getAttribute('data-order-id');
+                var rating = document.querySelector("#ratingValue").value;
+                var comment = document.querySelector("#commentContent").value;
+
+                // 使用 Fetch API 發送 POST 請求
+                fetch('@Url.Action("SubmitRating", "Member")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'orderId=' + orderId + '&rating=' + rating + '&comment=' + comment
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // 處理成功提交後的邏輯，例如關閉模態框
+                        var myModalEl = document.getElementById('exampleModalScrollable');
+                        var myModal = bootstrap.Modal.getInstance(myModalEl);
+                        myModal.hide();
+                    })
+                    .catch(err => {
+                        alert("發生錯誤: " + err);
+                    });
+            };
+
+            // 綁定 loadOrderDetails 事件
+            var elements = document.querySelectorAll('[data-order-id]');
+            elements.forEach(function (element) {
+                element.addEventListener('click', function () {
+                    var orderId = this.getAttribute('data-order-id');
+                    loadOrderDetails(orderId);
+                });
+            });
+        });
+    </script>
+
+
+    
+        
+
+    @*
+    // <!-- text搜尋-->
+    // <!--分開放放大鏡和X,放大鏡維持存在,X在有文本時顯示&X按下去清除搜尋結果-->
+    // <script>
+    //     document.getElementById('searchInput').addEventListener('input', function () {
+    //         var clearButton = document.getElementById('clearButton');
+    //         clearButton.style.display = this.value.length > 0 ? 'inline-block' : 'none';
+    //     });
+
+    //     function clearSearch() {
+    //         var searchInput = document.getElementById('searchInput');
+    //         searchInput.value = '';
+    //         searchInput.dispatchEvent(new Event('input')); // 觸發輸入欄位的input事件
+    //         document.getElementById('searchForm').submit(); // 提交表單以重新載入所有資料
+    //     }
+    // </script>
+
+    // <!--顯示筆數下拉選單 start-->
+    // <script>
+    //     document.addEventListener('DOMContentLoaded', function () {
+    //         document.getElementById('pageSizeSelect').addEventListener('change', function () {
+    //             this.form.submit();
+    //         });
+    //     });
+    // </script>
+
+
+    // <!--Sort-->
+    // <script>
+    //     document.getElementById('sortSelect').addEventListener('change', function () {
+    //         var selectedValue = this.value;
+    //         // 假設希望保持目前頁面的其他參數不變，只改變sortOption
+    //         var currentUrl = new URL(window.location);
+    //         currentUrl.searchParams.set('sortOption', selectedValue);
+    //         window.location.href = currentUrl.href;
+    //     });
+    // </script>
+
+
+    // <!--處理Modal for Orderdetail-->
+    // <script>
+    //     function loadOrderDetails(orderId) {
+    //         // 使用 Fetch API 向後端發送請求
+    //         fetch('@Url.Action("GetOrderDetails", "Member")?orderId=' + orderId)
+    //             .then(response => response.text())
+    //             .then(response => {
+    //                 // 將返回的視圖填充到模態框中
+    //                 document.querySelector('#exampleModalScrollable .modal-body').innerHTML = response;
+
+    //                 // 顯示模態框
+    //                 var myModal = new bootstrap.Modal(document.getElementById('exampleModalScrollable'));
+    //                 myModal.show();
+    //             })
+    //             .catch(err => {
+    //                 document.querySelector('#error-message').innerHTML = "發生錯誤: " + err;
+    //                 document.querySelector('#error-message').style.display = 'block';
+    //             });
+    //     }
+
+    // </script>
+
+
+    // <!--處理星星-->
+    // <script>
+    //     // 初始化rater-js
+    //     var rater = new Rater({
+    //         element: document.querySelector("#rater"),
+    //         rateCallback: function (rating, done) {
+    //             this.setRating(rating);
+    //             document.querySelector("#ratingValue").value = rating;
+    //             done();
+    //         },
+    //     });
+
+    //     // 處理評價提交
+    //     // 處理評價提交
+    //     function submitRating() {
+    //         var orderId = document.getElementById('exampleModalScrollable').getAttribute('data-order-id');
+    //         var rating = document.querySelector("#ratingValue").value;
+    //         var comment = document.querySelector("#commentContent").value;
+
+    //         // 使用 Fetch API 發送 POST 請求
+    //         fetch('@Url.Action("SubmitRating", "Member")', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/x-www-form-urlencoded',
+    //             },
+    //             body: 'orderId=' + orderId + '&rating=' + rating + '&comment=' + comment
+    //         })
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 // 處理成功提交後的邏輯，例如關閉模態框
+    //                 var myModalEl = document.getElementById('exampleModalScrollable');
+    //                 var myModal = bootstrap.Modal.getInstance(myModalEl);
+    //                 myModal.hide();
+    //             })
+    //             .catch(err => {
+    //                 alert("發生錯誤: " + err);
+    //             });
+    //     }
+
+
+    </script>
+    *@
 }
 
 

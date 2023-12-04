@@ -1,6 +1,6 @@
 ﻿namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 {
-    internal class HistoryOrderDetailsVM
+    public class HistoryOrderDetailsVM
     {
         public string OrderId { get; set; }
         public DateTime OrderDate { get; set; }

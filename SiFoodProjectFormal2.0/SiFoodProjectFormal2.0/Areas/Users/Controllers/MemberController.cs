@@ -143,7 +143,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //=========歷史訂單========//
         public IActionResult HistoryOrders(string searchTerm = null, string sortOption = "Status" ,int pageSize = 20)
         {
+            // 假定的用戶ID，之後需要替換為當前登入用戶的ID
+            var loginuserId = "U001";
+
             IQueryable<Order> historyOrdersQuery = _context.Orders
+                // 添加這行以過濾該用戶的訂單
+                .Where(o => o.UserId == loginuserId)
+
             .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Product)
             .Include(o => o.Status);
@@ -207,13 +213,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
 
-        //訂單明細方法
+        //訂單明細方法GetOrderDetails
         public async Task<IActionResult> GetOrderDetails(string orderId)
         {
             var order = await _context.Orders
                 .Include(o => o.OrderDetails)
                     .ThenInclude(od => od.Product)
-                .Include(o => o.Comments) // 假設 Order 包含多個 Comment
+                .Include(o => o.Comment) // 假設 Order 包含多個 Comment
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
 
             if (order == null)
@@ -234,12 +240,45 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     UnitPrice = od.Product.UnitPrice,
                     Quantity = od.Quantity
                 }).ToList(),
-                CommentRank = order.Comments.FirstOrDefault()?.Rank,
-                CommentContents = order.Comments.FirstOrDefault()?.Contents
+
+                // 如果 order.Comment 是 null，這段代碼不會拋出例外，
+                // 而是將 CommentRank 設置為 0，將 CommentContents 設置為空字串。
+                CommentRank = order.Comment?.CommentRank ?? 0, // 使用 null 條件運算符和 null 合併運算符
+                CommentContents = order.Comment?.Contents ?? string.Empty // 如果 Comment 為 null，則使用空字串
             };
 
             return PartialView("_OrderDetailPartial", orderDetailsVM);
         }
+
+
+        //送出評論
+        [HttpPost]
+        public async Task<IActionResult> SubmitRating(string orderId, int rating, string comment)
+        {
+            // 查找訂單
+            var order = await _context.Orders.Include(o => o.Comment).FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // 處理評價和評論
+            if (order.Comment == null)
+            {
+                order.Comment = new Comment { CommentRank = (short)rating, Contents = comment };
+            }
+            else
+            {
+                order.Comment.CommentRank = (short)rating;
+                order.Comment.Contents = comment;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "評價提交成功" });
+        }
+
 
 
         //=========收藏店家========//

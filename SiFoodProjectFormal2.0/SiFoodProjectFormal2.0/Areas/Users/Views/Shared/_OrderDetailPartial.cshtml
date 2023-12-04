@@ -1,4 +1,7 @@
-﻿<!-- Modal -->
+﻿@using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
+@model HistoryOrderDetailsVM
+
+<!-- Modal -->
 <div class="modal fade gd-example-modal-lg" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabelexampleModalScrollableTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -21,26 +24,29 @@
                         <div class="col-12">
                             <div class="mt-4 mt-lg-0">
                                 <div class="card shadow-sm">
-                                    <h5 class="px-6 py-4 bg-transparent mb-0">訂單編號</h5>
+                                    <h5 class="px-6 py-4 bg-transparent mb-0">@Model.OrderId</h5>
                                     <ul class="list-group list-group-flush">
                                         <!-- list group item -->
                                         <li class="list-group-item px-4 py-3">
-                                            <div class="row align-items-center">
-                                                <div class="col-2 col-md-2">
-                                                    <img src="../assets/images/products/product-img-1.jpg" alt="Ecommerce" class="img-fluid">
+                                            @foreach (var item in Model.Items)
+                                            {
+                                                <div class="row align-items-center">
+                                                    <div class="col-2 col-md-2">
+                                                            <img src="@item.PhotoPath" alt="Product" class="img-fluid">
+                                                    </div>
+                                                    <div class="col-5 col-md-5">
+                                                            <h6 class="mb-0">@item.ProductName</h6>
+                                                    </div>
+                                                    <!--商品數量-->
+                                                    <div class="col-2 col-md-2 text-center text-muted">
+                                                            <span>@item.Quantity</span>
+                                                    </div>
+                                                    <!--商品單價-->
+                                                    <div class="col-3 text-lg-end text-start text-md-end col-md-3">
+                                                            <span class="fw-bold">$@item.UnitPrice</span>
+                                                    </div>
                                                 </div>
-                                                <div class="col-5 col-md-5">
-                                                    <h6 class="mb-0">商品名稱</h6>
-                                                </div>
-                                                <!--商品數量-->
-                                                <div class="col-2 col-md-2 text-center text-muted">
-                                                    <span>1</span>
-                                                </div>
-                                                <!--商品單價-->
-                                                <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                                    <span class="fw-bold">$5.00</span>
-                                                </div>
-                                            </div>
+                                            }
                                         </li>
 
                                         <!-- list group item -->
@@ -87,13 +93,15 @@
                             <h3 class="mb-5">請給店家評分</h3>
                             <div class="border-bottom py-4 mb-4">
                                 <div id="rater"></div>
+                                <!-- 隱藏輸入，用於提交評分值 -->
+                                <input type="hidden" id="ratingValue" name="rating">
                             </div>
                         </div>
                     </div>
                     <div class=" py-4 mb-4">
                         <!-- heading -->
                         <h5>給店家的評語</h5>
-                        <textarea class="form-control" rows="3" placeholder="請輸入小於30字"></textarea>
+                        <textarea id="commentContent" class="form-control" rows="3" placeholder="請輸入您的評論"></textarea>
 
                     </div>
                     <!--modal-body-->
@@ -105,7 +113,7 @@
                 <!-- button -->
                 <div class="d-flex justify-content-end">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary">送出評價</button>
+                    <button type="button" class="btn btn-primary" onclick="submitRating()">送出評價</button>
                 </div>
             </div>
         </div>
