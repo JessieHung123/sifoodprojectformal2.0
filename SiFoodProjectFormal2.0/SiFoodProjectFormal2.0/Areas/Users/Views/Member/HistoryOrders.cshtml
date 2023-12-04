@@ -238,6 +238,10 @@
 
 
     <script>
+        var currentOrderId; // 用於保存當前訂單的ID
+
+        var submitRatingUrl = '@Url.Action("SubmitRating", "Member")';
+
         document.addEventListener('DOMContentLoaded', function () {
             // Text 搜索
             var searchInput = document.getElementById('searchInput');
@@ -304,6 +308,7 @@
 
             // 處理 Modal for Orderdetail
             window.loadOrderDetails = function (orderId) {
+                currentOrderId = orderId; // 保存當前訂單ID
 
                 //偵錯:查orderID
                 console.log("載入訂單詳情，訂單 ID:", orderId);
@@ -351,6 +356,10 @@
                     });
             };
 
+
+            var getRatingValue; // 定義一個變量來保存閉包
+
+
             // 新增的初始化星級評分系統函數
             function initializeStarRatingSystem(modalElement) {
                 const stars = modalElement.querySelector(".rating")?.children;
@@ -360,7 +369,9 @@
                 if (stars) {
                     document.getElementById("rating-value").innerHTML = "請給分";
 
+                   
                     for (let i = 0; i < stars.length; i++) {
+                        // 設置鼠標懸停在星星上時的事件
                         stars[i].addEventListener("mouseover", function () {
                             document.getElementById("rating-value").innerHTML = "正在打分數";
                             for (let j = 0; j < stars.length; j++) {
@@ -373,12 +384,14 @@
                             }
                         });
 
+                        // 設置點擊星星時的事件
                         stars[i].addEventListener("click", function () {
                             ratingValue = i + 1;
                             index = i;
                             document.getElementById("rating-value").innerHTML = "你打的分數是 " + ratingValue;
                         });
 
+                        // 設置鼠標移開星星時的事件
                         stars[i].addEventListener("mouseout", function () {
                             for (let j = 0; j < stars.length; j++) {
                                 stars[j].classList.remove("fa-star"); // reset 所有星星
@@ -390,16 +403,21 @@
                             }
                         });
                     }
+
+                        // 創建一個閉包來返回評分值
+                        getRatingValue = function () {
+                            return ratingValue;
+                        };
+
                 } else {
                     console.error("無法找到 .rating 元素");
                 }
             }
 
-                       
+
             // 處理評價提交
             window.submitRating = function () {
-                var orderId = document.getElementById('exampleModalScrollable').getAttribute('data-order-id');
-                var rating = document.querySelector("#ratingValue").value;
+                var rating = getRatingValue ? getRatingValue() : 0; // 直接使用閉包或取評分值
                 var comment = document.querySelector("#commentContent").value;
 
                 // 使用 Fetch API 發送 POST 請求
@@ -408,19 +426,21 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: 'orderId=' + orderId + '&rating=' + rating + '&comment=' + comment
+                    body: 'orderId=' + currentOrderId + '&rating=' + rating + '&comment=' + comment
                 })
                     .then(response => response.json())
                     .then(data => {
-                        // 處理成功提交後的邏輯，例如關閉模態框
-                        var myModalEl = document.getElementById('exampleModalScrollable');
-                        var myModal = bootstrap.Modal.getInstance(myModalEl);
-                        myModal.hide();
+                        // 處理成功提交後的邏輯
+                        alert("評價提交成功");
+                           
+                        // 關閉模態框
+                        $('#exampleModalScrollable-' + currentOrderId).modal('hide');
                     })
                     .catch(err => {
                         alert("發生錯誤: " + err);
                     });
             };
+
 
             // 綁定 loadOrderDetails 事件
             var elements = document.querySelectorAll('[data-order-id]');
