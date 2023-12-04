@@ -210,8 +210,12 @@
 
 
 @section Scripts{
+
+    <script src="~/js/rating.js"></script>
+
+@* 
     <script src="https://cdn.jsdelivr.net/npm/rater-js@1.0.1/index.min.js"></script>
-    <script src="~/assets/libs/rater-js/index.js"></script>
+    <script src="~/assets/libs/rater-js/index.js"></script> *@
 
     <!--Elly測試改引用Bootstrap-->
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -281,20 +285,20 @@
                 });
             }
 
-            // 定義初始化 rater-js 的函數
-            function initializeRater() {
-                if (document.querySelector("#rater")) {
-                    var raterOptions = {
-                        starSize: 32,
-                        element: document.querySelector("#rater"),
-                        rateCallback: function (rating, done) {
-                            this.setRating(rating);
-                            done();
-                        }
-                    };
-                    new Rater(raterOptions);
-                }
-            }
+            // // 定義初始化 rater-js 的函數
+            // function initializeRater() {
+            //     if (document.querySelector("#rater")) {
+            //         var raterOptions = {
+            //             starSize: 32,
+            //             element: document.querySelector("#rater"),
+            //             rateCallback: function (rating, done) {
+            //                 this.setRating(rating);
+            //                 done();
+            //             }
+            //         };
+            //         new Rater(raterOptions);
+            //     }
+            // }
 
             // 處理 Modal for Orderdetail
             window.loadOrderDetails = function (orderId) {
@@ -331,9 +335,9 @@
                             });
 
                             //Rater
-                            setTimeout(function () {
-                                initializeRater();
-                            }, 500); // 延遲 500 毫秒初始化
+                            // setTimeout(function () {
+                            //     initializeRater();
+                            // }, 500); // 延遲 500 毫秒初始化
 
                         } else {
                             console.error("未找到模態框元素:", modalId);
