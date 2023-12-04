@@ -74,7 +74,7 @@
 
                             <div class="form-check mb-2" v-for="(condition, index) in showCategory" :key="index">
                                 <!-- input -->
-                                <input :id="condition" class="form-check-input isCheckBox" style="color:#6c757d;border: 2px solid" type="checkbox" :value="condition" v-model="selectedSetting.category">
+                                <input :id="condition" class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" :value="condition" v-model="selectedSetting.category">
                                 <label :for="condition" class="form-check-label" style="color:#6c757d;font-weight: bold">
                                     {{ condition }}
                                 </label>
@@ -87,7 +87,7 @@
                             <!-- form check -->
                             <div class="form-check mb-2">
                                 <!-- input -->
-                                <input class="form-check-input isCheckBox" style="color:#6c757d;border: 2px solid" type="checkbox" value="false" v-model="selectedSetting.isStoreActive">
+                                <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" value="false" v-model="selectedSetting.isStoreActive">
                                 <label class="form-check-label" style="color:#6c757d;font-weight: bold">營業中</label>
                             </div>
                             <!-- form check -->
@@ -241,7 +241,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        var baseAddress = "https://localhost:7042";
         var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         const storeApp = Vue.createApp({
             data: function () {
@@ -338,7 +337,7 @@
 
                 getStoreapi() {
                     let _this = this;
-                    fetch(`${baseAddress}/api/Storeapi/Main2`, { method: "GET" })
+                    fetch(`/api/Storeapi/Main2`, { method: "GET" })
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -347,7 +346,7 @@
                         })
                         .then(data => {
                             data.forEach(store => {
-                                store.commentRank = store.commentCount > 0 ? store.commentRank / store.commentCount : 0;
+                                store.commentRank = store.commentCount > 0 ?(store.commentRank / store.commentCount).toFixed(2) : 0;
                             });
                             _this.stores = data;
                             _this.getFavoriteStore();
@@ -360,7 +359,7 @@
                     let _this = this;
                     if (!isLogin) {return _this.stores = _this.stores.map(store => ({ ...store, noHeart: true }));  }
 
-                    fetch(`${baseAddress}/api/Storeapi/GetFavoriteStoreId`, { method: "GET" })
+                    fetch(`/api/Storeapi/GetFavoriteStoreId`, { method: "GET" })
                         .then(response => response.json()
                         )
                         .then(data => {
@@ -384,7 +383,7 @@
                     let favoriteData = {
                         storeId: storeId,
                     }
-                    fetch(`${baseAddress}/api/Storeapi/AddToFavorite`, {
+                    fetch(`/api/Storeapi/AddToFavorite`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(favoriteData)
@@ -399,7 +398,7 @@
                     let favoriteCancel = {
                         storeId: storeId,
                     }
-                    fetch(`${baseAddress}/api/Storeapi/DeleteFavorite`, {
+                    fetch(`/api/Storeapi/DeleteFavorite`, {
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(favoriteCancel)

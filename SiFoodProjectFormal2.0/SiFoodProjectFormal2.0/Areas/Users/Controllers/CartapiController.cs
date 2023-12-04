@@ -32,7 +32,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         public async Task<List<CartVM>> GetCarts()
         {
             string userId = _userIdentityService.GetUserId();
-            var cart = await _context.Carts.Where(c => c.UserId == userId&&c.Product.IsDelete==1).Select(c => new CartVM
+            var cart = await _context.Carts.Where(c => c.UserId == userId&&c.Product.IsDelete==1&& c.Product.RealeasedTime.Date == DateTime.Now.Date && c.Product.SuggestPickEndTime > DateTime.Now.TimeOfDay).Select(c => new CartVM
             {
                 UserId = userId,
                 ProductId = c.ProductId,
