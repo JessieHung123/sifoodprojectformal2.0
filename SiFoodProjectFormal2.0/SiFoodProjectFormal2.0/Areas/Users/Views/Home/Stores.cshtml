@@ -21,6 +21,50 @@
     <!-- MDB -->
                         @* <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
     rel="stylesheet" /> *@
+    <style>
+        .custom-button,
+        .share-button,
+        .navigate-button {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.8rem;
+            margin-right: 0.5rem; /* Adjust the margin as needed */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-button {
+            background-color: #0aad0a;
+            color: #fff;
+            border: 1px solid #0aad0a;
+            border-radius: 0.2rem;
+        }
+
+            .custom-button:hover {
+                background-color: #099309;
+            }
+
+        .share-button {
+            background-color: #f0f3f2;
+            color: #000; /* Adjust text color as needed */
+            border: 1px solid #f0f3f2;
+            border-radius: 0.2rem;
+        }
+
+            .share-button:hover {
+                background-color: #cccfce;
+            }
+
+        .navigate-button {
+            background-color: #001e2b;
+            color: #fff;
+            border: 1px solid #001e2b;
+            border-radius: 0.2rem;
+        }
+
+            .navigate-button:hover {
+                background-color: #26404b;
+            }
+    </style>
 }
 
 @{
@@ -82,21 +126,21 @@
                                     {{stores.phone}}
                                 </div>
                                 <div>
-                                    <small v-if="stores.openForBusiness" style="color: #32de84;">
+                                    <small v-if="stores.openForBusiness" style="color: #0aad0a;">
                                         <a>{{ stores.weekdayOpeningTime }}</a>
                                     </small>
                                     <small v-else style="color: red;">
                                         <a>{{ stores.weekdayOpeningTime }}</a>
                                     </small>
                                     <br />
-                                    <small v-if="stores.openForBusiness" style="color: #32de84;">
+                                    <small v-if="stores.openForBusiness" style="color: #0aad0a;">
                                         <a>{{ stores.weekendOpeningTime }}</a>
                                     </small>
                                     <small v-else style="color: red">
                                         <a>{{ stores.weekendOpeningTime }}</a>
                                     </small>
                                     <br />
-                                    <small v-if="stores.openForBusiness" style="color: #32de84;">
+                                    <small v-if="stores.openForBusiness" style="color: #0aad0a;">
                                         <a>(營業中)</a>
                                     </small>
                                     <small v-else style="color: red;">
@@ -108,23 +152,27 @@
                                     <!-- rating -->
                                     <small class="text-warning">
                                         <i class="bi bi-star-fill"></i>
-@*                                         <i class="bi bi-star-fill"></i>
+                                        @*                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-half"></i>
- *@                                    </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10}}</span>
+                                        *@
+                                    </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10}}</span>
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
-                                    <button class="btn btn-primary btn-sm" @@click="removeFromFavorites" v-if="this.isFavorite">
-                                        @* <button style="border-style:none; color:white; background-color:darkgreen" @@click="removeFromFavorites" v-if="this.isFavorite"> *@
+                                    @*                                     <button class="btn btn-primary btn-sm" @@click="removeFromFavorites" v-if="this.isFavorite" >
+                                    *@                                        @* <button style="border-style:none; color:white; background-color:darkgreen" @@click="removeFromFavorites" v-if="this.isFavorite"> *@
+                                    @*                                         <strong>取消收藏</strong>
+                                    </button>
+                                    *@                                    <button class="custom-button" @@click="removeFromFavorites" v-if="this.isFavorite">
                                         <strong>取消收藏</strong>
                                     </button>
-                                    <button class="btn btn-primary btn-sm" @@click="saveToFavorites" v-else>
+                                    <button class="custom-button" @@click="saveToFavorites" v-else>
                                         <strong>收藏</strong>
                                     </button>
-                                    <a href="#" class="btn btn-info btn-sm ms-2"><strong>分享</strong></a>
-                                    <a href="#" class="btn btn-success btn-sm ms-2"><strong>導航</strong></a>
+                                    <button href="#" class="share-button"><strong>分享</strong></button>
+                                    <button href="#" class="navigate-button"><strong>導航</strong></button>
                                 </div>
                             </div>
 
@@ -288,14 +336,15 @@
                                             {{person.contents}}
                                         </p>
                                         <ul class="list-unstyled d-flex justify-content-center text-warning mb-0">
-                                            
+
                                             <li><i class="fas fa-star fa-sm"></i></li>
                                             {{person.commentRank}}
-@*                                             <li><i class="fas fa-star fa-sm"></i></li>//二期
+                                            @*                                             <li><i class="fas fa-star fa-sm"></i></li>//二期
                                             <li><i class="fas fa-star fa-sm"></i></li>
                                             <li><i class="fas fa-star fa-sm"></i></li>
                                             <li><i class="fas fa-star fa-sm"></i></li>
- *@                                        </ul>
+                                            *@
+                                        </ul>
                                     </div>
 
                                 </div>
