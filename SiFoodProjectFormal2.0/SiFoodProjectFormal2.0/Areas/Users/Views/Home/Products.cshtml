@@ -255,15 +255,15 @@
                             }
                         }
                         else {
-                            fetch(`${baseAddress}/api/CartVMapi/AddToCart`,
+                            await fetch(`${baseAddress}/api/CartVMapi/AddToCart`,
                                 {
                                     method: "POST",
                                     headers: { "Content-Type": "application/json" },
                                     body: JSON.stringify(addItem)
                                 }).then(response => response.text())
                                 .then(data => {
-                                    $('#CartAddOkModal').modal('show');
                                     shoppingCart.getCart();
+                                    $('#CartAddOkModal').modal('show');
                                 })
                                 .catch(error => {
                                     alert("商品項目新增失敗!");
