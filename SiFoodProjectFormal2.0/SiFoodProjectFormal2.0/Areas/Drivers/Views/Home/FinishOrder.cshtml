@@ -5,12 +5,34 @@
     ViewData["Title"] = "歷史訂單";
 }
 
-@section Styles{
-
+@section Styles {
+    <style>
+        .sorted-label {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            color: #333;
+            white-space: nowrap;
+            margin-top: 9px;
+        }
+    </style>
 }
 
-<div class="order-category">
-    <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">歷史訂單列表</button>
+<div class="order-category" id="finishOrderApp">
+    <div class="row">
+        <div class="col-md-2 d-flex justify-content-start align-items-between">
+            <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">歷史訂單列表</button>
+        </div>
+        <div class="col-md-7 d-flex justify-content-center align-items-between">
+            <input type="text" class="form-control" placeholder="輸入關鍵字搜尋訂單" v-model="searchWord" style="width:450px" />
+        </div>
+        <div class="col-md-3 d-flex justify-content-end align-items-between">
+            <label for="sortOrder" class="sorted-label">排序方式：</label>
+            <select class="form-select" v-model="sortOrder" @@change="sortOrderChanged">
+                <option value="newToOld">由新到舊</option>
+                <option value="oldToNew">由舊到新</option>
+            </select>
+        </div>
+    </div>
     <table class="table collapse" id="collapseExample">
         <thead>
             <tr>
@@ -24,18 +46,24 @@
                 <th scope="col">訂單狀態</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody v-if="sortedOrderDatas.length > 0">
+            <tr v-for="item in sortedOrderDatas" :key="item.orderId">
+                <th scope="row">{{item.orderId}}</th>
+                <td>{{formatDate(item.orderDate)}}</td>
+                <td>{{item.address}}</td>
+                <td>{{item.userName}}</td>
+                <td>{{item.storeName}}</td>
+                <td>{{item.shippingFee}}</td>
+                <td>{{item.totalPrice}}</td>
+                <td>{{item.statusName}}</td>
+                <td></td>
+            </tr>
+        </tbody>
+        <tbody v-else>
             <tr>
-                <th scope="row">U001</th>
-                <td>安安</td>
-                <td>哈囉</td>
-                <td>你好</td>
-                <td>你好</td>
-                <td>你好</td>
-                <td>你好</td>
-                <td>你好</td>
-            </tr>           
-        </tbody>        
+                <td colspan="8">沒有符合條件的訂單。</td>
+            </tr>
+        </tbody>
     </table>
 </div>
 
@@ -46,8 +74,65 @@
     <script src="~/assets/js/theme.min.js"></script>
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
     <script>
-
+        var finishOrderApp = Vue.createApp({
+            data() {
+                return {
+                    orderDatas: [],
+                    searchWord: "",
+                    sortOrder: "newToOld",
+                };
+            },
+            computed: {
+                filteredOrderDatas() {
+                    return this.orderDatas.filter((item) => {
+                        return (
+                            item.orderId.toString().includes(this.searchWord) ||
+                            item.orderDate.includes(this.searchWord) ||
+                            item.address.includes(this.searchWord) ||
+                            item.userName.includes(this.searchWord) ||
+                            item.storeName.includes(this.searchWord) ||
+                            item.shippingFee.toString().includes(this.searchWord) ||
+                            item.totalPrice.toString().includes(this.searchWord) ||
+                            item.statusName.includes(this.searchWord)
+                        );
+                    });
+                },
+                sortedOrderDatas() {
+                    const sorted = this.filteredOrderDatas.slice(); // 複製一份以避免修改原始數據
+                    if (this.sortOrder === "newToOld") {
+                        return sorted.sort(
+                            (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
+                        );
+                    } else {
+                        return sorted.sort(
+                            (a, b) => new Date(a.orderDate) - new Date(b.orderDate)
+                        );
+                    }
+                },
+            },
+            methods: {
+                getOrderData() {
+                    var _this = this;
+                    axios
+                        .get(`/Home/FinishOrderData`)
+                        .then((response) => {
+                            _this.orderDatas = response.data;
+                        })
+                        .catch((err) => {
+                            alert(err);
+                        });
+                },
+                formatDate(date) {
+                    return moment(date).format("YYYY-MM-DD");
+                },
+            },
+            mounted() {
+                var _this = this;
+                _this.getOrderData();
+            },
+        }).mount("#finishOrderApp");
     </script>
 }
