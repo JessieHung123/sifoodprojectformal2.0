@@ -79,50 +79,50 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="mb-3 col-lg-6 mt-5">
-                                            <div class="card">
+                                            <div class="card" style="height: 300px;">
                                                 <div class="form-group fallback ">
                                                     <label for="files" class="form-label"><h4 class="mb-5 h5">店家LOGO</h4></label><br />
-                                                    <img id="insertFilePreview" :src="ModifyInfo.logoPath" title="待上傳" style="width:300px;height:240px" />
+                                                    <img id="insertFilePreview" :src="getPath(ModifyInfo.logoPath)" title="待上傳" style="width:300px;height:240px" />
                                                     <input type="file" id="updateFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mb-3 col-lg-6 mt-5">
-                                            <div class="card">
+                                            <div class="card" style="height: 300px;">
                                                 <div class="form-group fallback ">
                                                     <label for="files" class="form-label"><h4 class="mb-5 h5">店家照片1</h4></label><br />
-                                                    <img id="insertFilePreview" :src="ModifyInfo.photosPath" title="待上傳" style="width:300px;height:240px" />
+                                                    <img id="insertFilePreview" :src="getPath(ModifyInfo.photosPath)" title="待上傳" style="width:300px;height:240px" />
                                                     <input type="file" id="updateFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mb-3 col-lg-6 mt-5">
-                                            <div class="card">
+                                            <div class="card" style="height: 300px;">
                                                 <div class="form-group fallback ">
                                                     <label for="files" class="form-label"><h4 class="mb-5 h5">店家照片2</h4></label><br />
-                                                    <img id="insertFilePreview" :src="ModifyInfo.photosPath2" title="待上傳" style="width:300px;width:240px" />
+                                                    <img id="insertFilePreview" :src="getPath(ModifyInfo.photosPath2)" title="待上傳" style="width:300px;height:240px" />
                                                     <input type="file" id="updateFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mb-3 col-lg-6 mt-5">
-                                            <div class="card">
+                                            <div class="card" style="height: 300px;">
                                                 <div class="form-group fallback ">
                                                     <label for="files" class="form-label"><h4 class="mb-5 h5">店家照片3</h4></label><br />
-                                                    <img id="insertFilePreview" :src="ModifyInfo.photosPath3" title="待上傳" style="width:300px;width:240px" />
+                                                    <img id="insertFilePreview" :src="getPath(ModifyInfo.photosPath3)" title="待上傳" style="width:300px;height:240px" />
                                                     <input type="file" id="updateFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary">取消修改</button>&ensp;
-                                    <button type="button" onclick='return confirm("確定要修改嗎?")' class="btn btn-primary" @@click="updateProduct">確定修改</button>
-                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary">取消修改</button>&ensp;
+                    <button type="button" onclick='return confirm("確定要修改嗎?")' class="btn btn-primary" @@click="updateProduct">確定修改</button>
                 </div>
             </div>
         </section>
@@ -151,10 +151,10 @@
                     Description:"",
                     OpeningTime:"",
                     ClosingDay:"",
-                    PhotosPath:"",
-                    LogoPath:"",
-                    PhotosPath2:"",
-                    PhotosPath3:""
+                    PhotosPath: null,
+                    LogoPath: null,
+                    PhotosPath2: null,
+                    PhotosPath3: null
                 }
             },
             computed: {
@@ -178,6 +178,12 @@
                             alert("不支援的檔案上傳格式");
                         }
                     }
+                },
+                getPath: function (path) {
+                    if (path == null) {
+                        path = "/images/Noimage.png"
+                    }
+                    return path
                 },
                 insertFileChange: function (inputFile) {
                     // alert("加入圖片")

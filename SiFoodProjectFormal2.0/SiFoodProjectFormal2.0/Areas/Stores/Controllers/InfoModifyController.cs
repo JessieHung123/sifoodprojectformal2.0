@@ -14,7 +14,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
     [ApiController]
     public class InfoModifyController : ControllerBase
     {
-        string targetStoreId = "S001";
+        string targetStoreId = "S002";
         private readonly Sifood3Context _context;
 
         public InfoModifyController(Sifood3Context context)
