@@ -1,15 +1,11 @@
 ﻿@using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
-@model HistoryOrderDetailsVM
+@model HistoryOrderDetailVM
 
 <!-- Modal -->
-<div class="modal fade gd-example-modal-lg" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabelexampleModalScrollableTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+
             <div class="modal-header">
                 <h3 class="modal-title" id="exampleModalScrollableTitle">明細&評論</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!--Modal Body-->
             <div class="modal-body">
@@ -25,6 +21,10 @@
                             <div class="mt-4 mt-lg-0">
                                 <div class="card shadow-sm">
                                     <h5 class="px-6 py-4 bg-transparent mb-0">@Model.OrderId</h5>
+                                        <div>
+                                            訂單包含的商品數量：@Model.Items.Count
+                                        </div>
+
                                     <ul class="list-group list-group-flush">
                                         <!-- list group item -->
                                         <li class="list-group-item px-4 py-3">
@@ -56,7 +56,7 @@
                                                     金額小計
                                                 </div>
                                                 <div class="fw-bold">
-                                                    $70.00
+                                                    $333
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between  ">
@@ -116,6 +116,4 @@
                     <button type="button" class="btn btn-primary" onclick="submitRating()">送出評價</button>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+        

@@ -227,7 +227,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 return NotFound();
             }
 
-            var orderDetailsVM = new HistoryOrderDetailsVM
+            var historyOrderDetailsVM = new HistoryOrderDetailVM
             {
                 OrderId = order.OrderId,
                 OrderDate = order.OrderDate,
@@ -247,7 +247,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 CommentContents = order.Comment?.Contents ?? string.Empty // 如果 Comment 為 null，則使用空字串
             };
 
-            return PartialView("_OrderDetailPartial", orderDetailsVM);
+            return PartialView("_OrderDetailPartial", historyOrderDetailsVM);
         }
 
 
