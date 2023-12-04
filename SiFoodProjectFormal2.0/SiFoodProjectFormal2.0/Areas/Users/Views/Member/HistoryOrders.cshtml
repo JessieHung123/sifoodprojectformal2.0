@@ -307,6 +307,16 @@
                             var myModal = new bootstrap.Modal(modalElement);
                             myModal.show();
 
+                            // 在這裡初始化 rater-js
+                            var rater = new Rater({
+                                element: modalElement.querySelector("#rater"),
+                                rateCallback: function (rating, done) {
+                                    this.setRating(rating);
+                                    modalElement.querySelector("#ratingValue").value = rating;
+                                    done();
+                                }
+                            });
+
                             // 添加 hidden.bs.modal 事件監聽器
                             modalElement.addEventListener('hidden.bs.modal', function () {
                                 clearModalsBackdrop();
@@ -321,11 +331,7 @@
                     });
             };
 
-            // 初始化 rater-js
-            $(document).ready(function () {
-                $('#rating').rater();
-            });
-            
+                       
             // 處理評價提交
             window.submitRating = function () {
                 var orderId = document.getElementById('exampleModalScrollable').getAttribute('data-order-id');
@@ -363,114 +369,6 @@
         });
     </script>
 
-
-    
-        
-
-    @*
-    // <!-- text搜尋-->
-    // <!--分開放放大鏡和X,放大鏡維持存在,X在有文本時顯示&X按下去清除搜尋結果-->
-    // <script>
-    //     document.getElementById('searchInput').addEventListener('input', function () {
-    //         var clearButton = document.getElementById('clearButton');
-    //         clearButton.style.display = this.value.length > 0 ? 'inline-block' : 'none';
-    //     });
-
-    //     function clearSearch() {
-    //         var searchInput = document.getElementById('searchInput');
-    //         searchInput.value = '';
-    //         searchInput.dispatchEvent(new Event('input')); // 觸發輸入欄位的input事件
-    //         document.getElementById('searchForm').submit(); // 提交表單以重新載入所有資料
-    //     }
-    // </script>
-
-    // <!--顯示筆數下拉選單 start-->
-    // <script>
-    //     document.addEventListener('DOMContentLoaded', function () {
-    //         document.getElementById('pageSizeSelect').addEventListener('change', function () {
-    //             this.form.submit();
-    //         });
-    //     });
-    // </script>
-
-
-    // <!--Sort-->
-    // <script>
-    //     document.getElementById('sortSelect').addEventListener('change', function () {
-    //         var selectedValue = this.value;
-    //         // 假設希望保持目前頁面的其他參數不變，只改變sortOption
-    //         var currentUrl = new URL(window.location);
-    //         currentUrl.searchParams.set('sortOption', selectedValue);
-    //         window.location.href = currentUrl.href;
-    //     });
-    // </script>
-
-
-    // <!--處理Modal for Orderdetail-->
-    // <script>
-    //     function loadOrderDetails(orderId) {
-    //         // 使用 Fetch API 向後端發送請求
-    //         fetch('@Url.Action("GetOrderDetails", "Member")?orderId=' + orderId)
-    //             .then(response => response.text())
-    //             .then(response => {
-    //                 // 將返回的視圖填充到模態框中
-    //                 document.querySelector('#exampleModalScrollable .modal-body').innerHTML = response;
-
-    //                 // 顯示模態框
-    //                 var myModal = new bootstrap.Modal(document.getElementById('exampleModalScrollable'));
-    //                 myModal.show();
-    //             })
-    //             .catch(err => {
-    //                 document.querySelector('#error-message').innerHTML = "發生錯誤: " + err;
-    //                 document.querySelector('#error-message').style.display = 'block';
-    //             });
-    //     }
-
-    // </script>
-
-
-    // <!--處理星星-->
-    // <script>
-    //     // 初始化rater-js
-    //     var rater = new Rater({
-    //         element: document.querySelector("#rater"),
-    //         rateCallback: function (rating, done) {
-    //             this.setRating(rating);
-    //             document.querySelector("#ratingValue").value = rating;
-    //             done();
-    //         },
-    //     });
-
-    //     // 處理評價提交
-    //     // 處理評價提交
-    //     function submitRating() {
-    //         var orderId = document.getElementById('exampleModalScrollable').getAttribute('data-order-id');
-    //         var rating = document.querySelector("#ratingValue").value;
-    //         var comment = document.querySelector("#commentContent").value;
-
-    //         // 使用 Fetch API 發送 POST 請求
-    //         fetch('@Url.Action("SubmitRating", "Member")', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/x-www-form-urlencoded',
-    //             },
-    //             body: 'orderId=' + orderId + '&rating=' + rating + '&comment=' + comment
-    //         })
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 // 處理成功提交後的邏輯，例如關閉模態框
-    //                 var myModalEl = document.getElementById('exampleModalScrollable');
-    //                 var myModal = bootstrap.Modal.getInstance(myModalEl);
-    //                 myModal.hide();
-    //             })
-    //             .catch(err => {
-    //                 alert("發生錯誤: " + err);
-    //             });
-    //     }
-
-
-    </script>
-    *@
 }
 
 
