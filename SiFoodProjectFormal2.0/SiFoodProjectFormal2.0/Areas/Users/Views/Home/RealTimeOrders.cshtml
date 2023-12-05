@@ -134,7 +134,8 @@
                                                                                     <template v-else-if="item.statusId === 3||item.statusId === 4">
                                                                                         <a v-on:click="confirmCompleteOrder(item)" href="#" class="btn btn-success">完成訂單</a>
                                                                                     </template>
-                                                                                    <a href="#" class="btn btn-secondary" style="margin-left: 3px;">下載明細</a>
+                                                                                    @* <a href="#" class="btn btn-secondary" style="margin-left: 3px;">下載明細</a> *@
+                                                                                    <a @@click="downloadOrderDetails(item.orderId)" class="btn btn-secondary" style="margin-left: 3px;">下載明細</a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -310,6 +311,9 @@
 
                 },
                 methods: {
+                    downloadOrderDetails(orderId) {
+                        window.location.href = `/api/RealTimeOrdersapi/DownloadOrderDetails/${orderId}`;
+                    },
                     confirmCancelOrder(item) {
                         const orderDateTime = new Date(item.orderDateTime);
                         const currentTime = new Date();
