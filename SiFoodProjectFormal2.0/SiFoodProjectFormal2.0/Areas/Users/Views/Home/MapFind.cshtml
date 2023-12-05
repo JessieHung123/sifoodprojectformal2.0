@@ -194,7 +194,6 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI" async defer></script>
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
-        var baseAddress = "https://localhost:7042";
         var StoreMap = Vue.createApp({
             data: function () {
                 return {
@@ -298,7 +297,7 @@
                     });
                 },
                 getStoreOnMapApi: function () {
-                    fetch(`${baseAddress}/api/Storeapi/FilterInMap`, { method: "GET" })
+                    fetch(`/api/Storeapi/FilterInMap`, { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
                             this.storeData = data;
