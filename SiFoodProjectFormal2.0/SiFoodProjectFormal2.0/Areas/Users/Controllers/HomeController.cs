@@ -35,7 +35,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return View();
 
         }
-        [Route("JoinUs")]
+        
         [HttpGet]
         public IActionResult JoinUs()
         {
