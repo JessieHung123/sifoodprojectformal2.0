@@ -176,6 +176,9 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 OrderId = order.OrderId,
                 OrderDate = order.OrderDate,
                 ShippingFee = Convert.ToInt32(order.ShippingFee),
+                DeliveryMethod=order.DeliveryMethod,
+                UserName=order.User.UserName,
+                UserPhone=order.User.UserPhone,
 
                 Items = order.OrderDetails.Select(od => new HistoryOrderDetailItemVM
                 {
