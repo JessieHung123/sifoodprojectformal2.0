@@ -319,11 +319,7 @@
                 getStoreapi() {
                     let _this = this;
                     fetch(`/api/Storeapi/Main2`, { method: "GET" })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
-                            return response.json();
+                        .then(response => {response.json();
                         })
                         .then(data => {
                             data.forEach(store => {
@@ -332,7 +328,7 @@
                             _this.stores = data;
                             _this.getFavoriteStore();
                         }).catch(error => {
-                            alert(error);
+                            console.log(error);
                         });
                 },
                 getFavoriteStore() {
@@ -346,7 +342,7 @@
                                     if (data.includes(store.storeId)) { return { ...store, noHeart: false }; }
                                     else return { ...store, noHeart: true }
                                 });
-                        }).catch(error => { alert(error); });
+                        }).catch(error => { console.log(error); });
                 },
                 toggle(storeId) {
                     let _this = this;
