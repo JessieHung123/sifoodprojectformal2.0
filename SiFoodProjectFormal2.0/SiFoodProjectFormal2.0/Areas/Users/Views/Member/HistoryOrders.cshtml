@@ -185,12 +185,13 @@
                                                 @{
                                                     string badgeClass = order.Status switch
                                                     {
-                                                        "已送達" => "badge text-bg-secondary",
-                                                        "已領取" => "badge text-bg-info",
-                                                        "已取消" => "badge text-bg-dark",
-
-                                                        // 預設值
-                                                        _ => "badge text-bg-primary"
+                                                        "已送達" => "badge bg-light-info text-dark-info",
+                                                        "已領取" => "badge bg-light-danger text-dark-danger",
+                                                        "已取消" => "badge bg-light text-dark",
+                                                        "待確認" => "badge bg-warning text-dark",
+                                                        "待配送" => "badge bg-info text-dark",
+                                                        "待領取" => "badge bg-secondary",
+                                                        "配送中" => "badge bg-primary",
                                                     };
                                                 }
                                                 <span class="@badgeClass">@order.Status</span>
