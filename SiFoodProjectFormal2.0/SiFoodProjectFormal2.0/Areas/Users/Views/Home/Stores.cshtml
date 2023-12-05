@@ -224,10 +224,10 @@
                                     <select class="form-select" v-model="sortingOptions">
                                         @* <option value="Featured">Sort by: Featured</option> *@
                                         <option value="PriceLowToHigh">價格: 低到高</option>
-                                        <option value="PriceHighToLow">價格: 高到低</option>
-                                        @* <option value="ReleaseDate">Release Date</option> *@
+                                        <option value="PriceHighToLow">價格: 高到低</option>                                       
                                         <option value="QtyHighToLow">剩餘數量: 多到少</option>
                                         <option value="QtyLowToHigh">剩餘數量: 少到多</option>
+                                        <option value="ReleasedTime">最新上架</option>
                                     </select>
                                 </div>
                             </div>
@@ -447,6 +447,9 @@
                                 break;
                             case "QtyHighToLow":
                                 filteredProducts.sort((a, b) => b.avalibleQty - a.avalibleQty);
+                                break;
+                            case "ReleasedTime":
+                                filteredProducts.sort((a, b) => new Date(a.realeasedTime) - new Date(b.realeasedTime));
                                 break;
                         }
                         this.page.pageNumber = 1;
