@@ -67,7 +67,6 @@
     </table>
     <div class="row mt-6">
         <div class="col">
-            <!-- nav -->
             <nav>
                 <paginate :page-count="totalPages"
                           :click-handler="pageClick"
@@ -110,12 +109,10 @@
             },
             computed: {
                 filteredOrderDatas() {
-                    // 當搜尋條件改變時，重置頁數到第一頁
                     if (this.searchWord !== this.prevSearchWord) {
                         this.page.pageNumber = 1;
                         this.prevSearchWord = this.searchWord;
                     }
-
                     return this.orderDatas.filter((item) => {
                         return (
                             item.orderId.toString().includes(this.searchWord) ||
@@ -142,11 +139,9 @@
                     }
                 },
                 totalPages() {
-                    // 更新計算 total pages 的邏輯，考慮搜尋後的結果
                     return Math.ceil(this.filteredOrderDatas.length / this.page.countPerPage);
                 },
                 completeDatas() {
-                    // 更新 complete datas 的邏輯，考慮搜尋後的結果
                     var start = (this.page.pageNumber - 1) * this.page.countPerPage;
                     var end = start + this.page.countPerPage;
                     return this.sortedOrderDatas.slice(start, end);
