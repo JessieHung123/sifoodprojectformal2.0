@@ -24,22 +24,23 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             _userIdentityService = userIdentityService;
             _context = context;
         }
+
         public IActionResult CheckOut()
         {
             IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
             ViewData["MerchantID"] = Config.GetSection("MerchantID").Value;
-            ViewData["ReturnURL"] = $"https://5084-114-34-121-89.ngrok-free.app/Users/Member/RealTimeOrders";//每次有換網址記得改
-            ViewData["NotifyURL"] = $"https://5084-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//每次有換網址記得改
-            ViewData["ClientBackURL"] = $"https://5084-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //每次有換網址記得改
+            ViewData["ReturnURL"] = $"https://5084-114-34-121-89.ngrok-free.app/Users/Member/RealTimeOrders";//上線換網址記得改
+            ViewData["NotifyURL"] = $"https://5084-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
+            ViewData["ClientBackURL"] = $"https://5084-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
             return View();
         }
+
         [HttpGet]
         [Route("/Transaction/GetCheckoutData")]
         public IQueryable<CheckOutVM> GetCheckoutData()
         {
-            string id = "U002";
-            //string userId = _userIdentityService.GetUserId();
-            var CheckOutData = _context.Carts.Include(x => x.User).Where(y => y.UserId == id).Select(y => new CheckOutVM
+            string userId = _userIdentityService.GetUserId();
+            var CheckOutData = _context.Carts.Include(x => x.User).Where(y => y.UserId == userId).Select(y => new CheckOutVM
             {
                 UserName = y.User.UserName,
                 UserAddressList = (List<AddressItemVM>)y.User.UserAddresses.Select(x => new AddressItemVM
@@ -337,6 +338,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 }
             }
         }
+
         private int GetProductIdByName(string productName)
         {
             return _context.Products.Where(p => p.ProductName == productName).Select(p => p.ProductId).FirstOrDefault();

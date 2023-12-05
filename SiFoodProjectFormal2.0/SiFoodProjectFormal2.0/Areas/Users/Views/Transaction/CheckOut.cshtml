@@ -156,7 +156,7 @@
                                             <div class="col-lg-6 col-12 mb-4  d-flex align-items-stretch" v-for="(item, index) in checkoutData.userAddressList">
                                                 <div class="card card-body p-6">
                                                     <div class="form-check mb-4">
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault" :id="'homeRadio' + index" @@click="sendAddress(item)">
+                                                        <input class="form-check-input" type="radio" name="flexRadioDefault" :id="'homeRadio' + index" @@click="sendAddress(item.userAddress)">
                                                         <label class="form-check-label text-dark" :for="'homeRadio' + index">
                                                             地址{{index + 1}}
                                                         </label>
@@ -227,7 +227,7 @@
                                             </div>
                                             <!-- Button -->
                                             <div class="mt-5 d-flex justify-content-end">
-                                                <button class="btn btn-primary ms-2" @@click="createDeliverOrder">訂購</button>
+                                                <button class="btn btn-primary ms-2" @@click="createDeliverOrder('CREDIT')">訂購</button>
                                             </div>
                                         </div>
                                     </div>
@@ -423,6 +423,7 @@
                 },
                 createTakeOutOrder(ChannelID) {
                     var _this = this;
+                    _this.loading = true;
                     axios.post(`/Transaction/TakeOutOrder`, {
                         StoreName: _this.sendBackStoreName,
                         UserName: _this.sendBackUserName,
@@ -450,7 +451,7 @@
                             alert(err);
                         });
                 },
-                createDeliverOrder: function () {
+                createDeliverOrder(ChannelID) {
                     var _this = this;
                     _this.loading = true;
                     axios.post(`/Transaction/DeliverOrder`, {
@@ -465,12 +466,17 @@
                             "Content-Type": "application/json"
                         }
                     }).then(response => {
-                        alert(response.data);
-                        var success = "訂單下訂成功!";
-                        if (response.data === success) {
-                            window.location.href = '/Users/Home/RealTimeOrders';
-                        }
-                        _this.loading = false
+                        var postData = {};
+                        postData['ChannelID'] = ChannelID;
+                        postData['MerchantID'] = _this.addForm.MerchantID;
+                        postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `${item.productName}: ${item.quantity}`).join(', ');
+                        postData['Amt'] = _this.sendBackTotalPrice
+                        postData['ReturnURL'] = _this.addForm.ReturnURL;
+                        postData['NotifyURL'] = _this.addForm.NotifyURL;
+                        postData['ClientBackURL'] = _this.addForm.ClientBackURL;
+                        postData['UserName'] = _this.sendBackUserName;
+
+                        _this.callNewebPayApi(postData)
                     }).catch(err => {
                         alert(err);
                     })
@@ -489,7 +495,7 @@
                 },
                 sendAddress: function (item) {
                     var _this = this;
-                    _this.selectAddress = item;
+                    _this.selectAddress = item; 
                 },
             },
         }
