@@ -18,12 +18,12 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             _context = context;
         }
-        [Route("Account/Login")]
+
         public IActionResult Login()
         {
             return View();
         }
-        [Route("Account/SetAccount")]
+
         public IActionResult SetAccount()
         {
             return View();
