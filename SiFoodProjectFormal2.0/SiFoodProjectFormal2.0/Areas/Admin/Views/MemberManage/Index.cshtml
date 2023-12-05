@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <div class="d-md-flex justify-content-between align-items-center">
                 <div>
-                    <h2>客戶管理</h2>
+                    <h2>顧客管理</h2>
                     <!-- breacrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
@@ -28,7 +28,7 @@
                     <div class="row justify-content-between">
                         <div class="col-md-4 col-12">
                             <form class="d-flex" role="search">
-                                <input class="form-control" type="search" placeholder="Search Customers" aria-label="Search">
+                                <input class="form-control" type="search" name="searchUsers" value="@ViewBag.searchUsers" placeholder="Search Users" aria-label="Search">
                             </form>
                         </div>
 
@@ -40,34 +40,19 @@
                         <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
                             <thead class="bg-light">
                                 <tr>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserName)
+                                    <th style="text-align: center;">
+                                        姓名
                                     </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserEmail)
+                                    <th style="text-align: center;">
+                                        信箱
+                                    </th>                                    
+                                    <th style="text-align: center;">
+                                        電話
                                     </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserPasswordHash)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserPhone)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserBirthDate)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.TotalOrderAmount)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserEnrollDate)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserLatestLogInDate)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.UserPasswordSalt)
-                                    </th>
-                                    <th>
+                                    <th style="text-align: center;">
+                                        生日
+                                    </th>                                                                
+                                    <th style="text-align: center;">
                                         功能
                                     </th>
                                 </tr>
@@ -81,39 +66,24 @@
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UserEmail)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UserPasswordHash)
-                                        </td>
+                                        </td>                                        
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UserPhone)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UserBirthDate)
-                                        </td>
+                                        </td>                                        
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.TotalOrderAmount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UserEnrollDate)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UserLatestLogInDate)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UserPasswordSalt)
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="@("#EditUser-"+item.UserId)" data-url="@Url.Action($"Edit1/{item.UserId}")">
-                                                編輯
+                                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#EditUser-" + item.UserId)" data-url="@Url.Action($"Edit1/{item.UserId}")">
+                                                <i class="bi bi-pencil-square me-3"></i>修改
                                             </button>
                                             @await Html.PartialAsync("_Edit",item)
-                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@("#DetailUser-" + item.UserId)" data-url="@Url.Action($"Details1/{item.UserId}")">
-                                                明細
+                                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DetailUser-" + item.UserId)" data-url="@Url.Action($"Details1/{item.UserId}")">
+                                                <i class="bi bi-info-circle me-3"></i>明細
                                             </button>
                                             @await Html.PartialAsync("_Details",item)
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@("#DeleteUser-" + item.UserId)" data-url="@Url.Action($"Delete1/{item.UserId}")">
-                                                刪除
+                                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DeleteUser-" + item.UserId)" data-url="@Url.Action($"Delete1/{item.UserId}")">
+                                                <i class="bi bi-trash me-3"></i>刪除
                                             </button>
                                             @await Html.PartialAsync("_Delete",item)
                                         </td>
@@ -123,17 +93,26 @@
                         </table>
                     </div>
                     <div class="border-top d-md-flex justify-content-between align-items-center p-6">
-                        <span>Showing 1 to 8 of 12 entries</span>
+                        <span>Showing @ViewBag.EntriesStart to @ViewBag.EntriesEnd of @ViewBag.TotalEntries entries</span>
                         <nav class="mt-2 mt-md-0">
-                            <ul class="pagination mb-0 ">
-                                <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                                <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#!">Next</a></li>
+                            <ul class="pagination mb-0">
+                                @if (ViewBag.Page > 1)
+                                {
+                                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = ViewBag.Page - 1, searchUsers = ViewBag.searchUsers })">Previous</a></li>
+                                }
+
+                                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == ViewBag.Page ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { page = i, searchUsers = ViewBag.searchUsers })">@i</a></li>
+                                }
+
+                                @if (ViewBag.Page < ViewBag.TotalPages)
+                                {
+                                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = ViewBag.Page + 1, searchUsers = ViewBag.searchUsers })">Next</a></li>
+                                }
                             </ul>
                         </nav>
-                    </div>
+                    </div>                    
                 </div>
             </div>
         </div>

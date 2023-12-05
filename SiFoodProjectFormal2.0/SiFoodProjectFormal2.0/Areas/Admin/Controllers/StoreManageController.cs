@@ -18,146 +18,103 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
         {
             _context = context;
         }
-
-        // GET: Admin/StoreManage
-        public async Task<IActionResult> Index()
+        public IActionResult StoreConfirm(int page = 1, int pageSize = 5, string searchStores = null)
         {
-              return _context.Stores != null ? 
-                          View(await _context.Stores.ToListAsync()) :
-                          Problem("Entity set 'Sifood3Context.Stores'  is null.");
-        }
-
-        // GET: Admin/StoreManage/Details/5
-        public async Task<IActionResult> Details(string StoreId)
-        {
-            if (StoreId == null || _context.Stores == null)
+            if (!string.IsNullOrEmpty(searchStores))
             {
-                return NotFound();
+                TempData["SearchStores"] = searchStores;
+            }
+            else
+            {
+                searchStores = TempData["SearchStores"] as string ?? "";
             }
 
-            var store = await _context.Stores
-                .FirstOrDefaultAsync(m => m.StoreId == StoreId);
-            if (store == null)
+            var query = _context.Stores.Where(s => s.StoreIsAuthenticated == 0).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchStores))
             {
-                return NotFound();
+                query = query.Where(u => u.StoreName.Contains(searchStores) || u.ContactName.Contains(searchStores));
             }
 
-            return View(store);
-        }
+            var totalEntries = query.Count();
+            var stores = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-        // GET: Admin/StoreManage/Create
-        public IActionResult Create()
+            var entriesStart = (page - 1) * pageSize + 1;
+            var entriesEnd = entriesStart + stores.Count - 1;
+
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalEntries / (double)pageSize);
+            ViewBag.EntriesStart = entriesStart;
+            ViewBag.EntriesEnd = entriesEnd;
+            ViewBag.TotalEntries = totalEntries;
+
+            return View(stores);
+        }
+        public IActionResult Index(int page = 1, int pageSize = 5, string searchStores = null)
         {
-            return View();
+            if (!string.IsNullOrEmpty(searchStores))
+            {
+                TempData["SearchStores"] = searchStores;
+            }
+            else
+            {
+                searchStores = TempData["SearchStores"] as string ?? "";
+            }
+
+            var query = _context.Stores.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchStores))
+            {
+                query = query.Where(u => u.StoreName.Contains(searchStores) || u.ContactName.Contains(searchStores));
+            }
+
+            var totalEntries = query.Count();
+            var stores = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var entriesStart = (page - 1) * pageSize + 1;
+            var entriesEnd = entriesStart + stores.Count - 1;
+
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalEntries / (double)pageSize);
+            ViewBag.EntriesStart = entriesStart;
+            ViewBag.EntriesEnd = entriesEnd;
+            ViewBag.TotalEntries = totalEntries;
+
+            return View(stores);
+        }
+        public IActionResult Details(string storeId)
+        {
+            Store store = _context.Stores.Where(x => x.StoreId == storeId).FirstOrDefault();
+            return PartialView("_DetailsPartialView", store);
         }
 
-        // POST: Admin/StoreManage/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        public IActionResult Edit(string storeId)
+        {
+            Store store = _context.Stores.Where(x => x.StoreId == storeId).FirstOrDefault();
+            return PartialView("_EditPartialView", store);
+        }
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,PasswordHash,PasswordSalt,EnrollDate,Latitude,Longitude,OpeningTime,OpeningDay,PhotosPath,LogoPath")] Store store)
+        public IActionResult Edit(Store store)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(store);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(store);
+            _context.Stores.Update(store);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        // GET: Admin/StoreManage/Edit/5
-        public async Task<IActionResult> Edit(string StoreId)
+        public IActionResult Delete(string storeId)
         {
-            if (StoreId == null || _context.Stores == null)
-            {
-                return NotFound();
-            }
-
-            var store = await _context.Stores.FindAsync(StoreId);
-            if (store == null)
-            {
-                return NotFound();
-            }
-            return View(store);
+            Store store = _context.Stores.Where(x => x.StoreId == storeId).FirstOrDefault();
+            return PartialView("_DeletePartialView", store);
         }
 
-        // POST: Admin/StoreManage/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string StoreId, [Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,PasswordHash,PasswordSalt,EnrollDate,Latitude,Longitude,OpeningTime,OpeningDay,PhotosPath,LogoPath")] Store store)
+        public IActionResult Delete(Store store)
         {
-            if (StoreId != store.StoreId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(store);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StoreExists(store.StoreId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(store);
+            _context.Stores.Remove(store);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        // GET: Admin/StoreManage/Delete/5
-        public async Task<IActionResult> Delete(string StoreId)
-        {
-            if (StoreId == null || _context.Stores == null)
-            {
-                return NotFound();
-            }
-
-            var store = await _context.Stores
-                .FirstOrDefaultAsync(m => m.StoreId == StoreId);
-            if (store == null)
-            {
-                return NotFound();
-            }
-
-            return View(store);
-        }
-
-        // POST: Admin/StoreManage/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string StoreId)
-        {
-            if (_context.Stores == null)
-            {
-                return Problem("Entity set 'Sifood3Context.Stores'  is null.");
-            }
-            var store = await _context.Stores.FindAsync(StoreId);
-            if (store != null)
-            {
-                _context.Stores.Remove(store);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool StoreExists(string StoreId)
-        {
-          return (_context.Stores?.Any(e => e.StoreId == StoreId)).GetValueOrDefault();
-        }
     }
 }

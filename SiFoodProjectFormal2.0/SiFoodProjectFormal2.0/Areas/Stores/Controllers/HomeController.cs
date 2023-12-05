@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -18,7 +19,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             _context = context;
         }
-
+        //[Route("Main")]
         // GET: Products
         [HttpGet] //uri:/
         public async Task<IActionResult> Main()
@@ -44,7 +45,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 
         public async Task<IActionResult> SaleInfo()
         {
-            var Sales = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new 
+            var sifoodContext2 = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new 
             { StoreId = x.Product.StoreId,
                 UnitPrice = x.Product.UnitPrice,
                 OrderId = x.OrderId,
@@ -55,37 +56,20 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 OrderStatus = x.Order.StatusId
             })
                 .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7);
-            return Json(Sales);
+            return Json(sifoodContext2);
 
         }
-
-        //public async Task<IActionResult> Main2()
-        //{
-        //    var sifoodContext2 = _context.OrderDetails.Include(d => d.Product).Select(x => new { StoreId = x.Product.StoreId, OrderDetailId = x.OrderDetailId, OrderId = x.OrderId, ProductId = x.ProductId, ProductName = x.Product.ProductName }).Where(e => e.StoreId == targetStoreId);
-        //    return Json(sifoodContext2);
-
-        //}
-
-        //public async Task<IActionResult> Main3()
-        //{
-        //    var sifoodContext3 = _context.Products.Select(x => new { StoreId = x.StoreId, Description = x.Description, ProductName = x.ProductName, ReleasedQty = x.ReleasedQty }).Where(p => p.StoreId == targetStoreId);
-        //    return Json(sifoodContext3);
-
-        //}
-
-        //----------------------------------//
-        //public IActionResult Main()
-        //{
-        //    return View();
-        //}
+        [Route("RealTimeOrders")]
         public IActionResult RealTimeOrders()
         {
             return View();
         }
+        [Route("History")]
         public IActionResult History()
         {
             return View();
         }
+        //[Route("ProductManage")]
         public IActionResult ProductManage()
         {
             return View();
@@ -94,10 +78,12 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             return View();
         }
+        [Route("Review")]
         public IActionResult Review()
         {
             return View();
         }
+        [Route("FAQ")]
         public IActionResult FAQ()
         {
             return View();

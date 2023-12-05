@@ -193,7 +193,47 @@
     </div>
 
 </div>
+<!--根據送出結果跳出Modal-->
+<!-- OK Modal -->
+<div class="modal fade" id="modalOK" tabindex="-1" role="dialog" aria-labelledby="okModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="okModalLabel">商品已加入收藏!</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- NotOK Modal -->
+<div class="modal fade" id="modalNotOK" tabindex="-1" role="dialog" aria-labelledby="notOkModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notOkModalLabel">商品已取消收藏!</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cancel Modal -->
+<div class="modal fade" id="cancel" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">未登入無法加入收藏!</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts{
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
@@ -337,11 +377,7 @@
                         if (item.noHeart == false) { this.deleteFavorite(storeId); item.noHeart = !item.noHeart; }//準備被取消
                         else { this.addToFavorite(storeId); item.noHeart = !item.noHeart; }//準備被收藏
                     }
-                    else {
-                        Swal.fire({
-                            title: "未登入無法收藏~",
-                            icon: "warning"
-                        });
+                    else $('#cancel').modal('show');
                 },
                 //加入收藏店家
                 addToFavorite(storeId) {
@@ -354,10 +390,7 @@
                         body: JSON.stringify(favoriteData)
                     }).then(response => {
                         if (response.ok) {
-                            Swal.fire({
-                                title: "成功加入收藏!",
-                                icon: "success"
-                            });
+                            $('#modalOK').modal('show');
                         }
                     });
                 },
@@ -372,10 +405,7 @@
                         body: JSON.stringify(favoriteCancel)
                     }).then(response => {
                         if (response.ok) {
-                            Swal.fire({
-                                title: "商品已取消收藏!",
-                                icon: "success"
-                            });
+                            $('#modalNotOK').modal('show');
                         }
                     });
                 },

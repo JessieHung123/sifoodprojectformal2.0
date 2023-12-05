@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
 using System.Text;
-using SiFoodProjectFormal2._0.ViewModels.Users;
 using Microsoft.Win32;
 
 using NuGet.Packaging;
@@ -27,13 +26,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-
+        
         [HttpGet]
         public IActionResult LoginRegister()
         {
             return View();
         }
-
+        [Route("/Account/LoginRegister")]
         [HttpPost]
         public async Task<IActionResult> LoginRegister(LoginVM model)
         {
@@ -200,7 +199,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Account/ResetPassword")]
-        public string ResetPassword([FromBody] ResetPasswordVM model)
+        public string ResetPassword([FromForm] ResetPasswordVM model)
         {
             User? user = _context.Users.FirstOrDefault(x => x.UserEmail == model.UserConfirmEmail);
 
@@ -212,12 +211,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     ran.GetBytes(NewSaltBytes);
                 }
                 user.UserPasswordSalt = NewSaltBytes;
-
                 SHA256 Sha256 = SHA256.Create();
                 byte[] PasswordBytes = Encoding.ASCII.GetBytes($"{model?.NewPassword}{NewSaltBytes}");
                 byte[] NewHashBytes = Sha256.ComputeHash(PasswordBytes);
                 user.UserPasswordHash = NewHashBytes;
-
                 _context.SaveChanges();
                 return "密碼重設成功, 即將回到登入畫面";
             }
@@ -227,7 +224,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/Account/Logout")]
         public async Task<IActionResult> Logout()
         {
@@ -239,15 +236,18 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             return View();
         }
+
         public IActionResult RegisterConfirmation()
         {
             return View();
 
         }
+
         public IActionResult ForgotPassword()
         {
             return View();
         }
+
         public IActionResult ForgotPasswordConfirmation()
         {
             return View();
