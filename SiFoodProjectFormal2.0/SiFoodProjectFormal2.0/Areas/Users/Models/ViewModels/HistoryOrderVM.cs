@@ -7,7 +7,7 @@
         public DateTime OrderDate { get; set; }
         public string Status { get; set; }
         public int Quantity { get; set; }
-        
+        public int TotalPrice { get; set; }
 
         public string? PhotoPath { get; set; }
 

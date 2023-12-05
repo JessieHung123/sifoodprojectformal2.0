@@ -176,10 +176,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.Status.StatusName);
                     break;
                 case "Low to High":
-                    historyOrdersQuery = historyOrdersQuery.OrderBy(od => od.TotalPrice);
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.TotalPrice);
                     break;
                 case "High to Low":
-                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(od => od.TotalPrice);
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.TotalPrice);
                     break;
                 case "Newest":
                     historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.OrderDate);
@@ -204,7 +204,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     OrderDate = o.OrderDate,
                     Status = o.Status.StatusName,
                     Quantity = o.OrderDetails.Sum(od => od.Quantity),
-                  
+                    TotalPrice = o.TotalPrice ?? 0,
                     FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
                     FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
                 }).ToList();
