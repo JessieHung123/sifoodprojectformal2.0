@@ -49,7 +49,6 @@
 
 <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
 <script>
-    // var baseAddress = "https://localhost:7042";
     var chooseOrder = Vue.createApp({
         data: function () {
             return {
@@ -79,8 +78,6 @@
                 var service = new google.maps.DistanceMatrixService();
                 var oridinArray = [setDriverMap.current, this.toStorelocation];
                 var destinationArray = [this.toStorelocation, this.arrivingLocation];
-                console.log(oridinArray);
-                console.log(destinationArray);
                 service.getDistanceMatrix(
                     {
                         origins: oridinArray,//陣列
@@ -94,7 +91,6 @@
                 if (status !== google.maps.DistanceMatrixStatus.OK) {
                     alert("發生錯誤，請洽系統管理員");
                 } else {
-                    console.log(response);
                     this.waitForDeliveryOrder.distancetexttostore = response.rows[0].elements[0].distance.text;
                     this.waitForDeliveryOrder.distancetimetostore = response.rows[0].elements[0].duration.text;
                     this.waitForDeliveryOrder.distancetext = response.rows[1].elements[1].distance.text;

@@ -44,7 +44,6 @@
     </div>
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
     <script>
-        var baseAddress = "https://localhost:7042";
         var OrderList = Vue.createApp({
             data: function () {
                 return {
@@ -64,7 +63,7 @@
                     this.categoryOne = !this.categoryOne;
                 },
                 async findWaitForDeliveryOrderSimple() {
-                    await fetch(`${baseAddress}/api/DeliveryOrderapi/WaitForDeliveryOrderSimple`, { method: "GET" })
+                    await fetch(`/api/DeliveryOrderapi/WaitForDeliveryOrderSimple`, { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
                             this.waitForDeliveryOrderSimple = data;
@@ -87,7 +86,6 @@
                     await this.getDistance();
                 },
                 getDistanceResultToStore(response, status) {
-                        console.log(response);
                         for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
                             this.waitForDeliveryOrderSimple[i].distancetexttostore = response.rows[0].elements[i].distance.text;
                             this.waitForDeliveryOrderSimple[i].distancetimetostore = response.rows[0].elements[i].duration.text;
@@ -106,7 +104,6 @@
                         }, this.getDistanceResult);
                 },
                 getDistanceResult(response, status) {
-                    console.log(response);
                         for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
                             this.waitForDeliveryOrderSimple[i].distance = response.rows[i].elements[i].distance.value;
                             this.waitForDeliveryOrderSimple[i].distancetext = response.rows[i].elements[i].distance.text;
@@ -121,10 +118,9 @@
                         var sumB = distancetimeB + distancetimetostoreB;
                         return sumA - sumB;
                     });
-                        console.log(this.waitForDeliveryOrderSimple);
                 },
                 async onTheWay() {
-                    await fetch(`${baseAddress}/api/DeliveryOrderapi/OnTheWayOrder`, { method: "GET" })
+                    await fetch(`/api/DeliveryOrderapi/OnTheWayOrder`, { method: "GET" })
                     .then(response => response.json())
                     .then(data => {
                         this.onTheWayOrder = data;
