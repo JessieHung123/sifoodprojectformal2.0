@@ -17,7 +17,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-        [Route("MainPage")]
+   
         public IActionResult Main()
         {
             
@@ -29,8 +29,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return View();
         }
         [HttpGet]
-        [Route("/Home/UserFAQ")]
-        public IActionResult UserFAQ()
+    
+        public IActionResult FAQ()
         {
             return View();
 
