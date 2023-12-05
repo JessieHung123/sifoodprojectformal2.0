@@ -142,7 +142,7 @@
 
                                             <!-- submit button -->
                                             <div class="mt-5 mb-3">
-                                                <button type="submit" class="btn btn-primary" value="Save">儲存資料</button>
+                                                <button type="submit" class="btn btn-primary" value="Save" id="saveButton">儲存資料</button>
                                             </div>
                                         </form>
                     <!-- form end -->
@@ -296,6 +296,9 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
+    <!--Sweet Alert-->
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @* <script>
         $(document).ready(function () {
             $('#reset-password-link').click(function (e) {
@@ -332,5 +335,20 @@
         });
     </script> *@
 
+
+    /@* /跳出修改成功alert *@
+    <script>
+        document.getElementById('saveButton').addEventListener('click', function () {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "資料已修改!",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        });
+
+
+    </script>
 
 }

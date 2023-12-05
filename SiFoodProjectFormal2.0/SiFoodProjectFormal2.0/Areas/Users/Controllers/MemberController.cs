@@ -19,7 +19,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         //11/23新版
         [HttpGet]
-        [Route("/Member/Profile")]
+        
         public async Task<IActionResult> Profile()
         {
             //if (id == null || _context.Users == null)
@@ -54,7 +54,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //11/23新版
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("/Member/Profile")]
+        [Route("Users/Member/Profile")]
         public async Task<IActionResult> Profile(string id, [Bind("UserName,UserEmail,UserPhone,UserBirthDate")] ProfileVM profileViewModel)
         {
             //if (ModelState.IsValid)
