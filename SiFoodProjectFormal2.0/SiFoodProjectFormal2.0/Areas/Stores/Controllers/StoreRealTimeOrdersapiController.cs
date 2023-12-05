@@ -30,8 +30,9 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         }
 
         // GET: api/StoreRealTimeOrdersapi/5
-        [HttpGet("{id}")]
-        public object GetOrder(string id, string? searchKeyWords)
+        //[HttpGet("{id}")]
+        [HttpGet("filter/{storeId}")]
+        public object GetOrder(string storeId, string? searchKeyWords, int status)
         {
             TimeZoneInfo taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
             DateTime utcNow = DateTime.UtcNow;
@@ -40,10 +41,11 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             //var order = await _context.Orders.FindAsync(id);
             CheckUnconfirmedOrders(taiwanTime);
             return _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product)
-                                                 .Where(c => c.StoreId == id &&
+                                                 .Where(c => c.StoreId == storeId &&
                                                  c.Status.StatusId != 5 &&
                                                  c.Status.StatusId != 6 &&
                                                  c.Status.StatusId != 7&&
+                                                 (status == 0 || c.Status.StatusId == status) &&
                                                  (string.IsNullOrEmpty(searchKeyWords) ||
                                                  c.OrderId.Contains(searchKeyWords) ||
                                                  //c.OrderDate.ToString("yyyy-MM-dd").Contains(searchKeyWords) || 

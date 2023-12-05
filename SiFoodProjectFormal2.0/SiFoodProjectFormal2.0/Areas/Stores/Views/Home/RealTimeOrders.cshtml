@@ -56,11 +56,12 @@
                                     </div>
                                     <div class="col-lg-2 col-md-4 col-12">
                                         <!-- select -->
-                                        <select class="form-select">
-                                            <option selected>Status</option>
-                                            <option value="Success">Success</option>
-                                            <option value="Pending">Pending</option>
-                                            <option value="Cancel">Cancel</option>
+                                        <select class="form-select" v-model="selectedStatus" @@change="filterOrdersByStatus">
+                                            <option value=0 selected>全部訂單</option>
+                                            <option value=1>待確認</option>
+                                            <option value=2>待配送</option>
+                                            <option value=3>待領取</option>
+                                            <option value=4>配送中</option>
                                         </select>
                                     </div>
                                 </div>
@@ -348,6 +349,7 @@
                             countPerPage: 5,
                             pageNumber: 1,
                         },
+                        selectedStatus: 0,
                     }
                 },
                 computed: {
@@ -367,6 +369,10 @@
                     _this.getOrder();
                 },
                 methods: {
+                    filterOrdersByStatus() {
+                        
+                        this.getOrder();
+                    },
                     pageClick(num) {
                         this.page.pageNumber = num;
                     },
@@ -428,7 +434,7 @@
                     getOrder() {
                         let _this = this;
                         var storeId = "S001"
-                        fetch(`/api/StoreRealTimeOrdersapi/${storeId}?searchKeyWords=${_this.searchKeyWords}`, { method: "GET" })
+                        fetch(`/api/StoreRealTimeOrdersapi/filter/${storeId}?searchKeyWords=${_this.searchKeyWords}&status=${_this.selectedStatus}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);
