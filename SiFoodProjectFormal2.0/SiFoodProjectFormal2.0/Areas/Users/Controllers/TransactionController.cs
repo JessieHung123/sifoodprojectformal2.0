@@ -87,6 +87,15 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 };
                 _context.OrderDetails.Add(orderDetail);
             }
+
+            Payment payment = new Payment
+            {
+                OrderId = order.OrderId,
+                PaymentMethodＮame = "藍新",
+                PaymentStatusＮame = "已付款",
+                PaymentTime = DateTime.Now,
+            };
+            _context.Payments.Add(payment);
             _context.SaveChanges();
             return "訂單下定成功";
         }
@@ -374,6 +383,16 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 };
                 _context.OrderDetails.Add(orderDetail);
             }
+
+            Payment payment = new Payment
+            {
+                OrderId = order.OrderId,
+                PaymentMethodＮame = "藍新",
+                PaymentStatusＮame = "已付款",
+                PaymentTime = DateTime.Now,
+            };
+
+            _context.Payments.Add(payment);
             _context.SaveChanges();
             return "訂單下訂成功!";
         }
