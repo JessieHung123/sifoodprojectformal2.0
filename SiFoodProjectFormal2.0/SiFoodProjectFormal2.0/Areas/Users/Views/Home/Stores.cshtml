@@ -13,7 +13,7 @@
     <!-- Google tag (gtag.js) -->
                         @* Carousel *@
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
                         @* <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           rel="stylesheet" /> *@
@@ -26,34 +26,40 @@
         .navigate-button {
             padding: 0.2rem 0.4rem;
             font-size: 0.8rem;
-            margin-right: 0.5rem; 
+            margin-right: 0.5rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         .custom-button {
             background-color: #0aad0a;
             color: #fff;
             border: 1px solid #0aad0a;
             border-radius: 0.2rem;
         }
+
             .custom-button:hover {
                 background-color: #099309;
             }
+
         .share-button {
             background-color: #f0f3f2;
-            color: #000; 
+            color: #000;
             border: 1px solid #f0f3f2;
             border-radius: 0.2rem;
         }
+
             .share-button:hover {
                 background-color: #cccfce;
             }
+
         .navigate-button {
             background-color: #001e2b;
             color: #fff;
             border: 1px solid #001e2b;
             border-radius: 0.2rem;
         }
+
             .navigate-button:hover {
                 background-color: #26404b;
             }
@@ -142,12 +148,23 @@
                                 <div class="mt-2">
                                     <!-- rating -->
                                     <small class="text-warning">
-                                        <i class="bi bi-star-fill"></i>
-                                        @*                                         <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-half"></i>
-                                        *@
+                                        <td>
+                                            <span v-if="stores.commentRank / stores.commentCount >= 1" class="bi bi-star-fill text-warning"></span>
+                                            <span v-else-if="stores.commentRank / stores.commentCount >= 0.5" class="bi bi-star-half text-warning"></span>
+
+                                            <span v-if="stores.commentRank / stores.commentCount >= 2" class="bi bi-star-fill text-warning"></span>
+                                            <span v-else-if="stores.commentRank / stores.commentCount >= 1.5" class="bi bi-star-half text-warning"></span>
+
+                                            <span v-if="stores.commentRank / stores.commentCount >= 3" class="bi bi-star-fill text-warning"></span>
+                                            <span v-else-if="stores.commentRank / stores.commentCount >= 2.5" class="bi bi-star-half text-warning"></span>
+
+                                            <span v-if="stores.commentRank / stores.commentCount >= 4" class="bi bi-star-fill text-warning"></span>
+                                            <span v-else-if="stores.commentRank / stores.commentCount >= 3.5" class="bi bi-star-half text-warning"></span>
+
+                                            <span v-if="stores.commentRank / stores.commentCount >= 5" class="bi bi-star-fill text-warning"></span>
+                                            <span v-else-if="stores.commentRank / stores.commentCount >= 4.5" class="bi bi-star-half text-warning"></span>
+                                        </td>
+
                                     </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10}}</span>
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
@@ -161,7 +178,7 @@
                                     <button href="#" class="share-button">
                                         <strong>
                                             <a class="twitter-share-button"
-                                               :href="getTwitterIntentText()" 
+                                               :href="getTwitterIntentText()"
                                                data-size="large">
                                                 分享
                                             </a>
@@ -224,7 +241,7 @@
                                     <select class="form-select" v-model="sortingOptions">
                                         @* <option value="Featured">Sort by: Featured</option> *@
                                         <option value="PriceLowToHigh">價格: 低到高</option>
-                                        <option value="PriceHighToLow">價格: 高到低</option>                                       
+                                        <option value="PriceHighToLow">價格: 高到低</option>
                                         <option value="QtyHighToLow">剩餘數量: 多到少</option>
                                         <option value="QtyLowToHigh">剩餘數量: 少到多</option>
                                         <option value="ReleasedTime">最新上架</option>
@@ -328,14 +345,12 @@
                                             {{person.contents}}
                                         </p>
                                         <ul class="list-unstyled d-flex justify-content-center text-warning mb-0">
-
-                                            <li><i class="fas fa-star fa-sm"></i></li>
                                             {{person.commentRank}}
-                                            @*                                             <li><i class="fas fa-star fa-sm"></i></li>//二期
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            *@
+                                            <li v-if="person.commentRank >= 1" class="bi bi-star-fill text-warning"></li>
+                                            <li v-if="person.commentRank >= 2" class="bi bi-star-fill text-warning"></li>
+                                            <li v-if="person.commentRank >= 3" class="bi bi-star-fill text-warning"></li>
+                                            <li v-if="person.commentRank >= 4" class="bi bi-star-fill text-warning"></li>
+                                            <li v-if="person.commentRank >= 5" class="bi bi-star-fill text-warning"></li>
                                         </ul>
                                     </div>
 
