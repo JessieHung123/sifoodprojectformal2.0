@@ -37,7 +37,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             ViewBag.status2 = status2Count;
             ViewBag.status3 = status3Count;
             ViewBag.status4 = status4Count;
-            ViewBag.Storephoto = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.PhotosPath).FirstOrDefaultAsync();
+            ViewBag.Storephoto = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.LogoPath).FirstOrDefaultAsync();
             ViewBag.SumReleasedQty = SumReleasedQty;
             return View(await products.ToListAsync());
         }
