@@ -236,8 +236,6 @@
     <script src="~/assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
     <script src="~/assets/js/vendors/sidebarMenu.js"></script>
 
-    <!--Sweet Alert-->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         var currentOrderId; // 用於保存當前訂單的ID
@@ -433,14 +431,8 @@
                     .then(response => response.json())
                     .then(data => {
                         // 處理成功提交後的邏輯
-                        //alert("評價提交成功");
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "success",
-                            title: "評價提交成功",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
+                        alert("評價提交成功");
+                           
                         // 關閉模態框
                         $('#exampleModalScrollable-' + currentOrderId).modal('hide');
                     })
