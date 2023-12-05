@@ -154,6 +154,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     var c = _context.Products.Where(p => p.ProductId == int.Parse(productid));
                     ProductVM VM = new ProductVM
                     {
+                        ProductId=c.Select(p => p.ProductId).Single(), 
                         ProductName = c.Select(p => p.ProductName).Single(),
                         StoreName = c.Include(p => p.Store).Select(p => p.Store.StoreName).Single(),
                         PhotoPath = c.Select(p => p.PhotoPath).Single(),
