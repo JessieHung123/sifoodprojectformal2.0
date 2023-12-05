@@ -6,13 +6,12 @@
 }
 @section Styles{
     <style>
-        aside {
-            width: 100%;
-        }
 
         #map {
             width: 100%;
             height: 50vh;
+            margin: 0 auto;
+            display: block;
         }
 
         html, body {
@@ -41,28 +40,28 @@
 }
 <section class="container pt-1" id="showMap">
 
-        <div class="container row mapShow">
+        <div class="container mapShow">
             <div id="map"></div>
         </div>
         <div class="row">
         <!-- Controls -->
-        <div class="d-flex justify-content-center mb-4">
-                <button type="button" class="btn btn-outline-info" @@click="prev">Prev</button>
-                <button type="button" class="btn btn-outline-info" @@click="next">Next</button>
+        <div class="d-flex justify-content-center my-2">
+                <button type="button" class="btn btn-outline-success" @@click="prev">Prev</button>
+                <button type="button" class="btn btn-outline-success" @@click="next">Next</button>
         </div>
         <!-- Inner -->
         <div class=" py-1">
             <!-- Single item -->
-                <aside v-for="(group, index) in storeGroup" :key="index" class="row" v-show="index === currentGroupIndex">
+                <aside v-for="(group, index) in storeGroup" :key="index"  v-show="index === currentGroupIndex">
                     <div class="row">
                         <!-- Image on Top -->
                         <div class="card col-4 border border-success" v-for="item in group">
                           <div class="row">
                             <div class="col-5">
-                                   <img :src="item.logoPath" class="card-img-top img-fluid" />
+                                   <img :src="item.logoPath" class="img-fluid" />
                             </div>
                                     <div class="card-body col-7 align-content-between ">
-                                <h5 class="card-title text-primary">{{item.storeName}}</h5>
+                                <a :href="'/Users/Home/Store/'+item.storeId"><h5 class="card-title text-primary">{{item.storeName}}</h5></a>
                                 <p class="card-text text-body">
                                     {{item.description}}
                                 </p>
@@ -84,122 +83,102 @@
         </div>
         <!-- Inner -->
     </div>
-@* 
     <!-- Modal -->
-    <div class="modal fade" v-for="item in storeData" :id="item.storeId" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalCenterTitle">{{item.storeName}}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+<!--=====================================-->
+<!-- Modal -->
+<div class="modal fade" v-for="item in storeData" :id="item.storeId"  tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-8">
+                <div class="position-absolute top-0 end-0 me-3 mt-3">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    ...
-                </div>
-            </div>
-        </div>
-    </div> *@
-    <div class="modal fade" v-for="item in storeData" :id="item.storeId" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body p-8">
-                    <div class="position-absolute top-0 end-0 me-3 mt-3">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <!-- img slide -->
-                            <div class="tns-outer" id="productModal-ow">
-                                <div class="tns-liveregion tns-visually-hidden" aria-live="polite" aria-atomic="true">slide <span class="current">4</span>  of 4</div><div id="productModal-mw" class="tns-ovh">
-                                    <div class="tns-inner" id="productModal-iw">
-                                        <div class="product productModal  tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal" id="productModal" style="transform: translate3d(-75%, 0px, 0px);">
-                                            <div class="zoom tns-item" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath})`, backgroundPosition: '55.9633% 97.2477%'}" id="productModal-item0" aria-hidden="true" tabindex="-1">
-                                                <!-- img -->
-                                                <img :src="item.photosPath" alt="">
-                                            </div>
-                                            <div class="tns-item" id="productModal-item1" tabindex="-1">
-                                                <div class="zoom" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath2})`}">
-                                                    <!-- img -->
-                                                    <img :src="item.photosPath2" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="tns-item" id="productModal-item2"  tabindex="-1">
-                                                <div class="zoom" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath3})`}">
-                                                    <!-- img -->
-                                                    <img :src="item.photosPath3" alt="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <!-- img slide -->
+                        <div class="product productModal" id="productModal">
+                            <div class="zoom" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath})`}">
+                                <!-- img -->
+                                <img :src="item.photosPath">
+                            </div>
+                            <div>
+                                <div class="zoom" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath2})`}">
+                                    <!-- img -->
+                                    <img :src="item.photosPath2">
                                 </div>
                             </div>
-                            <!-- product tools -->
-                            <div class="product-tools">
-                                <div class="thumbnails row g-3" id="productModalThumbnails" aria-label="Carousel Pagination">
-                                    <div class="col-3" data-nav="0" aria-label="Carousel Page 1" aria-controls="productModal" tabindex="-1">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img :src="item.photosPath" alt="">
-                                        </div>
+                            <div>
+                                <div class="zoom" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath3})`}">
+                                    <!-- img -->
+                                    <img :src ="item.photosPath3" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- product tools -->
+                        <div class="product-tools">
+                            <div class="thumbnails row g-3" id="productModalThumbnails">
+                                    <div class="col-3 tns-nav-active">
+                                    <div class="thumbnails-img">
+                                        <!-- img -->
+                                        <img :src="item.photosPath" alt="">
                                     </div>
-                                    <div class="col-3" data-nav="1" aria-label="Carousel Page 2" aria-controls="productModal" tabindex="-1">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img :src="item.photosPath2" alt="">
-                                        </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="thumbnails-img">
+                                        <!-- img -->
+                                        <img :src="item.photosPath2" alt="">
                                     </div>
-                                    <div class="col-3" data-nav="2" aria-label="Carousel Page 3" aria-controls="productModal" tabindex="-1">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img :src="item.photosPath3" alt="">
-                                        </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="thumbnails-img">
+                                        <!-- img -->
+                                        <img :src="item.photosPath3" alt="">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="ps-lg-8 mt-6 mt-lg-0">
-                                <a href="#!" class="mb-4 d-block">{{item.address}}</a>
-                                <h2 class="mb-1 h1">{{item.storeName}}</h2>
-                                <div class="mb-4">
-                                    <small class="text-warning">
-                                        <i class="bi bi-star-fill"></i>
-                                    </small><a href="#" class="ms-2">{{item.commentRank}} ({{item.commentCount}})</a>
-                                </div>
-
-                                <hr class="my-6">
-                                <div>
-                                    <table class="table table-borderless">
-                                        <tbody>
-                                            <tr>
-                                                <td>平日營業時間:</td>
-                                                <td>{{item.weekdayOpeningTime}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>假日營業時間:</td>
-                                                <td>{{item.weekendOpeningTime}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>公休日:</td>
-                                                <td>{{item.closingDay}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>電話:</td>
-                                                <td>
-                                                    {{item.phone}}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>種類:</td>
-                                                <td>
-                                                    <span v-for="category in item.categoryList">{{category}}&nbsp;</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ps-lg-8 mt-6 mt-lg-0">
+                            <a href="#!" class="mb-4 d-block text-success">{{item.address}}</a>
+                            <a :href="'/Users/Home/Store/'+item.storeId"><h2 class="mb-1 h1">{{item.storeName}}</h2></a>
+                            <div class="mb-4">
+                                <small class="text-warning">
+                                    <i class="bi bi-star-fill"></i>
+                                    
+                                </small><a href="#" class="ms-2">{{item.commentRank}} ({{item.commentCount}})</a>
+                            </div>
+                            
+                            <hr class="my-6">
+                            <div>
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td>平日營業時間:</td>
+                                            <td>{{item.weekdayOpeningTime}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>假日營業時間:</td>
+                                            <td>{{item.weekendOpeningTime}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>公休日:</td>
+                                            <td>{{item.closingDay}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>電話:</td>
+                                            <td>
+                                                {{item.phone}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>種類:</td>
+                                            <td>
+                                                <span v-for="category in item.categoryList">{{category}}&nbsp;</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -207,8 +186,10 @@
             </div>
         </div>
     </div>
-</section>
+</div>
+<!--=====================================-->
 
+</section>
 @section Scripts{
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI" async defer></script>
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
@@ -292,6 +273,7 @@
                     this.map = new google.maps.Map(document.getElementById('map'), {
                         center: this.current == null ? location : this.current,
                         zoom: 14,
+                        mapTypeControl:false,
                         mapTypeId: 'terrain'
                     });
                     let currentLocation = new google.maps.Marker({
@@ -321,7 +303,7 @@
                         .then(data => {
                             this.storeData = data;
                             this.storeData.forEach(x => {
-                                x.commentRank = x.commentCount > 0 ? x.commentRank / x.commentCount : 0;
+                                x.commentRank = x.commentCount > 0 ? (x.commentRank / x.commentCount).toFixed(2) : 0;
                                 this.createPoint(x);
                             });
 

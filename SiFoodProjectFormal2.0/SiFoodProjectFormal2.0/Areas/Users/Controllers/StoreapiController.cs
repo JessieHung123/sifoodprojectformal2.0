@@ -126,7 +126,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 ClosingDay = z.ClosingDay,
                 WeekdayOpeningTime = z.OpeningTime.Substring(3, 13),
                 WeekendOpeningTime = z.OpeningTime.Substring(20, 13),
-                Phone = $"{z.Phone.Substring(0, 2)} {z.Phone.Substring(2)}",
+                Phone = z.Phone,
                 CategoryList = z.Products.Where(p => p.RealeasedTime.Date == DateTime.Today &&
                                                         p.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay &&
                                                      p.SuggestPickEndTime > DateTime.Now.TimeOfDay)
