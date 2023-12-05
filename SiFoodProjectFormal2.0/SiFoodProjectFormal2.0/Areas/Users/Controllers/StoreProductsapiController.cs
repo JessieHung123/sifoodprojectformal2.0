@@ -65,6 +65,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                                                  p.IsDelete == 1)
                                      .Select(p => new ProductsVM
                                      {
+                                         ProductId = p.ProductId,
                                          UnitPrice = p.UnitPrice,
                                          ProductName = p.ProductName,
                                          CategoryId = p.CategoryId,
