@@ -204,7 +204,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     OrderDate = o.OrderDate,
                     Status = o.Status.StatusName,
                     Quantity = o.OrderDetails.Sum(od => od.Quantity),
-                    TotalPrice = o.TotalPrice ?? 0,
+                    TotalPrice = Convert.ToInt32(_context.OrderDetails
+                                                    .Where(od => od.OrderId == o.OrderId)
+                                                    .Sum(od => od.Quantity * od.Product.UnitPrice) +
+                                                    o.ShippingFee),
                     FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
                     FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
                 }).ToList();
@@ -232,12 +235,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 OrderId = order.OrderId,
                 OrderDate = order.OrderDate,
                 ShippingFee = order.ShippingFee,
-               
+                DeliveryMethod = order.DeliveryMethod,
+
                 Items = order.OrderDetails.Select(od => new HistoryOrderDetailItemVM
                 {
                     PhotoPath = od.Product.PhotoPath,
                     ProductName = od.Product.ProductName,
-                    UnitPrice = od.Product.UnitPrice,
+                    UnitPrice = Convert.ToInt32(od.Product.UnitPrice),
                     Quantity = od.Quantity
                 }).ToList(),
 

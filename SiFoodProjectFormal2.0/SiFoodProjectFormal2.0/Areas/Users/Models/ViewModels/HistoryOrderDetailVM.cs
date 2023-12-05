@@ -5,7 +5,10 @@
         public string OrderId { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal? ShippingFee { get; set; }
-        
+
+        //新增訂購資訊
+        public string DeliveryMethod { get; set; } = null!;
+
         public List<HistoryOrderDetailItemVM> Items { get; set; }
         public int? CommentRank { get; set; }
         public string? CommentContents { get; set; }

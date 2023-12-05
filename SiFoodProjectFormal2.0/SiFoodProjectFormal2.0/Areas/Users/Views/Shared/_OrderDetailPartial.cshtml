@@ -24,6 +24,20 @@
                                         <div class="ms-6 mb-3">
                                             商品種類：@Model.Items.Count 種
                                         </div>
+                                        <div class="ms-6 mb-3">
+                                            運送方式：
+                                            <!--依據不同運送方式給顏色-->
+                                            @{
+                                                string badgeClass = Model.DeliveryMethod switch
+                                                {
+                                                    "外送" => "badge bg-light-info text-dark-info",
+                                                    "自取" => "badge bg-light-danger text-dark-danger",
+                                                };
+                                            }
+                                            <span class="@badgeClass">@Model.DeliveryMethod</span>
+                                        </div>
+
+                        
 
                                     <ul class="list-group list-group-flush">
                                         <!-- list group item -->
@@ -43,7 +57,7 @@
                                                     </div>
                                                     <!--商品單價-->
                                         <div class="col-3 text-lg-end text-start text-md-end col-md-3 mb-3">
-                                                            <span class="fw-bold">$@item.UnitPrice</span>
+                                                            <span class="fw-bold">$@Convert.ToInt32(item.UnitPrice)</span>
                                                     </div>
                                                 </div>
                                             }
@@ -56,7 +70,7 @@
                                                     金額小計
                                                 </div>
                                                 <div class="fw-bold">
-                                                    $@Model.ItemsSubTotal
+                                                    $@Convert.ToInt32(Model.ItemsSubTotal)
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between  ">
@@ -64,7 +78,7 @@
                                                     運費
                                                 </div>
                                                 <div class="fw-bold">
-                                                    $@Model.ShippingFee
+                                                    $@Convert.ToInt32(Model.ShippingFee)
                                                 </div>
                                             </div>
                                         </li>
@@ -75,7 +89,7 @@
                                                     總金額
                                                 </div>
                                                 <div>
-                                                    $@Model.TotalPrice
+                                                    $@Convert.ToInt32(Model.TotalPrice)
                                                 </div>
                                             </div>
                                         </li>
@@ -89,7 +103,7 @@
                     <div class="card py-3 p-md-4 p-lg-4 ">
                         <div class="card-body">
                             <!-- rating -->
-                            <h3 class="mb-5">請給店家評分</h3>
+                <h3 class="mb-5"><mark>請給店家評分<mark></h3>
                             <div class="border-bottom py-4 mb-4">
 
                                 <div class="rating-box">
