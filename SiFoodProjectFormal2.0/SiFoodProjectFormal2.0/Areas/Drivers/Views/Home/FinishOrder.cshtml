@@ -27,7 +27,7 @@
         </div>
         <div class="col-md-3 d-flex justify-content-end align-items-between">
             <label for="sortOrder" class="sorted-label">排序方式：</label>
-            <select class="form-select" v-model="sortOrder" @@change="sortOrderChanged">
+            <select class="form-select" v-model="sortOrder">
                 <option value="newToOld">由新到舊</option>
                 <option value="oldToNew">由舊到新</option>
             </select>
@@ -46,8 +46,8 @@
                 <th scope="col">訂單狀態</th>
             </tr>
         </thead>
-        <tbody v-if="sortedOrderDatas.length > 0">
-            <tr v-for="item in sortedOrderDatas" :key="item.orderId">
+        <tbody v-if="completeDatas.length > 0">
+            <tr v-for="item in completeDatas" :key="item.orderId">
                 <th scope="row">{{item.orderId}}</th>
                 <td>{{formatDate(item.orderDate)}}</td>
                 <td>{{item.address}}</td>
@@ -65,8 +65,24 @@
             </tr>
         </tbody>
     </table>
+    <div class="row mt-6">
+        <div class="col">
+            <!-- nav -->
+            <nav>
+                <paginate :page-count="totalPages"
+                          :click-handler="pageClick"
+                          :force-page="page.pageNumber"
+                          :prev-text="'<'"
+                          :next-text="'>'"
+                          :page-link-class="'page-link mx-1'"
+                          :prev-link-class="'page-link mx-1'"
+                          :next-link-class="'page-link mx-1'"
+                          :container-class="'pagination justify-content-center'">
+                </paginate>
+            </nav>
+        </div>
+    </div>
 </div>
-
 
 @section Scripts {
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
@@ -75,6 +91,7 @@
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
 
     <script>
         var finishOrderApp = Vue.createApp({
@@ -83,10 +100,22 @@
                     orderDatas: [],
                     searchWord: "",
                     sortOrder: "newToOld",
+                    orderQty: 0,
+                    prevSearchWord: "",
+                    page: {
+                        countPerPage: 6,
+                        pageNumber: 1
+                    },
                 };
             },
             computed: {
                 filteredOrderDatas() {
+                    // 當搜尋條件改變時，重置頁數到第一頁
+                    if (this.searchWord !== this.prevSearchWord) {
+                        this.page.pageNumber = 1;
+                        this.prevSearchWord = this.searchWord;
+                    }
+
                     return this.orderDatas.filter((item) => {
                         return (
                             item.orderId.toString().includes(this.searchWord) ||
@@ -101,7 +130,7 @@
                     });
                 },
                 sortedOrderDatas() {
-                    const sorted = this.filteredOrderDatas.slice(); // 複製一份以避免修改原始數據
+                    const sorted = this.filteredOrderDatas.slice();
                     if (this.sortOrder === "newToOld") {
                         return sorted.sort(
                             (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
@@ -111,6 +140,16 @@
                             (a, b) => new Date(a.orderDate) - new Date(b.orderDate)
                         );
                     }
+                },
+                totalPages() {
+                    // 更新計算 total pages 的邏輯，考慮搜尋後的結果
+                    return Math.ceil(this.filteredOrderDatas.length / this.page.countPerPage);
+                },
+                completeDatas() {
+                    // 更新 complete datas 的邏輯，考慮搜尋後的結果
+                    var start = (this.page.pageNumber - 1) * this.page.countPerPage;
+                    var end = start + this.page.countPerPage;
+                    return this.sortedOrderDatas.slice(start, end);
                 },
             },
             methods: {
@@ -128,11 +167,14 @@
                 formatDate(date) {
                     return moment(date).format("YYYY-MM-DD");
                 },
+                pageClick(num) {
+                    this.page.pageNumber = num;
+                },
             },
             mounted() {
                 var _this = this;
                 _this.getOrderData();
             },
-        }).mount("#finishOrderApp");
+        }).component("paginate", VuejsPaginateNext).mount("#finishOrderApp");
     </script>
 }
