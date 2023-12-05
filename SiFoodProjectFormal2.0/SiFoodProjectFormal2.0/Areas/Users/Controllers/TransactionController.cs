@@ -29,9 +29,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
             ViewData["MerchantID"] = Config.GetSection("MerchantID").Value;
-            ViewData["ReturnURL"] = $"https://5084-114-34-121-89.ngrok-free.app/Users/Member/RealTimeOrders";//上線換網址記得改
-            ViewData["NotifyURL"] = $"https://5084-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
-            ViewData["ClientBackURL"] = $"https://5084-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
+            ViewData["ReturnURL"] = $"https://ca3e-114-34-121-89.ngrok-free.app/Users/Member/RealTimeOrders";//上線換網址記得改
+            ViewData["NotifyURL"] = $"https://ca3e-114-34-121-89.ngrok-free.app/Transaction/CallbackNotify";//上線換網址記得改
+            ViewData["ClientBackURL"] = $"https://ca3e-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
             return View();
         }
 
@@ -97,7 +97,56 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             };
             _context.Payments.Add(payment);
             _context.SaveChanges();
-            return "訂單下定成功";
+            return "訂單下訂成功";
+        }
+
+        private int GetProductIdByName(string productName)
+        {
+            return _context.Products.Where(p => p.ProductName == productName).Select(p => p.ProductId).FirstOrDefault();
+        }
+
+        [HttpPost]
+        [Route("/Transaction/DeliverOrder")]
+        public string DeliverOrder([FromBody] CreateDeliverOrderVM model)
+        {
+            string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
+            string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
+            Order order = new Order
+            {
+                OrderDate = DateTime.Now,
+                StoreId = StoreId,
+                UserId = UserId,
+                DeliveryMethod = "外送",
+                StatusId = 1,
+                TotalPrice = model.TotalPrice,
+                ShippingFee = 40,
+                Address = model.UserAddress
+            };
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+            foreach (var item in model.ProductDetails)
+            {
+                int productId = GetProductIdByName(item.ProductName);
+                OrderDetail orderDetail = new OrderDetail
+                {
+                    OrderId = order.OrderId,
+                    ProductId = productId,
+                    Quantity = item.Quantity,
+                };
+                _context.OrderDetails.Add(orderDetail);
+            }
+
+            Payment payment = new Payment
+            {
+                OrderId = order.OrderId,
+                PaymentMethodＮame = "藍新",
+                PaymentStatusＮame = "已付款",
+                PaymentTime = DateTime.Now,
+            };
+
+            _context.Payments.Add(payment);
+            _context.SaveChanges();
+            return "訂單下訂成功!";
         }
 
         /// <summary>
@@ -346,55 +395,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     return output;
                 }
             }
-        }
-
-        private int GetProductIdByName(string productName)
-        {
-            return _context.Products.Where(p => p.ProductName == productName).Select(p => p.ProductId).FirstOrDefault();
-        }
-
-        [HttpPost]
-        [Route("/Transaction/DeliverOrder")]
-        public string DeliverOrder([FromBody] CreateDeliverOrderVM model)
-        {
-            string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
-            string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
-            Order order = new Order
-            {
-                OrderDate = DateTime.Now,
-                StoreId = StoreId,
-                UserId = UserId,
-                DeliveryMethod = "外送",
-                StatusId = 1,
-                TotalPrice = model.TotalPrice,
-                ShippingFee = 40,
-                Address = model.UserAddress
-            };
-            _context.Orders.Add(order);
-            _context.SaveChanges();
-            foreach (var item in model.ProductDetails)
-            {
-                int productId = GetProductIdByName(item.ProductName);
-                OrderDetail orderDetail = new OrderDetail
-                {
-                    OrderId = order.OrderId,
-                    ProductId = productId,
-                    Quantity = item.Quantity,
-                };
-                _context.OrderDetails.Add(orderDetail);
-            }
-
-            Payment payment = new Payment
-            {
-                OrderId = order.OrderId,
-                PaymentMethodＮame = "藍新",
-                PaymentStatusＮame = "已付款",
-                PaymentTime = DateTime.Now,
-            };
-
-            _context.Payments.Add(payment);
-            _context.SaveChanges();
-            return "訂單下訂成功!";
         }
     }
 }
