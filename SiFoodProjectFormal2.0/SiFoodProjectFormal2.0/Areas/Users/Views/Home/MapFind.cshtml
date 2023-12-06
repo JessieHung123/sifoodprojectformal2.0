@@ -6,7 +6,9 @@
 }
 @section Styles{
     <style>
-
+        li::marker {
+            font-size: 0;
+        }
         #map {
             width: 100%;
             height: 50vh;
@@ -96,47 +98,36 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <!-- img slide -->
-                        <div class="product productModal" id="productModal">
-                            <div class="zoom" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath})`}">
-                                <!-- img -->
-                                <img :src="item.photosPath">
-                            </div>
-                            <div>
-                                <div class="zoom" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath2})`}">
-                                    <!-- img -->
-                                    <img :src="item.photosPath2">
-                                </div>
-                            </div>
-                            <div>
-                                <div class="zoom" onmousemove="zoom(event)" :style="{backgroundImage: `url(${item.photosPath3})`}">
-                                    <!-- img -->
-                                    <img :src ="item.photosPath3" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- product tools -->
-                        <div class="product-tools">
-                            <div class="thumbnails row g-3" id="productModalThumbnails">
-                                    <div class="col-3 tns-nav-active">
-                                    <div class="thumbnails-img">
-                                        <!-- img -->
-                                        <img :src="item.photosPath" alt="">
+                            <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active" aria-current="true" aria-label="First slide"></li>
+                                    <li data-bs-target="#carouselId" data-bs-slide-to="1" aria-label="Second slide"></li>
+                                    <li data-bs-target="#carouselId" data-bs-slide-to="2" aria-label="Third slide"></li>
+                                </ol>
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="carousel-item active">
+                                        <img :src ="item.photosPath" class="w-100 d-block" title="First slide">
+                                       
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img :src="item.photosPath2" class="w-100 d-block" title="Second slide">
+                                        
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img :src="item.photosPath3" class="w-100 d-block" title="Third slide">
+                                        
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <div class="thumbnails-img">
-                                        <!-- img -->
-                                        <img :src="item.photosPath2" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="thumbnails-img">
-                                        <!-- img -->
-                                        <img :src="item.photosPath3" alt="">
-                                    </div>
-                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
-                        </div>
+
                     </div>
                     <div class="col-lg-6">
                         <div class="ps-lg-8 mt-6 mt-lg-0">
