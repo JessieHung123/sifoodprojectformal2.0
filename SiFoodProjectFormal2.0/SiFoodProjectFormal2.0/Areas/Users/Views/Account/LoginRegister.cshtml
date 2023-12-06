@@ -100,7 +100,6 @@
     </template>
 </div>
 
-
 @section Scripts {
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -111,10 +110,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-        var baseAddress = "https//localhost:7042";
-
         var RegisterApp = Vue.createApp({
-
             data: function () {
                 return {
                     vueAccount: "",
@@ -144,7 +140,7 @@
                             alert(response.data);
                             var success = "帳號註冊成功, 即將進入驗證階段";
                             if (response.data == success) {
-                                window.location.href = 'https://localhost:7042/Users/Account/RegisterConfirmation'
+                                window.location.href = '/Users/Account/RegisterConfirmation'
                             }
                             else {
                                 _this.vueAccount = "";
@@ -179,6 +175,5 @@
                 },
             }
         }).mount("#registerApp")
-
     </script>
 }

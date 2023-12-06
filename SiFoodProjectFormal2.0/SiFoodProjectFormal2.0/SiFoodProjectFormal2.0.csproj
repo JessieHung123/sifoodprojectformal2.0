@@ -8,18 +8,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Drivers\NewFolder1\**" />
+    <Compile Remove="Areas\Drivers\NewFolder2\**" />
+    <Compile Remove="Areas\Drivers\NewFolder\**" />
     <Compile Remove="Areas\Users\Views\OrderDetails\**" />
     <Compile Remove="wwwroot\images\JoinUs\NewFolder1\**" />
     <Compile Remove="wwwroot\images\JoinUs\NewFolder\**" />
     <Compile Remove="wwwroot\images\JoinUs\PhotosPaths3\**" />
+    <Content Remove="Areas\Drivers\NewFolder1\**" />
+    <Content Remove="Areas\Drivers\NewFolder2\**" />
+    <Content Remove="Areas\Drivers\NewFolder\**" />
     <Content Remove="Areas\Users\Views\OrderDetails\**" />
     <Content Remove="wwwroot\images\JoinUs\NewFolder1\**" />
     <Content Remove="wwwroot\images\JoinUs\NewFolder\**" />
     <Content Remove="wwwroot\images\JoinUs\PhotosPaths3\**" />
+    <EmbeddedResource Remove="Areas\Drivers\NewFolder1\**" />
+    <EmbeddedResource Remove="Areas\Drivers\NewFolder2\**" />
+    <EmbeddedResource Remove="Areas\Drivers\NewFolder\**" />
     <EmbeddedResource Remove="Areas\Users\Views\OrderDetails\**" />
     <EmbeddedResource Remove="wwwroot\images\JoinUs\NewFolder1\**" />
     <EmbeddedResource Remove="wwwroot\images\JoinUs\NewFolder\**" />
     <EmbeddedResource Remove="wwwroot\images\JoinUs\PhotosPaths3\**" />
+    <None Remove="Areas\Drivers\NewFolder1\**" />
+    <None Remove="Areas\Drivers\NewFolder2\**" />
+    <None Remove="Areas\Drivers\NewFolder\**" />
     <None Remove="Areas\Users\Views\OrderDetails\**" />
     <None Remove="wwwroot\images\JoinUs\NewFolder1\**" />
     <None Remove="wwwroot\images\JoinUs\NewFolder\**" />
@@ -71,7 +83,6 @@
     <Folder Include="wwwroot\assets\libs\tiny-slider\dist\sourcemaps\" />
     <Folder Include="wwwroot\images\Admin\" />
     <Folder Include="wwwroot\images\Drivers\" />
-    <Folder Include="wwwroot\images\FAQ\" />
     <Folder Include="wwwroot\images\JoinUs\Logo\" />
     <Folder Include="wwwroot\images\JoinUs\PhotosPath3\" />
     <Folder Include="wwwroot\images\JoinUs\PhotosPath2\" />

@@ -17,7 +17,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 
         public string? StoreName { get; set; }
 
-        public string? UserAddress { get; set; }
+        public List<AddressItemVM>? UserAddressList { get; set; }
 
         public string? UserName { get; set;}
     }
