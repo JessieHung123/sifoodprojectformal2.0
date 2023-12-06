@@ -93,7 +93,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             }
             // 如果模型狀態無效，返回錯誤信息
-
             return "失敗";
 
         }
@@ -128,10 +127,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             return View();
         }
-        //public IActionResult JoinUs()
-        //{
-        //    return View();
-        //}
+
 
         [Route("/Users/Home/Products/{ProductId?}")]
 
