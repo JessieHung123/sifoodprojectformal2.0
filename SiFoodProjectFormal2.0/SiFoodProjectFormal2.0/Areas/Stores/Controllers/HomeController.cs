@@ -59,12 +59,12 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             return Json(salesinfo);
 
         }
-        [Route("RealTimeOrders")]
+        //[Route("RealTimeOrders")]
         public IActionResult RealTimeOrders()
         {
             return View();
         }
-        [Route("History")]
+        //[Route("History")]
         public IActionResult History()
         {
             return View();

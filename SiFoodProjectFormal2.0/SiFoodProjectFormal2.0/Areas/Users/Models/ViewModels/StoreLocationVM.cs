@@ -22,5 +22,21 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
+
+        public string? PhotosPath { get; set; }
+
+        public string? PhotosPath2 { get; set; }
+
+        public string? PhotosPath3 { get; set; }
+
+        public string Address { get; set; } = null!;
+
+        public string? WeekdayOpeningTime { get; set; }
+        public string? WeekendOpeningTime { get; set; }
+        public string ClosingDay { get; set; } = null!;
+
+        public string Phone { get; set; } = null!;
+
+        public Array? CategoryList { get; set; }
     }
 }
