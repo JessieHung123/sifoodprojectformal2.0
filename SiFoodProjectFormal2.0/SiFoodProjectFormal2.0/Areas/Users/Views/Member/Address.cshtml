@@ -16,8 +16,11 @@
     <!-- Google tag (gtag.js) -->
     <!-- End Tag -->
     <style>
-        .card-fixed-height {
-            height: 250px; 
+
+        .fixed-card {
+            height: 250px; /* Set your desired fixed height here */
+            width: 280px; /* Set your desired fixed width here */
+            /* Add any other styles you want for the fixed-size card */
         }
     </style>
 }
@@ -109,7 +112,7 @@
                                 <div class="col-lg-5 col-xxl-4 col-12 mb-4 " v-for="(item, index) in addresses">
                                     <template v-if="item.Edit==true">
                                         <!-- form -->
-                                        <div class="card card-fixed-height">
+                                        <div class="card fixed-card ">
                                             <div class="card-body p-6">
                                                 @* <div class="form-check mb-4">
                                                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
@@ -136,7 +139,7 @@
                                     </template>
                                     <template v-else>
                                         <!-- form -->
-                                        <div class="card card-fixed-height">
+                                        <div class="card fixed-card ">
                                             <div class="card-body p-6">
                                                 @* <div class="form-check mb-4">
                                                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
