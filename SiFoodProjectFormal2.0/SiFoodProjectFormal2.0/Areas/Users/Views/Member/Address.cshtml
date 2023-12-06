@@ -10,6 +10,9 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    
     <!-- Google tag (gtag.js) -->
     <!-- End Tag -->
     <style>
@@ -273,7 +276,7 @@
         <!-- Theme JS -->
         <script src="~/assets/js/theme.min.js"></script>
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             // var baseAddress = "https://localhost:7042";
             const storeProductApp = Vue.createApp({
@@ -310,12 +313,25 @@
                             UserName: item.userName,
                             IsDefault: true
                         }).then(response => {
-                            // alert("更新地址成功!");
-                            alert(response.data);
-                            // item.isDefault = true;
+                            if (response.data && response.data === "更新成功!") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '成功!',
+                                    text: response.data,
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: response.data,
+                                });
+
+                            }
                             _this.getUserAddresses();
                         }).catch(err => {
-                            alert("發生錯誤!");
+                            Swal.fire({
+                                icon: 'error',
+                                text: "發生錯誤!"
+                            });
                             console.error(err);
                         });
                     },
@@ -330,14 +346,25 @@
                             UserRegion: item.userRegion,
                             IsDefault: item.isDefault
                         }).then(response => {
-                            alert(response.data);
-                            // alert("更新地址成功!");
                             if (response.data === "更新成功!") {
                                 _this.getUserAddresses();
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '成功!',
+                                    text: response.data,
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: response.data,
+                                });
                             }
                             
                         }).catch(err => {
-                            alert("地址更新發生錯誤!");
+                            Swal.fire({
+                                icon: 'error',
+                                text: "地址更新發生錯誤!"
+                            });
                             console.error(err);
                         });
                     },
@@ -363,12 +390,28 @@
                         let _this = this;
                         if (this.addressToDelete) {
                             axios.delete(`/api/UserAddressesapi/${this.addressToDelete.userAddressId}`).then(response => {
-                                _this.getUserAddresses();
-                                $('#deleteModal').modal('hide');
-                                $('.modal-backdrop').remove();
-                                alert(response.data);
+                                if (response.data === "刪除地址成功!") {
+                                    _this.getUserAddresses();
+                                    $('#deleteModal').modal('hide');
+                                    $('.modal-backdrop').remove();
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '成功!',
+                                        text: response.data,
+                                    });
+                                }else{
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: "地址刪除發生錯誤!"
+                                    });
+                                }
+                                
                             }).catch(err => {
-                                alert(err);
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: response.data
+                                });
+                                console.error(err);
                             })
                         }
                     },
@@ -385,7 +428,10 @@
                             missingFields.push("地址");
                         }
                         if (missingFields.length > 0) {
-                            alert("請填寫以下欄位: " + missingFields.join(", "));
+                            Swal.fire({
+                                icon: 'error',
+                                text: "請填寫以下欄位: " + missingFields.join(", "),
+                            });
                             return;
                         }
                         var form = new FormData();
@@ -415,10 +461,23 @@
                                 _this.selectedCity = "";
                                 _this.selectedRegion = "";
                                 _this.addressLine = "";
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '成功!',
+                                    text: response.data,
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: response.data,
+                                });
                             }
                             _this.getUserAddresses();                            
-                            alert(response.data)
                         }).catch(err => {
+                            Swal.fire({
+                                icon: 'error',
+                                text: "地址新增發生錯誤!"
+                            });
                             console.log(err)
                         })
                     },
@@ -439,7 +498,10 @@
                                     item.Edit = false;
                                 }
                             }).catch(error => {
-                                alert(error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: "地址載入發生錯誤!"
+                                });
                                 console.log('error', error);
                             });
                     },
