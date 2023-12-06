@@ -71,7 +71,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             return View();
         }
-        //[Route("ProductManage")]
+        [Route("ProductManage")]
         public IActionResult ProductManage()
         {
             return View();
