@@ -127,7 +127,9 @@
                         <!-- list group -->
                         <li class="list-group-item py-3 ps-0 border-top">
                             <!-- row -->
-                            <div class="row align-items-center py-2" v-for="(item,index) in carts" :key="index" :id=item.productId>
+
+                            <div class="row align-items-center py-2" v-for="item in carts" :id=item.productId>
+
                                 <div class="col-6 col-md-6 col-lg-7">
                                     <div class="d-flex">
                                         <a :href="'/Users/Home/Products/'+item.productId" class="text-inherit">
@@ -167,7 +169,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-success" @@click="deleteConfirm()">確定</button>
+                                                <button type="button" class="btn btn-primary" @@click="deleteConfirm(item)">確定</button>
                                             </div>
                                         </div>
                                     </div>
@@ -187,7 +189,6 @@
                                     <span class="fw-bold">${{item.unitPrice*item.quantity}}</span>
                                 </div>
                             </div>
-                            
                         </li>
                     </ul>
                     <!-- btn -->
@@ -238,8 +239,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <span class="small text-muted" style="font-size: 10px;display:flex;flex-wrap: wrap">
-                            © 2022 <span id="copyright">
-                                -
+                            © 2022 <span id="copyright">-
                                 <script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script>
                             </span>All rights reserved. Powered by THM103.
                         </span>
@@ -306,8 +306,6 @@
     @await RenderSectionAsync("Scripts", required: false)
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
-
-        var baseAddress = "https://localhost:7042";
         var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         var shoppingCart = Vue.createApp({
             data: function () {
@@ -359,65 +357,10 @@
                 },
                 deleteCartItem(item) {
                     this.currentDeleteItem = item;
-                    // let checkagain = confirm("確定要刪除嗎?");
                     $('#deleteCartModal').modal('show');
                     $('.modal-backdrop').remove();
-                    // if (checkagain == true) {
-                        // fetch(`${baseAddress}/api/CartVMapi/DeleteCartItem`,
-                        //     {
-                        //         method: "DELETE",
-                        //         headers: { "Content-Type": "application/json" },
-                        //         body: JSON.stringify(item)
-                        //     }).then(response => response.json())
-                        //     .then(data => {
-                        //         // alert("刪除成功");
-                        //         // // $('#deleteOK').modal('show');
-                        //         // var deleteConfirmItem = document.getElementById(item.productId);
-                        //         // deleteConfirmItem.remove();
-                        //         // // this.cartCount = $('#cartItemContainer').find('div').length;
-                        //         // // this.cartCount = $('#cartItemContainer').find('li').length;
-                                
-                        //         // this.getCart();
-                        //         // // this.cartCount = this.cart.length;
-                        //         // // return data
-                        //         // Find the index of the item in the carts array
-                        //         const indexToRemove = this.carts.findIndex(cartItem => cartItem.productId === item.productId);
-
-                        //         // Remove the item from the carts array
-                        //         if (indexToRemove !== -1) {
-                        //             this.carts.splice(indexToRemove, 1);
-                        //         }
-
-                        //         // Refresh the cart count
-                        //         this.cartCount = this.carts.length;
-                        //         $('#deleteOK').modal('show');
-                        //     })
-                    },
-                    // deleteConfirm(item) {
-                    //     fetch(`${baseAddress}/api/CartVMapi/DeleteCartItem`,
-                    //         {
-                    //             method: "DELETE",
-                    //             headers: { "Content-Type": "application/json" },
-                    //             body: JSON.stringify(item)
-                    //         }).then(response => response.json())
-                    //         .then(data => {
-
-                    //                 $('#deleteOK').modal('show');
-                    //                 var deleteConfirmItem = document.getElementById(item.productId);
-                    //                 deleteConfirmItem.remove();
-                    //                 // this.cartCount = $('#cartItemContainer').find('li').length;
-                    //                 this.cartCount = this.cart.length;
-                    //                 this.getCart();
-                    //                 // return data
-
-                    //             // console.log(shoppingCart.carts);
-                    //             // console.log(shoppingCart.cartCount);
-                    //         })
-                    //         // .catch(error => {
-                    //         //     $('#deleteNotOK').modal('show');
-                    //         // })
-                    // }
-                async deleteConfirm() {
+                },
+                async deleteConfirm(item) {
                     await fetch(`/api/CartVMapi/DeleteCartItem`,
                         {
                             method: "DELETE",
@@ -425,34 +368,18 @@
                             body: JSON.stringify(this.currentDeleteItem)
                         }).then(response => {
                             if (response.ok) {
-                                // alert("刪除成功");
-                                // // $('#deleteOK').modal('show');
-                                // var deleteConfirmItem = document.getElementById(item.productId);
-                                // deleteConfirmItem.remove();
-                                // // this.cartCount = $('#cartItemContainer').find('div').length;
-                                // // this.cartCount = $('#cartItemContainer').find('li').length;
-
-                                // this.getCart();
-                                // // this.cartCount = this.cart.length;
-                                // // return data
-                                // Find the index of the item in the carts array
                                 $('#deleteCartModal').modal('hide');
                                 const indexToRemove = this.carts.findIndex(cartItem => cartItem.productId === this.currentDeleteItem.productId);
-
-                                // Remove the item from the carts array
                                 if (indexToRemove !== -1) {
                                     this.carts.splice(indexToRemove, 1);
                                 }
-
-                                // Refresh the cart count
                                 this.cartCount = this.carts.length;
                                 $('#deleteOK').modal('show');
                                 this.currentDeleteItem = null;
                             }
                         });
-                
-                }, 
-                async logout() {
+                },
+                async logout(){
                     await fetch(`/Account/Logout`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },

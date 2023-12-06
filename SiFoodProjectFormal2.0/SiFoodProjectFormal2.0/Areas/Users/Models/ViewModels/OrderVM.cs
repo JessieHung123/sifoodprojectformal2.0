@@ -6,6 +6,8 @@
 
         public double OrderDuration { get; set; }
 
+        public DateTime OrderDateTime { get; set; }
+
         public string OrderDate { get; set; }
 
         public string OrderTime { get; set; }
