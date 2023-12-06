@@ -12,12 +12,12 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class InfoModifyController : ControllerBase
+    public class InfoModifyapiController : ControllerBase
     {
         string targetStoreId = "S001";
         private readonly Sifood3Context _context;
 
-        public InfoModifyController(Sifood3Context context)
+        public InfoModifyapiController(Sifood3Context context)
         {
             _context = context;
         }

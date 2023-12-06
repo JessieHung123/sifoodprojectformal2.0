@@ -8,13 +8,13 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ProductManageController : ControllerBase
+    public class ProductManageapiController : ControllerBase
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IStoreIdentityService _storeIdentityService;
 
-       public ProductManageController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IStoreIdentityService storeIdentityService)
+       public ProductManageapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IStoreIdentityService storeIdentityService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;

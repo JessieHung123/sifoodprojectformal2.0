@@ -20,7 +20,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             _context = context;
         }
-        //[Route("Main")]
+ 
         // GET: Products
         [HttpGet] //uri:/
         public async Task<IActionResult> Main()
@@ -60,7 +60,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             return Json(salesinfo);
 
         }
-        //[Route("RealTimeOrders")]
+
         public IActionResult RealTimeOrders()
         {
             return View();
@@ -190,17 +190,17 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             return View();
         }
-        [Route("InfoModify")]
+
         public IActionResult InfoModify()
         {
             return View();
         }
-        [Route("Review")]
+
         public IActionResult Review()
         {
             return View();
         }
-        [Route("FAQ")]
+
         public IActionResult FAQ()
         {
             return View();

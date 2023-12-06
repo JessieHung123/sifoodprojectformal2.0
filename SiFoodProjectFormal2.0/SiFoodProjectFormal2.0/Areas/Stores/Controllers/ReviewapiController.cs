@@ -10,14 +10,14 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ReviewController : ControllerBase
+    public class ReviewapiController : ControllerBase
     {
         string targetStoreId = "S001";
         private readonly Sifood3Context _context;
 
 
 
-        public ReviewController(Sifood3Context context)
+        public ReviewapiController(Sifood3Context context)
         {
             _context = context;
 

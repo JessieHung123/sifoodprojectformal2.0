@@ -141,7 +141,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public IActionResult HistoryOrders(string searchTerm = null, string sortOption = "Status" ,int pageSize = 20)
         {
             // 假定的用戶ID，之後需要替換為當前登入用戶的ID
-            var loginuserId = "U001";
+            var loginuserId = _userIdentityService.GetUserId();
 
             IQueryable<Order> historyOrdersQuery = _context.Orders
                 // 添加這行以過濾該用戶的訂單
@@ -284,15 +284,14 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             // var userId = "當前用戶的ID"; // 從用戶會話或身份驗證系統獲取
             //暫時先寫死
-            var userId = "U001";
-
+            var loginuserId = _userIdentityService.GetUserId();
             //加入計算收藏幾間店家的功能
-            var favoriteStoresCount = _context.Favorites.Count(f => f.UserId == userId);
+            var favoriteStoresCount = _context.Favorites.Count(f => f.UserId == loginuserId);
             ViewBag.FavoriteStoresCount = favoriteStoresCount;
 
             // 查詢收藏的商家
             var favoriteStores = await _context.Favorites
-                .Where(f => f.UserId == userId)
+                .Where(f => f.UserId == loginuserId)
                 .Include(f => f.Store)
                 .Select(f => new FavoriteVM
                 {
@@ -318,13 +317,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             // 假設 currentUserId 是當前用戶的 UserId
             // 從用戶身份驗證系統獲取,現在先暫時指定鈺晴首頁使用的ID
-            string currentUserId = "U001";
+            var loginuserId = _userIdentityService.GetUserId();
 
             // 根據 selectedFavorites 刪除收藏項目
             foreach (var favoriteId in selectedFavorites)
             {
                 var favorite = _context.Favorites
-                    .FirstOrDefault(f => f.UserId == currentUserId && f.FavoriteId == favoriteId);
+                    .FirstOrDefault(f => f.UserId == loginuserId && f.FavoriteId == favoriteId);
 
                 if (favorite != null)
                 {

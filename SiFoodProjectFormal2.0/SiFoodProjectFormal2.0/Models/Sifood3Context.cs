@@ -236,6 +236,7 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderDetails_Products");
         });
 
@@ -310,15 +311,15 @@ public partial class Sifood3Context : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.EnrollDate).HasColumnType("date");
             entity.Property(e => e.Latitude).HasColumnType("decimal(10, 8)");
-            entity.Property(e => e.LogoPath).HasMaxLength(50);
+            entity.Property(e => e.LogoPath).HasMaxLength(70);
             entity.Property(e => e.Longitude).HasColumnType("decimal(11, 8)");
             entity.Property(e => e.OpeningTime).HasMaxLength(50);
             entity.Property(e => e.PasswordHash).HasMaxLength(64);
             entity.Property(e => e.PasswordSalt).HasMaxLength(64);
             entity.Property(e => e.Phone).HasMaxLength(10);
-            entity.Property(e => e.PhotosPath).HasMaxLength(50);
-            entity.Property(e => e.PhotosPath2).HasMaxLength(50);
-            entity.Property(e => e.PhotosPath3).HasMaxLength(50);
+            entity.Property(e => e.PhotosPath).HasMaxLength(70);
+            entity.Property(e => e.PhotosPath2).HasMaxLength(70);
+            entity.Property(e => e.PhotosPath3).HasMaxLength(70);
             entity.Property(e => e.Region).HasMaxLength(10);
             entity.Property(e => e.StoreName).HasMaxLength(15);
             entity.Property(e => e.TaxId)
@@ -377,7 +378,7 @@ public partial class Sifood3Context : DbContext
                 .HasConstraintName("FK_UserAddresses_Users");
         });
         modelBuilder.HasSequence<int>("SifoodDriverIdSeq").StartsAt(3L);
-        modelBuilder.HasSequence<int>("SifoodOrderIdSeq").StartsAt(10L);
+        modelBuilder.HasSequence<int>("SifoodOrderIdSeq").StartsAt(140L);
         modelBuilder.HasSequence<int>("SifoodStoreIdSeq").StartsAt(6L);
         modelBuilder.HasSequence<int>("SifoodUserIdSeq").StartsAt(5L);
 

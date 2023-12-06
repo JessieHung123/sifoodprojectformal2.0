@@ -29,9 +29,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
             ViewData["MerchantID"] = Config.GetSection("MerchantID").Value;
-            ViewData["ReturnURL"] = $"https://ca3e-114-34-121-89.ngrok-free.app/Users/Member/RealTimeOrders";//上線換網址記得改
-            ViewData["NotifyURL"] = $"https://ca3e-114-34-121-89.ngrok-free.app/Transaction/CallbackNotify";//上線換網址記得改
-            ViewData["ClientBackURL"] = $"https://ca3e-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
+            ViewData["ReturnURL"] = $"https://f2fd-1-164-243-82.ngrok-free.app/Users/Home/RealTimeOrders";//上線換網址記得改
+            ViewData["NotifyURL"] = $"https://f2fd-1-164-243-82.ngrok-free.app/Transaction/CallbackNotify";//上線換網址記得改
+            ViewData["ClientBackURL"] = $"https://f2fd-1-164-243-82.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
             return View();
         }
 
