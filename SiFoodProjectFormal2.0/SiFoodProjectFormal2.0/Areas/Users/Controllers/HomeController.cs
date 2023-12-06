@@ -17,11 +17,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-<<<<<<< HEAD
-   
-=======
 
->>>>>>> e0c6ce83b6ca178b5fd49661227b82e927063a35
         public IActionResult Main()
         {
 
@@ -33,21 +29,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return View();
         }
         [HttpGet]
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> e0c6ce83b6ca178b5fd49661227b82e927063a35
         public IActionResult FAQ()
         {
             return View();
 
         }
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> e0c6ce83b6ca178b5fd49661227b82e927063a35
         [HttpGet]
         public IActionResult JoinUs()
         {
@@ -104,7 +92,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 }
 
             }
-            // 如果模型狀態無效，返回 JSON 錯誤信息
+            // 如果模型狀態無效，返回錯誤信息
             return "失敗";
 
         }
@@ -141,10 +129,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             return View();
         }
-        //public IActionResult JoinUs()
-        //{
-        //    return View();
-        //}
+
 
         [Route("/Users/Home/Products/{ProductId?}")]
 
