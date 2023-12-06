@@ -7,15 +7,12 @@
 }
 
 <section class="my-lg-14 my-8">
-
     <div class="container" id="registerConfirmationApp">
-
         <template v-if="loading == true">
             <div class="loading-overlay">
                 <div class="loading-spinner"></div>
             </div>
         </template>
-
         <template v-else>
             <div class="row justify-content-center align-items-center">
                 <div class="col-12 col-md-6 col-lg-4 order-lg-1 order-2">
@@ -42,8 +39,6 @@
     </div>
 </section>
 
-
-
 @section Scripts {
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -54,17 +49,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-        var baseAddress = "https//localhost:7042";
-
         var registerConfirmationApp = Vue.createApp({
-
             data: function () {
                 return {
                     verificationCode: "",
                     loading: false,
                 }
             },
-
             methods: {
                 verifyAccount() {
                     var _this = this
@@ -79,7 +70,7 @@
                         alert(response.data);
                         var success = "驗證帳號成功，已為您開通帳號，請再次重新登入";
                         if (response.data == success) {
-                            window.location.href = 'https://localhost:7042/Users/Account/LoginRegister'
+                            window.location.href = '/Users/Account/LoginRegister'
                         }else{
                             _this.verificationCode = "";
                         }
