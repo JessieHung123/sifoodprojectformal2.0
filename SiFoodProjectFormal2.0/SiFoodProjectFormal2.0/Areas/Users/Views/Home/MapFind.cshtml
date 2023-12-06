@@ -203,7 +203,6 @@
                     for (let i = 0; i < this.filteredLocations.length; i += itemCount) {
                         store.push(this.filteredLocations.slice(i, i + itemCount));
                     }
-                    console.log(store); 
                     return store;
                 }
             
@@ -222,8 +221,6 @@
                 },
                 next() { this.currentGroupIndex = Math.min(this.storeGroup.length - 1, this.currentGroupIndex + 1); },
                 createPoint(x) {
-                    // console.log(lat, lng);
-                    // console.log(storeData);
                     let m = new google.maps.Marker({
                         position: {
                             lat: x.latitude, // 經度
@@ -232,14 +229,13 @@
                         map: this.map
                     });
                     let infowindow = new google.maps.InfoWindow({
-                        content: `<h6>${x.storeName}</h6>` // 支援html
+                        content: `<h6>${x.storeName}</h6>` 
                     });
-                    // 監聽 marker click 事件
+
                     m.addListener('click', e => {
                         infowindow.open(this.map, m);
                         $(`#${x.storeId}`).modal('show');
                     });
-                    // console.log(m);
                 },
                 getLocation() {
                     if (navigator.geolocation) {
