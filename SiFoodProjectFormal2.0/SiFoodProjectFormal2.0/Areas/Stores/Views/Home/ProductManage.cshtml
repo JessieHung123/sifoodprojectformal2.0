@@ -2,51 +2,37 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta content="Codescandy" name="author">
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
-
-    <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
-    <!-- Google tag (gtag.js) -->
-    <!-- End Tag -->
 </head>
 <body>
     <div class="main-wrapper" id="productapp">
-        <!-- navbar vertical -->
-        <!-- main -->
         <main class="main-content-wrapper">
             <div class="container">
                 <div class="row mb-8">
                     <div class="col-md-12">
-                        <!-- page header -->
                         <div class="d-md-flex justify-content-between align-items-center">
                             <div>
                                 <h2>商品管理</h2>
-                                <!-- breacrumb -->
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- row -->
                 <div class="row">
                     <div class="col-xl-12 col-12 mb-5">
-                        <!-- card -->
                         <div class="card h-100 card-lg">
                             <div class="px-6 py-6 ">
                                 <div class="row justify-content-between">
-                                    <!-- form -->
                                     <div class="col-lg-4 col-md-6 col-12 mb-2 mb-lg-0">
                                         <div class="d-flex" role="search">
-                                            <input class="form-control" type="search" placeholder="Search Products" aria-label="Search" v-model.lazy="searchText" @@keyup.enter="startSeach">
+                                            <input class="form-control" type="search" placeholder="搜尋名稱/種類" aria-label="Search" v-model.lazy="searchText" @@keyup.enter="startSeach">
                                         </div>
                                     </div>
-                                    <!-- select option -->
                                     <div class="col-lg-2 col-md-4 col-12">
                                         <div>
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertModal">
@@ -56,21 +42,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- card body -->
                             <div class="card-body p-0">
-                                <!-- table -->
                                 <div class="table-responsive">
                                     <table class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
                                         <thead class="bg-light">
                                             <tr>
-                                                @*                                                <th>
-                                                <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="checkAll">
-                                                <label class="form-check-label" for="checkAll">
-
-                                                </label>
-                                                </div>
-                                                </th> *@
                                                 <th>商品圖片</th>
                                                 <th>商品名稱</th>
                                                 <th>商品種類</th>
@@ -81,7 +57,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="item in ProductInfo">
+                                            <tr v-for="item in filterList">
                                                 <td>
                                                     <a href="#!">
                                                         <img :src="item.photoPath" alt=""
@@ -94,9 +70,8 @@
                                                 <td>${{item.unitPrice}}</td>
                                                 <td>{{item.realeasedTime}}</td>
                                                 <td>
-                                                    <!-- Accept Order Button -->
                                                     <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal" v-on:click="editProduct(item)">編輯</button>&ensp;
-                                                    <button type="button" class="btn btn-danger btn-sm" v-on:click="deleteProduct(item.productId)">刪除</button>
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick='return confirm("確定要刪除嗎?")' v-on:click="softDelete(item.productId)">刪除</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -104,22 +79,20 @@
                                 </div>
                             </div>
                             <div class=" border-top d-md-flex justify-content-between align-items-center px-6 py-6">
-                                <span>Showing 1 to 8 of 12 entries</span>
+                                <span></span>
                                 <nav class="mt-2 mt-md-0">
-                                    <ul class="pagination mb-0 ">
-                                        <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                                        <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                    </ul>
+                                    <paginate :page-count="total"
+                                              :click-handler="pageClick"
+                                              :force-page="page.pageNumber"
+                                              :prev-text="'<'"
+                                              :next-text="'>'"
+                                              :page-link-class="'page-link mx-1'"
+                                              :prev-link-class="'page-link mx-1'"
+                                              :next-link-class="'page-link mx-1'"
+                                              :container-class="'pagination justify-content-center'">
+                                    </paginate>
                                 </nav>
                             </div>
-                            @*                             --測試連線用--
-                            <div id="main" class="text-center">
-                            <button id="getProductAPI" v-on:click="getProductAPI" class="btn btn-primary">getelment</button>
-                            </div>
-                            --測試連線用-- *@
                         </div>
                     </div>
                 </div>
@@ -135,15 +108,13 @@
                     <div class="modal-body">
                         <div class="container">
                             <div class="row">
-                                <!-- input -->
                                 <div class="mb-3 col-lg-6 form-group">
                                     <label class="form-label">商品名稱</label>
                                     <input type="text" class="form-control" v-model="productName" placeholder="請輸入名稱" required>
                                 </div>
-                                <!-- input -->
                                 <div class="mb-3 col-lg-6">
                                     <label class="form-label">商品種類</label>
-                                    <select class="form-select">
+                                    <select class="form-select" v-model="categoryId">
                                         <option selected>商品種類</option>
                                         <option :value="1">生鮮</option>
                                         <option :value="2">飲料</option>
@@ -154,26 +125,22 @@
                                         <option :value="7">其他</option>
                                     </select>
                                 </div>
-                                <!-- input -->
                                 <div class="mb-3 col-lg-6 form-group">
                                     <label class="form-label">商品單價</label>
                                     <input type="text" class="form-control" v-model="unitPrice" placeholder="請輸入價格" required>
                                 </div>
-                                <!-- input -->
                                 <div class="mb-3 col-lg-6 form-group">
                                     <label class="form-label">上架數量</label>
                                     <input type="text" class="form-control" v-model="releasedQty" placeholder="請輸入數量" required>
                                 </div>
                                 <div class="mb-3 col-lg-6 form-group">
                                     <label class="form-label">建議取貨起時</label>
-                                    <input type="time" class="form-control" v-model="SuggestPickUpTime" placeholder="請輸入價格" required>
+                                    <input type="time" class="form-control" v-model="suggestPickUpTime" placeholder="請輸入價格" required>
                                 </div>
-                                <!-- input -->
                                 <div class="mb-3 col-lg-6 form-group">
                                     <label class="form-label">建議取貨迄時</label>
-                                    <input type="time" class="form-control" v-model="SuggestPickEndTime" placeholder="請輸入數量" required>
+                                    <input type="time" class="form-control" v-model="suggestPickEndTime" placeholder="請輸入數量" required>
                                 </div>
-
                                 <div class="form-group">
                                     <img id="insertFilePreview" src="~/images/Noimage.png" title="待上傳" style="width:300px;width:240px" />
                                     <input type="file" id="insertFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
@@ -181,14 +148,14 @@
                                 <div class="mb-3 col-lg-12 mt-5 form-group">
                                     <h4 class="mb-3 h5">商品描述</h4>
                                     <div class="mb-3">
-                                        <textarea class="form-control" rows="3" placeholder="請輸入文字敘述"></textarea>
+                                        <textarea class="form-control" v-model="description" rows="3" placeholder="請輸入文字敘述"></textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                            <button type="button" class="btn btn-primary" @@click="insert">確定</button>
+                            <button type="button" class="btn btn-primary" onclick='return confirm("確定要新增嗎?")' data-bs-dismiss="modal" @@click="insertProduct">確定</button>
                         </div>
                     </div>
                 </div>
@@ -204,15 +171,13 @@
                     <div class="modal-body">
                         <div class="container">
                             <div class="row">
-                                <!-- input -->
                                 <div class="mb-3 col-lg-6">
                                     <label class="form-label">商品名稱</label>
                                     <input type="text" class="form-control" v-model="selectedToEdit.productName" required>
                                 </div>
-                                <!-- input -->
                                 <div class="mb-3 col-lg-6">
                                     <label class="form-label">商品種類</label>
-                                    <select class="form-select" v-model="selectedToEdit.categoryName">
+                                    <select class="form-select" v-model="selectedToEdit.categoryId">
                                         <option :value="1">生鮮</option>
                                         <option :value="2">飲料</option>
                                         <option :value="3">甜點麵包</option>
@@ -222,29 +187,25 @@
                                         <option :value="7">其他</option>
                                     </select>
                                 </div>
-                                <!-- input -->
                                 <div class="mb-3 col-lg-6">
                                     <label class="form-label">商品單價</label>
                                     <input type="text" class="form-control" v-model="selectedToEdit.unitPrice" required>
                                 </div>
-                                <!-- input -->
                                 <div class="mb-3 col-lg-6">
                                     <label class="form-label">上架數量</label>
                                     <input type="text" class="form-control" v-model="selectedToEdit.releasedQty" required>
                                 </div>
                                 <div class="mb-3 col-lg-6 form-group">
                                     <label class="form-label">建議取貨起時</label>
-                                    <input type="time" class="form-control" v-model="selectedToEdit.SuggestPickUpTime" placeholder="請輸入價格" required>
+                                    <input type="time" class="form-control" v-model="selectedToEdit.suggestPickUpTime" placeholder="請輸入價格" required>
                                 </div>
-                                <!-- input -->
                                 <div class="mb-3 col-lg-6 form-group">
                                     <label class="form-label">建議取貨迄時</label>
-                                    <input type="time" class="form-control" v-model="selectedToEdit.SuggestPickEndTime" placeholder="請輸入數量" required>
+                                    <input type="time" class="form-control" v-model="selectedToEdit.suggestPickEndTime" placeholder="請輸入數量" required>
                                 </div>
-
                                 <div class="form-group">
-                                    <img id="insertFilePreview" src="~/images/Noimage.png" title="待上傳" style="width:300px;width:240px" />
-                                    <input type="file" id="insertFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
+                                    <img id="insertFilePreview" :src="selectedToEdit.photoPath" title="待上傳" style="width:300px;width:240px" />
+                                    <input type="file" id="updateFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                 </div>
                                 <div class="mb-3 col-lg-12 mt-5">
                                     <h4 class="mb-3 h5">商品描述</h4>
@@ -256,16 +217,13 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                            <button type="button" class="btn btn-primary" @@click="insert">確定</button>
+                            <button type="button" class="btn btn-primary" onclick='return confirm("確定要修改嗎?")' data-bs-dismiss="modal" @@click="updateProduct">確定</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Modal -->
-    @*  編輯商品的介面 *@
-
 </body>
 </html>
 @section Scripts
@@ -275,8 +233,8 @@
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="~/assets/js/theme.min.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
     <script>
-        var baseAddress = "https://localhost:7042";
         const StoreMainApp = Vue.createApp({
             data: function () {
                 return {
@@ -288,42 +246,66 @@
                     unitPrice:null,
                     releasedQty:null,
                     description:"",
-                    categoryId:"",
-                    suggestPickUpTime:"",
-                    suggestPickEndTime:"",
+                    categoryId:null,
+                    suggestPickUpTime:null,
+                    suggestPickEndTime:null,
+                    page: {
+                        countPerPage: 6,
+                        pageNumber: 1,
+                    },
                 }
             },
-            watch: {
-            },
             computed: {
-
+                total() {
+                    return Math.ceil(this.ProductInfo.length / this.page.countPerPage);
+                },
+                filterList() {
+                    var start = (this.page.pageNumber - 1) * this.page.countPerPage;
+                    var end = start + this.page.countPerPage;
+                    return this.ProductInfo.slice(start, end);
+                }
             },
             mounted: function () {
                 let _this = this;
-                _this.getProductAPI();
+                _this.startSeach();
             },
             methods: {
+                pageClick(num) {
+                    this.page.pageNumber = num;
+                },
                 startSeach() {
                     let _this = this;
-                    fetch(`${baseAddress}/api/ProductManage/Filter?text=${_this.searchText}`)
+                    fetch(`/api/ProductManage/Filter?text=${_this.searchText}`)
                         .then(response => response.json())
                         .then(data => _this.ProductInfo = data)
                         .catch(error => alert(error));
-                },
-                showModal: function () {
-                    alert("")
                 },
                 editProduct(item) {
                     this.selectedToEdit = item
                     console.log(item)
                 },
+                readURL: function (fileInput, img) {
+                    if (fileInput.files && fileInput.files[0]) {
+                        var allowType = "image.*";
+                        if (fileInput.files[0].type.match(allowType)) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                img.src = e.target.result;
+                            };
+                            reader.readAsDataURL(fileInput.files[0]);
+                        }
+                        else {
+                            alert("不支援的檔案上傳格式");
+                        }
+                    }
+                },
                 insertFileChange: function (inputFile) {
-                    alert("insertFileChange")
+                    // alert("加入圖片")
                     let _this = this;
                     _this.readURL(inputFile, inputFile.previousElementSibling);
                 },
                 insertProduct(produt) {
-                    alert("insert")
+                    // alert("新增")
                     let _this = this;
                     var form = new FormData();
                     form.append("ProductId", -1);
@@ -335,30 +317,77 @@
                     form.append("SuggestPickEndTime", _this.suggestPickEndTime);
                     form.append("SuggestPickUpTime", _this.suggestPickUpTime);
                     form.append("ImageFile", document.querySelector("#insertFile").files[0]);
-                    fetch(`${baseAddress}/api/ProductManage/postProduct`, { method: "Post", body: form })
+                    console.log(Object.fromEntries(form.entries()));
+                    fetch(`/api/ProductManage/postProduct`, { method: "Post", body: form })
                     .then(response => {
-                        alert(response.data);
-                    }).catch(err => {
-                        alert(err);
+                            if (response.ok) {
+                                _this.startSeach();
+                                return response.text(); // 將回傳結果轉為文字
+                            } else {
+                                alert("更新失敗，請確認資料是否完整");
+                            }
+                        }).then(data => {
+                            alert(data);
+                        }).catch(err => {
+                            console.log(err)
                     });
-                    $("#insertModal").modal('hide');
                 },
+                softDelete(productId) {
+                    let _this = this;
+                    fetch(`/api/ProductManage/softDelete/${productId}`,
+                    { method: "Put" })
+                        .then(response => {
+                            if (response.ok) {
+                                _this.startSeach();
+                                alert("刪除成功");
+                            } else {
+                                alert("刪除失敗");
+                            }
+                        })
+                        .catch(error => console.error(error));
+                },
+                updateProduct(produt) {
+                    // alert("修改")
+                    let _this = this;
+                    var form = new FormData();
+                    form.append("ProductId", _this.selectedToEdit.productId);
+                    form.append("ProductName", _this.selectedToEdit.productName);
+                    form.append("CategoryId", _this.selectedToEdit.categoryId);
+                    form.append("Description", _this.selectedToEdit.description);
+                    form.append("ReleasedQty", _this.selectedToEdit.releasedQty);
+                    form.append("UnitPrice", _this.selectedToEdit.unitPrice);
+                    form.append("SuggestPickEndTime", _this.selectedToEdit.suggestPickEndTime);
+                    form.append("SuggestPickUpTime", _this.selectedToEdit.suggestPickUpTime);
+                    form.append("ImageFile", document.querySelector("#updateFile").files[0]);
+                    console.log(Object.fromEntries(form.entries()));
+                    fetch(`/api/ProductManage/putProduct/${_this.selectedToEdit.productId}`, { method: "Put", body: form })
+                        .then(response => {
+                            if (response.ok) {
+                                _this.startSeach();
+                                return response.text(); // 將回傳結果轉為文字
+                            } else {
+                                alert("更新失敗，請確認資料是否完整");
+                            }
+                        }).then(data => {
+                            alert(data);
+                        }).catch(err => {
+                            console.log(err)
+                        });
+                    // $("#insertModal").modal('hide')
+                },
+                // 硬刪除(暫不用)
                 deleteProduct(productId) {
                     console.log(productId)
                     let _this = this;
-                    fetch(`${baseAddress}/api/ProductManage/deleteProduct/${productId}`, { method: "Delete" })
-                        // .then(response => response.json())
+                    fetch(`/api/ProductManage/deleteProduct/${productId}`, { method: "Delete" })
                         .then(response => {
-                            console.log(response),
-                            alert(response)
+                            console.log(response)
                         })
                         .catch(error => alert(error));
                 },
                 getProductAPI: function () {
                     let _this = this; /* test */
-                    // var uri = `${baseAddress}/Stores/Home/GetProduct`;
-                    var uri = `${baseAddress}/api/ProductManage/getAll`;
-
+                    var uri = `/api/ProductManage/getAll`;
                     fetch(uri, { method: "GET" })
                         .then(response => {
                             if (response.ok) {
@@ -367,14 +396,13 @@
                             throw new Error(`HTTP error! Status: ${response.status}`)
                         })
                         .then(data => {
-                            // 在這裡處理數據
-                            _this.ProductInfo = data /* test */
+                            _this.ProductInfo = data 
                         })
                         .catch(error => {
                             alert(error)
                         });
                 }
             },
-        }).mount("#productapp")
+        }).component("paginate", VuejsPaginateNext).mount("#productapp")
     </script>
 }

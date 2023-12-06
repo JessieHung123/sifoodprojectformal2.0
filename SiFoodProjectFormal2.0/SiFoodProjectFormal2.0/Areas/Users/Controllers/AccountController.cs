@@ -26,27 +26,23 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-        [Route("LoginRegister")]
+        
         [HttpGet]
         public IActionResult LoginRegister()
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> LoginRegister(LoginVM model)
         {
             User? EmailAccount = _context.Users.FirstOrDefault(x => x.UserEmail == model.Account);
-
             if (EmailAccount != null && EmailAccount.UserAuthenticated == 1)
             {
                 string PasswordWithSalt = $"{model.Password}{EmailAccount.UserPasswordSalt}";
                 Byte[] RealPasswordBytes = Encoding.ASCII.GetBytes(PasswordWithSalt);
-
                 using (SHA256 Sha256 = SHA256.Create())
                 {
                     Byte[] RealPasswordHash = Sha256.ComputeHash(RealPasswordBytes);
-
                     if (Enumerable.SequenceEqual(RealPasswordHash, EmailAccount.UserPasswordHash))
                     {
                         List<Claim> claims = new List<Claim>()
@@ -54,17 +50,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                         new Claim(ClaimTypes.Name, $"{EmailAccount.UserId}"),
                         new Claim(ClaimTypes.Role, "User"),
                         };
-
                         ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
                         ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                             principal, new AuthenticationProperties
                             {
                                 ExpiresUtc = DateTime.UtcNow.AddDays(1)
                             });
-
                         return RedirectToAction("Main", "Home");
                     }
                 }
@@ -77,7 +69,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public string PostAccount([FromForm] RegisterVM model)
         {
             IQueryable<string> AllAccount = _context.Users.Select(x => x.UserEmail);
-
             if (AllAccount.Contains(model.EmailAccount))
             {
                 return "此帳號已被註冊";
@@ -89,13 +80,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 {
                     ran.GetBytes(saltBytes);
                 }
-
                 SHA256 sha256 = SHA256.Create();
                 byte[] passwordBytes = Encoding.ASCII.GetBytes($"{model?.Password}{saltBytes}");
                 byte[] hashBytes = sha256.ComputeHash(passwordBytes);
-
                 Random UserVerification = new Random();
-
                 User user = new User
                 {
                     UserEmail = $"{model?.EmailAccount}",
@@ -105,15 +93,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 };
                 _context.Users.Add(user);
                 _context.SaveChanges();
-
                 SmtpClient client = new SmtpClient();
                 client.Host = "smtp.gmail.com";
                 client.Port = 587;
                 client.EnableSsl = true;
                 client.Credentials = new NetworkCredential("brad881112@gmail.com", "cttl rkeu vveh ojtv");
-
                 MailMessage mail = new MailMessage();
-
                 mail.Subject = "Sifood會員驗證信";
                 mail.From = new MailAddress("brad881112@gmail.com", "Sifood官方帳號");
                 mail.To.Add($"{model?.EmailAccount}");
@@ -121,13 +106,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 mail.Body = MailHtmlBody;
                 mail.IsBodyHtml = true;
                 mail.BodyEncoding = Encoding.UTF8;
-
                 client.Send(mail);
-
                 return "帳號註冊成功, 即將進入驗證階段";
             }
         }
-
 
         [HttpPost]
         [Route("/Account/OpenUserAccount")]
@@ -160,15 +142,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 Random UserVerification = new Random();
                 user.ForgotPasswordRandom = UserVerification.Next(100000, 999999).ToString();
                 _context.SaveChanges();
-
                 SmtpClient client = new SmtpClient();
                 client.Host = "smtp.gmail.com";
                 client.Port = 587;
                 client.EnableSsl = true;
                 client.Credentials = new NetworkCredential("brad881112@gmail.com", "cttl rkeu vveh ojtv");
-
                 MailMessage mail = new MailMessage();
-
                 mail.Subject = "Sifood會員驗證信";
                 mail.From = new MailAddress("brad881112@gmail.com", "Sifood官方帳號");
                 mail.To.Add($"{model.Account}");
@@ -176,7 +155,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 mail.Body = MailHtmlBody;
                 mail.IsBodyHtml = true;
                 mail.BodyEncoding = Encoding.UTF8;
-
                 client.Send(mail);
                 return "驗證碼寄送成功";
             }
@@ -199,11 +177,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Account/ResetPassword")]
-
         public string ResetPassword([FromForm] ResetPasswordVM model)
         {
             User? user = _context.Users.FirstOrDefault(x => x.UserEmail == model.UserConfirmEmail);
-
             if (user != null)
             {
                 byte[] NewSaltBytes = new byte[8];
@@ -230,25 +206,25 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Main", "Home");
         }
-        [Route("ResetPassword")]
+
         public IActionResult ResetPassword()
         {
             return View();
         }
-        [Route("RegisterConfirmation")]
+
         public IActionResult RegisterConfirmation()
         {
             return View();
 
         }
-        [Route("ForgotPassword")]
+
         public IActionResult ForgotPassword()
         {
             return View();
         }
-        [Route("ForgotPasswordConfirmation")]
+
         public IActionResult ForgotPasswordConfirmation()
         {
             return View();

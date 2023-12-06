@@ -10,6 +10,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 
         public string UserId { get; set; } = null!;
 
+        public string UserName { get; set; } = null!;
+
         public string UserRegion { get; set; } = null!;
 
         public string UserDetailAddress { get; set; } = null!;

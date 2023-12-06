@@ -8,7 +8,7 @@ using System.Text.Json;
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
     [Area("Users")]
-    
+
     public class HomeController : Controller
     {
         Sifood3Context _context;
@@ -17,25 +17,24 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-      
+
         public IActionResult Main()
         {
-            
+
             return View();
         }
-        [Route("MapFind")]
+
         public IActionResult MapFind()
         {
             return View();
         }
         [HttpGet]
-     
         public IActionResult FAQ()
         {
             return View();
 
         }
-       
+
         [HttpGet]
         public IActionResult JoinUs()
         {
@@ -58,7 +57,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     string photoPath2InDb = await SavePhoto(joinus.PhotosPath2, "photo");
                     string photoPath3InDb = await SavePhoto(joinus.PhotosPath3, "photo");
 
-                                        //創建store實體
+                    //創建store實體
 
                     var store = new Store
                     {
@@ -91,10 +90,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     Console.WriteLine($"錯誤: {ex.Message}");
                 }
 
-                }
+            }
             // 如果模型狀態無效，返回 JSON 錯誤信息
             return "失敗";
- 
+
         }
 
 
@@ -119,12 +118,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
 
 
-        [Route("MemberShip")]
+
         public IActionResult MemberShip()
         {
             return View();
         }
-        [Route("Stores")]
+
         public IActionResult Stores()
         {
             return View();
@@ -133,43 +132,47 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //{
         //    return View();
         //}
-        [Route("Products/{ProductId?}")]
-        
+
+        [Route("/Users/Home/Products/{ProductId?}")]
+
         public IActionResult Products(int ProductId)
         {
             var IdToString = ProductId.ToString();
             List<string> ProductList = GetCookieProductList();//讀取
             if (ProductList.Contains(IdToString)) { ProductList.Remove(IdToString); }
-            ProductList.Add(IdToString);
+            if (IdToString != "0") { ProductList.Add(IdToString); }
             SetCookieProductList(ProductList);//取陣列最後一個以外的值
             //倒敘且只留最後五個
             ProductList.Reverse();
             ProductList = ProductList.Take(5).ToList();
-            
 
-            ViewBag.ProductList= ProductList;
-            List<ProductVM> cookieProduct= new List<ProductVM>();
-            foreach (var productid in ProductList) {
-                var c = _context.Products.Where(p => p.ProductId == int.Parse(productid));
-                ProductVM VM = new ProductVM
-                {
-                    ProductName = c.Select(p => p.ProductName).Single(),
-                    StoreName = c.Include(p => p.Store).Select(p => p.Store.StoreName).Single(),
-                    PhotoPath = c.Select(p => p.PhotoPath).Single(),
-                    UnitPrice = Math.Round(c.Select(p => p.UnitPrice).Single(),2)
-                };
-                cookieProduct.Add(VM);
+            ViewBag.ProductList = ProductList;
+            List<ProductVM> cookieProduct = new List<ProductVM>();
+            
+            if (ProductList != null) { 
+                foreach (var productid in ProductList) {
+                    var c = _context.Products.Where(p => p.ProductId == int.Parse(productid));
+                    ProductVM VM = new ProductVM
+                    {
+                        ProductId=c.Select(p => p.ProductId).Single(), 
+                        ProductName = c.Select(p => p.ProductName).Single(),
+                        StoreName = c.Include(p => p.Store).Select(p => p.Store.StoreName).Single(),
+                        PhotoPath = c.Select(p => p.PhotoPath).Single(),
+                        UnitPrice = Math.Round(c.Select(p => p.UnitPrice).Single(), 2)
+                    };
+                    cookieProduct.Add(VM);
+                }
+                ViewBag.CookieProduct = cookieProduct; 
             }
-            ViewBag.CookieProduct = cookieProduct;
             return View();
         }
         private List<string> GetCookieProductList()
         {
             string? ProductCookieValue = Request.Cookies["Records"];
             List<string> ProductList = new List<string>();
-            if (ProductCookieValue != null)
+            if (ProductCookieValue != null && ProductCookieValue!="")
             {
-                ProductList.AddRange(ProductCookieValue.Split(',')); ;
+                ProductList.AddRange(ProductCookieValue.Split(','));
             }
             return ProductList;//{"32","33","34"}
         }
@@ -183,8 +186,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             Response.Cookies.Append("Records", RecentBrowse, CO);
         }
         [HttpGet]
-        [Route("/Home/UserRealTimeOrders")]
-        public IActionResult UserRealTimeOrders()
+        public IActionResult RealTimeOrders()
         {
             return View();
         }
