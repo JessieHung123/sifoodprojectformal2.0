@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SiFoodProjectFormal2._0.Areas.Drivers.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 
 namespace sifoodprojectformal2._0.Areas.Drivers.Controllers
@@ -7,15 +8,11 @@ namespace sifoodprojectformal2._0.Areas.Drivers.Controllers
     [Area("Drivers")]
     public class HomeController : Controller
     {
-        Sifood3Context _context;
+        private readonly Sifood3Context _context;
 
         public HomeController(Sifood3Context context)
         {
             _context = context;
-        }
-        public IActionResult Login()
-        {
-            return View();
         }
         public IActionResult OrderList()
         {
@@ -31,9 +28,30 @@ namespace sifoodprojectformal2._0.Areas.Drivers.Controllers
         {
             return View();
         }
+
         public IActionResult FinishOrder()
         {
             return View();
+        }
+
+        [HttpGet]
+        [Route("/Home/FinishOrderData")]
+        public IQueryable<OrderDataVM> FinishOrderData()
+        {
+            string driverId = "D001";
+
+            var orderData = _context.Orders.Include(x => x.User).Include(x => x.Store).Where(y => y.DriverId == driverId && y.StatusId == 5).Select(z => new OrderDataVM
+            {
+                Address = z.Address,
+                OrderDate = z.OrderDate,
+                OrderId = z.OrderId,
+                ShippingFee = z.ShippingFee,
+                StatusName= z.Status.StatusName,
+                TotalPrice = z.TotalPrice,
+                StoreName = z.Store.StoreName,
+                UserName = z.User.UserName
+            });
+            return orderData;
         }
     }
 }

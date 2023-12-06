@@ -183,7 +183,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             Response.Cookies.Append("Records", RecentBrowse, CO);
         }
         [HttpGet]
-        public IActionResult UserRealTimeOrders()
+        public IActionResult RealTimeOrders()
         {
             return View();
         }
