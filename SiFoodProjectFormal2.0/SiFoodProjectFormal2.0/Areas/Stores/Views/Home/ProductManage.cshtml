@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <div class=" border-top d-md-flex justify-content-between align-items-center px-6 py-6">
-                                <span>Showing 1 to 8 of 12 entries</span>
+                                <span></span>
                                 <nav class="mt-2 mt-md-0">
                                     <paginate :page-count="total"
                                               :click-handler="pageClick"
@@ -217,7 +217,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @@click="updateProduct">確定</button>
+                            <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" @@click="updateProduct">確定</button>
                         </div>
                     </div>
                 </div>
@@ -321,12 +321,16 @@
                     console.log(Object.fromEntries(form.entries()));
                     fetch(`${baseAddress}/api/ProductManage/postProduct`, { method: "Post", body: form })
                     .then(response => {
-                        console.log(response.data);
-                        _this.startSeach();
-                    }).catch(err => {
-                        alert(response),
-                        console.log(err),
-                        alert(err);
+                            if (response.ok) {
+                                _this.startSeach();
+                                return response.text(); // 將回傳結果轉為文字
+                            } else {
+                                alert("更新失敗，請確認資料是否完整");
+                            }
+                        }).then(data => {
+                            alert(data);
+                        }).catch(err => {
+                            console.log(err)
                     });
                 },
                 softDelete(productId) {
@@ -336,9 +340,9 @@
                         .then(response => {
                             if (response.ok) {
                                 _this.startSeach();
-                                console.log("刪除成功");
+                                alert("刪除成功");
                             } else {
-                                console.error("刪除失敗");
+                                alert("刪除失敗");
                             }
                         })
                         .catch(error => console.error(error));
@@ -359,12 +363,16 @@
                     console.log(Object.fromEntries(form.entries()));
                     fetch(`${baseAddress}/api/ProductManage/putProduct/${_this.selectedToEdit.productId}`, { method: "Put", body: form })
                         .then(response => {
-                            console.log(response.data);
-                            _this.startSeach();
+                            if (response.ok) {
+                                _this.startSeach();
+                                return response.text(); // 將回傳結果轉為文字
+                            } else {
+                                alert("更新失敗，請確認資料是否完整");
+                            }
+                        }).then(data => {
+                            alert(data);
                         }).catch(err => {
-                            alert(response),
-                                console.log(err),
-                                alert(err);
+                            console.log(err)
                         });
                     // $("#insertModal").modal('hide')
                 },

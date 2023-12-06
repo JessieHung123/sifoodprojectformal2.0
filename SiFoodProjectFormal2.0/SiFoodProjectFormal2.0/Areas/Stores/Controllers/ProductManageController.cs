@@ -10,7 +10,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
     [ApiController]
     public class ProductManageController : ControllerBase
     {
-        string targetStoreId = "S001";
+        string targetStoreId = "S002";
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
