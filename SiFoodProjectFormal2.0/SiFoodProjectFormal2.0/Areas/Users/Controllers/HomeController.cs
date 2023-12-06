@@ -29,6 +29,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return View();
         }
         [HttpGet]
+
         public IActionResult FAQ()
         {
             return View();
@@ -115,8 +116,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             return null;
         }
-
-
 
 
         public IActionResult MemberShip()
