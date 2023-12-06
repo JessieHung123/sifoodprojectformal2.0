@@ -1,281 +1,144 @@
 ﻿@using SiFoodProjectFormal2._0.Models;
 @using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 @model ProfileVM
-
 <!-- 引用Layout -->
 @{
     Layout = "_Layout";
 }
-
 <!-- Title -->
 @{
     ViewData["Title"] = "會員資料修改";
 }
-
 <!-- Style -->
-@section Styles{
+@section Styles {
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
-
-
     <!-- Libs CSS -->
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
-
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
-
 }
 
-
-
-
-
-<main>
-    <!-- section 左邊sidebar 共用partial -->
-    <section>
-        <!-- container -->
-        <div class="container">
-            <!-- row -->
-            <div class="row">
-                <!-- col -->
-                <!-- partial start -->
-                <partial name="_MembershipPartial">
-
-                    @* <div class="col-12">
-                    <div class="d-flex justify-content-between align-items-center d-md-none py-4">
-                    <!-- heading -->
-                    <h3 class="fs-5 mb-0">Account Setting</h3>
-                    <!-- button -->
-                    <button class="btn btn-outline-gray-400 text-muted d-md-none btn-icon btn-sm ms-3 " type="button"
-                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasAccount" aria-controls="offcanvasAccount">
-                    <i class="bi bi-text-indent-left fs-3"></i>
-                    </button>
-                    </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col-lg-3 col-md-4 col-12 border-end  d-none d-md-block">
-                    <div class="pt-10 pe-lg-10">
-                    <!-- nav item -->
-                    <ul class="nav flex-column nav-pills nav-pills-dark">
-                    <li class="nav-item">
-                    <a class="nav-link " aria-current="page" href="account-orders.html"><i
-                    class="feather-icon icon-shopping-bag me-2"></i>Your Orders</a>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link active" href="account-settings.html"><i
-                    class="feather-icon icon-settings me-2"></i>Settings</a>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link" href="account-address.html"><i
-                    class="feather-icon icon-map-pin me-2"></i>Address</a>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link" href="account-payment-method.html"><i
-                    class="feather-icon icon-credit-card me-2"></i>Payment Method</a>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link" href="account-notification.html"><i
-                    class="feather-icon icon-bell me-2"></i>Notification</a>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <hr>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link " href="../index.html"><i class="feather-icon icon-log-out me-2"></i>Log out</a>
-                    </li>
-                    </ul>
-                    </div>
-                    </div> *@
-                    <!-- partial end -->
-
-
-
-<div class="col-lg-9 col-md-8 col-12">
-    <div class="py-6 p-md-6 p-lg-10">
-        <div class="mb-6">
-            <h2 class="mb-0">帳號設定</h2>
-        </div>
-
-        <div>
-            <h5 class="mb-4">個人資料</h5>
-            <div class="row">
-                <div class="col-lg-5">
-
-                                        <!-- Profile form -->
-                                        <form asp-action="Profile" asp-antiforgery="true">
-                                            <!-- input for UserName -->
-                                            <div class="mb-3">
-                                                <label class="form-label" for="fname">姓名</label>
-                                                <input asp-for="UserName" class="form-control" id="fname" placeholder="林小白" autocomplete="name">
-                                                <span asp-validation-for="UserName" class="text-danger"></span>
-                                            </div>
-
-                                            <!-- input for UserEmail -->
-                                            <div class="mb-3">
-                                                <label class="form-label" for="email">Email</label>
-                                                <input asp-for="UserEmail" type="email" class="form-control" id="email" placeholder="example@gmail.com" autocomplete="email">
-                                                <span asp-validation-for="UserEmail" class="text-danger"></span>
-                                            </div>
-
-                                            <!-- input for UserPhone -->
-                                            <div class="mb-3">
-                                                <label class="form-label" for="phone">電話</label>
-                                                <input asp-for="UserPhone" class="form-control" id="phone" placeholder="0912345678" autocomplete="tel">
-                                                <span asp-validation-for="UserPhone" class="text-danger"></span>
-                                            </div>
-
-                                            <!-- input for UserBirthDate -->
-                                            <div class="mb-3">
-                                                <label class="form-label" for="birthday">生日</label>
-                                                <input asp-for="UserBirthDate" type="date" class="form-control" id="birthday" placeholder="yyyy/mm/dd" autocomplete="bday">
-                                                <span asp-validation-for="UserBirthDate" class="text-danger"></span>
-                                            </div>
-
-                                            <!-- submit button -->
-                                            <div class="mt-5 mb-3">
-                                                <button type="submit" class="btn btn-primary" value="Save" id="saveButton">儲存資料</button>
-                                            </div>
-                                        </form>
-                    <!-- form end -->
-
-                    <!--測試TempData-->
-                                        @if (TempData["SuccessMessage"] != null)
-                                        {
-                                            <div class="alert alert-success">
-                                                @TempData["SuccessMessage"]
-                                            </div>
-                                        }
-
-
+<!-- section 左邊sidebar 共用partial -->
+<!-- container -->
+<div class="container" id="userProfileApp">
+    <!-- row -->
+    <div class="row justify-content-end">
+        <!-- col -->
+        <!-- partial start -->
+        <partial name="_MembershipPartial">
+        <!-- partial end -->
+        <div class="col-lg-9 col-md-8 col-12">
+            <div class="py-6 p-md-6 p-lg-10">
+                <div class="mb-6">
+                    <h2 class="mb-0">帳號設定</h2>
                 </div>
-            </div>
-        </div>
-        <hr class="my-10">
+                <div>
+                    <h5 class="mb-4">個人資料</h5>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <!-- Profile form -->
+                            <form asp-action="Profile" asp-antiforgery="true">
+                                <!-- input for UserName -->
+                                <div class="mb-3">
+                                    <label class="form-label" for="fname">姓名</label>
+                                    <input asp-for="UserName" class="form-control" id="fname" placeholder="林小白" autocomplete="name">
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
 
+                                <!-- input for UserEmail -->
+                                <div class="mb-3">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input asp-for="UserEmail" type="email" class="form-control" id="email" placeholder="example@gmail.com" autocomplete="email">
+                                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                                </div>
 
-                            <!-- 密碼區 -->
-                            <div class="pe-lg-14 mb-15">
-                                <h5 class="mb-4">密碼</h5>
+                                <!-- input for UserPhone -->
+                                <div class="mb-3">
+                                    <label class="form-label" for="phone">電話</label>
+                                    <input asp-for="UserPhone" class="form-control" id="phone" placeholder="0912345678" autocomplete="tel">
+                                    <span asp-validation-for="UserPhone" class="text-danger"></span>
+                                </div>
 
-                                <!-- 密碼變更表單 -->
-                                <form asp-controller="Member" asp-action="ChangePassword" method="post" id="password-change-form" asp-antiforgery="true">
-                                    <div class="row row-cols-1 row-cols-lg-2">
-                                        <!-- 現在密碼輸入欄位 -->
-                                        <div class="mb-3 col">
-                                            <label class="form-label" asp-for="CurrentPassword">現在密碼</label>
-                                            <input asp-for="CurrentPassword" type="password" class="form-control"  placeholder="**********">
-                                            <span asp-validation-for="CurrentPassword" class="text-danger"></span>
-                                        </div>
+                                <!-- input for UserBirthDate -->
+                                <div class="mb-3">
+                                    <label class="form-label" for="birthday">生日</label>
+                                    <input asp-for="UserBirthDate" type="date" class="form-control" id="birthday" placeholder="yyyy/mm/dd" autocomplete="bday">
+                                    <span asp-validation-for="UserBirthDate" class="text-danger"></span>
+                                </div>
 
-                                        <!-- 新密碼輸入欄位 -->
-                                        <div class="mb-3 col">
-                                            <label class="form-label" asp-for="NewPassword">新密碼</label>
-                                            <input asp-for="NewPassword" type="password" class="form-control" placeholder="**********">
-                                            <span asp-validation-for="NewPassword" class="text-danger"></span>
-                                        </div>
-
-                                        <!-- 更新密碼按鈕 -->
-                                        <div class="mb-3">
-                                            <button type="submit" class="btn btn-primary" id="update-password-button">更新密碼</button>
-                                        </div>
-                                    </div>
-                                </form>
-
-                                <!-- 重設密碼連結 -->
-                                <p class="mb-4">
-                                    想要更新密碼嗎?
-                                    <a href="javascript:void(0)" id="reset-password-link">按這裡重設密碼</a>
-                                </p>
-                            </div> 
-
-        <!-- 一般性錯誤消息 -->
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
- 
-                        
-                        @*  <hr class="my-10">
-                        <div class="ms-10 mb-10">
-                            <!-- heading -->
-                            <h5 class="mb-4">刪除帳號</h5>
-                            <p class="mb-2">你想要刪除在惜食的帳號嗎？</p>
-                            <p class="mb-5">刪除帳號就沒辦法再享有實惠又環保的愛惜食物購買平台喔～</p>
-                            <!-- btn -->
-                            <a href="#" class="btn btn-outline-danger">我確定要刪除帳號</a>
+                                <!-- submit button -->
+                                <div class="mt-5 mb-3">
+                                        <button type="submit" class="btn btn-primary" id="saveButton" asp-route-id="@ViewBag.ID">儲存資料</button>
+                                </div>
+                            </form>
+                            <!-- form end -->
+                            <!--測試TempData-->
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success">
+                                    @TempData["SuccessMessage"]
+                                </div>
+                            }
                         </div>
-                    
+                    </div>
+                </div>
+                <hr class="my-10">
+                <!-- 密碼區 -->
+                <div class="pe-lg-14 mb-15">
+                    <h5 class="mb-4">密碼</h5>
+                    <!-- 密碼變更表單 -->
+                    <div id="password-change-form">
+                        <div class="row row-cols-1 row-cols-lg-2">
+                            <!-- 現在密碼輸入欄位 -->
+                            <div class="mb-3 col">
+                                <label class="form-label">現在密碼</label>
+                                <input type="password" class="form-control" placeholder="**********" v-bind:readonly="allowEnter" v-model="oldPassword">
+                                <span class="text-danger"></span>
+                            </div>
+                            <!-- 新密碼輸入欄位 -->
+                            <div class="mb-3 col">
+                                <label class="form-label">新密碼</label>
+                                <input type="password" class="form-control" placeholder="**********" v-bind:readonly="allowEnter" v-model="newPassword">
+                                <span class="text-danger"></span>
+                            </div>
+                            <!-- 更新密碼按鈕 -->
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-danger" @@click="SendPasswordBack()">更新密碼</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 重設密碼連結 -->
+                    <p class="mb-4">
+                        想要更新密碼嗎?
+                        <button class="btn btn-primary d-flex align-items-center justify-content-center" @@click="allowEnter = !allowEnter" style="height:30px;width:135px">按這裡輸入密碼</button>
+                    </p>
+                </div>
+
+                <!-- 一般性錯誤消息 -->
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @*  <hr class="my-10">
+                <div class="ms-10 mb-10">
+                <!-- heading -->
+                <h5 class="mb-4">刪除帳號</h5>
+                <p class="mb-2">你想要刪除在惜食的帳號嗎？</p>
+                <p class="mb-5">刪除帳號就沒辦法再享有實惠又環保的愛惜食物購買平台喔～</p>
+                <!-- btn -->
+                <a href="#" class="btn btn-outline-danger">我確定要刪除帳號</a>
+                </div>
+                </div>
+                </div>
+                </section>
+                </main>*@
+                
             </div>
         </div>
-    </section>
-</main>
-
-<!-- modal -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasAccount" aria-labelledby="offcanvasAccountLabel">
-    <!-- offcanvas header -->
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasAccountLabel">Offcanvas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <!-- offcanvas body -->
-    <div class="offcanvas-body">
-        <ul class="nav flex-column nav-pills nav-pills-dark">
-            <!-- nav item -->
-            <li class="nav-item">
-                <a class="nav-link " aria-current="page" href="account-orders.html">
-                    <i class="feather-icon icon-shopping-bag me-2"></i>Your Orders
-                </a>
-            </li>
-            <!-- nav item -->
+</div>
 
-            <li class="nav-item">
-                <a class="nav-link active" href="account-settings.html">
-                    <i class="feather-icon icon-settings me-2"></i>Settings
-                </a>
-            </li>
-            <!-- nav item -->
-
-            <li class="nav-item">
-                <a class="nav-link" href="account-address.html"><i class="feather-icon icon-map-pin me-2"></i>Address</a>
-            </li>
-            <!-- nav item -->
-
-            <li class="nav-item">
-                <a class="nav-link" href="account-payment-method.html">
-                    <i class="feather-icon icon-credit-card me-2"></i>Payment Method
-                </a>
-            </li>
-            <!-- nav item -->
-
-            <li class="nav-item">
-                <a class="nav-link" href="account-notification.html">
-                    <i class="feather-icon icon-bell me-2"></i>Notification
-                </a>
-            </li>
-        </ul>
-        <hr class="my-6">
-        <div>
-            <!-- navs -->
-            <ul class="nav flex-column nav-pills nav-pills-dark">
-                <!-- nav item -->
-                <li class="nav-item">
-                    <a class="nav-link " href="../index.html"><i class="feather-icon icon-log-out me-2"></i>Log out</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div> *@
-
-
-
-
-@section Scripts{
+@section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -285,58 +148,21 @@
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
     <script src="~/assets/libs/quill/dist/quill.min.js"></script>
     <script src="~/assets/js/vendors/sidebarMenu.js"></script>
-
     <!-- jQuery驗證 -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!--Sweet Alert-->
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    @* <script>
-        $(document).ready(function () {
-            $('#reset-password-link').click(function (e) {
-                e.preventDefault(); // 阻止鏈接默認動作
-
-                // 啟用密碼輸入欄位和更新按鈕
-                $('#current-password, #new-password').prop('disabled', false);
-                $('#update-password-button').prop('disabled', false);
-                $('#current-password').focus();
-            });
-
-            $('#password-change-form').submit(function (e) {
-                e.preventDefault(); // 阻止表單的默認提交行為
-
-                var formData = $(this).serialize(); // 序列化表單數據
-
-                // $.ajax({
-                //     url: '@Url.Action("ChangePassword", "Member")', // 確保這裡的路徑是正確的
-                //     type: 'POST',
-                //     data: formData,
-                //     success: function (response) {
-                //         if (response.success) {
-                //             alert("密碼修改成功");
-                //             window.location.href = '@Url.Action("Profile", "Member")';
-                //         } else {
-                //             alert("現在密碼錯誤，請重新確認");
-                //         }
-                //     },
-                //     error: function () {
-                //         alert("發生錯誤，請稍後再試");
-                //     }
-                // });
-            });
-        });
-    </script> *@
-
-
-    /@* /跳出修改成功alert *@
+    @* /跳出修改成功alert *@
     <script>
         document.getElementById('saveButton').addEventListener('click', function () {
             Swal.fire({
@@ -347,8 +173,40 @@
                 timer: 1500
             });
         });
-
-
     </script>
 
+    <script>
+        var userProfile = Vue.createApp({
+            data: function () {
+                return {
+                    oldPassword: "",
+                    newPassword: "",
+                    allowEnter: true,
+                    userEmail: "",
+                }
+            },
+            methods: {
+                SendPasswordBack() {
+                    var _this = this;
+                    axios.post(`/Member/ChangePassword`, {
+                        UserEmail:_this.userEmail,
+                        OldPassword: _this.oldPassword,
+                        NewPassword: _this.newPassword,
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(response => {
+                        alert(response.data);
+                        window.location.href = 'https://localhost:7042/Users/Member/Profile'
+                    }).catch(err => {
+                        alert(err);
+                    })
+                },                  
+            },
+            mounted() {
+                this.userEmail = document.querySelector("#email").value;
+            },
+        }).mount("#userProfileApp")
+    </script>
 }
