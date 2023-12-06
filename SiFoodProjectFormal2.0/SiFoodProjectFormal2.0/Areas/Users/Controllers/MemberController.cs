@@ -19,7 +19,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         //11/23新版
         [HttpGet]
-
         public async Task<IActionResult> Profile()
         {
             //if (id == null || _context.Users == null)
@@ -215,7 +214,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return View(historyOrders);
         }
 
-
         //訂單明細方法GetOrderDetails
         public async Task<IActionResult> GetOrderDetails(string orderId)
         {
@@ -283,7 +281,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
 
 
-        //=========收藏店家========//
+        //=========收藏店家========//  
         public async Task<IActionResult> Favorite()
         {
             // var userId = "當前用戶的ID"; // 從用戶會話或身份驗證系統獲取
