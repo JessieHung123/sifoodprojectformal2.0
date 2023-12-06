@@ -23,7 +23,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         public async Task<IEnumerable<ProductVM>> GetProduct(int id)
         {
 
-            var findProduct = _context.Products.Where(p => p.ProductId == id && p.RealeasedTime.Date == DateTime.Now.Date && p.SuggestPickEndTime > DateTime.Now.TimeOfDay).Include(p => p.Store);
+            var findProduct = _context.Products.Where(p => p.ProductId == id &&p.IsDelete==1&& p.RealeasedTime.Date == DateTime.Now.Date && p.SuggestPickEndTime > DateTime.Now.TimeOfDay).Include(p => p.Store);
             if (findProduct == null) { return Enumerable.Empty<ProductVM>(); }
             else
             {

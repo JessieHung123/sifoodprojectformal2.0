@@ -19,7 +19,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         //11/23新版
         [HttpGet]
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 81a5ff1e7e9b2b6bf04679448d1c3800ebf83bcc
         public async Task<IActionResult> Profile()
         {
             //if (id == null || _context.Users == null)
@@ -181,7 +185,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return View(historyOrders);
         }
 
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> 81a5ff1e7e9b2b6bf04679448d1c3800ebf83bcc
         public async Task<IActionResult> Favorite()
         {
             // var userId = "當前用戶的ID"; // 從用戶會話或身份驗證系統獲取
@@ -238,7 +246,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return RedirectToAction("Favorite");
         }
 
-        [Route("/Member/Address")]
+
         public IActionResult Address()
         {
             return View();
