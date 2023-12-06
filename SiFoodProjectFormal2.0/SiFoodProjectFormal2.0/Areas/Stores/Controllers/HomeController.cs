@@ -45,7 +45,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 
         public async Task<IActionResult> SaleInfo()
         {
-            var sifoodContext2 = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new 
+            var salesinfo = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new 
             { StoreId = x.Product.StoreId,
                 UnitPrice = x.Product.UnitPrice,
                 OrderId = x.OrderId,
@@ -56,7 +56,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 OrderStatus = x.Order.StatusId
             })
                 .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7);
-            return Json(sifoodContext2);
+            return Json(salesinfo);
 
         }
         [Route("RealTimeOrders")]
