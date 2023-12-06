@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -16,11 +17,12 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public StoreProductsapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
+        private readonly IUserIdentityService _userIdentityService;
+        public StoreProductsapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IUserIdentityService userIdentityService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _userIdentityService = userIdentityService;
         }
 
         // GET: api/StoreProductsapi
@@ -46,7 +48,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 StoreName = z.StoreName,
                 StoreId = z.StoreId,
                 Email = z.Email,
-                Phone = $"{z.Phone.Substring(0, 2)} {z.Phone.Substring(2)}",
+                Phone = $"{z.Phone.Substring(0, 2)} {z.Phone.Substring(2,4)} {z.Phone.Substring(4,4)}",
                 Address = z.Address,
                 OpeningTime = z.OpeningTime,
                 PhotosPath = z.PhotosPath,
@@ -56,12 +58,14 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
                 WeekdayOpeningTime = z.OpeningTime.Substring(0, 16),
                 WeekendOpeningTime = z.OpeningTime.Substring(17, 16),
-
+                OpenForBusiness = CheckOpenTime(z.OpeningTime, currentTime),
                 Products = z.Products.Where(p => p.RealeasedTime.Date == today &&
                                                  p.RealeasedTime.TimeOfDay < currentTime &&
-                                                 p.SuggestPickEndTime > currentTime)
+                                                 p.SuggestPickEndTime > currentTime &&
+                                                 p.IsDelete == 1)
                                      .Select(p => new ProductsVM
                                      {
+                                         ProductId = p.ProductId,
                                          UnitPrice = p.UnitPrice,
                                          ProductName = p.ProductName,
                                          CategoryId = p.CategoryId,
@@ -74,7 +78,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
                 CategoryList = z.Products.Where(p => p.RealeasedTime.Date == today &&
                                                      p.RealeasedTime.TimeOfDay < currentTime &&
-                                                     p.SuggestPickEndTime > currentTime)
+                                                     p.SuggestPickEndTime > currentTime &&
+                                                     p.IsDelete == 1)
                                          .Select(y => y.Category.CategoryName).Distinct().ToArray(),
 
                 Comment = z.Orders
@@ -88,17 +93,19 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     })
             });
         }
-        [HttpGet("favorite/status/{userId}/{storeId}")]
-        public object GetFavoriteStatus(string userId, string storeId)
+        [HttpGet("favorite/status/{storeId}")]
+        public object GetFavoriteStatus(string storeId)
         {
+            string userId = _userIdentityService.GetUserId();
             //return _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
             bool isFavorite = _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
             return Ok(new { IsFavorite = isFavorite });
         }
         [HttpPost("favorite/add")]
-        public async Task<string> SaveToFavorites([FromBody] FavoriteVM favoriteVM)
+        public async Task<string> SaveToFavorites([FromBody] StoreFavoriteVM favoriteVM)
         {
-            string userId = favoriteVM.UserId;
+            //string userId = favoriteVM.UserId;
+            string userId = _userIdentityService.GetUserId();
             string storeId = favoriteVM.StoreId;
             if (favoriteVM == null || string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(storeId))
             {
@@ -108,24 +115,26 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             {
                 Favorite favorite = new Favorite
                 {
-                    UserId = favoriteVM.UserId,
+                    UserId = userId,
                     StoreId = favoriteVM.StoreId
                 };
                 _context.Favorites.Add(favorite);
                 await _context.SaveChangesAsync();
+                return "收藏成功!";
             }
             return "收藏成功!";
         }
         [HttpDelete("favorite/remove")]
-        public async Task<string> RemoveFromFavorites([FromBody] FavoriteVM favoriteVM)
+        public async Task<string> RemoveFromFavorites([FromBody] StoreFavoriteVM favoriteVM)
         {
-            if (favoriteVM == null || string.IsNullOrEmpty(favoriteVM.UserId) || string.IsNullOrEmpty(favoriteVM.StoreId))
+            string userId = _userIdentityService.GetUserId();
+            if (favoriteVM == null || string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(favoriteVM.StoreId))
             {
                 return "未收藏";
             }
 
             var existingFavorite = _context.Favorites
-                .FirstOrDefault(f => f.UserId == favoriteVM.UserId && f.StoreId == favoriteVM.StoreId);
+                .FirstOrDefault(f => f.UserId == userId && f.StoreId == favoriteVM.StoreId);
 
             if (existingFavorite != null)
             {
@@ -137,35 +146,72 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             return "未收藏";
 
         }
-        [HttpGet("Search")]
-        public async Task<List<ProductsVM>> SearchProducts(string? query)
+        private static bool CheckOpenTime(string openingTime, TimeSpan currentTime)
         {
-            string storeId = "S001";
-            DateTime today = DateTime.Today;
-            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+            var weekdaysOpeningTime = openingTime.Substring(3, 13);
+            var weekendsOpeningTime = openingTime.Substring(20, 13);
 
-            var products = await _context.Products
-                .Where(p => p.StoreId == storeId &&
-                            p.RealeasedTime.Date == today &&
-                            p.RealeasedTime.TimeOfDay < currentTime &&
-                            p.SuggestPickEndTime > currentTime &&
-                            (string.IsNullOrEmpty(query) ||
-                             p.ProductName.Contains(query) ||
-                             p.Category.CategoryName.Contains(query)))
-                .Select(x => new ProductsVM
-                {
-                    UnitPrice = x.UnitPrice,
-                    ProductName = x.ProductName,
-                    CategoryId = x.CategoryId,
-                    CategoryName = x.Category.CategoryName,
-                    avalibleQty = x.ReleasedQty - x.OrderedQty,
-                    SuggestPickUpTime = $"{x.SuggestPickUpTime:hh\\:mm} ~ {x.SuggestPickEndTime:hh\\:mm}",
-                    RealeasedTime = x.RealeasedTime,
-                    PhotoPath = x.PhotoPath,
-                })
-                .ToListAsync();
-            return products;
+            var applicableOpeningTime = DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday ? weekendsOpeningTime : weekdaysOpeningTime;
+
+            var parsedOpeningTime = TimeSpan.Parse(applicableOpeningTime.Substring(0, 5));
+            var parsedClosingTime = TimeSpan.Parse(applicableOpeningTime.Substring(8, 5));
+
+            return  parsedOpeningTime <= currentTime && currentTime <= parsedClosingTime;
+
+            //var weekdaysOpeningTime = openingTime.Substring(3, 11);
+            //var weekendsOpeningTime = openingTime.Substring(20, 11);
+            //if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
+            //{
+            //    return TimeSpan.Parse(weekendsOpeningTime.Substring(0, 5)) <= currentTime && currentTime <= TimeSpan.Parse(weekendsOpeningTime.Substring(8, 5));
+            //}
+            //else
+            //{
+            //    return TimeSpan.Parse(weekdaysOpeningTime.Substring(0, 5)) <= currentTime && currentTime <= TimeSpan.Parse(weekdaysOpeningTime.Substring(8, 5));
+            //}
         }
+        //[HttpGet("Search")]
+        //public async Task<object> SearchProducts(string? query)
+        //{
+        //    string storeId = "S001";
+        //    DateTime today = DateTime.Today;
+        //    TimeSpan currentTime = DateTime.Now.TimeOfDay;
+
+        //    var filterProducts =  _context.Products
+        //        .Where(p => p.StoreId == storeId &&
+        //                    p.RealeasedTime.Date == today &&
+        //                    p.RealeasedTime.TimeOfDay < currentTime &&
+        //                    p.SuggestPickEndTime > currentTime &&
+        //                    p.IsDelete == 1 &&
+        //                    (string.IsNullOrEmpty(query) ||
+        //                     p.ProductName.Contains(query) ||
+        //                     p.Category.CategoryName.Contains(query)));
+
+
+        //    var products =  await filterProducts.Select(x => new ProductsVM
+        //        {
+        //            UnitPrice = x.UnitPrice,
+        //            ProductName = x.ProductName,
+        //            CategoryId = x.CategoryId,
+        //            CategoryName = x.Category.CategoryName,
+        //            avalibleQty = x.ReleasedQty - x.OrderedQty,
+        //            SuggestPickUpTime = $"{x.SuggestPickUpTime:hh\\:mm} ~ {x.SuggestPickEndTime:hh\\:mm}",
+        //            RealeasedTime = x.RealeasedTime,
+        //            PhotoPath = x.PhotoPath,
+        //        })
+        //        .ToListAsync();
+        //    var categories = await filterProducts.Select(x => x.Category.CategoryName)
+        //                                         .Distinct()
+        //                                         .ToListAsync();
+
+        //    var searchResults = new
+        //    {
+        //        Products = products,
+        //        Categories = categories,
+        //    };
+
+        //    return searchResults;
+
+        //}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStore(string id, Store store)
         {

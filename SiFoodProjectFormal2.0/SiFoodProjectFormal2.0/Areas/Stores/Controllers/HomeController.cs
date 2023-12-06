@@ -66,7 +66,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             return View();
         }
-        [Route("History")]
+        //[Route("History")]
         public IActionResult History()
         {
             return View();
