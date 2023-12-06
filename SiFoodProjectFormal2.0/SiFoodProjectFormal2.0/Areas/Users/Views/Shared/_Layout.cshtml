@@ -184,6 +184,7 @@
                                         @*  <input type="number" step="1" max="10" v-model.lazy="item.quantity" name="quantity" class="quantity-field form-control-sm form-input   ">*@
                                         <input type="button" value="+" v-on:click="clickAdd(item)" class="button-plus btn btn-sm " data-field="quantity">
                                     </div>
+                                    <small>庫存剩餘:{{item.remainingStock}}</small>
                                 </div>
                                 <!-- price -->
                                 <div class="col-2 text-lg-end text-start text-md-end col-md-2">
@@ -345,8 +346,8 @@
                     }).then(response => response)
                 },
                 async clickAdd(item) {
-                    let remainingStock = productApp.remainingStock;
-                    if (item.quantity >= remainingStock) { $('#moreQty').modal('show'); }
+                    
+                    if (item.quantity >= item.remainingStock) { $('#moreQty').modal('show'); }
                     else { item.quantity = item.quantity + 1; }
                     await fetch(`/api/CartVMapi/ChangeQty`, {
                         method: "PUT",
