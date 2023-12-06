@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0;
 using SiFoodProjectFormal2._0.Areas.Users.Models.NewebPayModels;
@@ -54,6 +55,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 UnitPrice = _context.Products.Where(c => c.ProductId == y.ProductId).Select(x => x.UnitPrice).FirstOrDefault(),
                 TotalPrice = y.Quantity * _context.Products.Where(c => c.ProductId == y.ProductId).Select(x => x.UnitPrice).FirstOrDefault(),
                 StoreName = _context.Stores.Where(s => s.StoreId == y.Product.StoreId).Select(p => p.StoreName).Single(),
+                PhotoPath = _context.Products.Where(p => p.ProductId == y.ProductId).Select(c => c.PhotoPath).Single(),
             });
             return CheckOutData;
         }
@@ -76,16 +78,22 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             _context.Orders.Add(order);
             _context.SaveChanges();
 
-            foreach (var Items in model.ProductDetails)
+            foreach (var items in model.ProductDetails)
             {
-                int productId = GetProductIdByName(Items.ProductName);
+                int productId = GetProductIdByName(items.ProductName, items.StoreName);
                 OrderDetail orderDetail = new OrderDetail
                 {
                     OrderId = order.OrderId,
                     ProductId = productId,
-                    Quantity = Items.Quantity,
+                    Quantity = items.Quantity,
                 };
                 _context.OrderDetails.Add(orderDetail);
+
+                Product? product = _context.Products.Where(x => x.ProductId == productId).FirstOrDefault();
+                int releasedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.ReleasedQty).Single();
+                product.ReleasedQty = releasedQty - items.Quantity;
+                int orderedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.OrderedQty).Single();
+                product.OrderedQty = orderedQty + items.Quantity;
             }
 
             Payment payment = new Payment
@@ -95,14 +103,19 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 PaymentStatusＮame = "已付款",
                 PaymentTime = DateTime.Now,
             };
+
+            List<Cart> cartItems = _context.Carts.Where(c => c.UserId == UserId).ToList();
+            _context.Carts.RemoveRange(cartItems);
+
             _context.Payments.Add(payment);
             _context.SaveChanges();
             return "訂單下訂成功";
         }
 
-        private int GetProductIdByName(string productName)
+        private int GetProductIdByName(string productName, string storeName)
         {
-            return _context.Products.Where(p => p.ProductName == productName).Select(p => p.ProductId).FirstOrDefault();
+            var storeId = _context.Stores.Where(x=>x.StoreName == storeName).Select(y=>y.StoreId).FirstOrDefault();
+            return _context.Products.Where(p => p.ProductName == productName && p.StoreId == storeId && p.IsDelete == 1).Select(p => p.ProductId).FirstOrDefault();
         }
 
         [HttpPost]
@@ -126,7 +139,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             _context.SaveChanges();
             foreach (var item in model.ProductDetails)
             {
-                int productId = GetProductIdByName(item.ProductName);
+                int productId = GetProductIdByName(item.ProductName, item.StoreName);
                 OrderDetail orderDetail = new OrderDetail
                 {
                     OrderId = order.OrderId,
@@ -134,7 +147,14 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     Quantity = item.Quantity,
                 };
                 _context.OrderDetails.Add(orderDetail);
+
+                Product? product = _context.Products.Where(x => x.ProductId == productId).FirstOrDefault();
+                int releasedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.ReleasedQty).Single();
+                product.ReleasedQty = releasedQty - item.Quantity;
+                int orderedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.OrderedQty).Single();
+                product.OrderedQty = orderedQty + item.Quantity;
             }
+           
 
             Payment payment = new Payment
             {
@@ -143,6 +163,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 PaymentStatusＮame = "已付款",
                 PaymentTime = DateTime.Now,
             };
+
+            List<Cart> cartItems = _context.Carts.Where(c => c.UserId == UserId).ToList();
+            _context.Carts.RemoveRange(cartItems);
 
             _context.Payments.Add(payment);
             _context.SaveChanges();

@@ -1,8 +1,4 @@
 ﻿@section Styles {
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/assets/css/theme.min.css" />
     <link href="~/css/loginsite.css" rel="stylesheet" />
 }
 
@@ -45,6 +41,7 @@
                             外送
                         </label>
                     </div>
+
                     <template v-if="this.checkRadio==false">
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -194,13 +191,67 @@
 
                 @*------------------ 固定的訂單明細---------------- *@
 
-                <div class="col-6 col-md-12 col-lg-6 card shadow-sm" style="width:37rem;height:fit-content">
+                <div class="col-6 col-md-12 col-lg-6 card shadow-sm" style="width:37rem;height:fit-content" v-if="this.checkRadio==false">
                     <h5 class="px-6 py-4 bg-transparent mb-0">訂單明細</h5>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item px-4 py-3" v-for="item in checkoutDatas">
                             <div class="row">
                                 <div class="col-2 col-md-2">
-                                    <img src="~/assets/images/products/product-img-1.jpg" alt="Ecommerce" class="img-fluid">
+                                    <img :src="item.photoPath" alt="Ecommerce" class="img-fluid">
+                                </div>
+                                <div class="col-3 col-md-3 text-md-start p-4">
+                                    <h6 class="mb-0" value="{{item.productName}}">{{item.productName}}</h6>
+                                    <span><small>{{item.storeName}}</small></span>
+                                </div>
+                                <div class="col-2 col-md-2 text-md-start p-4">
+                                    <span>單價:{{item.unitPrice}}$</span>
+                                </div>
+                                <div class="col-2 col-md-2 text-md-end p-4">
+                                    <span>數量:{{item.quantity}}</span>
+                                </div>
+                                <div class="col-3 col-md-3 text-md-end p-4">
+                                    <span class="fw-bold">總價:{{item.totalPrice}}$</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item px-4 py-3">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div>
+                                    訂單總價
+                                </div>
+                                <div class="fw-bold">
+                                    {{totalPrice}}$
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    外送費
+                                </div>
+                                <div class="fw-bold">
+                                    0$
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item px-4 py-3">
+                            <div class="d-flex align-items-center justify-content-between fw-bold">
+                                <div>
+                                    總金額
+                                </div>
+                                <div>
+                                    {{totalPrice}}$
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-12 col-lg-6 card shadow-sm" style="width:37rem;height:fit-content" v-else>
+                    <h5 class="px-6 py-4 bg-transparent mb-0">訂單明細</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item px-4 py-3" v-for="item in checkoutDatas">
+                            <div class="row">
+                                <div class="col-2 col-md-2">
+                                    <img :src="item.photoPath" alt="Ecommerce" class="img-fluid">
                                 </div>
                                 <div class="col-3 col-md-3 text-md-start p-4">
                                     <h6 class="mb-0" value="{{item.productName}}">{{item.productName}}</h6>
@@ -241,7 +292,7 @@
                                     總金額
                                 </div>
                                 <div>
-                                    {{totalPrice}}$
+                                    {{totalPrice + 40}}$
                                 </div>
                             </div>
                         </li>
@@ -277,7 +328,8 @@
                     sendBackStoreName: "",
                     sendBackUserName: "",
                     sendBackProductDetail: [],
-                    sendBackTotalPrice: null,
+                    sendBackTkoTotalPrice: null,
+                    sendBackDeliTotalPrice: null,
                     loading: false,
                     sendBackShippingFee: "",
                     addForm: {
@@ -301,8 +353,9 @@
             updated() {
                 this.processUserName(this.checkoutData.userName);
                 this.processStoreName(this.checkoutData.storeName);
-                this.processTotalPrice(this.totalPrice);
-                this.sendBackProductDetail = this.checkoutDatas.map(item => ({ productName: item.productName, quantity: item.quantity }));
+                this.processTkoTotalPrice(this.totalPrice);
+                this.processDeliTotalPrice(this.totalPrice);
+                this.sendBackProductDetail = this.checkoutDatas.map(item => ({ productName: item.productName, quantity: item.quantity, storeName: item.storeName }));
             },
             mounted: function () {
                 var _this = this;
@@ -331,8 +384,11 @@
                 processProductName(productName) {
                     this.sendBackProductName = productName;
                 },
-                processTotalPrice(totalPrice) {
-                    this.sendBackTotalPrice = totalPrice;
+                processTkoTotalPrice(totalPrice) {
+                    this.sendBackTkoTotalPrice = totalPrice;
+                },
+                processDeliTotalPrice(totalPrice) {
+                    this.sendBackDeliTotalPrice = totalPrice + 40;
                 },
                 chooseTakeout: function () {
                     this.checkRadio = true;
@@ -375,7 +431,7 @@
                         StoreName: _this.sendBackStoreName,
                         UserName: _this.sendBackUserName,
                         ProductDetails: _this.sendBackProductDetail,
-                        TotalPrice: _this.sendBackTotalPrice
+                        TotalPrice: _this.sendBackTkoTotalPrice
                     }, {
                         headers: {
                             "Content-Type": "application/json"
@@ -386,7 +442,7 @@
                             postData['ChannelID'] = ChannelID;
                             postData['MerchantID'] = _this.addForm.MerchantID;
                             postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `${item.productName}: ${item.quantity}`).join(', ');
-                            postData['Amt'] = _this.sendBackTotalPrice
+                            postData['Amt'] = _this.sendBackTkoTotalPrice
                             postData['ReturnURL'] = _this.addForm.ReturnURL;
                             postData['NotifyURL'] = _this.addForm.NotifyURL;
                             postData['ClientBackURL'] = _this.addForm.ClientBackURL;
@@ -404,7 +460,7 @@
                         StoreName: _this.sendBackStoreName,
                         UserName: _this.sendBackUserName,
                         ProductDetails: _this.sendBackProductDetail,
-                        TotalPrice: _this.sendBackTotalPrice,
+                        TotalPrice: _this.sendBackDeliTotalPrice,
                         UserAddress: _this.selectAddress,
                         //ShippingFee: _this.sendBackShippingFee,
                     }, {
@@ -416,7 +472,7 @@
                         postData['ChannelID'] = ChannelID;
                         postData['MerchantID'] = _this.addForm.MerchantID;
                         postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `${item.productName}: ${item.quantity}`).join(', ');
-                        postData['Amt'] = _this.sendBackTotalPrice
+                        postData['Amt'] = _this.sendBackDeliTotalPrice
                         postData['ReturnURL'] = _this.addForm.ReturnURL;
                         postData['NotifyURL'] = _this.addForm.NotifyURL;
                         postData['ClientBackURL'] = _this.addForm.ClientBackURL;
