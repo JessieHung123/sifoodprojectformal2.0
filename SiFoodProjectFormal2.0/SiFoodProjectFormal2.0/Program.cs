@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.OData;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 using SiFoodProjectFormal2._0.Models;
 
 
@@ -13,7 +15,8 @@ namespace SiFoodProjectFormal2._0
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<Sifood3Context>(options => {
+            builder.Services.AddDbContext<Sifood3Context>(options =>
+            {
                 options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Sifood"));
             });
 
@@ -30,7 +33,6 @@ namespace SiFoodProjectFormal2._0
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddTransient<IUserIdentityService, UserIdentityService>();
             builder.Services.AddTransient<IStoreIdentityService, StoreIdentityService>();
-
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
@@ -78,7 +80,7 @@ namespace SiFoodProjectFormal2._0
             //app.UseEndpoints(
             //    endpoints => { endpoints.MapAreaControllerRoute(name: "Users", areaName: "Users", pattern: "{action=MainPage}");
             //    endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Main}/{id?}"); });
-             
+
             app.Run();
         }
     }

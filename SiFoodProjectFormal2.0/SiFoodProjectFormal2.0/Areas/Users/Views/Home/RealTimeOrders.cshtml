@@ -3,12 +3,10 @@
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
 
-
     <!-- Libs CSS -->
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
@@ -19,421 +17,6 @@
 }
 
 <body>
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-4">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fs-3 fw-bold" id="userModalLabel">Sign Up</h5>
-
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="fullName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter Your Name" required="">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter Email address" required="">
-                        </div>
-
-                        <div class="mb-5">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Enter Password" required="">
-                            <small class="form-text">
-                                By Signup, you agree to our <a href="#!">Terms of Service</a> & <a href="#!">Privacy Policy</a>
-                            </small>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Sign Up</button>
-                    </form>
-                </div>
-                <div class="modal-footer border-0 justify-content-center">
-
-                    Already have an account? <a href="#">Sign in</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- Shop Cart -->
-
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header border-bottom">
-            <div class="text-start">
-                <h5 id="offcanvasRightLabel" class="mb-0 fs-4">Shop Cart</h5>
-                <small>Location in 382480</small>
-            </div>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-
-            <div class="">
-                <!-- alert -->
-                <div class="alert alert-danger p-2" role="alert">
-                    You’ve got FREE delivery. Start <a href="#!" class="alert-link">checkout now!</a>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <!-- list group -->
-                    <li class="list-group-item py-3 ps-0 border-top">
-                        <!-- row -->
-                        <div class="row align-items-center">
-
-                            <div class="col-6 col-md-6 col-lg-7">
-                                <div class="d-flex">
-                                    <img src="~/assets/images/products/product-img-1.jpg" alt="Ecommerce"
-                                         class="icon-shape icon-xxl">
-                                    <div class="ms-3">
-                                        <!-- title -->
-                                        <a href="~/pages/shop-single.html" class="text-inherit">
-                                            <h6 class="mb-0">Haldiram's Sev Bhujia</h6>
-                                        </a>
-                                        <span><small class="text-muted">.98 / lb</small></span>
-                                        <!-- text -->
-                                        <div class="mt-2 small lh-1">
-                                            <a href="#!" class="text-decoration-none text-inherit">
-                                                <span class="me-1 align-text-bottom">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-trash-2 text-success">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                    </svg>
-                                                </span><span class="text-muted">Remove</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- input group -->
-                            <div class="col-4 col-md-3 col-lg-3">
-                                <!-- input -->
-                                <!-- input -->
-                                <div class="input-group input-spinner  ">
-                                    <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
-                                           class="quantity-field form-control-sm form-input   ">
-                                    <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                </div>
-
-                            </div>
-                            <!-- price -->
-                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                <span class="fw-bold">$5.00</span>
-
-                            </div>
-                        </div>
-
-                    </li>
-                    <!-- list group -->
-                    <li class="list-group-item py-3 ps-0">
-                        <!-- row -->
-                        <div class="row align-items-center">
-                            <div class="col-6 col-md-6 col-lg-7">
-                                <div class="d-flex">
-                                    <img src="~/assets/images/products/product-img-2.jpg" alt="Ecommerce"
-                                         class="icon-shape icon-xxl">
-                                    <div class="ms-3">
-                                        <a href="~/pages/shop-single.html" class="text-inherit">
-                                            <h6 class="mb-0">NutriChoice Digestive </h6>
-                                        </a>
-                                        <span><small class="text-muted">250g</small></span>
-                                        <!-- text -->
-                                        <div class="mt-2 small lh-1">
-                                            <a href="#!" class="text-decoration-none text-inherit">
-                                                <span class="me-1 align-text-bottom">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-trash-2 text-success">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                    </svg>
-                                                </span><span class="text-muted">Remove</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-- input group -->
-                            <div class="col-4 col-md-3 col-lg-3">
-                                <!-- input -->
-                                <!-- input -->
-                                <div class="input-group input-spinner  ">
-                                    <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
-                                           class="quantity-field form-control-sm form-input   ">
-                                    <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                </div>
-                            </div>
-                            <!-- price -->
-                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                <span class="fw-bold text-danger">$20.00</span>
-                                <div class="text-decoration-line-through text-muted small">$26.00</div>
-                            </div>
-                        </div>
-
-                    </li>
-                    <!-- list group -->
-                    <li class="list-group-item py-3 ps-0">
-                        <!-- row -->
-                        <div class="row align-items-center">
-
-                            <div class="col-6 col-md-6 col-lg-7">
-                                <div class="d-flex">
-                                    <img src="~/assets/images/products/product-img-3.jpg" alt="Ecommerce"
-                                         class="icon-shape icon-xxl">
-                                    <div class="ms-3">
-                                        <!-- title -->
-                                        <a href="~/pages/shop-single.html" class="text-inherit">
-                                            <h6 class="mb-0">Cadbury 5 Star Chocolate</h6>
-                                        </a>
-                                        <span><small class="text-muted">1 kg</small></span>
-                                        <!-- text -->
-                                        <div class="mt-2 small lh-1">
-                                            <a href="#!" class="text-decoration-none text-inherit">
-                                                <span class="me-1 align-text-bottom">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-trash-2 text-success">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                    </svg>
-                                                </span><span class="text-muted">Remove</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- input group -->
-                            <div class="col-4 col-md-3 col-lg-3">
-                                <!-- input -->
-                                <!-- input -->
-                                <div class="input-group input-spinner  ">
-                                    <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
-                                           class="quantity-field form-control-sm form-input   ">
-                                    <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                </div>
-                            </div>
-                            <!-- price -->
-                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                <span class="fw-bold">$15.00</span>
-                                <div class="text-decoration-line-through text-muted small">$20.00</div>
-                            </div>
-                        </div>
-
-                    </li>
-                    <!-- list group -->
-                    <li class="list-group-item py-3 ps-0">
-                        <!-- row -->
-                        <div class="row align-items-center">
-                            <div class="col-6 col-md-6 col-lg-7">
-                                <div class="d-flex">
-                                    <img src="~/assets/images/products/product-img-4.jpg" alt="Ecommerce"
-                                         class="icon-shape icon-xxl">
-                                    <div class="ms-3">
-                                        <!-- title -->
-                                        <!-- title -->
-                                        <a href="~/pages/shop-single.html" class="text-inherit">
-                                            <h6 class="mb-0">Onion Flavour Potato</h6>
-                                        </a>
-                                        <span><small class="text-muted">250g</small></span>
-                                        <!-- text -->
-                                        <div class="mt-2 small lh-1">
-                                            <a href="#!" class="text-decoration-none text-inherit">
-                                                <span class="me-1 align-text-bottom">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-trash-2 text-success">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                    </svg>
-                                                </span><span class="text-muted">Remove</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- input group -->
-                            <div class="col-4 col-md-3 col-lg-3">
-                                <!-- input -->
-                                <!-- input -->
-                                <div class="input-group input-spinner  ">
-                                    <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
-                                           class="quantity-field form-control-sm form-input   ">
-                                    <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                </div>
-                            </div>
-                            <!-- price -->
-                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                <span class="fw-bold">$15.00</span>
-                                <div class="text-decoration-line-through text-muted small">$20.00</div>
-                            </div>
-                        </div>
-
-                    </li>
-                    <!-- list group -->
-                    <li class="list-group-item py-3 ps-0 border-bottom">
-                        <!-- row -->
-                        <div class="row align-items-center">
-                            <div class="col-6 col-md-6 col-lg-7">
-                                <div class="d-flex">
-                                    <img src="~/assets/images/products/product-img-5.jpg" alt="Ecommerce"
-                                         class="icon-shape icon-xxl">
-                                    <div class="ms-3">
-                                        <!-- title -->
-                                        <a href="~/pages/shop-single.html" class="text-inherit">
-                                            <h6 class="mb-0">Salted Instant Popcorn </h6>
-                                        </a>
-                                        <span><small class="text-muted">100g</small></span>
-                                        <!-- text -->
-                                        <div class="mt-2 small lh-1">
-                                            <a href="#!" class="text-decoration-none text-inherit">
-                                                <span class="me-1 align-text-bottom">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-trash-2 text-success">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                    </svg>
-                                                </span><span class="text-muted">Remove</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- input group -->
-                            <div class="col-4 col-md-3 col-lg-3">
-                                <!-- input -->
-                                <!-- input -->
-                                <div class="input-group input-spinner  ">
-                                    <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
-                                           class="quantity-field form-control-sm form-input   ">
-                                    <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                </div>
-                            </div>
-                            <!-- price -->
-                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                <span class="fw-bold">$15.00</span>
-                                <div class="text-decoration-line-through text-muted small">$25.00</div>
-                            </div>
-                        </div>
-
-                    </li>
-
-                </ul>
-                <!-- btn -->
-                <div class="d-flex justify-content-between mt-4">
-                    <a href="#!" class="btn btn-primary">Continue Shopping</a>
-                    <a href="#!" class="btn btn-dark">Update Cart</a>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered">
-            <div class="modal-content">
-
-                <div class="modal-body p-6">
-                    <div class="d-flex justify-content-between align-items-start ">
-                        <div>
-                            <h5 class="mb-1" id="locationModalLabel">Choose your Delivery Location</h5>
-                            <p class="mb-0 small">Enter your address and we will specify the offer you area. </p>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="my-5">
-                        <input type="search" class="form-control" placeholder="Search your area">
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="mb-0">Select Location</h6>
-                        <a href="#" class="btn btn-outline-gray-400 text-muted btn-sm">Clear All</a>
-
-
-                    </div>
-                    <div>
-                        <div data-simplebar style="height:300px;">
-                            <div class="list-group list-group-flush">
-
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action active">
-                                    <span>Alabama</span><span>Min:$20</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Alaska</span><span>Min:$30</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Arizona</span><span>Min:$50</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>California</span><span>Min:$29</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Colorado</span><span>Min:$80</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Florida</span><span>Min:$90</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Arizona</span><span>Min:$50</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>California</span><span>Min:$29</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Colorado</span><span>Min:$80</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Florida</span><span>Min:$90</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <main>
         <!-- section -->
         <section id="orderApp">
@@ -441,65 +24,9 @@
                 <!-- row -->
                 <div class="row">
                     <!-- col -->
-                    @* <div class="col-12">
-                    <div class="d-flex justify-content-between align-items-center d-md-none py-4">
-                    <!-- heading -->
-                    <h3 class="fs-5 mb-0">Account Setting</h3>
-                    <!-- button -->
-                    <button class="btn btn-outline-gray-400 text-muted d-md-none btn-icon btn-sm ms-3 " type="button"
-                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasAccount" aria-controls="offcanvasAccount">
-                    <i class="bi bi-text-indent-left fs-3"></i>
-                    </button>
-                    </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col-lg-3 col-md-4 col-12 border-end  d-none d-md-block">
-                    <div class="pt-10 pe-lg-10">
-                    <!-- nav -->
-                    <ul class="nav flex-column nav-pills nav-pills-dark">
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="account-orders.html">
-                    <i class="feather-icon icon-shopping-bag me-2"></i>Your Orders
-                    </a>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link" href="account-settings.html">
-                    <i class="feather-icon icon-settings me-2"></i>Settings
-                    </a>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link" href="account-address.html">
-                    <i class="feather-icon icon-map-pin me-2"></i>Address
-                    </a>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link" href="account-payment-method.html">
-                    <i class="feather-icon icon-credit-card me-2"></i>Payment Method
-                    </a>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link" href="account-notification.html">
-                    <i class="feather-icon icon-bell me-2"></i>Notification
-                    </a>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <hr>
-                    </li>
-                    <!-- nav item -->
-                    <li class="nav-item">
-                    <a class="nav-link " href="~/index.html"><i class="feather-icon icon-log-out me-2"></i>Log out</a>
-                    </li>
-                    </ul>
-                    </div>
-                    </div> *@
-                    <partial name="_MembershipPartial" />
-                    <div class="col-lg-9 col-md-8 col-12">
+                    @* <partial name="_MembershipPartial" /> *@
+                    @* <div class="col-lg-9 col-md-8 col-12"> *@
+                    <div>
                         <div class="py-6 p-md-6 p-lg-10">
                             <!-- heading -->
                             <div class="d-flex justify-content-between">
@@ -523,6 +50,7 @@
                                             <th>訂單編號</th>
                                             <th>訂單日期</th>
                                             <th>數量</th>
+                                            <th>取餐方式</th>
                                             <th>訂單狀態</th>
                                             <th>訂購總額</th>
                                             <th></th>
@@ -531,8 +59,6 @@
                                     <tbody v-for="item in orders">
                                         <!-- Table body -->
                                         <tr>
-
-
                                             <td class="align-middle border-top-0">
                                                 <a href="#" class="text-inherit">{{item.orderId}}</a>
 
@@ -546,16 +72,22 @@
 
                                             </td>
                                             <td class="align-middle border-top-0">
+                                                {{item.deliveryMethod}}
+
+                                            </td>
+                                            <td class="align-middle border-top-0">
                                                 <template v-if="item.statusId === 1">
                                                     <span class="badge bg-warning">{{item.status}}</span>
                                                 </template>
-                                                <template v-else-if="item.statusId === 2 ||item.statusId === 3 ">
+                                                <template v-else-if="item.statusId === 2">
                                                     <span class="badge bg-info">{{item.status}}</span>
+                                                </template>
+                                                <template v-else-if="item.statusId === 3 ">
+                                                    <span class="badge bg-secondary">{{item.status}}</span>
                                                 </template>
                                                 <template v-else-if="item.statusId === 4">
                                                     <span class="badge bg-primary">{{item.status}}</span>
                                                 </template>
-
                                             </td>
                                             <td class="align-middle border-top-0">
                                                 ${{item.subtotal+item.shippingFee}}
@@ -596,13 +128,14 @@
 
                                                                                 <!-- button -->
                                                                                 <div class="ms-md-3">
-                                                                                    <template v-if="item.statusId === 1">
+                                                                                    <template v-if="item.statusId === 1&&item.orderDuration<=10">
                                                                                         <a v-on:click="confirmCancelOrder(item)" href="#" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" :title="'取消時限: ' + (10-Math.round(item.orderDuration)) + '分鐘'">取消</a>
                                                                                     </template>
-                                                                                    <template v-else>
+                                                                                    <template v-else-if="item.statusId === 3||item.statusId === 4">
                                                                                         <a v-on:click="confirmCompleteOrder(item)" href="#" class="btn btn-success">完成訂單</a>
                                                                                     </template>
-                                                                                    <a href="#" class="btn btn-secondary">下載明細</a>
+                                                                                    @* <a href="#" class="btn btn-secondary" style="margin-left: 3px;">下載明細</a> *@
+                                                                                    <a @@click="downloadOrderDetails(item.orderId)" class="btn btn-secondary" style="margin-left: 3px;">下載明細</a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -621,13 +154,10 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <!-- address -->
-                                                                                <div class="col-lg-4 col-md-4 col-12">
+                                                                                <div class="col-lg-4 col-md-4 col-12" v-if="item.deliveryMethod === '外送'">
                                                                                     <div class="mb-6">
                                                                                         <h6>收件地址</h6>
-                                                                                        <p class="mb-1 lh-lg">
-                                                                                            {{item.address}}
-                                                                                        </p>
-
+                                                                                        <p class="mb-1 lh-lg" style="white-space: normal;">{{item.address}}</p>
                                                                                     </div>
                                                                                 </div>
                                                                                 <!-- address -->
@@ -636,7 +166,8 @@
                                                                                         <h6>訂單資訊</h6>
                                                                                         <p class="mb-1 lh-lg">
                                                                                             訂單編號: <span class="text-dark">{{item.orderId}}</span><br>
-                                                                                            訂購時間: <span class="text-dark">{{item.orderDate}} {{item.orderTime}}</span><br>
+                                                                                            訂購日期: <span class="text-dark">{{item.orderDate}}</span><br>
+                                                                                            訂購時間: <span class="text-dark">{{item.orderTime}}</span><br>
                                                                                             訂單金額: <span class="text-dark">${{item.subtotal+item.shippingFee}}</span>
                                                                                         </p>
                                                                                     </div>
@@ -665,8 +196,8 @@
                                                                                                 <a href="#" class="text-inherit">
                                                                                                     <div class="d-flex align-items-center">
                                                                                                         <div>
-                                                                                                            <img :src="product.photoPath" alt=""
-                                                                                                                 class="icon-shape icon-lg">
+                                                                                                            <img v-if="product.photoPath" :src="product.photoPath" alt="" class="icon-shape icon-lg">
+                                                                                                            <img v-else src="/images/Noimage.png" alt="Default Image" class="icon-shape icon-lg">
                                                                                                         </div>
                                                                                                         <div class="ms-lg-4 mt-2 mt-lg-0">
                                                                                                             <h5 class="mb-0 h6">
@@ -681,95 +212,32 @@
                                                                                             <td>{{product.quantity}}</td>
                                                                                             <td>${{product.total}}</td>
                                                                                         </tr>
-                                                                                        @*                                                                                         <tr>
-                                                                                        <td>
-                                                                                        <a href="#" class="text-inherit">
-                                                                                        <div class="d-flex align-items-center">
-                                                                                        <div>
-                                                                                        <img src="~/assets/images/products/product-img-2.jpg" alt=""
-                                                                                        class="icon-shape icon-lg">
-                                                                                        </div>
-                                                                                        <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                                        <h5 class="mb-0 h6">
-                                                                                        NutriChoice Digestive
-                                                                                        </h5>
-
-                                                                                        </div>
-                                                                                        </div>
-                                                                                        </a>
-                                                                                        </td>
-                                                                                        <td><span class="text-body">$24.0</span></td>
-                                                                                        <td>1</td>
-                                                                                        <td>$24.00</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                        <td>
-                                                                                        <a href="#" class="text-inherit">
-                                                                                        <div class="d-flex align-items-center">
-                                                                                        <div>
-                                                                                        <img src="~/assets/images/products/product-img-3.jpg" alt=""
-                                                                                        class="icon-shape icon-lg">
-                                                                                        </div>
-                                                                                        <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                                        <h5 class="mb-0 h6">
-                                                                                        Cadbury 5 Star Chocolate
-                                                                                        </h5>
-
-                                                                                        </div>
-                                                                                        </div>
-                                                                                        </a>
-                                                                                        </td>
-                                                                                        <td><span class="text-body">$32.0</span></td>
-                                                                                        <td>1</td>
-                                                                                        <td>$32.0</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                        <td>
-                                                                                        <a href="#" class="text-inherit">
-                                                                                        <div class="d-flex align-items-center">
-                                                                                        <div>
-                                                                                        <img src="~/assets/images/products/product-img-4.jpg" alt=""
-                                                                                        class="icon-shape icon-lg">
-                                                                                        </div>
-                                                                                        <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                                        <h5 class="mb-0 h6">
-                                                                                        Onion Flavour Potato
-                                                                                        </h5>
-
-                                                                                        </div>
-                                                                                        </div>
-                                                                                        </a>
-                                                                                        </td>
-                                                                                        <td><span class="text-body">$3.0</span></td>
-                                                                                        <td>2</td>
-                                                                                        <td>$6.0</td>
-                                                                                        </tr>
-                                                                                        *@
-                                                                                        <tr>
-                                                                                            <td class="border-bottom-0 pb-0"></td>
-                                                                                            <td class="border-bottom-0 pb-0"></td>
-                                                                                            <td colspan="1" class="fw-medium text-dark ">
-                                                                                                <!-- text -->
-                                                                                                小計 :
-                                                                                            </td>
-                                                                                            <td class="fw-medium text-dark ">
-                                                                                                <!-- text -->
-                                                                                                ${{item.subtotal}}
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td class="border-bottom-0 pb-0"></td>
-                                                                                            <td class="border-bottom-0 pb-0"></td>
-                                                                                            <td colspan="1" class="fw-medium text-dark ">
-                                                                                                <!-- text -->
-                                                                                                運費
-                                                                                            </td>
-                                                                                            <td class="fw-medium text-dark  ">
-                                                                                                <!-- text -->
-                                                                                                ${{item.shippingFee}}
-                                                                                            </td>
-                                                                                        </tr>
-
+                                                                                        <template v-if="item.deliveryMethod === '外送'">
+                                                                                            <tr>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td colspan="1" class="fw-medium text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    小計
+                                                                                                </td>
+                                                                                                <td class="fw-medium text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    ${{item.subtotal}}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td class="border-bottom-0 pb-0"></td>
+                                                                                                <td colspan="1" class="fw-medium text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    運費
+                                                                                                </td>
+                                                                                                <td class="fw-medium text-dark  ">
+                                                                                                    <!-- text -->
+                                                                                                    ${{item.shippingFee}}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </template>
                                                                                         <tr>
                                                                                             <td></td>
                                                                                             <td></td>
@@ -790,7 +258,7 @@
                                                                     </div>
                                                                     <div class="card-body p-6">
                                                                         <div class="row">
-                                                                            <div class="col-md-3 mb-4 mb-lg-0 ">
+                                                                            <div class="col-md-3 mb-4 mb-lg-0 " v-if="item.paymentDate">
                                                                                 <h6>付款資訊</h6>
                                                                                 <span class="d-block">{{item.paymentMethodＮame}}</span>
                                                                                 <span class="d-block">{{item.paymentDate}} {{item.paymentTime}}</span>
@@ -799,94 +267,16 @@
                                                                                 <h6>外送員: {{item.driverFullName}}</h6>
                                                                                 <a href="#" class="btn btn-success btn-sm">聯繫外送員</a>
                                                                             </div>
-
                                                                         </div>
                                                                     </div>
-
-
-
-
                                                                 </div>
-
                                                             </div>
-
                                                         </div>
                                                         <!-- Order details 終點 -->
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
-
-                                        @*                                         <tr>
-
-                                        <td class="align-middle border-top-0">
-                                        <a href="#" class="text-inherit">
-                                        #14658
-                                        </a>
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        July 9, 2023
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        2
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        <span class="badge bg-success">配送中</span>
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        $45.00
-                                        </td>
-                                        <td class="text-muted align-middle border-top-0">
-                                        <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View"><i class="feather-icon icon-eye"></i></a>
-                                        </td>
-                                        </tr>
-                                        <tr>
-
-                                        <td class="align-middle border-top-0">
-                                        <a href="#" class="text-inherit">
-                                        #13746
-                                        </a>
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        March 5, 2023
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        1
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        <span class="badge bg-success">配送中</span>
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        $12.00
-                                        </td>
-                                        <td class="text-muted align-middle border-top-0">
-                                        <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View"><i class="feather-icon icon-eye"></i></a>
-                                        </td>
-                                        </tr>
-                                        <tr>
-
-                                        <td class="align-middle border-top-0">
-                                        <a href="#" class="text-inherit">
-                                        #13566
-                                        </a>
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        July 9, 2023
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        2
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        <span class="badge bg-danger">取消</span>
-                                        </td>
-                                        <td class="align-middle border-top-0">
-                                        $6.00
-                                        </td>
-                                        <td class="text-muted align-middle border-top-0">
-                                        <a href="#" class="text-inherit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View"><i class="feather-icon icon-eye"></i></a>
-                                        </td>
-                                        </tr>
-                                        *@
                                     </tbody>
                                 </table>
                             </div>
@@ -895,74 +285,21 @@
                 </div>
             </div>
         </section>
-
     </main>
 
-    <!-- modal -->
-
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasAccount" aria-labelledby="offcanvasAccountLabel">
-        <!-- offcanvas header -->
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasAccountLabel">Offcanvas</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <!-- offcanvas body -->
-        <div class="offcanvas-body">
-            <ul class="nav flex-column nav-pills nav-pills-dark">
-                <!-- nav item -->
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="account-orders.html">
-                        <i class="feather-icon icon-shopping-bag me-2"></i>Your Orders
-                    </a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                    <a class="nav-link " href="account-settings.html"><i class="feather-icon icon-settings me-2"></i>Settings</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                    <a class="nav-link" href="account-address.html"><i class="feather-icon icon-map-pin me-2"></i>Address</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                    <a class="nav-link" href="account-payment-method.html">
-                        <i class="feather-icon icon-credit-card me-2"></i>Payment Method
-                    </a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                    <a class="nav-link" href="account-notification.html">
-                        <i class="feather-icon icon-bell me-2"></i>Notification
-                    </a>
-                </li>
-
-            </ul>
-            <hr class="my-6">
-            <div>
-                <!-- nav  -->
-                <ul class="nav flex-column nav-pills nav-pills-dark">
-                    <!-- nav item -->
-                    <li class="nav-item">
-                        <a class="nav-link " href="~/index.html"><i class="feather-icon icon-log-out me-2"></i>Log out</a>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </div>
 
 
     @section Scripts{
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
 
         <script>
-            var baseAddress = "https://localhost:7042";
+            // var baseAddress = "https://localhost:7042";
 
             const orderApp = Vue.createApp({
                 data: function () {
                     return {
                         orders: [],
-                        orderDetails: [],
+                        // orderDetails: [],
                     }
                 },
                 computed: {
@@ -974,20 +311,21 @@
 
                 },
                 methods: {
+                    downloadOrderDetails(orderId) {
+                        window.location.href = `/api/RealTimeOrdersapi/DownloadOrderDetails/${orderId}`;
+                    },
                     confirmCancelOrder(item) {
-                        if (item.orderDuration <= 10) {
+                        const orderDateTime = new Date(item.orderDateTime);
+                        const currentTime = new Date();
+                        const orderDuration = Math.floor((currentTime - orderDateTime) / (1000 * 60));
+                        if (orderDuration <= 10) {
                             if (window.confirm("是否確定取消訂單?")) {
                                 this.cancelOrder(item);
                             }
                         }
                         else {
-                            if (item.deliveryMethod === "自取") {
-                                this.updateOrderStatus(item, 3);
-                            }
-                            else {
-                                this.updateOrderStatus(item, 2);
-                            }
-                            // alert("取消時間已過")
+                            alert("取消時間已過");
+                            item.orderDuration = orderDuration;
                         }
                     },
                     confirmCompleteOrder(item) {
@@ -1000,16 +338,18 @@
                         this.updateOrderStatus(item, 7)
                         item.statusId = 7;
                         this.orders = this.orders.filter(order => order.orderId !== item.orderId);
+                        alert("訂單已取消!")
                     },
                     completeOrder(item) {
                         this.updateOrderStatus(item, 6)
                         item.statusId = 6;
                         this.orders = this.orders.filter(order => order.orderId !== item.orderId);
+                        alert("訂單已完成!")
                     },
                     // **asynchronous nature of the fetch operation**
                     updateOrderStatus(item, newStatusId) {
 
-                        fetch(`${baseAddress}/api/RealTimeOrdersapi/${item.orderId}`, {
+                        fetch(`/api/RealTimeOrdersapi/${item.orderId}`, {
                             method: "PUT",
                             headers: {
                                 "Content-Type": "application/json"
@@ -1032,8 +372,8 @@
                     },
                     getOrder() {
                         let _this = this;
-                        var userId = "U001"
-                        fetch(`${baseAddress}/api/RealTimeOrdersapi/${userId}`, { method: "GET" })
+                        var userId = "U002"
+                        fetch(`/api/RealTimeOrdersapi/${userId}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1054,7 +394,6 @@
             }).mount("#orderApp")
         </script>
 
-
         <!-- Libs JS -->
         <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
         @* <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
@@ -1062,10 +401,7 @@
 
         <!-- Theme JS -->
         <script src="~/assets/js/theme.min.js"></script>
-
     }
-
-
 
 </body>
 
