@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using SiFoodProjectFormal2._0.ViewModels.Stores;
 using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
 using System.Text;
 using System.Security.Cryptography;
+using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
 
 namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 {
@@ -82,13 +82,14 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 byte[] hashBytes = sha256.ComputeHash(passwordBytes);
                 account.PasswordSalt = saltBytes;
                 account.PasswordHash = hashBytes;
+                account.StoreIsAuthenticated = 1;
                 _context.SaveChanges();
                 return "密碼設定成功，請重新登入";
             }
         }
 
         [HttpGet]
-        [Route("/Account/StroeLogout")]
+        [Route("/Account/StoreLogout")]
         public async Task<IActionResult> StoreLogout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

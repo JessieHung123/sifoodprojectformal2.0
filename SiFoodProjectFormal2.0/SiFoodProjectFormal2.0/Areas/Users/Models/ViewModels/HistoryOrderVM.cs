@@ -16,5 +16,9 @@
         //第一個商品照片&名稱
         public string FirstProductPhotoPath { get; set; }
         public string FirstProductName { get; set; }
+
+        //加入OrderDetail
+        public HistoryOrderDetailVM OrderDetails { get; set; }
+
     }
 }
