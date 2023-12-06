@@ -10,19 +10,23 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
     [ApiController]
     public class ProductManageController : ControllerBase
     {
-        string targetStoreId = "S002";
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IStoreIdentityService _storeIdentityService;
 
-        public ProductManageController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
+       public ProductManageController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IStoreIdentityService storeIdentityService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _storeIdentityService = storeIdentityService;
+            string targetStoreId = _storeIdentityService.GetStoreId();
+
         }
 
 
         public async Task<List<ProductManageVM>> GetAll()
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
             return await _context.Products
                 .Include(p => p.Category)
                 .Where(e => e.StoreId == targetStoreId && e.IsDelete==1).Select(x => new ProductManageVM
@@ -45,6 +49,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 
         public async Task<List<ProductManageVM>> Filter(string? text)
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
             var query = _context.Products.Include(p => p.Category).Where(e => e.StoreId == targetStoreId && e.IsDelete ==1);
 
             if (!string.IsNullOrEmpty(text))
@@ -135,6 +140,8 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         [HttpPost]
         public async Task<string> postProduct([FromForm]AddProductVM addProductDTO)
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
+
             Product prodct = new Product
             {
                 StoreId = targetStoreId,
@@ -174,6 +181,8 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         [HttpPut("{id}")]
         public async Task<string> putProduct(int id,[FromForm] PutProductVM putProductVM)
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
+
             if (id != putProductVM.ProductId)
             {
                 return "修改商品失敗!";
