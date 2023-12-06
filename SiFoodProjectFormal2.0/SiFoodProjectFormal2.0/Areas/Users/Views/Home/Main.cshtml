@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css">
     <style>
-
         .highlight {
             color: green !important;
             text-decoration: underline !important;
@@ -57,58 +56,46 @@
                                             <ul class="nav flex-column ms-3">
                                                 <!-- nav item -->
                                                 <li class="nav-item" v-for="(region,regionName) in Object.groupBy(area,z=>z.region)">
-
-                                                    <button class="nav-link" :class="name==selectedSetting.city && regionName==selectedSetting.region?'highlight':''"  v-on:click="selectRegion(name,regionName,$event)">{{regionName}}</button>
-
+                                                    <button class="nav-link" :class="name==selectedSetting.city && regionName==selectedSetting.region?'highlight':''" v-on:click="selectRegion(name,regionName,$event)">{{regionName}}</button>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </li>
-
                             </ul>
                         </div>
                         <div class="mb-8">
                             <!-- title -->
                             <h5 class="mb-3">依種類探索</h5>
-
                             <div class="form-check mb-2" v-for="(condition, index) in showCategory" :key="index">
                                 <!-- input -->
-                                <input :id="condition" class="form-check-input isCheckBox" style="color:#6c757d;border: 2px solid" type="checkbox" :value="condition" v-model="selectedSetting.category">
+                                <input :id="condition" class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" :value="condition" v-model="selectedSetting.category">
                                 <label :for="condition" class="form-check-label" style="color:#6c757d;font-weight: bold">
                                     {{ condition }}
                                 </label>
                             </div>
                         </div>
                         <div class="mb-8">
-
                             <h5 class="mb-3">店家狀態</h5>
-
                             <!-- form check -->
                             <div class="form-check mb-2">
                                 <!-- input -->
-                                <input class="form-check-input isCheckBox" style="color:#6c757d;border: 2px solid" type="checkbox" value="false" v-model="selectedSetting.isStoreActive">
+                                <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" value="false" v-model="selectedSetting.isStoreActive">
                                 <label class="form-check-label" style="color:#6c757d;font-weight: bold">營業中</label>
                             </div>
                             <!-- form check -->
                             <div class="form-check mb-2">
                                 <!-- input -->
-                                <input class="form-check-input isCheckBox" style="color:#6c757d;border: 2px solid" type="checkbox" value="true" v-model="selectedSetting.isRemain">
+                                <input class="form-check-input" style="color:#6c757d;border: 2px solid" type="checkbox" v-model="selectedSetting.isRemain">
                                 <label class="form-check-label" style="color:#6c757d;font-weight: bold">尚有剩食庫存</label>
                             </div>
                         </div>
-
                         <div class="mb-8 position-relative">
                             <h5 class="mb-3">探索你的周遭</h5>
-                            <!-- Banner Design -->
-                            <!-- Banner Content -->
                             <div class="position-absolute p-5 py-8">
-                                <a href="#" class="btn btn-dark">GO<i class="feather-icon icon-arrow-right ms-1"></i></a>
+                                <a asp-controller="Home" asp-action="MapFind" class="btn btn-dark">GO<i class="feather-icon icon-arrow-right ms-1"></i></a>
                             </div>
-                            <!-- Banner Content -->
-                            <!-- Banner Image -->
-                            <!-- img --><img src="~/images/Users/mapsmall.jpg" class="img-fluid rounded " />
-                            <!-- Banner Image -->
+                            <img src="~/images/Users/mapsmall.jpg" class="img-fluid rounded " />
                         </div>
                     </div>
                 </div>
@@ -133,7 +120,7 @@
                                     <div class=" position-absolute top-0 start-0">
                                         <span class="badge bg-danger">庫存:{{item.inventory}}</span>
                                     </div>
-                                    <a href="shop-single.html">
+                                    <a :href="'/Users/Home/Stores/'+item.storeId">
                                         <!-- img --><img :src="item.logoPath" class="mb-3 img-fluid" />
                                     </a>
                                 </div>
@@ -237,23 +224,17 @@
 @section Scripts{
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
-        var baseAddress = "https://localhost:7042";
         var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         const storeApp = Vue.createApp({
             data: function () {
-
                 return {
-
                     stores: [],
                     storeCount: "",
                     selectedSetting: {
                         city: "",
                         region: "",
-                        category:[],
+                        category: [],
                         isStoreActive: false,
                         isRemain: false,
                     },
@@ -267,7 +248,7 @@
             computed: {
                 total() {
                     return Math.ceil(this.showStores.length / this.page.countPerPage);
-                },   
+                },
                 filterCard() {
                     var start = (this.page.pageNumber - 1) * this.page.countPerPage;
                     var end = start + this.page.countPerPage;
@@ -310,14 +291,13 @@
                     let day = now.getDay();
                     let localHours = now.getHours();
                     let localMinutes = now.getMinutes();
-
                     if (day >= 1 && day <= 5) {
                         return stores.filter(s => localHours >= parseInt(s.weekdayOpeningTime.slice(0, 2)) && localMinutes >= 0 && localHours < parseInt(s.weekdayClosingTime.slice(0, 2)) && localMinutes >= 0);
                         // _this.showStore = weekdayopenstores.map(x => ({ ...x, opened: true })); //如果未營業呈現灰暗>還沒做
                     } else {
                         return stores.filter(s => localHours >= parseInt(s.weekendOpeningTime.slice(0, 2)) && localMinutes >= 0 && localHours < parseInt(s.weekendClosingTime.slice(0, 2)) && localMinutes >= 0);
                         // _this.showStore = weekendopenstores.map(x => ({ ...x, opened: true }));
-                    }                    
+                    }
                 },
                 filtercategory(stores) {
                     if (this.selectedSetting.category.length < 1) return stores;
@@ -330,87 +310,82 @@
                 selectRegion(city, region, e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log(region)
+                    //一樣再點一次取消不一樣就換
                     let isBoth = (city == this.selectedSetting.city && region == this.selectedSetting.region);
-                    this.selectedSetting.city = isBoth? "":city;
-                    this.selectedSetting.region = isBoth ? "" : region;                    
+                    this.selectedSetting.city = isBoth ? "" : city;
+                    this.selectedSetting.region = isBoth ? "" : region;
                 },
-
                 getStoreapi() {
                     let _this = this;
-                    fetch(`${baseAddress}/api/Storeapi/Main2`, { method: "GET" })
+                    fetch(`/api/Storeapi/Main2`, { method: "GET" })
                         .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
                             return response.json();
                         })
                         .then(data => {
                             data.forEach(store => {
-                                store.commentRank = store.commentCount > 0 ? store.commentRank / store.commentCount : 0;
+                                store.commentRank = store.commentCount > 0 ? (store.commentRank / store.commentCount).toFixed(2) : 0;
                             });
                             _this.stores = data;
                             _this.getFavoriteStore();
-                        }).catch(error => {
-                            alert(error);
+                        })
+                        .catch(error => {
+                            console.log(error);
                         });
-
                 },
-                getFavoriteStore() {
-                    let _this = this;
-                    if (!isLogin) {return _this.stores = _this.stores.map(store => ({ ...store, noHeart: true }));  }
-
-                    fetch(`${baseAddress}/api/Storeapi/GetFavoriteStoreId`, { method: "GET" })
-                        .then(response => response.json()
-                        )
-                        .then(data => {
-                                _this.stores = _this.stores.map(store => {
-                                    if (data.includes(store.storeId)) { return { ...store, noHeart: false }; }
-                                    else return { ...store, noHeart: true }
-                                });
-                        }).catch(error => { alert(error); });
-                },
-                toggle(storeId) {
-                    let _this = this;
-                    if (isLogin) {
-                        var item = this.stores.find(store => store.storeId === storeId);
-                        if (item.noHeart == false) { this.deleteFavorite(storeId); item.noHeart = !item.noHeart; }//準備被取消
-                        else { this.addToFavorite(storeId); item.noHeart = !item.noHeart; }//準備被收藏
-                    }
-                    else $('#cancel').modal('show');
-                },
-                //加入收藏店家
-                addToFavorite(storeId) {
-                    let favoriteData = {
-                        storeId: storeId,
-                    }
-                    fetch(`${baseAddress}/api/Storeapi/AddToFavorite`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(favoriteData)
-                    }).then(response => {
-                        if (response.ok) {
-                            $('#modalOK').modal('show');
-                        }
+        getFavoriteStore() {
+            let _this = this;
+            if (!isLogin) { return _this.stores = _this.stores.map(store => ({ ...store, noHeart: true })); }
+            fetch(`/api/Storeapi/GetFavoriteStoreId`, { method: "GET" })
+                .then(response => response.json()
+                )
+                .then(data => {
+                    _this.stores = _this.stores.map(store => {
+                        if (data.includes(store.storeId)) { return { ...store, noHeart: false }; }
+                        else return { ...store, noHeart: true }
                     });
-                },
-                //取消收藏
-                deleteFavorite(storeId) {
-                    let favoriteCancel = {
-                        storeId: storeId,
-                    }
-                    fetch(`${baseAddress}/api/Storeapi/DeleteFavorite`, {
-                        method: "DELETE",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(favoriteCancel)
-                    }).then(response => {
-                        if (response.ok) {
-                            $('#modalNotOK').modal('show');
-                        }
-                    });
-                },
+                }).catch(error => { console.log(error); });
+        },
+        toggle(storeId) {
+            let _this = this;
+            if (isLogin) {
+                var item = this.stores.find(store => store.storeId === storeId);
+                if (item.noHeart == false) { this.deleteFavorite(storeId); item.noHeart = !item.noHeart; }//準備被取消
+                else { this.addToFavorite(storeId); item.noHeart = !item.noHeart; }//準備被收藏
             }
-        }).component("paginate", VuejsPaginateNext).mount("#main");
+            else $('#cancel').modal('show');
+        },
+        //加入收藏店家
+        addToFavorite(storeId) {
+            let favoriteData = {
+                storeId: storeId,
+            }
+            fetch(`/api/Storeapi/AddToFavorite`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(favoriteData)
+            }).then(response => {
+                if (response.ok) {
+                    $('#modalOK').modal('show');
+                }
+            });
+        },
+        //取消收藏
+        deleteFavorite(storeId) {
+            let favoriteCancel = {
+                storeId: storeId,
+            }
+            fetch(`/api/Storeapi/DeleteFavorite`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(favoriteCancel)
+            }).then(response => {
+                if (response.ok) {
+                    $('#modalNotOK').modal('show');
+                }
+            });
+        },
+                    }
+                }).component("paginate", VuejsPaginateNext).mount("#main");
     </script>
     <script src="~/slickcdn.min.js"></script>
     <script>
@@ -429,7 +404,6 @@
                     settings: {
                         slidesToShow: 3,
                         slidesToScroll: 3,
-
                     }
                 },
                 {
