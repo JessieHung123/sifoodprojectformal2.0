@@ -1,1062 +1,406 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using SiFoodProjectFormal2._0.Areas.Stores.ViewModels
+@model IEnumerable<storeHistoryOrderVM>
+
+
+<!-- 引用Layout -->
 @{
+    Layout = "_Layout";
 }
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta content="Codescandy" name="author">
-  <title>Order List Dashboard - FreshCart </title>
-<!-- Favicon icon-->
-<link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
+<!-- Title -->
+@{
+    ViewData["Title"] = "歷史訂單";
+}
 
-
-<!-- Libs CSS -->
-<link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-<link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-<link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
+<!-- CSS -->
+@section Styles {
+    <!-- Favicon icon-->
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
 
 
-<!-- Theme CSS -->
-<link rel="stylesheet" href="~/assets/css/theme.min.css">
-<!-- Google tag (gtag.js) -->
+    <!-- Libs CSS -->
+    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
+    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
+
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="~/assets/css/theme.min.css">
+    <link href="~/assets/libs/prismjs/themes/prism-okaidia.min.css" rel="stylesheet" />
+
+    <!--改放大鏡和X顯示問題-->
+    <style>
+        .input-group-append .btn {
+            margin-left: 2px; /* 增加按鈕間的間隔 */
+        }
+
+        .input-group .form-control {
+            padding-right: 2.5rem; /* 確保輸入框內有足夠的空間 */
+        }
+    </style>
+}
 
 
 
-<!-- End Tag -->
-
-</head>
-
-<body>
-
-  <!-- main -->
-  <nav class="navbar navbar-expand-lg navbar-glass">
-    <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center w-100">
-            <div class="d-flex align-items-center">
-
-                <a class="text-inherit d-block d-xl-none me-4" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
-                aria-controls="offcanvasExample">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-text-indent-right" viewBox="0 0 16 16">
-                    <path d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm10.646 2.146a.5.5 0 0 1 .708.708L11.707 8l1.647 1.646a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2zM2 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-                  </svg>
-            </a>
-
-                <form role="search">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-
-                </form>
+<!-- main -->
+<div class="main-wrapper">
+    <!-- main wrapper -->
+    <main class="main-content-wrapper">
+        <div class="container">
+            <!-- row -->
+            <div class="row mb-8">
+                <div class="col-md-12">
+                    <!-- page header -->
+                    <div>
+                        <h1>歷史訂單</h1>
+                        <!-- breacrumb -->
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0 mt-3">
+                                <li class="breadcrumb-item"><a asp-area="Stores" asp-controller="Home" asp-action="Main">店家頁面</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">檢視詳細訂單資料</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
             </div>
-            <div>
-                <ul class="list-unstyled d-flex align-items-center mb-0 ms-5 ms-lg-0">
+            <!-- row -->
+            <div class="row">
+                <div class="col-xl-12 col-12 mb-5">
+                    <!-- card -->
+                    <div class="card h-100 card-lg">
 
-                    <li class="dropdown-center ">
-                        <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-bell fs-5"></i>
-                            <span
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger mt-2 ms-n2">
-                                2
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg p-0 border-0 ">
-                            <div class="border-bottom p-5 d-flex
-              justify-content-between align-items-center">
-              <div>
-                                <h5 class="mb-1">Notifications</h5>
-                                <p class="mb-0 small">You have 2 unread messages</p>
-                            </div>
-                                <a href="#!" class="text-muted">
-                                    <a href="#" class="btn btn-ghost-secondary btn-icon rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Mark all as read">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check2-all text-success" viewBox="0 0 16 16">
-                                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
-                                            <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"/>
-                                          </svg>
-                                        </a>
-                                </a>
-                            </div>
-                            <div data-simplebar style="height: 250px;">
-                                <!-- List group -->
-                                <ul class="list-group list-group-flush notification-list-scroll fs-6">
-                                    <!-- List group item -->
-                                    <li class="list-group-item px-5 py-4 list-group-item-action active">
-                                        <a href="#!" class="text-muted">
-                                            <div class="d-flex">
-                                           <img src="~/assets/images/avatar/avatar-1.jpg" alt="" class="avatar avatar-md rounded-circle ">
-                                           <div class="ms-4">
-                                           <p class="mb-1">
-                                                <span class="text-dark">Your order is placed</span> waiting for shipping
-                                            </p>
-                                           <span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-clock text-muted" viewBox="0 0 16 16">
-                                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-                                          </svg><small class="ms-2">1 minute ago</small></span>
-                                        </div>
+                        <!-- 加入filter -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mx-12 mt-10 d-lg-flex justify-content-around align-items-center">
+                                    <div class="mb-3 mb-lg-0">
+                                        <p class="mb-0">共 <span class="text-dark">@ViewBag.TotalOrdersCount </span> 筆</p>
+                                    </div>
+
+                                    <!-- text搜尋-->
+                                    <!--分開放放大鏡和X-->
+                                    <div class="col-xxl-4 col-lg-4 d-none d-lg-block">
+                                        <form action="@Url.Action("History", "Home")" method="get" id="searchForm">
+                                            <div class="input-group">
+                                                <input class="form-control rounded" name="searchTerm" type="text"
+                                                       placeholder="Search for products" value="@ViewBag.SearchTerm" id="searchInput">
+                                                <span class="input-group-append">
+                                                    <button class="btn bg-white" type="submit" id="searchButton">
+                                                        <!-- 放大鏡SVG -->
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.414-1.415l-3.85-3.85a1.002 1.002 0 0 0-.114-.098zM13 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                                        </svg>
+                                                    </button>
+                                                    <button class="btn bg-white clear-button" type="button" onclick="clearSearch()" id="clearButton" style="display: inline-block;">
+                                                        X
+                                                    </button>
+                                                </span>
                                             </div>
-                                        </a>
+                                        </form>
+                                    </div>
 
+                                    <!-- select option -->
+                                    <form id="orderForm" action="@Url.Action("History", "Home")" method="get">
+                                        <!-- 加入一個隱藏的輸入欄位來保存 searchTerm -->
+                                        <input type="hidden" name="searchTerm" value="@ViewBag.SearchTerm">
+                                        <!-- 顯示筆數選擇 -->
+                                        <select class="form-select" name="pageSize" aria-label="Default select example" onchange="this.form.submit()">
+                                            <option value="" selected>顯示筆數</option>
+                                            <option value="5">顯示: 5</option>
+                                            <option value="10">顯示:10</option>
+                                            <option value="20">顯示:20</option>
+                                            <option value="30">顯示:30</option>
+                                        </select>
+                                    </form>
 
-
-                                    </li>
-                                    <li class="list-group-item  px-5 py-4 list-group-item-action">
-                                        <a href="#!" class="text-muted">
-                                            <div class="d-flex">
-                                           <img src="~/assets/images/avatar/avatar-5.jpg" alt="" class="avatar avatar-md rounded-circle ">
-                                           <div class="ms-4">
-                                           <p class="mb-1">
-                                                <span class="text-dark">Jitu Chauhan </span> answered to your pending order list with notes
-                                            </p>
-                                           <span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-clock text-muted" viewBox="0 0 16 16">
-                                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-                                          </svg><small class="ms-2">2 days ago</small></span>
-                                        </div>
-                                            </div>
-                                        </a>
-
-
-
-                                    </li>
-                                    <li class="list-group-item px-5 py-4 list-group-item-action">
-                                        <a href="#!" class="text-muted">
-                                            <div class="d-flex">
-                                           <img src="~/assets/images/avatar/avatar-2.jpg" alt="" class="avatar avatar-md rounded-circle ">
-                                           <div class="ms-4">
-                                           <p class="mb-1">
-                                                <span class="text-dark">You have new messages</span> 2 unread messages
-                                            </p>
-                                           <span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-clock text-muted" viewBox="0 0 16 16">
-                                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-                                          </svg><small class="ms-2">3 days ago</small></span>
-                                        </div>
-                                            </div>
-                                        </a>
-
-
-
-                                    </li>
-
-                                </ul>
-                            </div>
-                            <div class="border-top px-5 py-4 text-center">
-                                <a href="#!" class=" ">
-                                    View All
-                                </a>
+                                    <!-- Sort顯示 -->
+                                    <div>
+                                        <form method="get" action="@Url.Action("History", "Home")">
+                                            <!-- 保留當前的搜索詞 -->
+                                            <input type="hidden" name="searchTerm" value="@ViewBag.SearchTerm" />
+                                            <!-- Sort選擇 -->
+                                            <select class="form-select" name="sortOption" aria-label="Default select example" onchange="this.form.submit()">
+                                                <option value="=">排序</option>
+                                                <option value="Status">訂單狀態</option>
+                                                <option value="Low to High">金額：由低到高</option>
+                                                <option value="High to Low">金額: 由高到低</option>
+                                                <option value="Newest">訂購日期：由新到舊</option>
+                                                <option value="Oldest">訂購日期：由舊到新</option>
+                                            </select>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-        </li>
-        <li class="dropdown ms-4">
-            <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="~/assets/images/avatar/avatar-1.jpg" alt="" class="avatar avatar-md rounded-circle">
-            </a>
+                        <!-- card body -->
+                        <div class="card-body p-0">
+                            <!-- table responsive -->
+                            <div class="table-responsive">
+                                <!-- Table -->
+                                <div class="mt-10 table-responsive-xxl border-0">
 
-            <div class="dropdown-menu dropdown-menu-end p-0">
+                                    <table class="table mb-0 text-nowrap table-centered ">
+                                        <!-- Table Head -->
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th>明細</th>
+                                                <th>&nbsp;</th>
+                                                <th>商品</th>
+                                                <th>訂單編號</th>
+                                                <th>訂購日期</th>
+                                                <th>件數</th>
+                                                <th>訂單狀態</th>
+                                                <th>金額</th>
 
-
-
-                    <div class="lh-1 px-5 py-4 border-bottom">
-                        <h5 class="mb-1 h6">FreshCart Admin</h5>
-                        <small>admindemo@email.com</small>
-                    </div>
-
-
-
-                <ul class="list-unstyled px-2 py-3">
-
-                    <li>
-                        <a class="dropdown-item" href="#!">
-                           Home
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#!">
-                        Profile
-                        </a>
-
-
-                    </li>
-
-
-                    <li>
-                        <a class="dropdown-item" href="#!">
-
-                           Settings
-                        </a>
-                    </li>
-
-                </ul>
-                <div class="border-top px-5 py-3">
-
-                    <a href="#">Log Out</a>
-                </div>
-
-
-
-            </div>
-
-        </li>
-        </ul>
-
-    </div>
-
-    </div>
-    </div>
-</nav>
-  <div class="main-wrapper">
-    <!-- navbar vertical -->
-    
-            <nav class="navbar-vertical-nav d-none d-xl-block ">
-                <div class="navbar-vertical">
-                                <div class="px-4 py-5">
-                                    <a href="../index.html" class="navbar-brand">
-                                        <img src="~/assets/images/logo/freshcart-logo.svg" alt="">
-                                    </a>
-                                </div>
-                                <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
-                                    <ul class="navbar-nav flex-column" id="sideNavbar">
-
-                                        <li class="nav-item ">
-                                            <a class="nav-link " href="../dashboard/index.html" >
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-house"></i></span>
-                                                    <span class="nav-link-text">Dashboard</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item mt-6 mb-3">
-                                            <span class="nav-label">Store Managements</span></li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link "  href="../dashboard/products.html">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
-                                                    <span class="nav-link-text">Products</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link " href="../dashboard/categories.html">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
-                                                    <span class="nav-link-text">Categories</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link  " href="#"
-                                                data-bs-toggle="collapse" data-bs-target="#navCategoriesOrders" aria-expanded="false"
-                                                aria-controls="navCategoriesOrders">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-bag"></i></span>
-                                                    <span class="nav-link-text">Orders</span>
-                                                </div>
-                                            </a>
-                                            <div id="navCategoriesOrders" class="collapse  show "
-                                                data-bs-parent="#sideNavbar">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item ">
-                                                        <a class="nav-link  active "
-                                                            href="../dashboard/order-list.html">
-                                                            List
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var order in Model)
+                                            {
+                                                <tr>
+                                                    <td class="text-muted align-middle border-top-0">
+                                                        <!-- 觸發模態框的按鈕 -->
+                                                        <a href="#" onclick="loadOrderDetails('@order.OrderId')" type="button" class="text-inherit" 
+                                                            data-bs-toggle="modal" data-bs-placement="top" data-bs-title="View"
+                                                            data-bs-target="#exampleModalScrollable-@order.OrderId-Store">
+                                                            <i class="feather-icon icon-eye"></i>
                                                         </a>
-                                                    </li>
-                                                    <!-- Nav item -->
-                                                    <li class="nav-item ">
-                                                        <a class="nav-link "
-                                                            href="../dashboard/order-single.html">
-                                                            Single
 
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        <li class="nav-item ">
-                                            <a class="nav-link " href="../dashboard/vendor-grid.html">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-shop"></i></span>
-                                                    <span class="nav-link-text">Sellers / Vendors</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link " href="../dashboard/customers.html">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
-                                                    <span class="nav-link-text">Customers</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link " href="../dashboard/reviews.html">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
-                                                    <span class="nav-link-text">Reviews</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                         <!-- Nav item -->
- <li class="nav-item">
-    <a class="nav-link  collapsed " href="#"
-        data-bs-toggle="collapse" data-bs-target="#navMenuLevelFirst" aria-expanded="false"
-        aria-controls="navMenuLevelFirst">
-        <span class="nav-link-icon"><i class=" bi bi-arrow-90deg-down"></i></span>
-        <span class="nav-link-text">Menu Level</span>
-    </a>
-    <div id="navMenuLevelFirst" class="collapse "
-        data-bs-parent="#sideNavbar">
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link " href="#"
-                    data-bs-toggle="collapse" data-bs-target="#navMenuLevelSecond1" aria-expanded="false"
-                    aria-controls="navMenuLevelSecond1">
-                    Two Level
-                </a>
-                <div id="navMenuLevelSecond1" class="collapse" data-bs-parent="#navMenuLevel">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link "
-                                href="#">NavItem 1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link "
-                                href="#">NavItem 2</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link  collapsed  " href="#"
-                    data-bs-toggle="collapse" data-bs-target="#navMenuLevelThreeOne1" aria-expanded="false"
-                    aria-controls="navMenuLevelThreeOne1">
-                    Three Level
-                </a>
-                <div id="navMenuLevelThreeOne1"
-                    class="collapse "
-                    data-bs-parent="#navMenuLevel">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link  collapsed "
-                                href="#" data-bs-toggle="collapse" data-bs-target="#navMenuLevelThreeTwo"
-                                aria-expanded="false" aria-controls="navMenuLevelThreeTwo">
-                                NavItem 1
-                            </a>
-                            <div id="navMenuLevelThreeTwo"
-                                class="collapse collapse "
-                                data-bs-parent="#navMenuLevelThree">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link "
-                                            href="#">
-                                            NavChild Item 1
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="#">Nav
-                                Item 2</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </div>
-</li>
-
-                                        <li class="nav-item mt-6 mb-3">
-                                            <span class="nav-label">Site Settings</span> <span class="badge bg-light-info text-dark-info">Coming Soon</span></li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link disabled" href="#!">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-newspaper"></i></span>
-                                                    <span class="nav-link-text">Blog</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link disabled" href="#!">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-images"></i></span>
-                                                    <span class="nav-link-text">Media</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link disabled" href="#!">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-gear"></i></span>
-                                                    <span class="nav-link-text">Store Settings</span>
-                                                </div>
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item mt-6 mb-3">
-                                            <span class="nav-label">Support</span> <span class="badge bg-light-info text-dark-info">Coming Soon</span></li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link disabled" href="#!">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-headphones"></i></span>
-                                                    <span class="nav-link-text">Support Ticket</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link disabled" href="#">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-question-circle"></i></span>
-                                                    <span class="nav-link-text">Help Center</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link disabled" href="#!">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-infinity"></i></span>
-                                                    <span class="nav-link-text">How FreshCart Works</span>
-                                                </div>
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item mt-6 mb-3">
-                                            <span class="nav-label">Our Apps</span></li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link disabled" href="#!">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-apple"></i></span>
-                                                    <span class="nav-link-text">Apple Store</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link disabled" href="#!">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-icon"> <i class="bi bi-google-play"></i></span>
-                                                    <span class="nav-link-text">Google Play Store</span>
-                                                </div>
-                                            </a>
-                                        </li>
-
-
-                                    </ul>
-                                </div>
-                            </div>
-                            </nav>
-
-                            <nav class="navbar-vertical-nav offcanvas offcanvas-start navbar-offcanvac" tabindex="-1" id="offcanvasExample" >
-                                <div class="navbar-vertical">
-                                                <div class="px-4 py-5 d-flex justify-content-between align-items-center">
-                                                    <a href="../index.html" class="navbar-brand">
-                                                        <img src="~/assets/images/logo/freshcart-logo.svg" alt="">
-                                                    </a>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                                                </div>
-                                                <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
-                                                    <ul class="navbar-nav flex-column">
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link " href="../dashboard/index.html" >
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-house"></i></span>
-                                                                    <span>Dashboard</span>
+                                                        <div class="modal fade gd-example-modal-lg" id="exampleModalScrollable-@order.OrderId-Store" 
+                                                                tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel-@order.OrderId-Store" 
+                                                                aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                                                <div class="modal-content">
+                                                                    <!-- 部分視圖將在這裡動態加載 -->
+                                                                    
                                                                 </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item mt-6 mb-3">
-                                                            <span class="nav-label">Store Managements</span></li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link "  href="../dashboard/products.html">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
-                                                                    <span class="nav-link-text">Products</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link " href="../dashboard/categories.html">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
-                                                                    <span class="nav-link-text">Categories</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link  " href="#"
-                                                                data-bs-toggle="collapse" data-bs-target="#navOrders" aria-expanded="false"
-                                                                aria-controls="navOrders">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-bag"></i></span>
-                                                                    <span class="nav-link-text">Orders</span>
-                                                                </div>
-                                                            </a>
-                                                            <div id="navOrders" class="collapse  show "
-                                                                data-bs-parent="#sideNavbar">
-                                                                <ul class="nav flex-column">
-                                                                    <li class="nav-item ">
-                                                                        <a class="nav-link  active "
-                                                                            href="../dashboard/order-list.html">
-                                                                            List
-                                                                        </a>
-                                                                    </li>
-                                                                    <!-- Nav item -->
-                                                                    <li class="nav-item ">
-                                                                        <a class="nav-link "
-                                                                            href="../dashboard/order-single.html">
-                                                                            Single
-
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
                                                             </div>
-                                                        </li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link " href="../dashboard/vendor-grid.html">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-shop"></i></span>
-                                                                    <span class="nav-link-text">Sellers / Vendors</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link " href="../dashboard/customers.html">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
-                                                                    <span class="nav-link-text">Customers</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link " href="../dashboard/reviews.html">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
-                                                                    <span class="nav-link-text">Reviews</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item mt-6 mb-3">
-                                                            <span class="nav-label">Site Settings</span> <span class="badge bg-light-info text-dark-info">Coming Soon</span></li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link disabled" href="#!">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-newspaper"></i></span>
-                                                                    <span class="nav-link-text">Blog</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link disabled" href="#">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-images"></i></span>
-                                                                    <span class="nav-link-text">Media</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link disabled" href="#!">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-gear"></i></span>
-                                                                    <span class="nav-link-text">Store Settings</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item mt-6 mb-3">
-                                                            <span class="nav-label">Support</span> <span class="badge bg-light-info text-dark-info">Coming Soon</span></li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link disabled" href="#!">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-headphones"></i></span>
-                                                                    <span class="nav-link-text">Support Ticket</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link disabled" href="#">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-question-circle"></i></span>
-                                                                    <span class="nav-link-text">Help Center</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link disabled" href="#!">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-infinity"></i></span>
-                                                                    <span class="nav-link-text">How FreshCart Works</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-
-                                                        <li class="nav-item mt-6 mb-3">
-                                                            <span class="nav-label">Our Apps</span></li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link disabled" href="#!">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-apple"></i></span>
-                                                                    <span class="nav-link-text">Apple Store</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item ">
-                                                            <a class="nav-link disabled" href="#!">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="nav-link-icon"> <i class="bi bi-google-play"></i></span>
-                                                                    <span class="nav-link-text">Google Play Store</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li id="navMenuLevel" class="collapse "
-                                                        data-bs-parent="#sideNavbar">
-                                                        <ul class="nav flex-column">
-                                                            <li class="nav-item">
-                                                                <a class="nav-link " href="#"
-                                                                    data-bs-toggle="collapse" data-bs-target="#navMenuLevelSecond2" aria-expanded="false"
-                                                                    aria-controls="navMenuLevelSecond2">
-                                                                    Two Level
-                                                                </a>
-                                                                <div id="navMenuLevelSecond2" class="collapse" data-bs-parent="#navMenuLevel">
-                                                                    <ul class="nav flex-column">
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link "
-                                                                                href="#">NavItem 1</a>
-                                                                        </li>
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link "
-                                                                                href="#">NavItem 2</a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link  collapsed  " href="#"
-                                                                    data-bs-toggle="collapse" data-bs-target="#navMenuLevelThree2" aria-expanded="false"
-                                                                    aria-controls="navMenuLevelThree2">
-                                                                    Three Level
-                                                                </a>
-                                                                <div id="navMenuLevelThree2"
-                                                                    class="collapse "
-                                                                    data-bs-parent="#navMenuLevel">
-                                                                    <ul class="nav flex-column">
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link  collapsed "
-                                                                                href="#" data-bs-toggle="collapse" data-bs-target="#navMenuLevelThree3"
-                                                                                aria-expanded="false" aria-controls="navMenuLevelThree3">
-                                                                                NavItem 1
-                                                                            </a>
-                                                                            <div id="navMenuLevelThree3"
-                                                                                class="collapse collapse "
-                                                                                data-bs-parent="#navMenuLevelThree">
-                                                                                <ul class="nav flex-column">
-                                                                                    <li class="nav-item">
-                                                                                        <a class="nav-link "
-                                                                                            href="#">
-                                                                                            NavChild Item 1
-                                                                                        </a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link " href="#">Nav
-                                                                                Item 2</a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-
-
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            </nav>
-    
-
-    <!-- main wrapper -->
-    <main class="main-content-wrapper">
-      <div class="container">
-        <!-- row -->
-        <div class="row mb-8">
-          <div class="col-md-12">
-            <!-- page header -->
-            <div>
-              <h2>歷史訂單</h2>
-                <!-- breacrumb -->
-                <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                  <li class="breadcrumb-item"><a href="#">店家頁面</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">檢視詳細訂單資料</li>
-                </ol>
-              </nav>
-
-            </div>
-            
-
-
-
-          </div>
-        </div>
-        <!-- row -->
-        <div class="row">
-          <div class="col-xl-12 col-12 mb-5">
-            <!-- card -->
-            <div class="card h-100 card-lg">
-              <div class=" p-6 ">
-                <div class="row justify-content-between">
-                  <div class="col-md-4 col-12 mb-2 mb-md-0">
-                    <!-- form -->
-                    <form class="d-flex" role="search">
-                      <input class="form-control" type="search" placeholder="關鍵字搜尋" aria-label="Search">
-
-                    </form>
-                  </div>
-                  <div class="col-lg-2 col-md-4 col-12">
-                    <!-- select -->
-                    <select class="form-select">
-                      <option selected>依狀態篩選</option>
-                      <option value="Success">Success</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Cancel">Cancel</option>
-                    </select>
-                  </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle border-top-0 w-0">
+                                                        <a href="#">
+                                                            <img src="@Url.Content($"{order.FirstProductPhotoPath}")" alt="Ecommerce" class="icon-shape icon-xl">
+                                                        </a>
+                                                    </td>
+                                                    <td class="align-middle border-top-0">
+                                                        <a href="#" class="fw-semi-bold text-inherit">
+                                                            <h6 class="mb-0">@order.FirstProductName</h6>
+                                                        </a>
+                                                        @* <span><small class="text-muted">@order.ProductSize</small></span> *@
+                                                    </td>
+                                                    <td class="align-middle border-top-0">
+                                                        <a href="#" class="text-inherit">@order.OrderId</a>
+                                                    </td>
+                                                    <td class="align-middle border-top-0">
+                                                        @order.OrderDate.ToString("yyyy-MM-dd")
+                                                    </td>
+                                                    <td class="align-middle border-top-0">
+                                                        @order.Quantity
+                                                    </td>
+                                                    <td class="align-middle border-top-0">
+                                                        <!--依據不同訂單裝狀態給顏色-->
+                                                        @{
+                                                            string badgeClass = order.Status switch
+                                                            {
+                                                                "已送達" => "badge bg-light-info text-dark-info",
+                                                                "已領取" => "badge bg-light-danger text-dark-danger",
+                                                                "已取消" => "badge bg-light text-dark",
+                                                                "待確認" => "badge bg-warning text-dark",
+                                                                "待配送" => "badge bg-info text-dark",
+                                                                "待領取" => "badge bg-secondary",
+                                                                "配送中" => "badge bg-primary",
+                                                               
+                                                            };
+                                                        }
+                                                        <span class="@badgeClass">@order.Status</span>
+                                                    </td>
+                                                    <td class="align-middle border-top-0">
+                                                        $@order.TotalPrice
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-top d-md-flex justify-content-between align-items-center p-6">
+                         @*    <span>Showing 1 to 8 of 12 entries</span> *@
+                            <nav class="mt-2 mt-md-0">
+                                <ul class="pagination mb-0 ">
+                                    <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
+                                    <li class="page-item"><a class="page-link active" href="#!">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#!">Next</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <!-- card body -->
-              <div class="card-body p-0">
-                <!-- table responsive -->
-                <div class="table-responsive">
-                  <table class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
-                    <thead class="bg-light">
-                      <tr>
-                        <th>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkAll">
-                            <label class="form-check-label" for="checkAll">
-
-                            </label>
-                          </div>
-                        </th>
-                        <th>圖像</th>
-                        <th>訂單編號</th>
-                        <th>訂購人</th>
-                        <th>日期＆時間</th>
-                        <th>付款資訊</th>
-                        <th>狀態</th>
-                        <th>金額</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-
-                        <td>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="orderOne">
-                            <label class="form-check-label" for="orderOne">
-
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <a href="#!"> <img src="~/assets/images/products/product-img-1.jpg" alt=""
-                              class="icon-shape icon-md"></a>
-                        </td>
-                        <td><a href="#" class="text-reset">FC#1007</a></td>
-                        <td>Jennifer Sullivan</td>
-
-                        <td>01 May 2023 (10:12 am)</td>
-                        <td>Paypal</td>
-
-                        <td>
-                          <span class="badge bg-light-primary text-dark-primary">Success</span>
-                        </td>
-                        <td>$12.99</td>
-
-                        <td>
-                          <div class="dropdown">
-                            <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="feather-icon icon-more-vertical fs-5"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-
-                        <td>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="orderTwo">
-                            <label class="form-check-label" for="orderTwo">
-
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <a href="#!"> <img src="~/assets/images/products/product-img-2.jpg" alt=""
-                              class="icon-shape icon-md"></a>
-                        </td>
-                        <td><a href="#" class="text-reset">FC#1006</a></td>
-                        <td>Willie Hanson</td>
-
-                        <td>20 April 2023 (9:20 am)</td>
-                        <td>COD</td>
-
-                        <td>
-                          <span class="badge bg-light-primary text-dark-primary">Success</span>
-                        </td>
-                        <td>$8.19</td>
-
-                        <td>
-                          <div class="dropdown">
-                            <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="feather-icon icon-more-vertical fs-5"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-
-                        <td>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="orderThree">
-                            <label class="form-check-label" for="orderThree">
-
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <a href="#!"> <img src="~/assets/images/products/product-img-3.jpg" alt=""
-                              class="icon-shape icon-md"></a>
-                        </td>
-                        <td><a href="#" class="text-reset">FC#1005</a></td>
-                        <td>Dori Stewart </td>
-
-                        <td>11 March 2023 (7:12 pm)</td>
-                        <td>Paypal</td>
-
-                        <td>
-                          <span class="badge bg-light-warning text-dark-warning">Pending</span>
-                        </td>
-                        <td>$8.19</td>
-
-                        <td>
-                          <div class="dropdown">
-                            <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="feather-icon icon-more-vertical fs-5"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-
-                        <td>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="orderFour">
-                            <label class="form-check-label" for="orderFour">
-
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <a href="#!"> <img src="~/assets/images/products/product-img-4.jpg" alt=""
-                              class="icon-shape icon-md"></a>
-                        </td>
-                        <td><a href="#" class="text-reset">FC#1004</a></td>
-                        <td>Ezekiel Rogerson </td>
-
-                        <td>09 March 2023 (6:23 pm)</td>
-                        <td>Stripe</td>
-
-                        <td>
-                          <span class="badge bg-light-primary text-dark-primary">Success</span>
-                        </td>
-                        <td>$23.11</td>
-
-                        <td>
-                          <div class="dropdown">
-                            <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="feather-icon icon-more-vertical fs-5"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-
-                        <td>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="orderFive">
-                            <label class="form-check-label" for="orderFive">
-
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <a href="#!"> <img src="~/assets/images/products/product-img-5.jpg" alt=""
-                              class="icon-shape icon-md"></a>
-                        </td>
-                        <td><a href="#" class="text-reset">FC#1003</a></td>
-                        <td>Maria Roux </td>
-
-                        <td>18 Feb 2022 (12:20 pm)</td>
-                        <td>COD</td>
-
-                        <td>
-                          <span class="badge bg-light-primary text-dark-primary">Success</span>
-                        </td>
-                        <td>$2.00</td>
-
-                        <td>
-                          <div class="dropdown">
-                            <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="feather-icon icon-more-vertical fs-5"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-
-                        <td>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="orderSix">
-                            <label class="form-check-label" for="orderSix">
-
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <a href="#!"> <img src="~/assets/images/products/product-img-6.jpg" alt=""
-                              class="icon-shape icon-md"></a>
-                        </td>
-                        <td><a href="#" class="text-reset">FC#1002</a></td>
-                        <td>Robert Donald</td>
-
-                        <td>12 Feb 2022 (4:56 pm)</td>
-                        <td>Paypal</td>
-
-                        <td>
-                          <span class="badge bg-light-danger text-dark-danger">Cancel</span>
-                        </td>
-                        <td>$56.00</td>
-
-                        <td>
-                          <div class="dropdown">
-                            <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="feather-icon icon-more-vertical fs-5"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-
-                        <td>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="orderSeven">
-                            <label class="form-check-label" for="orderSeven">
-
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <a href="#!"> <img src="~/assets/images/products/product-img-7.jpg" alt=""
-                              class="icon-shape icon-md"></a>
-                        </td>
-                        <td><a href="#" class="text-reset">FC#1001</a></td>
-                        <td>Diann Watson</td>
-
-                        <td>22 Jan 2023 (1:20 pm)</td>
-                        <td>Paypal</td>
-
-                        <td>
-                          <span class="badge bg-light-primary text-dark-primary">Success</span>
-                        </td>
-                        <td>$23.00</td>
-
-                        <td>
-                          <div class="dropdown">
-                            <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="feather-icon icon-more-vertical fs-5"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="border-top d-md-flex justify-content-between align-items-center p-6">
-                <span>Showing 1 to 8 of 12 entries</span>
-                <nav class="mt-2 mt-md-0">
-                  <ul class="pagination mb-0 ">
-                    <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                    <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                  </ul>
-                </nav>
-              </div>
             </div>
-
-          </div>
-
         </div>
-      </div>
     </main>
+</div>
 
-  </div>
+
+@section Scripts{
+    <!-- Libs JS -->
+    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+
+    <!-- Theme JS -->
+    <script src="~/assets/js/theme.min.js"></script>
+
+    @*
+    <script src="https://cdn.jsdelivr.net/npm/rater-js@1.0.1/index.min.js"></script>
+    <script src="~/assets/libs/rater-js/index.js"></script> *@
+
+    <!--Elly測試改引用Bootstrap-->
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Libs JS -->
+    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+
+    <!-- Javascript 放jQuery後面-->
+    <!-- Theme JS -->
+    <script src="~/assets/js/theme.min.js"></script>
+    <script src="~/assets/libs/prismjs/prism.js"></script>
+    <script src="~/assets/libs/prismjs/components/prism-scss.min.js"></script>
+    <script src="~/assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="~/assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+    <script src="~/assets/js/vendors/sidebarMenu.js"></script>
+
+    <!--Sweet Alert-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        var currentOrderId; // 用於保存當前訂單的ID
+
+        //var submitRatingUrl = '@Url.Action("SubmitRating", "Member")';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Text 搜索
+            var searchInput = document.getElementById('searchInput');
+            var clearButton = document.getElementById('clearButton');
+            if (searchInput && clearButton) {
+                searchInput.addEventListener('input', function () {
+                    clearButton.style.display = this.value.length > 0 ? 'inline-block' : 'none';
+                });
+            }
+
+            // 清除搜索
+            window.clearSearch = function () {
+                if (searchInput) {
+                    searchInput.value = '';
+                    searchInput.dispatchEvent(new Event('input'));
+                }
+                var searchForm = document.getElementById('searchForm');
+                if (searchForm) {
+                    searchForm.submit();
+                }
+            };
+
+            // 顯示筆數下拉選單
+            var pageSizeSelect = document.getElementById('pageSizeSelect');
+            if (pageSizeSelect) {
+                pageSizeSelect.addEventListener('change', function () {
+                    this.form.submit();
+                });
+            }
+
+            // 排序
+            var sortSelect = document.getElementById('sortSelect');
+            if (sortSelect) {
+                sortSelect.addEventListener('change', function () {
+                    var selectedValue = this.value;
+                    var currentUrl = new URL(window.location);
+                    currentUrl.searchParams.set('sortOption', selectedValue);
+                    window.location.href = currentUrl.href;
+                });
+            }
+
+            //嘗試清除Modal殘餘遮罩
+            function clearModalsBackdrop() {
+                var backdrops = document.querySelectorAll('.modal-backdrop');
+                backdrops.forEach(function (backdrop) {
+                    backdrop.remove();
+                });
+            }
+
+            // // 定義初始化 rater-js 的函數
+            // function initializeRater() {
+            //     if (document.querySelector("#rater")) {
+            //         var raterOptions = {
+            //             starSize: 32,
+            //             element: document.querySelector("#rater"),
+            //             rateCallback: function (rating, done) {
+            //                 this.setRating(rating);
+            //                 done();
+            //             }
+            //         };
+            //         new Rater(raterOptions);
+            //     }
+            // }
+
+            // 處理 Modal for Orderdetail
+            window.loadOrderDetails = function (orderId) {
+                currentOrderId = orderId; // 保存當前訂單ID
+
+                //偵錯:查orderID
+                console.log("載入訂單詳情，訂單 ID:", orderId);
+
+                // 構建正確的模態框 ID
+                var modalId = 'exampleModalScrollable-' + orderId+'-Store';
+
+                //偵錯:查modalId
+                console.log("模態框 ID:", modalId);
+
+                // 獲取模態框元素
+                var modalElement = document.getElementById(modalId);
+
+                // 使用 Fetch API 向後端發送請求
+                fetch('@Url.Action("GetOrderDetails", "Home")?orderId=' + orderId)
+                    .then(response => response.text())
+                    .then(response => {
+                        // 確保模態框元素存在
+                        if (modalElement) {
+                            // 將返回的視圖填充到模態框中
+                            modalElement.querySelector('.modal-content').innerHTML = response;
+
+                            // 初始化並顯示模態框
+                            var myModal = new bootstrap.Modal(modalElement);
+                            myModal.show();
 
 
-  <!-- Libs JS -->
-<script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-<script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+                            // 添加 hidden.bs.modal 事件監聽器
+                            modalElement.addEventListener('hidden.bs.modal', function () {
+                                clearModalsBackdrop();
+                            });
 
-<!-- Theme JS -->
-<script src="~/assets/js/theme.min.js"></script>
+                            
+                        }
+                    })
+                    .catch(err => {
+                        // 處理錯誤情況
+                        console.error("發生錯誤: ", err);
+                    });
+            };
 
-</body>
+         
 
-</html>
+            // 綁定 loadOrderDetails 事件
+            var elements = document.querySelectorAll('[data-order-id]');
+            elements.forEach(function (element) {
+                element.addEventListener('click', function () {
+                    var orderId = this.getAttribute('data-order-id');
+                    loadOrderDetails(orderId);
+                });
+            });
+        });
+    </script>
+
+}

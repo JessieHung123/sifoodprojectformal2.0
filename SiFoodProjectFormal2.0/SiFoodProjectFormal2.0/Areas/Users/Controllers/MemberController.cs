@@ -3,6 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
+using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
+using System.Data.SqlTypes;
+using System.Text;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Routing;
+using SiFoodProjectFormal2._0;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -10,10 +16,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
     public class MemberController : Controller
     {
         Sifood3Context _context;
+        private readonly IUserIdentityService _userIdentityService;
 
-        public MemberController(Sifood3Context context)
+        public MemberController(Sifood3Context context, IUserIdentityService userIdentityService)
         {
             _context = context;
+            _userIdentityService = userIdentityService;
         }
 
 
@@ -26,7 +34,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             //    return NotFound();
             //}
 
-            var loginuserId = "U002";
+            // var loginuserId = "U002";
+            var loginuserId = _userIdentityService.GetUserId();
+
             //先測試寫死ID，之後要改成取當前登入者的資料
             var user = await _context.Users.Where(u => u.UserId == loginuserId).SingleAsync();
 
@@ -41,6 +51,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     UserPhone = user.UserPhone,
                     UserBirthDate = user.UserBirthDate
                 };
+                ViewBag.ID = loginuserId;
 
                 return View(viewModel);
             }
@@ -53,16 +64,19 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //11/23新版
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Profile(string id, [Bind("UserName,UserEmail,UserPhone,UserBirthDate")] ProfileVM profileViewModel)
         {
             //if (ModelState.IsValid)
             //{
-
-            var loginuserId = "U002";
-            var userToUpdate = await _context.Users.FindAsync(loginuserId);
+            // 取得當前用戶
+            
+            var userToUpdate = await _context.Users.FindAsync(id);
             if (userToUpdate == null)
             {
-                return NotFound();
+                // 處理找不到用戶的情況
+                ModelState.AddModelError("", "無法找到用戶資料。");
+                return RedirectToAction("Main", "Home");
             }
 
             // 更新用戶數據
@@ -76,59 +90,43 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Profile));
 
-
-            return View(profileViewModel);
         }
-
-
-
-
-
-
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        //[Route("/Member/ChangePassword")]
-        public async Task<IActionResult> ChangePassword(ProfileVM model)
+        [Route("/Member/ChangePassword")]
+        public string ChangePassword([FromBody]UserPwdChange model) 
         {
-            // 驗證模型
-            if (!ModelState.IsValid)
+            User? user = _context.Users.Where(x => x.UserEmail == model.UserEmail).FirstOrDefault();
+
+            SHA256 sha256 = SHA256.Create();
+            byte[] passwordBytes = Encoding.ASCII.GetBytes($"{model?.OldPassword}{user?.UserPasswordSalt}");
+            byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+
+            if (user != null)
             {
-                // 處理模型驗證錯誤
-                return View("Profile", model);
+                if (Enumerable.SequenceEqual(hashBytes, user.UserPasswordHash))
+                {
+                    byte[] saltBytes = new byte[8];
+                    using (RandomNumberGenerator ran = RandomNumberGenerator.Create())
+                    {
+                        ran.GetBytes(saltBytes);
+                    }
+                    user.UserPasswordSalt = saltBytes;
+                    byte[] NewPasswordBytes = Encoding.ASCII.GetBytes($"{model?.NewPassword}{saltBytes}");
+                    byte[] NewHashBytes = sha256.ComputeHash(NewPasswordBytes);
+                    user.UserPasswordHash = NewHashBytes;
+                    _context.SaveChanges();
+                    return "密碼修改成功";
+                }
+                else
+                {
+                    return "新密碼與舊密碼不符";
+                }
             }
 
-            // 取得當前用戶
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserEmail == User.Identity.Name);
+            return "找不到此使用者";
 
-            if (user == null)
-            {
-                // 處理找不到用戶的情況
-                ModelState.AddModelError("", "無法找到用戶資料。");
-                return View("Profile", model);
-            }
-
-            // 驗證當前密碼
-            //bool validPassword = PasswordHelper.VerifyPassword(model.CurrentPassword, user.UserPasswordHash, user.UserPasswordSalt);
-            //if (!validPassword)
-            //{
-            //    ModelState.AddModelError("CurrentPassword", "當前密碼不正確");
-            //    return View("Profile", model);
-            //}
-
-            // 更新用戶的密碼
-            //(user.UserPasswordHash, user.UserPasswordSalt) = PasswordHelper.CreatePasswordHash(model.NewPassword);
-
-            //_context.Users.Update(user);
-            //await _context.SaveChangesAsync();
-
-            // 密碼更新成功後，你可能想要重導向用戶到個人資料頁面，或顯示一個成功消息
-            //TempData["SuccessMessage"] = "密碼更新成功";
-           return RedirectToAction("Profile");
         }
-
-
-
 
         public IActionResult Products()
         {

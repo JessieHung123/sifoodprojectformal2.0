@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -64,12 +65,127 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             return View();
         }
-        //[Route("History")]
-        public IActionResult History()
+
+
+        //=========歷史訂單========//
+        public IActionResult History(string searchTerm = null, string sortOption = "Status", int pageSize = 20)
+
         {
-            return View();
+            // 假定的用戶ID，之後需要替換為當前登入用戶的ID
+            var loginuserId = "S001";
+
+            IQueryable<Order> historyOrdersQuery = _context.Orders
+                // 添加這行以過濾該用戶的訂單
+                .Where(o => o.StoreId == loginuserId)
+
+            .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+            .Include(o => o.Status);
+
+            // 應用關鍵字過濾
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                historyOrdersQuery = historyOrdersQuery.Where(o =>
+                    o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)));
+            }
+
+            //保持搜尋關鍵字在搜尋欄
+            ViewBag.SearchTerm = searchTerm;
+
+            //計算總訂單數
+            var totalOrdersCount = historyOrdersQuery.Count();
+            ViewBag.TotalOrdersCount = totalOrdersCount;
+
+
+            // Sort排序
+            switch (sortOption)
+            {
+                case "Status":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.Status.StatusName);
+                    break;
+                case "Low to High":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o =>
+                        _context.OrderDetails
+                        .Where(od => od.OrderId == o.OrderId)
+                        .Sum(od => od.Quantity * od.Product.UnitPrice) +
+                        (o.ShippingFee));
+                    break;
+                case "High to Low":
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o =>
+                        _context.OrderDetails
+                        .Where(od => od.OrderId == o.OrderId)
+                        .Sum(od => od.Quantity * od.Product.UnitPrice) +
+                        (o.ShippingFee));
+                    break;
+                case "Newest":
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.OrderDate);
+                    break;
+                case "Oldest":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.OrderDate);
+                    break;
+                default:
+                    // 默認排序：按訂購日期由新到舊排序
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.OrderDate);
+                    break;
+            }
+
+            // 在過濾後的結果上應用分頁
+            var historyOrders = historyOrdersQuery
+                .Take(pageSize)
+                .Select(o => new storeHistoryOrderVM
+                {
+                    // ViewModel的初始化
+                    StoreId = o.StoreId,
+                    OrderId = o.OrderId,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status.StatusName,
+                    Quantity = o.OrderDetails.Sum(od => od.Quantity),
+                    TotalPrice = Convert.ToInt32(_context.OrderDetails
+                                                    .Where(od => od.OrderId == o.OrderId)
+                                                    .Sum(od => od.Quantity * od.Product.UnitPrice) +
+                                                    o.ShippingFee),
+                    FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
+                    FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
+                }).ToList();
+
+            return View(historyOrders);
         }
-        [Route("ProductManage")]
+
+        //訂單明細方法GetOrderDetails
+        public async Task<IActionResult> GetOrderDetails(string orderId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+               
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var historyOrderDetailsVM = new storeHistoryOrderDetailVM
+            {
+                OrderId = order.OrderId,
+                OrderDate = order.OrderDate,
+                ShippingFee = Convert.ToInt32(order.ShippingFee),
+                DeliveryMethod=order.DeliveryMethod,
+                UserName=order.User.UserName,
+                UserPhone=order.User.UserPhone,
+
+                Items = order.OrderDetails.Select(od => new storeHistoryOrderDetailItemVM
+                {
+                    PhotoPath = od.Product.PhotoPath,
+                    ProductName = od.Product.ProductName,
+                    UnitPrice = Convert.ToInt32(od.Product.UnitPrice),
+                    Quantity = od.Quantity,
+                }).ToList(),
+            };
+
+            return PartialView("_OrderDetailPartialS", historyOrderDetailsVM);
+        }
+
         public IActionResult ProductManage()
         {
             return View();
