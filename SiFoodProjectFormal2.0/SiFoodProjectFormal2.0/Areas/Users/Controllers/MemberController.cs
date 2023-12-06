@@ -3,6 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
+using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
+using System.Data.SqlTypes;
+using System.Text;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Routing;
+using SiFoodProjectFormal2._0;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -10,16 +16,17 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
     public class MemberController : Controller
     {
         Sifood3Context _context;
+        private readonly IUserIdentityService _userIdentityService;
 
-        public MemberController(Sifood3Context context)
+        public MemberController(Sifood3Context context, IUserIdentityService userIdentityService)
         {
             _context = context;
+            _userIdentityService = userIdentityService;
         }
 
 
         //11/23新版
         [HttpGet]
-        [Route("/Member/Profile")]
         public async Task<IActionResult> Profile()
         {
             //if (id == null || _context.Users == null)
@@ -27,7 +34,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             //    return NotFound();
             //}
 
-            var loginuserId = "U002";
+            // var loginuserId = "U002";
+            var loginuserId = _userIdentityService.GetUserId();
+
             //先測試寫死ID，之後要改成取當前登入者的資料
             var user = await _context.Users.Where(u => u.UserId == loginuserId).SingleAsync();
 
@@ -42,6 +51,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     UserPhone = user.UserPhone,
                     UserBirthDate = user.UserBirthDate
                 };
+                ViewBag.ID = loginuserId;
 
                 return View(viewModel);
             }
@@ -54,16 +64,19 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         //11/23新版
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Profile(string id, [Bind("UserName,UserEmail,UserPhone,UserBirthDate")] ProfileVM profileViewModel)
         {
             //if (ModelState.IsValid)
             //{
-
-            var loginuserId = "U002";
-            var userToUpdate = await _context.Users.FindAsync(loginuserId);
+            // 取得當前用戶
+            
+            var userToUpdate = await _context.Users.FindAsync(id);
             if (userToUpdate == null)
             {
-                return NotFound();
+                // 處理找不到用戶的情況
+                ModelState.AddModelError("", "無法找到用戶資料。");
+                return RedirectToAction("Main", "Home");
             }
 
             // 更新用戶數據
@@ -77,59 +90,43 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Profile));
 
-
-            return View(profileViewModel);
         }
-
-
-
-
-
-
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        //[Route("/Member/ChangePassword")]
-        public async Task<IActionResult> ChangePassword(ProfileVM model)
+        [Route("/Member/ChangePassword")]
+        public string ChangePassword([FromBody]UserPwdChange model) 
         {
-            // 驗證模型
-            if (!ModelState.IsValid)
+            User? user = _context.Users.Where(x => x.UserEmail == model.UserEmail).FirstOrDefault();
+
+            SHA256 sha256 = SHA256.Create();
+            byte[] passwordBytes = Encoding.ASCII.GetBytes($"{model?.OldPassword}{user?.UserPasswordSalt}");
+            byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+
+            if (user != null)
             {
-                // 處理模型驗證錯誤
-                return View("Profile", model);
+                if (Enumerable.SequenceEqual(hashBytes, user.UserPasswordHash))
+                {
+                    byte[] saltBytes = new byte[8];
+                    using (RandomNumberGenerator ran = RandomNumberGenerator.Create())
+                    {
+                        ran.GetBytes(saltBytes);
+                    }
+                    user.UserPasswordSalt = saltBytes;
+                    byte[] NewPasswordBytes = Encoding.ASCII.GetBytes($"{model?.NewPassword}{saltBytes}");
+                    byte[] NewHashBytes = sha256.ComputeHash(NewPasswordBytes);
+                    user.UserPasswordHash = NewHashBytes;
+                    _context.SaveChanges();
+                    return "密碼修改成功";
+                }
+                else
+                {
+                    return "新密碼與舊密碼不符";
+                }
             }
 
-            // 取得當前用戶
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserEmail == User.Identity.Name);
+            return "找不到此使用者";
 
-            if (user == null)
-            {
-                // 處理找不到用戶的情況
-                ModelState.AddModelError("", "無法找到用戶資料。");
-                return View("Profile", model);
-            }
-
-            // 驗證當前密碼
-            //bool validPassword = PasswordHelper.VerifyPassword(model.CurrentPassword, user.UserPasswordHash, user.UserPasswordSalt);
-            //if (!validPassword)
-            //{
-            //    ModelState.AddModelError("CurrentPassword", "當前密碼不正確");
-            //    return View("Profile", model);
-            //}
-
-            // 更新用戶的密碼
-            //(user.UserPasswordHash, user.UserPasswordSalt) = PasswordHelper.CreatePasswordHash(model.NewPassword);
-
-            //_context.Users.Update(user);
-            //await _context.SaveChangesAsync();
-
-            // 密碼更新成功後，你可能想要重導向用戶到個人資料頁面，或顯示一個成功消息
-            TempData["SuccessMessage"] = "密碼更新成功";
-            return RedirectToAction("Profile");
         }
-
-
-
 
         public IActionResult Products()
         {
@@ -140,48 +137,149 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return View();
         }
 
-
-        public IActionResult HistoryOrders(string searchTerm = null, int pageSize = 20)
+        //=========歷史訂單========//
+        public IActionResult HistoryOrders(string searchTerm = null, string sortOption = "Status" ,int pageSize = 20)
         {
-            IQueryable<Order> historyOrdersQuery = _context.Orders
-                .Include(o => o.OrderDetails)
-                    .ThenInclude(od => od.Product)
-                .Include(o => o.Status);
+            // 假定的用戶ID，之後需要替換為當前登入用戶的ID
+            var loginuserId = "U001";
 
-            //關鍵字搜尋
+            IQueryable<Order> historyOrdersQuery = _context.Orders
+                // 添加這行以過濾該用戶的訂單
+                .Where(o => o.UserId == loginuserId)
+
+            .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+            .Include(o => o.Status);
+
+            // 應用關鍵字過濾
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 historyOrdersQuery = historyOrdersQuery.Where(o =>
                     o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)));
             }
+                        
+            //保持搜尋關鍵字在搜尋欄
+            ViewBag.SearchTerm = searchTerm;
 
-            // 計算總訂單數
+            //計算總訂單數
             var totalOrdersCount = historyOrdersQuery.Count();
-
-            // 將總訂單數傳遞給視圖
             ViewBag.TotalOrdersCount = totalOrdersCount;
 
-            //下拉控制顯示筆數
-            var historyOrders = historyOrdersQuery
 
-            // 使用 pageSize 來限制返回的結果數量
-            .Take(pageSize)
-            .Select(o => new HistoryOrderVM
+            // Sort排序
+            switch (sortOption)
             {
-                StoreId = o.StoreId,
-                OrderId = o.OrderId,
-                OrderDate = o.OrderDate,
-                Status = o.Status.StatusName,
-                Quantity = o.OrderDetails.Sum(od => od.Quantity),
-                TotalPrice = o.TotalPrice ?? 0,
-                FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
-                FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
-            }).ToList();
+                case "Status":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.Status.StatusName);
+                    break;
+                case "Low to High":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.TotalPrice);
+                    break;
+                case "High to Low":
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.TotalPrice);
+                    break;
+                case "Newest":
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.OrderDate);
+                    break;
+                case "Oldest":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.OrderDate);
+                    break;
+                default:
+                    // 默認排序：按訂購日期由新到舊排序
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.OrderDate);
+                    break;
+            }
+
+            // 在過濾後的結果上應用分頁
+            var historyOrders = historyOrdersQuery
+                .Take(pageSize)
+                .Select(o => new HistoryOrderVM
+                {
+                    // ViewModel的初始化
+                    StoreId = o.StoreId,
+                    OrderId = o.OrderId,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status.StatusName,
+                    Quantity = o.OrderDetails.Sum(od => od.Quantity),
+                    TotalPrice = Convert.ToInt32(_context.OrderDetails
+                                                    .Where(od => od.OrderId == o.OrderId)
+                                                    .Sum(od => od.Quantity * od.Product.UnitPrice) +
+                                                    o.ShippingFee),
+                    FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
+                    FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
+                }).ToList();
 
             return View(historyOrders);
         }
 
-        [Route("/Member/Favorite")]
+        //訂單明細方法GetOrderDetails
+        public async Task<IActionResult> GetOrderDetails(string orderId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .Include(o => o.Comment) // 假設 Order 包含多個 Comment
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var historyOrderDetailsVM = new HistoryOrderDetailVM
+            {
+                OrderId = order.OrderId,
+                OrderDate = order.OrderDate,
+                ShippingFee = order.ShippingFee,
+                DeliveryMethod = order.DeliveryMethod,
+
+                Items = order.OrderDetails.Select(od => new HistoryOrderDetailItemVM
+                {
+                    PhotoPath = od.Product.PhotoPath,
+                    ProductName = od.Product.ProductName,
+                    UnitPrice = Convert.ToInt32(od.Product.UnitPrice),
+                    Quantity = od.Quantity
+                }).ToList(),
+
+                CommentRank = order.Comment.CommentRank, 
+                CommentContents = order.Comment.Contents 
+            };
+
+            return PartialView("_OrderDetailPartial", historyOrderDetailsVM);
+        }
+
+
+        //送出評論
+        [HttpPost]
+        public async Task<IActionResult> SubmitRating(string orderId, int rating, string comment)
+        {
+            // 查找訂單
+            var order = await _context.Orders.Include(o => o.Comment).FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // 處理評價和評論
+            if (order.Comment == null)
+            {
+                order.Comment = new Comment { CommentRank = (short)rating, Contents = comment };
+            }
+            else
+            {
+                order.Comment.CommentRank = (short)rating;
+                order.Comment.Contents = comment;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "評價提交成功" });
+        }
+
+
+
+        //=========收藏店家========//  
         public async Task<IActionResult> Favorite()
         {
             // var userId = "當前用戶的ID"; // 從用戶會話或身份驗證系統獲取
@@ -238,7 +336,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return RedirectToAction("Favorite");
         }
 
-        [Route("/Member/Address")]
+
         public IActionResult Address()
         {
             return View();

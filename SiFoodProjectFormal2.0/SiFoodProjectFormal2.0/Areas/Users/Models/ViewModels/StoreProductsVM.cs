@@ -28,6 +28,8 @@
 
         public string? WeekendOpeningTime { get; set; }
 
+        public bool OpenForBusiness { get; set; }
+
         public Array? CategoryList { get; set; }
 
         public IEnumerable<ProductsVM> Products { get; set; }
