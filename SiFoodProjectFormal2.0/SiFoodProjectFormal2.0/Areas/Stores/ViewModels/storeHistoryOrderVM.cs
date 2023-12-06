@@ -1,6 +1,6 @@
-﻿namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
+﻿namespace SiFoodProjectFormal2._0.Areas.Stores.ViewModels
 {
-    public class HistoryOrderVM
+    public class storeHistoryOrderVM
     {
         public string StoreId { get; set; }
         public string OrderId { get; set; }
@@ -18,7 +18,7 @@
         public string FirstProductName { get; set; }
 
         //加入OrderDetail
-        public HistoryOrderDetailVM OrderDetails { get; set; }
+        public storeHistoryOrderDetailVM OrderDetails { get; set; }
 
     }
 }

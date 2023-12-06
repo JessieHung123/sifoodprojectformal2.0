@@ -98,7 +98,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
 
-        //儲存照片專用方法
+        //儲存照片專用方法SavePhoto()
         private async Task<string> SavePhoto(IFormFile photo, string folderName)
         {
             if (photo != null)
@@ -116,8 +116,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             return null;
         }
-
-
 
 
         public IActionResult MemberShip()
@@ -146,13 +144,15 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             ViewBag.ProductList = ProductList;
             List<ProductVM> cookieProduct = new List<ProductVM>();
-            
-            if (ProductList != null) { 
-                foreach (var productid in ProductList) {
+
+            if (ProductList != null)
+            {
+                foreach (var productid in ProductList)
+                {
                     var c = _context.Products.Where(p => p.ProductId == int.Parse(productid));
                     ProductVM VM = new ProductVM
                     {
-                        ProductId=c.Select(p => p.ProductId).Single(), 
+                        ProductId = c.Select(p => p.ProductId).Single(),
                         ProductName = c.Select(p => p.ProductName).Single(),
                         StoreName = c.Include(p => p.Store).Select(p => p.Store.StoreName).Single(),
                         PhotoPath = c.Select(p => p.PhotoPath).Single(),
@@ -160,7 +160,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     };
                     cookieProduct.Add(VM);
                 }
-                ViewBag.CookieProduct = cookieProduct; 
+                ViewBag.CookieProduct = cookieProduct;
             }
             return View();
         }
@@ -168,7 +168,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             string? ProductCookieValue = Request.Cookies["Records"];
             List<string> ProductList = new List<string>();
-            if (ProductCookieValue != null && ProductCookieValue!="")
+            if (ProductCookieValue != null && ProductCookieValue != "")
             {
                 ProductList.AddRange(ProductCookieValue.Split(','));
             }
@@ -188,10 +188,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             return View();
         }
-       
-        
+
+
     }
 }
- 
 
-   
+
