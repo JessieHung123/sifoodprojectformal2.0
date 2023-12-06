@@ -172,7 +172,7 @@
                 startSeach() {
                     let _this = this;
                     console.log(`Search Text: ${_this.searchText}`);
-                    fetch(`${baseAddress}/api/Review/Filter?text=${_this.searchText}`)
+                    fetch(`${baseAddress}/api/Reviewapi/Filter?text=${_this.searchText}`)
                         .then(response => response.json())
                         .then(data => _this.ReviewInfo = data)
                         .catch(error => alert(error));
@@ -180,7 +180,7 @@
                 selectStars() {
                     let _this = this;
                     console.log(`Star Number: ${_this.starNum}`);
-                    fetch(`${baseAddress}/api/Review/SelectStars?num=${_this.starNum}`)
+                    fetch(`${baseAddress}/api/Reviewapi/SelectStars?num=${_this.starNum}`)
                         .then(response => response.json())
                         .then(data => _this.ReviewInfo = data)
                         .catch(error => alert(error));
@@ -188,7 +188,7 @@
 
                 getReviewAPI: function () {
                     let _this = this;
-                    fetch(`${baseAddress}/api/Review/getAll`)
+                    fetch(`${baseAddress}/api/Reviewapi/getAll`)
                         .then(response => response.json())
                         .then(data => _this.ReviewInfo = data)
                         .catch(error => alert(error));

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 
@@ -12,7 +13,6 @@ namespace sifoodprojectformal2._0.Areas.Admin.Controllers
         {
             _context = context;
         }
-     
         public IActionResult OrderManage()
         {
             return View();

@@ -334,11 +334,7 @@
                         .then(data => {
                             this.carts = data;
                             this.cartCount = this.carts.length > 0 ? this.carts.length : 0;
-
-                            console.log("Successfully retrieved cart data:", this.carts);
-                        }).catch(error => {
-                            alert("請先登入");
-                        });
+                        })
                 },
                 async clickMinus(item) {
                     item.quantity = item.quantity <= 1 ? item.quantity = 1 : item.quantity - 1;
@@ -390,7 +386,7 @@
                     }).then(response => {
                         if (response.ok) {
                             setTimeout(() => {
-                                window.location.reload();
+                                window.location.href="/Users/Home/Main"
                             }, 1000);
                         }
                     }).catch(error => alert("發生錯誤"));

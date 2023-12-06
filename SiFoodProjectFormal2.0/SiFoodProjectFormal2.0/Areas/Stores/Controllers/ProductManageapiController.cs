@@ -19,8 +19,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
             _storeIdentityService = storeIdentityService;
-            string targetStoreId = _storeIdentityService.GetStoreId();
-
         }
 
 

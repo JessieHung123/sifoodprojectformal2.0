@@ -9,9 +9,11 @@ using System.Text;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Routing;
 using SiFoodProjectFormal2._0;
+using Microsoft.AspNetCore.Authorization;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
+    
     [Area("Users")]
     public class MemberController : Controller
     {
@@ -24,7 +26,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             _userIdentityService = userIdentityService;
         }
 
-
+        [Authorize]
         //11/23新版
         [HttpGet]
         public async Task<IActionResult> Profile()
@@ -63,8 +65,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         //11/23新版
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        
         public async Task<IActionResult> Profile(string id, [Bind("UserName,UserEmail,UserPhone,UserBirthDate")] ProfileVM profileViewModel)
         {
             //if (ModelState.IsValid)
@@ -89,7 +89,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Profile));
-
+            
         }
 
         [HttpPost]
@@ -127,15 +127,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return "找不到此使用者";
 
         }
-
-        public IActionResult Products()
-        {
-            return View();
-        }
-        public IActionResult RealTimeOrders()
-        {
-            return View();
-        }
+        
 
         //=========歷史訂單========//
         public IActionResult HistoryOrders(string searchTerm = null, string sortOption = "Status" ,int pageSize = 20)
@@ -211,7 +203,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             return View(historyOrders);
         }
-
+        [Authorize]
         //訂單明細方法GetOrderDetails
         public async Task<IActionResult> GetOrderDetails(string orderId)
         {
@@ -278,7 +270,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
 
-
+        [Authorize]
         //=========收藏店家========//  
         public async Task<IActionResult> Favorite()
         {
@@ -335,7 +327,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return RedirectToAction("Favorite");
         }
 
-
+        [Authorize]
         public IActionResult Address()
         {
             return View();

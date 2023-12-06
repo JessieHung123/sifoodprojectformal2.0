@@ -269,7 +269,7 @@
                     form.append("PhotoImageFile2", document.querySelector("#updateFile3").files[0]);
                     form.append("PhotoImageFile3", document.querySelector("#updateFile4").files[0]);
                     console.log(Object.fromEntries(form.entries()));
-                    fetch(`/api/InfoModify/PutInfoModify/${_this.ModifyInfo.storeId}`, { method: "Put", body: form })
+                    fetch(`/api/InfoModifyapi/PutInfoModify/${_this.ModifyInfo.storeId}`, { method: "Put", body: form })
                         .then(response => {
                             if (response.ok) {
                                 return response.text(); // 將回傳結果轉為文字
@@ -294,7 +294,7 @@
                 },
                 getModifyAPI: function () {
                     let _this = this; /* test */
-                    var uri = `/api/InfoModify/GetAll`;
+                    var uri = `/api/InfoModifyapi/GetAll`;
                     fetch(uri, { method: "GET" })
                         .then(response => {
                             if (response.ok) {

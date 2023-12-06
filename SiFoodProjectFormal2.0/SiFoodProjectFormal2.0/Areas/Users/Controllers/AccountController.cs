@@ -45,6 +45,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     Byte[] RealPasswordHash = Sha256.ComputeHash(RealPasswordBytes);
                     if (Enumerable.SequenceEqual(RealPasswordHash, EmailAccount.UserPasswordHash))
                     {
+                        EmailAccount.UserLatestLogInDate = DateTime.UtcNow;
                         List<Claim> claims = new List<Claim>()
                         {
                         new Claim(ClaimTypes.Name, $"{EmailAccount.UserId}"),
@@ -57,6 +58,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                             {
                                 ExpiresUtc = DateTime.UtcNow.AddDays(1)
                             });
+                        _context.SaveChanges();
                         return RedirectToAction("Main", "Home");
                     }
                 }
@@ -90,6 +92,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     UserPasswordSalt = saltBytes,
                     UserPasswordHash = hashBytes,
                     UserVerificationCode = UserVerification.Next(100000, 999999).ToString(),
+                    UserEnrollDate = DateTime.UtcNow,
                 };
                 _context.Users.Add(user);
                 _context.SaveChanges();
