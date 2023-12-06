@@ -34,7 +34,7 @@
                                     <li><a style="color:#6c757d;font-weight: bold" class="dropdown-item" asp-area="Users" asp-controller="Member" asp-action="HistoryOrders"> 歷史訂單</a></li>
                                     <li><a style="color:#6c757d;font-weight: bold" class="dropdown-item" asp-area="Users" asp-controller="Member" asp-action="Favorite"> 我的收藏</a></li>
                                 </ul>
-                                <div class="border-top px-5 py-3"> <a class="dropdown-item" style="color:#6c757d;font-weight: bold">登出</a> </div>
+                                <div class="border-top px-5 py-3"> <a class="dropdown-item" style="color:#6c757d;font-weight: bold" @@click="logout">登出</a> </div>
                             </div>
 
                         </div>
@@ -153,7 +153,7 @@
                                 <li><a style="color:#6c757d;font-weight: bold" class="dropdown-item" asp-area="Users" asp-controller="Member" asp-action="HistoryOrders"> 歷史訂單</a></li>
                                 <li><a style="color:#6c757d;font-weight: bold" class="dropdown-item" asp-area="Users" asp-controller="Member" asp-action="Favorite"> 我的收藏</a></li>
                             </ul>
-                            <div class="border-top px-5 py-3"> <a class="dropdown-item" style="color:#6c757d;font-weight: bold">登出</a> </div>
+                            <div class="border-top px-5 py-3"> <a class="dropdown-item" style="color:#6c757d;font-weight: bold" @@click="logout">登出</a> </div>
                         </div>
 
                     </div>
@@ -238,13 +238,13 @@ else
                         <div class="list-inline-item me-5">
                             <div class="navbar-nav d-flex flex-row  me-auto mb-2 mb-lg-0 ">
                                 <div class="nav-item">
-                                    <a class="nav-link" style="color:#6c757d;font-weight: bold;font-size:16px" asp-area="Identity" asp-page="/Account/Register">註冊</a>
+                                    <a class="nav-link" style="color:#6c757d;font-weight: bold;font-size:16px" asp-area="Users" asp-controller="Account" asp-action="LoginRegister">註冊</a>
                                 </div>
                             </div>
                         </div>
                         <div class="list-inline-item me-5">
                             <div class="nav-item">
-                                <a class="nav-link" style="color:#6c757d;font-weight: bold;font-size:16px" asp-area="Identity" asp-page="/Account/Login">登入</a>
+                                <a class="nav-link" style="color:#6c757d;font-weight: bold;font-size:16px" asp-area="Users" asp-controller="Account" asp-action="LoginRegister">登入</a>
                             </div>
                         </div>
                         <!--登入md-->
@@ -317,13 +317,13 @@ else
                     <div class="list-inline-item me-5">
                         <div class="navbar-nav d-flex flex-row  me-auto mb-2 mb-lg-0 ">
                             <div class="nav-item">
-                                <a class="nav-link fw-bolder" style="color:#6c757d;font-weight: bold;font-size:20px" asp-area="Identity" asp-page="/Account/Register">註冊</a>
+                                <a class="nav-link fw-bolder" style="color:#6c757d;font-weight: bold;font-size:20px" asp-area="Users" asp-controller="Account" asp-action="LoginRegister">註冊</a>
                             </div>
                         </div>
                     </div>
                     <div class="list-inline-item me-5">
                         <div class="nav-item">
-                            <a class="nav-link fw-bolder" style="color:#6c757d;font-weight: bold;font-size:20px" asp-area="Identity" asp-page="/Account/Login">登入</a>
+                            <a class="nav-link fw-bolder" style="color:#6c757d;font-weight: bold;font-size:20px" asp-area="Users" asp-controller="Account" asp-action="LoginRegister">登入</a>
                         </div>
                     </div>
                     <div class="dropdown list-inline-item me-5">
