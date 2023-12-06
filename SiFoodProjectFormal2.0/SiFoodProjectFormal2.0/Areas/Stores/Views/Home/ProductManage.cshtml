@@ -275,6 +275,7 @@
                 },
                 startSeach() {
                     let _this = this;
+                    _this.page.pageNumber = 1;
                     fetch(`/api/ProductManageapi/Filter?text=${_this.searchText}`)
                         .then(response => response.json())
                         .then(data => _this.ProductInfo = data)
