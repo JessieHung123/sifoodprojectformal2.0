@@ -92,10 +92,9 @@
                                             @Html.DisplayFor(modelItem => item.ClosingDay)
                                         </td>
                                         <td>
-                                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#EditStore-" + item.StoreId)" data-url="@Url.Action($"Edit/{item.StoreId}")">
+                                            <button type="button" class="dropdown-item" data-bs-toggle="modal">
                                                 <i class="bi bi-pencil-square me-3"></i>確認
-                                            </button>
-                                            @await Html.PartialAsync("_EditPartialView",item)
+                                            </button>                                            
                                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#DetailStore-" + item.StoreId)" data-url="@Url.Action($"Details/{item.StoreId}")">
                                                 <i class="bi bi-info-circle me-3"></i>明細
                                             </button>
