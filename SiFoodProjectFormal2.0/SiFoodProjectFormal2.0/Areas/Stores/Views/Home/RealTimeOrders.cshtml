@@ -4,549 +4,40 @@
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
 
-
     <!-- Libs CSS -->
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
 
-
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
-    <!-- Google tag (gtag.js) -->
-    <!-- End Tag -->
+    <style>
+        th {
+            border-bottom: none !important;
+        }
+    </style>
     }
-
-
-
 
 <body>
 
     <!-- main -->
-    @* <nav class="navbar navbar-expand-lg navbar-glass"> //delete
-        <div class="container-fluid">
-            <div class="d-flex justify-content-between align-items-center w-100">
-                <div class="d-flex align-items-center">
-
-                    <a class="text-inherit d-block d-xl-none me-4" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
-                       aria-controls="offcanvasExample">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-text-indent-right" viewBox="0 0 16 16">
-                            <path d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm10.646 2.146a.5.5 0 0 1 .708.708L11.707 8l1.647 1.646a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2zM2 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
-                        </svg>
-                    </a>
-
-                    <form role="search">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-
-                    </form>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-danger">Logout</button>
-                </div>
-
-            </div>
-        </div>
-    </nav> *@
     <div class="main-wrapper">
-        <!-- navbar vertical -->
-        
-        @* <nav class="navbar-vertical-nav d-none d-xl-block ">
-            <div class="navbar-vertical">
-                <div class="px-4 py-5">
-                    <a href="~/index.html" class="navbar-brand">
-                        <img src="~/assets/images/logo/freshcart-logo.svg" alt="">
-                    </a>
-                </div>
-                <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
-                    <ul class="navbar-nav flex-column" id="sideNavbar">
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/index.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-house"></i></span>
-                                    <span class="nav-link-text">Dashboard</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item mt-6 mb-3">
-                            <span class="nav-label">Store Managements</span>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/products.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
-                                    <span class="nav-link-text">Products</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/categories.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
-                                    <span class="nav-link-text">Categories</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  " href="#"
-                               data-bs-toggle="collapse" data-bs-target="#navCategoriesOrders" aria-expanded="false"
-                               aria-controls="navCategoriesOrders">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-bag"></i></span>
-                                    <span class="nav-link-text">Orders</span>
-                                </div>
-                            </a>
-                            <div id="navCategoriesOrders" class="collapse  show "
-                                 data-bs-parent="#sideNavbar">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item ">
-                                        <a class="nav-link  active "
-                                           href="~/dashboard/order-list.html">
-                                            List
-                                        </a>
-                                    </li>
-                                    <!-- Nav item -->
-                                    <li class="nav-item ">
-                                        <a class="nav-link "
-                                           href="~/dashboard/order-single.html">
-                                            Single
-
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/vendor-grid.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-shop"></i></span>
-                                    <span class="nav-link-text">Sellers / Vendors</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/customers.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
-                                    <span class="nav-link-text">Customers</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/reviews.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
-                                    <span class="nav-link-text">Reviews</span>
-                                </div>
-                            </a>
-                        </li>
-                        <!-- Nav item -->
-                        <li class="nav-item">
-                            <a class="nav-link  collapsed " href="#"
-                               data-bs-toggle="collapse" data-bs-target="#navMenuLevelFirst" aria-expanded="false"
-                               aria-controls="navMenuLevelFirst">
-                                <span class="nav-link-icon"><i class=" bi bi-arrow-90deg-down"></i></span>
-                                <span class="nav-link-text">Menu Level</span>
-                            </a>
-                            <div id="navMenuLevelFirst" class="collapse "
-                                 data-bs-parent="#sideNavbar">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link " href="#"
-                                           data-bs-toggle="collapse" data-bs-target="#navMenuLevelSecond1" aria-expanded="false"
-                                           aria-controls="navMenuLevelSecond1">
-                                            Two Level
-                                        </a>
-                                        <div id="navMenuLevelSecond1" class="collapse" data-bs-parent="#navMenuLevel">
-                                            <ul class="nav flex-column">
-                                                <li class="nav-item">
-                                                    <a class="nav-link "
-                                                       href="#">NavItem 1</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link "
-                                                       href="#">NavItem 2</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link  collapsed  " href="#"
-                                           data-bs-toggle="collapse" data-bs-target="#navMenuLevelThreeOne1" aria-expanded="false"
-                                           aria-controls="navMenuLevelThreeOne1">
-                                            Three Level
-                                        </a>
-                                        <div id="navMenuLevelThreeOne1"
-                                             class="collapse "
-                                             data-bs-parent="#navMenuLevel">
-                                            <ul class="nav flex-column">
-                                                <li class="nav-item">
-                                                    <a class="nav-link  collapsed "
-                                                       href="#" data-bs-toggle="collapse" data-bs-target="#navMenuLevelThreeTwo"
-                                                       aria-expanded="false" aria-controls="navMenuLevelThreeTwo">
-                                                        NavItem 1
-                                                    </a>
-                                                    <div id="navMenuLevelThreeTwo"
-                                                         class="collapse collapse "
-                                                         data-bs-parent="#navMenuLevelThree">
-                                                        <ul class="nav flex-column">
-                                                            <li class="nav-item">
-                                                                <a class="nav-link "
-                                                                   href="#">
-                                                                    NavChild Item 1
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link " href="#">
-                                                        Nav
-                                                        Item 2
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="nav-item mt-6 mb-3">
-                            <span class="nav-label">Site Settings</span> <span class="badge bg-light-info text-dark-info">Coming Soon</span>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-newspaper"></i></span>
-                                    <span class="nav-link-text">Blog</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-images"></i></span>
-                                    <span class="nav-link-text">Media</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-gear"></i></span>
-                                    <span class="nav-link-text">Store Settings</span>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li class="nav-item mt-6 mb-3">
-                            <span class="nav-label">Support</span> <span class="badge bg-light-info text-dark-info">Coming Soon</span>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-headphones"></i></span>
-                                    <span class="nav-link-text">Support Ticket</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-question-circle"></i></span>
-                                    <span class="nav-link-text">Help Center</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-infinity"></i></span>
-                                    <span class="nav-link-text">How FreshCart Works</span>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li class="nav-item mt-6 mb-3">
-                            <span class="nav-label">Our Apps</span>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-apple"></i></span>
-                                    <span class="nav-link-text">Apple Store</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-google-play"></i></span>
-                                    <span class="nav-link-text">Google Play Store</span>
-                                </div>
-                            </a>
-                        </li>
-
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <nav class="navbar-vertical-nav offcanvas offcanvas-start navbar-offcanvac" tabindex="-1" id="offcanvasExample">
-            <div class="navbar-vertical">
-                <div class="px-4 py-5 d-flex justify-content-between align-items-center">
-                    <a href="~/index.html" class="navbar-brand">
-                        <img src="~/assets/images/logo/freshcart-logo.svg" alt="">
-                    </a>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
-                    <ul class="navbar-nav flex-column">
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/index.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-house"></i></span>
-                                    <span>Dashboard</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item mt-6 mb-3">
-                            <span class="nav-label">Store Managements</span>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/products.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
-                                    <span class="nav-link-text">Products</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/categories.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
-                                    <span class="nav-link-text">Categories</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  " href="#"
-                               data-bs-toggle="collapse" data-bs-target="#navOrders" aria-expanded="false"
-                               aria-controls="navOrders">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-bag"></i></span>
-                                    <span class="nav-link-text">Orders</span>
-                                </div>
-                            </a>
-                            <div id="navOrders" class="collapse  show "
-                                 data-bs-parent="#sideNavbar">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item ">
-                                        <a class="nav-link  active "
-                                           href="~/dashboard/order-list.html">
-                                            List
-                                        </a>
-                                    </li>
-                                    <!-- Nav item -->
-                                    <li class="nav-item ">
-                                        <a class="nav-link "
-                                           href="~/dashboard/order-single.html">
-                                            Single
-
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/vendor-grid.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-shop"></i></span>
-                                    <span class="nav-link-text">Sellers / Vendors</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/customers.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
-                                    <span class="nav-link-text">Customers</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="~/dashboard/reviews.html">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
-                                    <span class="nav-link-text">Reviews</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item mt-6 mb-3">
-                            <span class="nav-label">Site Settings</span> <span class="badge bg-light-info text-dark-info">Coming Soon</span>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-newspaper"></i></span>
-                                    <span class="nav-link-text">Blog</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-images"></i></span>
-                                    <span class="nav-link-text">Media</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-gear"></i></span>
-                                    <span class="nav-link-text">Store Settings</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item mt-6 mb-3">
-                            <span class="nav-label">Support</span> <span class="badge bg-light-info text-dark-info">Coming Soon</span>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-headphones"></i></span>
-                                    <span class="nav-link-text">Support Ticket</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-question-circle"></i></span>
-                                    <span class="nav-link-text">Help Center</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-infinity"></i></span>
-                                    <span class="nav-link-text">How FreshCart Works</span>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li class="nav-item mt-6 mb-3">
-                            <span class="nav-label">Our Apps</span>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-apple"></i></span>
-                                    <span class="nav-link-text">Apple Store</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link disabled" href="#!">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"> <i class="bi bi-google-play"></i></span>
-                                    <span class="nav-link-text">Google Play Store</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li id="navMenuLevel" class="collapse "
-                            data-bs-parent="#sideNavbar">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link " href="#"
-                                       data-bs-toggle="collapse" data-bs-target="#navMenuLevelSecond2" aria-expanded="false"
-                                       aria-controls="navMenuLevelSecond2">
-                                        Two Level
-                                    </a>
-                                    <div id="navMenuLevelSecond2" class="collapse" data-bs-parent="#navMenuLevel">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item">
-                                                <a class="nav-link "
-                                                   href="#">NavItem 1</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link "
-                                                   href="#">NavItem 2</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link  collapsed  " href="#"
-                                       data-bs-toggle="collapse" data-bs-target="#navMenuLevelThree2" aria-expanded="false"
-                                       aria-controls="navMenuLevelThree2">
-                                        Three Level
-                                    </a>
-                                    <div id="navMenuLevelThree2"
-                                         class="collapse "
-                                         data-bs-parent="#navMenuLevel">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item">
-                                                <a class="nav-link  collapsed "
-                                                   href="#" data-bs-toggle="collapse" data-bs-target="#navMenuLevelThree3"
-                                                   aria-expanded="false" aria-controls="navMenuLevelThree3">
-                                                    NavItem 1
-                                                </a>
-                                                <div id="navMenuLevelThree3"
-                                                     class="collapse collapse "
-                                                     data-bs-parent="#navMenuLevelThree">
-                                                    <ul class="nav flex-column">
-                                                        <li class="nav-item">
-                                                            <a class="nav-link "
-                                                               href="#">
-                                                                NavChild Item 1
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link " href="#">
-                                                    Nav
-                                                    Item 2
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-
-
-                    </ul>
-                </div>
-            </div>
-
-        </nav> *@
-        
-
         <!-- main wrapper -->
-        <main class="main-content-wrapper">
+        <main class="main-content-wrapper" id="orderApp">
             <div class="container">
                 <!-- row -->
                 <div class="row mb-8">
                     <div class="col-md-12">
                         <!-- page header -->
                         <div>
-                            <h2>及時訂單</h2>
+                            <h2>即時訂單</h2>
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">及時訂單</li>
+                                    <li class="breadcrumb-item"><a href="#">店家</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">即時訂單</li>
                                 </ol>
                             </nav>
-
                         </div>
                     </div>
                 </div>
@@ -559,18 +50,18 @@
                                 <div class="row justify-content-between">
                                     <div class="col-md-4 col-12 mb-2 mb-md-0">
                                         <!-- form -->
-                                        <form class="d-flex" role="search">
-                                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-
-                                        </form>
+                                        <div class="d-flex" role="search">
+                                            <input class="form-control" type="search" placeholder="Search" aria-label="Search" v-model="searchKeyWords" @@keyup.enter="searchOrder">
+                                        </div>
                                     </div>
                                     <div class="col-lg-2 col-md-4 col-12">
                                         <!-- select -->
-                                        <select class="form-select">
-                                            <option selected>Status</option>
-                                            <option value="Success">Success</option>
-                                            <option value="Pending">Pending</option>
-                                            <option value="Cancel">Cancel</option>
+                                        <select class="form-select" v-model="selectedStatus" @@change="filterOrdersByStatus">
+                                            <option value=0 selected>全部訂單</option>
+                                            <option value=1>待確認</option>
+                                            <option value=2>待配送</option>
+                                            <option value=3>待領取</option>
+                                            <option value=4>配送中</option>
                                         </select>
                                     </div>
                                 </div>
@@ -590,18 +81,17 @@
 
                                                         </label>
                                                     </div>
-                                                </th><!--改-->
-                                                <th>訂單序號</th>
-                                                <th>商品名稱</th>
+                                                </th>
+                                                <th>訂單編號</th>
                                                 <th>商品數量</th>
-                                                <th>訂單產生時間</th>
+                                                <th>訂單日期</th>
                                                 <th>取餐方式</th>
                                                 <th>狀態</th>
                                                 <th>總價</th>
                                                 <th>是否接單</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-for="item in filterOrders">
                                             <tr>
 
                                                 <td>
@@ -613,181 +103,222 @@
                                                         </label>
                                                     </div>
                                                 </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
                                                 <td>
-                                                    <span class="badge bg-light-warning text-dark-primary">待確認</span>
+                                                    {{item.orderId}}
+                                                    <a href="#" class="text-inherit"
+                                                       data-bs-toggle="collapse"
+                                                       :data-bs-target="'#orderDetails' + item.orderId"
+                                                       data-bs-toggle="tooltip"
+                                                       data-bs-placement="top"
+                                                       data-bs-title="View">
+                                                        <i class="feather-icon icon-eye"></i>
+                                                    </a>
                                                 </td>
-                                                <td>$12.99</td>
+                                                <td>{{item.totalQuantity}}</td>
+
+                                                <td>{{item.orderDate}}</td>
+                                                <td>{{item.deliveryMethod}}</td>
 
                                                 <td>
-                                                    <!-- Accept Order Button -->
-                                                    <button class="btn btn-success btn-sm">接單</button>
-                                                    <!-- Decline Order Button -->
-                                                    <button class="btn btn-danger btn-sm">退單</button>
+                                                    <template v-if="item.statusId === 1">
+                                                        <span class="badge bg-warning">{{item.status}}</span>
+                                                    </template>
+                                                    <template v-else-if="item.statusId === 2 ">
+                                                        <span class="badge bg-info">{{item.status}}</span>
+                                                    </template>
+                                                    <template v-else-if="item.statusId === 3 ">
+                                                        <span class="badge bg-secondary">{{item.status}}</span>
+                                                    </template>
+                                                    <template v-else-if="item.statusId === 4">
+                                                        <span class="badge bg-primary">{{item.status}}</span>
+                                                    </template>
+                                                </td>
+                                                <td>${{item.subtotal+item.shippingFee}}</td>
+
+                                                <td>
+                                                    <template v-if="item.statusId === 1">
+                                                        <!-- Accept Order Button -->
+                                                        <button v-on:click="confirmAcceptOrder(item)" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" :title="'接單時限: ' + (10-Math.round(item.orderDuration)) + '分鐘'">接單</button>
+                                                        <!-- Decline Order Button -->
+                                                        <button v-on:click="confirmCancelOrder(item)" class="btn btn-danger btn-sm" style="margin-left: 3px;">退單</button>
+                                                    </template>
                                                 </td>
                                             </tr>
+                                            <!-- Add a collapsible row for order details -->
                                             <tr>
+                                                <td colspan="8" class="p-0">
+                                                    <div class="collapse" :id="'orderDetails' + item.orderId">
+                                                        <div class="p-3">
+                                                            <div class="row ">
+                                                                <div class="col-xl-12 col-12 mb-5">
+                                                                    <!-- card -->
+                                                                    <div class="card h-100 card-lg">
+                                                                        <div class="card-body p-6">
+                                                                            <div class="d-md-flex justify-content-between">
+                                                                                <div class="d-flex align-items-center mb-2 mb-md-0">
+                                                                                    <h2 class="mb-0">訂單明細</h2>
 
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
+                                                                                </div>
+                                                                                <!-- select option -->
+                                                                                <div class="d-md-flex">
 
-                                                        </label>
+                                                                                    <!-- button -->
+                                                                                    <div class="ms-md-3">
+                                                                                        <a href="#" class="btn btn-secondary">下載明細</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="mt-8">
+                                                                                <div class="row">
+                                                                                    <!-- address -->
+                                                                                    <div class="col-lg-4 col-md-4 col-12">
+                                                                                        <div class="mb-6">
+                                                                                            <h6>顧客資訊</h6>
+                                                                                            <p class="mb-1 lh-lg">
+                                                                                                {{item.userName}}<br>
+                                                                                                {{item.userEmail}}<br>
+                                                                                                {{item.userPhone}}
+                                                                                            </p>
+                                                                                            <a href="#">View Profile</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!-- address -->
+                                                                                    <div class="col-lg-4 col-md-4 col-12" v-if="item.deliveryMethod === '外送'">
+                                                                                        <div class="mb-6">
+                                                                                            <h6>收件地址</h6>
+                                                                                            <p class="mb-1 lh-lg">
+                                                                                                {{item.address}}
+                                                                                            </p>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!-- address -->
+                                                                                    <div class="col-lg-4 col-md-4 col-12">
+                                                                                        <div class="mb-6">
+                                                                                            <h6>訂單資訊</h6>
+                                                                                            <p class="mb-1 lh-lg">
+                                                                                                訂單編號: <span class="text-dark">{{item.orderId}}</span><br>
+                                                                                                訂購時間: <span class="text-dark">{{item.orderDate}} {{item.orderTime}}</span><br>
+                                                                                                訂單金額: <span class="text-dark">${{item.subtotal+item.shippingFee}}</span>
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <div class="table-responsive">
+                                                                                    <!-- Table -->
+                                                                                    <table class="table mb-0 text-nowrap table-centered">
+                                                                                        <!-- Table Head -->
+                                                                                        <thead class="bg-light">
+                                                                                            <tr>
+                                                                                                <th>商品</th>
+                                                                                                <th>單價</th>
+                                                                                                <th>數量</th>
+                                                                                                <th>總計</th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <!-- tbody -->
+                                                                                        <tbody>
+                                                                                            <tr v-for="product in item.orderDetails">
+                                                                                                <td>
+                                                                                                    <a href="#" class="text-inherit">
+                                                                                                        <div class="d-flex align-items-center">
+                                                                                                            <div>
+                                                                                                                <img :src="product.photoPath" alt=""
+                                                                                                                     class="icon-shape icon-lg">
+                                                                                                            </div>
+                                                                                                            <div class="ms-lg-4 mt-2 mt-lg-0">
+                                                                                                                <h5 class="mb-0 h6">
+                                                                                                                    {{product.productName}}
+                                                                                                                </h5>
+
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                                <td><span class="text-body">${{product.unitPrice}}</span></td>
+                                                                                                <td>{{product.quantity}}</td>
+                                                                                                <td>${{product.total}}</td>
+                                                                                            </tr>
+                                                                                            <template v-if="item.deliveryMethod === '外送'">
+                                                                                                <tr>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td colspan="1" class="fw-medium text-dark ">
+                                                                                                        <!-- text -->
+                                                                                                        小計 
+                                                                                                    </td>
+                                                                                                    <td class="fw-medium text-dark ">
+                                                                                                        <!-- text -->
+                                                                                                        ${{item.subtotal}}
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td colspan="1" class="fw-medium text-dark ">
+                                                                                                        <!-- text -->
+                                                                                                        運費
+                                                                                                    </td>
+                                                                                                    <td class="fw-medium text-dark  ">
+                                                                                                        <!-- text -->
+                                                                                                        ${{item.shippingFee}}
+                                                                                                    </td>
+                                                                                                </tr>
+
+                                                                                            </template>
+                                                                                            <tr>
+                                                                                                <td></td>
+                                                                                                <td></td>
+                                                                                                <td colspan="1" class="fw-semi-bold text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    總額
+                                                                                                </td>
+                                                                                                <td class="fw-semi-bold text-dark ">
+                                                                                                    <!-- text -->
+                                                                                                    ${{item.subtotal+item.shippingFee}}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-warning text-dark-primary">待確認</span>
-                                                </td>
-                                                <td>$12.99</td>
-
-                                                <td>
-                                                    <!-- Accept Order Button -->
-                                                    <button class="btn btn-success btn-sm">接單</button>
-                                                    <!-- Decline Order Button -->
-                                                    <button class="btn btn-danger btn-sm">退單</button>
-                                                </td>
                                             </tr>
-                                            <tr>
-
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
-
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-warning text-dark-primary">待確認</span>
-                                                </td>
-                                                <td>$12.99</td>
-
-                                                <td>
-                                                    <!-- Accept Order Button -->
-                                                    <button class="btn btn-success btn-sm">接單</button>
-                                                    <!-- Decline Order Button -->
-                                                    <button class="btn btn-danger btn-sm">退單</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
-
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-info text-dark-primary">待取餐</span>
-                                                </td>
-                                                <td>$12.99</td>
-
-
-                                            </tr>
-                                            <tr>
-
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
-
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O003</td>
-                                                <td>控肉飯</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-info text-dark-primary">待配送</span>
-                                                </td>
-                                                <td>$12.99</td>
-
-
-                                            </tr>
-                                            <tr>
-
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
-
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O004</td>
-                                                <td>臭豆腐</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-primary text-dark-primary">配送中</span>
-                                                </td>
-                                                <td>$12.99</td>
-
-
-                                            </tr>
-                                            <!-- 改 -->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                             <div class="border-top d-md-flex justify-content-between align-items-center p-6">
-                                <span>Showing 1 to 8 of 12 entries</span>
+                                <span>
+                                    顯示第 {{ Math.min((page.countPerPage * (page.pageNumber - 1)) + 1, ordersCount) }}
+                                    至 {{ Math.min(page.countPerPage * page.pageNumber, ordersCount) }} 項，共 {{ ordersCount }} 筆訂單
+                                </span>
                                 <nav class="mt-2 mt-md-0">
-                                    <ul class="pagination mb-0 ">
-                                        <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                                        <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                    </ul>
+                                    <paginate :page-count="total"
+                                              :click-handler="pageClick"
+                                              :force-page="page.pageNumber"
+                                              :prev-text="'<'"
+                                              :next-text="'>'"
+                                              :page-link-class="'page-link mx-1'"
+                                              :prev-link-class="'page-link mx-1'"
+                                              :next-link-class="'page-link mx-1'"
+                                              :container-class="'pagination justify-content-center'">
+                                    </paginate>
                                 </nav>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </main>
@@ -795,15 +326,133 @@
     </div>
 
     @section Scripts{
+        <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
         <!-- Libs JS -->
         <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-        <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        @* <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
         <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
         <!-- Theme JS -->
         <script src="~/assets/js/theme.min.js"></script>
-    }
+        <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+        <script>
+            // var baseAddress = "https://localhost:7042";
 
+            const orderApp = Vue.createApp({
+                data: function () {
+                    return {
+                        orders: [],
+                        orderDetails: [],
+                        searchKeyWords:"",
+                        ordersCount : 0,
+                        page: {
+                            countPerPage: 5,
+                            pageNumber: 1,
+                        },
+                        selectedStatus: 0,
+                    }
+                },
+                computed: {
+                    total() {
+                        let _this = this;
+                        return Math.ceil(_this.ordersCount / this.page.countPerPage);
+                    },
+                    filterOrders() {
+                        let _this = this;
+                        var start = (this.page.pageNumber - 1) * this.page.countPerPage;
+                        var end = start + this.page.countPerPage;
+                        return _this.orders.slice(start, end);
+                    },
+                },
+                mounted: function () {
+                    let _this = this;
+                    _this.getOrder();
+                },
+                methods: {
+                    filterOrdersByStatus() {
+                        
+                        this.getOrder();
+                    },
+                    pageClick(num) {
+                        this.page.pageNumber = num;
+                    },
+                    searchOrder() {
+                        this.getOrder();
+                    },
+                    confirmCancelOrder(item) {
+                            if (window.confirm("是否確定取消訂單?")) {
+                                this.cancelOrder(item);
+                            }
+                    },
+                    confirmAcceptOrder(item) {
+                        if (window.confirm("是否確定接受訂單?")) {
+                            this.acceptOrder(item);
+                        }
+                    },
+                    cancelOrder(item) {
+                        this.updateOrderStatus(item, 7)
+                        item.statusId = 7;
+                        this.orders = this.orders.filter(order => order.orderId !== item.orderId);
+                        alert("訂單已取消!")
+                    },
+                    acceptOrder(item) {
+                        if (item.deliveryMethod === '自取') {
+                            this.updateOrderStatus(item, 3)
+                            item.statusId = 3;
+                            item.status = "待領取";                        
+                        } else {
+                            this.updateOrderStatus(item, 2)
+                            item.statusId = 2;
+                            item.status = "待配送";
+                        }
+                        alert("訂單已接受!")
+                    },
+                    // **asynchronous nature of the fetch operation**
+                    updateOrderStatus(item, newStatusId) {
+
+                        fetch(`/api/StoreRealTimeOrdersapi/${item.orderId}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                orderId: item.orderId,
+                                statusId: newStatusId,
+                            }),
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                                alert("成功");
+                            }
+                        }).then(data => {
+                            // console.log(data)
+                        }).catch(error => {
+                            console.error("PUT 請求發生錯誤:", error);
+                            // console.log(error);
+                        });
+                    },
+                    getOrder() {
+                        let _this = this;
+                        var storeId = "S001"
+                        fetch(`/api/StoreRealTimeOrdersapi/filter/${storeId}?searchKeyWords=${_this.searchKeyWords}&status=${_this.selectedStatus}`, { method: "GET" })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                _this.orders = data;
+                                _this.page.pageNumber = 1;
+                                _this.ordersCount = _this.orders.length;
+                            }).catch(error => {
+                                alert(error);
+                            });
+                    },
+                }
+            }).component("paginate", VuejsPaginateNext).mount("#orderApp")
+        </script>
+    }
 
 </body>
 

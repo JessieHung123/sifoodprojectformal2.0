@@ -1,5 +1,6 @@
-﻿@using SiFoodProjectFormal2._0.ViewModels.Users;
-@model JoinUsViewModel
+﻿@using SiFoodProjectFormal2._0.Models;
+@using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
+@model JoinUsVM
 
 <!-- 引用Layout -->
 @{
@@ -205,17 +206,42 @@
                         </div>
 
 
-                        <div class="col-md-6 mb-3">
+                        @* <div class="col-md-6 mb-3">
                             <label asp-for="City" class="form-label">店家地址-市<span class="text-danger">*</span></label>
                             <input asp-for="City" class="form-control" autocomplete="address-level2" placeholder="請輸入臺北市或新北市" />
                             <span asp-validation-for="City" class="text-danger"></span>
+                        </div> *@
+
+
+
+                        <!-- City 改下拉選單 -->
+                        <div class="col-md-6 mb-3">
+                        <label asp-for="City" class="form-label">店家地址-市<span class="text-danger">*</span></label>
+                            <select asp-for="City" class="form-select" id="citySelect">
+                            <option value="" selected>選擇城市</option>
+                            <option value="臺北市">臺北市</option>
+                            <option value="新北市">新北市</option>
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </select>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        @* <div class="col-md-6 mb-3">
                             <label asp-for="Region" class="form-label">店家地址-區<span class="text-danger">*</span></label>
                             <input asp-for="Region" class="form-control" autocomplete="address-level3" placeholder="請輸入區，例:大安區" />
                             <span asp-validation-for="Region" class="text-danger"></span>
+                        </div> *@
+
+
+                        <!--  區改下拉選單,並依照City動態改變 -->
+                       
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Region" class="form-label">店家地址-區<span class="text-danger">*</span></label>
+                            <select asp-for ="Region" id="regionSelect" class="form-select">
+                                <option value="">請先選擇城市</option>
+                            </select>
+                            <span asp-validation-for="Region" class="text-danger"></span>
                         </div>
+
 
 
                         <div class="col-md-12 mb-3">
@@ -257,8 +283,7 @@
                             <div class="mb-4 d-flex">
                                 <div class="position-relative">
                                     <img class="image  icon-shape icon-xxxl bg-light rounded-4"
-                                        src="~/images/users/elly/uploadstorephoto.svg" alt="Image">
-
+                                         src="~/images/joinus/uploadstorephoto.svg" alt="Image">
                                     <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
                                         
                                         <input asp-for="LogoPath" type="file" accept="image/*"class="file-input ">
@@ -276,11 +301,9 @@
                             </div>
 
                             @* 店家照片上傳3張安排 *@
-
-                           
-
+                                                       
                             <div class="border-bottom py-4 mb-4">
-                                <label asp-for="PhotosPath"><h4 class="mb-5 h5">請上傳您的店家照片</h4></label>
+                                <label><h4 class="mb-5 h5">請上傳您的店家照片</h4></label>
                                 <div class="row">
                                     <!-- 第一個上傳元素 -->
                                     <div class="col-md-4">
@@ -315,7 +338,7 @@
                                                     src="~/assets/images/icons/bakery.svg" alt="Image">
 
                                                 <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
-                                                    <input asp-for="PhotosPath" type="file" accept="image/*" class="file-input ">
+                                                    <input asp-for="PhotosPath2" type="file" accept="image/*" class="file-input ">
                                                     <span class="icon-shape icon-sm rounded-circle bg-white">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                                                             fill="currentColor" class="bi bi-pencil-fill text-muted"
@@ -336,7 +359,7 @@
                                                     src="~/assets/images/icons/bakery.svg" alt="Image">
 
                                                 <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
-                                                    <input asp-for="PhotosPath" type="file" accept="image/*" class="file-input ">
+                                                    <input asp-for="PhotosPath3" type="file" accept="image/*" class="file-input ">
                                                     <span class="icon-shape icon-sm rounded-circle bg-white">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                                                             fill="currentColor" class="bi bi-pencil-fill text-muted"
@@ -353,131 +376,57 @@
                             </div>
 
 
-                            @*
-                            從新增商品拿
-                            *@
-
-                          @*   <div>
-                                <div class="mb-3 col-lg-12 mt-5">
-                                  <!-- heading -->
-                                  <h4 class="mb-3 h5">新增商品</h4>
-
-                                  <!-- input -->
-                                  <form action="#" class="dropzone profile-dropzone dz-clickable ">
-                                    <div class="dz-default dz-message" >
-                                      <input name="file" type="file" multiple>
-                                    </div>
-                                  </form>
-                                </div>
-                              </div>
-
-
-                                    <div class="border-bottom py-4 mb-4">
-                                        <h5>Add a photo or video</h5>
-                                        <p>Shoppers find images and videos more helpful than text alone.</p>
-                                        <div id="my-dropzone" class="dropzone mt-4 border-dashed rounded-2 min-h-0">
-                                        </div>
-                                    </div>
-
-                                  
-                                    <!-- form control -->
-
-                                    <div class="border-bottom py-4 mb-4">
-                                        <h5>上傳您的品牌LOGO</h5>
-                                        <p>16x16</p>
-                                        <!-- form -->
-                                        <form action="#" class="dropzone profile-dropzone dz-clickable">
-                                            <div class="dz-default dz-message"><button class="dz-button"
-                                                    type="button">瀏覽檔案位置</button></div>
-                                        </form>
-                                    </div>
-
-
-                                    <!-- form control -->
-                                    <div class="border-bottom py-4 mb-4">
-                                        <h5>上傳您的店家照片3-1</h5>
-                                        <p>32x32</p>
-                                        <!-- form -->
-                                        <form action="#" class="dropzone profile-dropzone dz-clickable">
-                                            <div class="dz-default dz-message"><button class="dz-button"
-                                                    type="button">瀏覽檔案位置</button></div>
-                                        </form>
-                                    </div>
-
-                                    <!-- form control -->
-                                    <div class="border-bottom py-4 mb-4">
-                                        <h5>上傳您的店家照片3-2</h5>
-                                        <p>32x32</p>
-                                        <!-- form -->
-                                        <form action="#" class="dropzone profile-dropzone dz-clickable">
-                                            <div class="dz-default dz-message"><button class="dz-button"
-                                                    type="button">瀏覽檔案位置</button></div>
-                                        </form>
-                                    </div>
-
-                                    <!-- form control -->
-
-                                    <div class="border-bottom py-4 mb-4">
-                                        <h5>上傳您的店家照片3-3</h5>
-                                        <p>32x32</p>
-                                        <!-- form -->
-                                        <form action="#" class="dropzone profile-dropzone dz-clickable">
-                                            <div class="dz-default dz-message"><button class="dz-button"
-                                                    type="button">瀏覽檔案位置</button></div>
-                                        </form>
-                                    </div>*@
-<div class="col-md-6 mb-3">
-                    <!-- btn -->
-                    <button id="submitButton" type="submit" value="JoinUs"class="btn btn-primary">送出申請</button>
-                </div>
-                            <div>
-                                <a asp-action="Main">返回首頁</a>
-                            </div>
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">已成功送出申請!</h5>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                               請稍待一至二天審核，謝謝~
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >好</button>
-                            </div>
+                            
+                         <div class="col-md-6 mb-3">
+                            <!-- btn -->
+                            <button id="submitButton" type="submit" value="JoinUs" class="btn btn-primary">送出申請</button>
                         </div>
-                    </div>
-                </div>
-
-
-                
-               @*  <!-- 靜態modal -->
-<div class="modal" tabindex="-1" role="dialog" id="exampleModal-2">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div> *@
-
-
+                            
 
 
                     </form>
+
+                    <div>
+                        <a asp-action="Main">返回首頁</a>
+                    </div>
+
+                    <!--根據送出結果跳出Modal-->
+                    
+                    <!-- OK Modal -->
+                    <div class="modal fade" id="modalOK" tabindex="-1" role="dialog" aria-labelledby="okModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="okModalLabel">已成功送出申請!</h5>
+                                </div>
+                                <div class="modal-body">
+                                    請稍待一至二天審核，謝謝~
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='https://localhost:7042/Users/Home/Main'">好</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NotOK Modal -->
+                    <div class="modal fade" id="modalNotOK" tabindex="-1" role="dialog" aria-labelledby="notOkModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="notOkModalLabel">未成功送出申請!</h5>
+                                </div>
+                                <div class="modal-body">
+                                    請重新確認您填寫的資料~
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
 
                 </div> 
 
@@ -512,59 +461,73 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
-@* 
-<script>
-    $(document).ready(function() {
-        var form = $('#myForm');
-        var submitButton = $('#submitButton');
+    <!-- Region下拉選單 -->
+    <script>
+        document.getElementById('citySelect').addEventListener('change', function () {
+            var city = this.value;
+            var regionSelect = document.getElementById('regionSelect');
 
-        // 初始化表單驗證
-        form.validate({
-            onfocusout: function(element) { $(element).valid(); },
-            onkeyup: function(element) { $(element).valid(); },
-            onclick: function(element) { $(element).valid(); },
-            ignore: ":hidden",
-            errorPlacement: function(error, element) {
-                error.insertAfter(element);
+            // 清空 Region 下拉選單
+            regionSelect.innerHTML = '';
+
+            // 添加一個提示選擇的預設選項
+            var defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.text = "選擇區域";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            regionSelect.appendChild(defaultOption);
+
+            // 根據選擇的城市填充 Region 下拉選單
+            if (city == "臺北市") {
+                var regions = ["中正區", "大同區", "中山區", "松山區", "大安區", "萬華區", "信義區", "士林區", "北投區", "內湖區", "南港區", "文山區"];
+            } else if (city == "新北市") {
+                var regions = ["板橋區", "新莊區", "中和區", "永和區", "土城區", "樹林區", "三峽區", "鶯歌區", "三重區", "蘆洲區", "五股區", "泰山區", "林口區", "八里區", "淡水區", "三芝區", "石門區", "金山區", "萬里區", "汐止區", "瑞芳區", "貢寮區", "平溪區", "雙溪區", "新店區", "深坑區", "石碇區", "坪林區", "烏來區", "新店區"];
+            } else {
+                var regions = [];
             }
+
+            // 將各個區域作為選項添加到 Region 下拉選單
+            regions.forEach(function (region) {
+                var option = document.createElement('option');
+                option.value = region;
+                option.text = region;
+                regionSelect.appendChild(option);
+            });
         });
+    </script>
 
-        // 處理表單提交
-        form.on('submit', function(e) {
-            e.preventDefault();
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function (e) {
+            e.preventDefault(); 
+            // 阻止表單的默認提交行為:驗證沒過不要亂送出
 
-            if (form.valid()) {
-                submitButton.prop('disabled', true);
-                var formData = new FormData(this);
+            // 使用 FormData 來獲取表單數據
+            const formData = new FormData(this);
 
-                fetch(this.action, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if(response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('伺服器響應非 200 OK');
-                    }
-                })
+            // 發送 AJAX 請求
+            fetch('/Users/Home/JoinUsSubmit', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.text()) // 將響應轉換為 JSON
                 .then(data => {
-                    $('#exampleModal-2').modal('show'); // 這裡才觸發模態窗口
+                    if (data=="成功") {
+                        // 如果後端返回成功，顯示成功的 Modal
+                        $('#modalOK').modal('show');
+                    } else {
+                        // 如果後端返回失敗，顯示失敗的 Modal
+                        $('#modalNotOK').modal('show');
+                    }
                 })
                 .catch(error => {
                     console.error('錯誤:', error);
-                })
-                .finally(() => {
-                    submitButton.prop('disabled', false);
+                    // 這裡可以處理網路錯誤等問題
                 });
-            } else {
-                console.log('表單未通過驗證');
-            }
         });
-    });
-</script> *@
 
 
+    </script>
 
-
-}
+    }
+       

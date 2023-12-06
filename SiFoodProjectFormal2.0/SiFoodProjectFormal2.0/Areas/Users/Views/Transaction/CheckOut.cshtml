@@ -3,22 +3,17 @@
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/assets/css/theme.min.css" />
+    <link href="~/css/loginsite.css" rel="stylesheet" />
 }
 
-
-
-<!-- section-->
 <div class="mt-4">
     <div class="container">
-        <!-- row -->
         <div class="row ">
-            <!-- col -->
             <div class="col-12">
-                <!-- breadcrumb -->
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="#!">首頁</a></li>
-                        <li class="breadcrumb-item"><a href="#!">商店</a></li>
+                        <li class="breadcrumb-item"><a href="/Users/Home/Main">首頁</a></li>
+                        <li class="breadcrumb-item"><a href="/Users/Home/Stores">商店</a></li>
                         <li class="breadcrumb-item active" aria-current="page">結帳</li>
                     </ol>
                 </nav>
@@ -27,400 +22,428 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-<!-- section -->
 <div class="mb-lg-14 mb-8 mt-8" id="CheckOutApp">
-    <div class="container">
-
-        <!-- row -->
-        <div class="row">
-            <!-- col -->
-            <div class="col-12">
-                <div class="mb-8 ">
-                    <!-- text -->
-                    <h1 class="fw-bold mb-0" style="font-size:50px">結帳</h1>
-                    <br />
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked @@click="chooseDeliver">
-                    <label class="form-check-label text-dark" for="homeRadio" style="font-size:20px">
-                        外送
-                    </label>
-                    &nbsp
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio2" @@click="chooseTakeout">
-                    <label class="form-check-label text-dark" for="homeRadio2" style="font-size:20px">
-                        自取
-                    </label>
-                </div>
-            </div>
+    <template v-if="loading == true">
+        <div class="loading-overlay">
+            <div class="loading-spinner"></div>
         </div>
-
-
-
-
-
-        <!-- row -->
-        <div class="row">
-            <template v-if="this.checkRadio==false">
-                <div class="col-lg-7 col-md-12">
-                    <!-- accordion -->
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        <!-- accordion item -->
-                        <div class="accordion-item py-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <!-- heading one -->
-                                <a href="#" class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                    <i class="feather-icon icon-map-pin me-2 text-muted"></i>外送地址
+    </template>
+    <template v-else>
+        <div class="container">
+            <div class="row">
+                <div class="col-6 px-3">
+                    <div class="mb-8 ">
+                        <h1 class="fw-bold mb-0" style="font-size:50px">結帳</h1>
+                        <br />
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked @@click="chooseDeliver">
+                        <label class="form-check-label text-dark" for="homeRadio" style="font-size:20px">
+                            自取
+                        </label>
+                        &nbsp
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio2" @@click="chooseTakeout">
+                        <label class="form-check-label text-dark" for="homeRadio2" style="font-size:20px">
+                            外送
+                        </label>
+                    </div>
+                    <template v-if="this.checkRadio==false">
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                <i class="fa-solid fa-user"></i> &nbsp;訂購人 : <span>{{checkoutData.userName}}</span>
+                            </div>
+                            <div class="accordion-item py-4">
+                                <h5>
+                                    <i class="feather-icon icon-clock me-2 text-muted"></i>預定取貨時間
+                                </h5>
+                                <input type="text" class="border border-1" style="width:150px" readonly v-model="orderTime" />
+                            </div>
+                            <div class="accordion-item py-4">
+                                <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                    <i class="feather-icon icon-shopping-bag me-2 text-muted"></i>訂單備註
                                 </a>
-
-
-                                <!-- collapse -->
+                                <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
+                                    <div class="mt-5">
+                                        <label for="DeliveryInstructions" class="form-label sr-only">備註</label>
+                                        <textarea class="form-control" v-model="orderNotes" id="DeliveryInstructions" rows="3" placeholder="寫下您的訂單備註"></textarea>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
-                                <div class="mt-5">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-12 mb-4  d-flex align-items-stretch">
-                                            <!-- form -->
-                                            <div class="card card-body p-6 ">
-                                                <div class="form-check mb-4">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="homeRadio3" checked="">
-                                                    <label class="form-check-label text-dark" for="homeRadio3">
-                                                        地址1
-                                                    </label>
+                            <div class="accordion-item py-4">
+                                <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                    <i class="feather-icon icon-credit-card me-2 text-muted"></i>付款方式
+                                </a>
+                                <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
+                                    <div class="mt-5">
+                                        <div>
+                                            <div class="card card-bordered shadow-none mb-2">
+                                                <div class="card-body p-6">
+                                                    <div class="d-flex">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="flexRadioDefault2" id="homeRadio4" checked>
+                                                            <label class="form-check-label ms-2" for="homeRadio4">
+                                                            </label>
+                                                        </div>
+                                                        <div>
+                                                            <h5 class="mb-1 h6">線上支付</h5>
+                                                            <p class="mb-0 small">
+                                                                您將會被導入至外部的付款頁面
+                                                            </p>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <!-- address -->
-                                                <address>
-                                                    <div>@ViewBag.ad</div>
-                                                </address>
-                                                <span class="text-danger">預設地址</span>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-6 col-12 mb-4  d-flex align-items-stretch ">
-                                            <!-- input -->
-                                            <div class="card card-body p-6">
-                                                <div class="form-check mb-4">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="officeRadio">
-                                                    <label class="form-check-label text-dark" for="officeRadio">
-                                                        地址2
-                                                    </label>
-                                                </div>
-                                                <address>
-                                                    <strong>Nitu Chauhan</strong> <br> 3853 Coal Road, <br>
-                                                    Tannersville, Pennsylvania, 18372, USA,<br>
-                                                    <abbr title="Phone">P: 402-776-1106</abbr>
-                                                </address>
+                                            <div class="mt-5 d-flex justify-content-end">
+                                                <button class="btn btn-primary ms-2" @@click="createTakeOutOrder('CREDIT')">訂購</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- accordion item -->
-                        <div class="accordion-item py-4">
-                            <h5>
-                                <i class="feather-icon icon-clock me-2 text-muted"></i>預定送達時間
-                            </h5>
-                            <input type="text" class="border border-1" style="width:350px" readonly/>
-                        </div>
-                        <!-- accordion item -->
-                        <div class="accordion-item py-4">
+                    </template>
 
-                            <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                <i class="feather-icon icon-shopping-bag me-2 text-muted"></i>外送備註
-                                <!-- collapse -->
-                            </a>
-                            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
-                                <div class="mt-5">
-                                    <label for="DeliveryInstructions" class="form-label sr-only">外送備註</label>
-                                    <textarea class="form-control" id="DeliveryInstructions" rows="3" placeholder="寫下您的外送備註"></textarea>
+                    @*---------------------------------- 切換樣板分隔線 ----------------------------------------------*@
+
+                    <template v-else>
+                        <div>
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    <i class="fa-solid fa-user"></i> &nbsp;訂購人 : <span>{{checkoutData.userName}}</span>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- accordion item -->
-                        <div class="accordion-item py-4">
-                            <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                                <i class="feather-icon icon-credit-card me-2 text-muted"></i>付款方式
-                                <!-- collapse -->
-                            </a>
-                            <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
-                                <div class="mt-5">
-                                    <div>
-                                        <div class="card card-bordered shadow-none mb-2">
-                                            <!-- card body -->
-                                            <div class="card-body p-6">
-                                                <div class="d-flex">
-                                                    <div class="form-check">
-                                                        <!-- checkbox -->
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault2" id="homeRadio4" checked>
-                                                        <label class="form-check-label ms-2" for="homeRadio4">
-
-                                                        </label>
-                                                    </div>
-                                                    <div>
-                                                        <!-- title -->
-                                                        <h5 class="mb-1 h6">線上支付</h5>
-                                                        <p class="mb-0 small">
-                                                            您將會被導入至外部的付款頁面
-                                                        </p>
+                                <div class="accordion-item py-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="#" class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            <i class="feather-icon icon-map-pin me-2 text-muted"></i>外送地址
+                                        </a>
+                                    </div>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                        <div class="mt-5">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-12 mb-4  d-flex align-items-stretch" v-for="(item, index) in checkoutData.userAddressList">
+                                                    <div class="card card-body p-6">
+                                                        <div class="form-check mb-4">
+                                                            <input class="form-check-input" type="radio" name="flexRadioDefault" :id="'homeRadio' + index" @@click="sendAddress(item.userAddress)">
+                                                            <label class="form-check-label text-dark" :for="'homeRadio' + index">
+                                                                地址{{index + 1}}
+                                                            </label>
+                                                        </div>
+                                                        <address>
+                                                            <div>{{item.userAddress}}</div>
+                                                        </address>
+                                                        <div v-if="item.adressIsDefault == true">
+                                                            <span class="text-danger">預設地址</span>
+                                                        </div>
+                                                        <div v-else></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Button -->
-                                        <div class="mt-5 d-flex justify-content-end">
-                                            <button class="btn btn-primary ms-2" @@click="CreateDeliverOrder">訂購</button>
+                                    </div>
+                                </div>
+                                <div class="accordion-item py-4">
+                                    <h5>
+                                        <i class="feather-icon icon-clock me-2 text-muted"></i>預定送達時間
+                                    </h5>
+                                    <input type="text" class="border border-1" style="width:200px" readonly v-model="orderTime" />
+                                </div>
+                                <div class="accordion-item py-4">
+                                    <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                        <i class="feather-icon icon-shopping-bag me-2 text-muted"></i>外送備註
+                                    </a>
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
+                                        <div class="mt-5">
+                                            <label for="DeliveryInstructions" class="form-label sr-only">外送備註</label>
+                                            <textarea class="form-control" id="DeliveryInstructions" rows="3" placeholder="寫下您的外送備註"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item py-4">
+                                    <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                        <i class="feather-icon icon-credit-card me-2 text-muted"></i>付款方式
+                                    </a>
+                                    <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
+                                        <div class="mt-5">
+                                            <div>
+                                                <div class="card card-bordered shadow-none mb-2">
+                                                    <div class="card-body p-6">
+                                                        <div class="d-flex">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="flexRadioDefault2" id="homeRadio4" checked>
+                                                                <label class="form-check-label ms-2" for="homeRadio4">
+                                                                </label>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="mb-1 h6">線上支付</h5>
+                                                                <p class="mb-0 small">
+                                                                    您將會被導入至外部的付款頁面
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-5 d-flex justify-content-end">
+                                                    <button class="btn btn-primary ms-2" @@click="createDeliverOrder('CREDIT')">訂購</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </template>
                 </div>
-            </template>
 
+                @*------------------ 固定的訂單明細---------------- *@
 
-            @*---------------------------------- 切換樣板分隔線 ----------------------------------------------*@
-
-
-            <template v-else>
-                <div class="col-lg-7 col-md-12">
-                    <!-- accordion -->
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        <!-- accordion item -->
-                        
-                        <!-- accordion item -->
-                        <div class="accordion-item py-4">
-                            <h5>
-                                <i class="feather-icon icon-clock me-2 text-muted"></i>預定取貨時間
-                            </h5>
-                            
-                            <input type="text" class="border border-1" style="width:350px" readonly />
-                        </div>
-                        <!-- accordion item -->
-                        <div class="accordion-item py-4">
-
-                            <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                <i class="feather-icon icon-shopping-bag me-2 text-muted"></i>訂單備註
-                                <!-- collapse -->
-                            </a>
-                            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
-                                <div class="mt-5">
-                                    <label for="DeliveryInstructions" class="form-label sr-only">備註</label>
-                                    <textarea class="form-control" id="DeliveryInstructions" rows="3" placeholder="寫下您的訂單備註"></textarea>
+                <div class="col-6 col-md-12 col-lg-6 card shadow-sm" style="width:37rem;height:fit-content">
+                    <h5 class="px-6 py-4 bg-transparent mb-0">訂單明細</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item px-4 py-3" v-for="item in checkoutDatas">
+                            <div class="row">
+                                <div class="col-2 col-md-2">
+                                    <img src="~/assets/images/products/product-img-1.jpg" alt="Ecommerce" class="img-fluid">
+                                </div>
+                                <div class="col-3 col-md-3 text-md-start p-4">
+                                    <h6 class="mb-0" value="{{item.productName}}">{{item.productName}}</h6>
+                                    <span><small>{{item.storeName}}</small></span>
+                                </div>
+                                <div class="col-2 col-md-2 text-md-start p-4">
+                                    <span>單價:{{item.unitPrice}}$</span>
+                                </div>
+                                <div class="col-2 col-md-2 text-md-end p-4">
+                                    <span>數量:{{item.quantity}}</span>
+                                </div>
+                                <div class="col-3 col-md-3 text-md-end p-4">
+                                    <span class="fw-bold">總價:{{item.totalPrice}}$</span>
                                 </div>
                             </div>
-                        </div>
-                        <!-- accordion item -->
-                        <div class="accordion-item py-4">
-                            <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                                <i class="feather-icon icon-credit-card me-2 text-muted"></i>付款方式
-                                <!-- collapse -->
-                            </a>
-                            <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="">
-                                <div class="mt-5">
-                                    <div>
-                                        <div class="card card-bordered shadow-none mb-2">
-                                            <!-- card body -->
-                                            <div class="card-body p-6">
-                                                <div class="d-flex">
-                                                    <div class="form-check">
-                                                        <!-- checkbox -->
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault2" id="homeRadio4" checked>
-                                                        <label class="form-check-label ms-2" for="homeRadio4">
-
-                                                        </label>
-                                                    </div>
-                                                    <div>
-                                                        <!-- title -->
-                                                        <h5 class="mb-1 h6">線上支付</h5>
-                                                        <p class="mb-0 small">
-                                                            您將會被導入至外部的付款頁面
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Button -->
-                                        <div class="mt-5 d-flex justify-content-end">
-                                            <button class="btn btn-primary ms-2" @@click="CreateTakeOutOrder">訂購</button>
-                                        </div>
-                                    </div>
+                        </li>
+                        <li class="list-group-item px-4 py-3">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div>
+                                    訂單總價
+                                </div>
+                                <div class="fw-bold">
+                                    {{totalPrice}}$
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </template>
-
-
-
-            
-            @*------------------ 固定的訂單明細---------------- *@
-
-
-            <div class="col-12 col-md-12 offset-lg-1 col-lg-4">
-                <div class="mt-4 mt-lg-0">
-                    <div class="card shadow-sm" style="width:26rem">
-                        <h5 class="px-6 py-4 bg-transparent mb-0">訂單明細</h5>
-                        <ul class="list-group list-group-flush">
-                            <!-- list group item -->
-                            <li class="list-group-item px-4 py-3">
-                                <div class="row align-items-center">
-                                    <div class="col-2 col-md-2">
-                                        <img src="~/assets/images/products/product-img-1.jpg" alt="Ecommerce" class="img-fluid">
-                                    </div>
-                                    <div class="col-5 col-md-5">
-                                        <h6 class="mb-0">Haldiram's Sev Bhujia</h6>
-                                        <span><small class="text-muted">.98 / lb</small></span>
-                                    </div>
-                                    <div class="col-2 col-md-2 text-center text-muted">
-                                        <span>1</span>
-                                    </div>
-                                    <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                        <span class="fw-bold">$5.00</span>
-                                    </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    外送費
                                 </div>
-                            </li>
-                            <!-- list group item -->
-                            <li class="list-group-item px-4 py-3">
-                                <div class="row align-items-center">
-                                    <div class="col-2 col-md-2">
-                                        <img src="~/assets/images/products/product-img-2.jpg" alt="Ecommerce" class="img-fluid">
-                                    </div>
-                                    <div class="col-5 col-md-5">
-                                        <h6 class="mb-0">NutriChoice Digestive</h6>
-                                        <span><small class="text-muted">250g</small></span>
-                                    </div>
-                                    <div class="col-2 col-md-2 text-center text-muted">
-                                        <span>1</span>
-                                    </div>
-                                    <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                        <span class="fw-bold">$20.00</span>
-                                        <div class="text-decoration-line-through text-muted small">$26.00</div>
-                                    </div>
+                                <div class="fw-bold">
+                                    40$
                                 </div>
-                            </li>
-                            <!-- list group item -->
-                            <li class="list-group-item px-4 py-3">
-                                <div class="row align-items-center">
-                                    <div class="col-2 col-md-2">
-                                        <img src="~/assets/images/products/product-img-3.jpg" alt="Ecommerce" class="img-fluid">
-                                    </div>
-                                    <div class="col-5 col-md-5">
-                                        <h6 class="mb-0">Cadbury 5 Star Chocolate</h6>
-                                        <span><small class="text-muted">1 kg</small></span>
-                                    </div>
-                                    <div class="col-2 col-md-2 text-center text-muted">
-                                        <span>1</span>
-                                    </div>
-                                    <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                        <span class="fw-bold">$15.00</span>
-                                        <div class="text-decoration-line-through text-muted small">$20.00</div>
-                                    </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item px-4 py-3">
+                            <div class="d-flex align-items-center justify-content-between fw-bold">
+                                <div>
+                                    總金額
                                 </div>
-                            </li>
-                            <!-- list group item -->
-                            <li class="list-group-item px-4 py-3">
-                                <div class="row align-items-center">
-                                    <div class="col-2 col-md-2">
-                                        <img src="~/assets/images/products/product-img-4.jpg" alt="Ecommerce" class="img-fluid">
-                                    </div>
-                                    <div class="col-5 col-md-5">
-                                        <h6 class="mb-0">Onion Flavour Potato</h6>
-                                        <span><small class="text-muted">250g</small></span>
-                                    </div>
-                                    <div class="col-2 col-md-2 text-center text-muted">
-                                        <span>1</span>
-                                    </div>
-                                    <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                        <span class="fw-bold">$15.00</span>
-                                        <div class="text-decoration-line-through text-muted small">$20.00</div>
-                                    </div>
+                                <div>
+                                    {{totalPrice}}$
                                 </div>
-                            </li>
-                            <!-- list group item -->
-                            <li class="list-group-item px-4 py-3">
-                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <div>
-                                        商品總價
-                                    </div>
-                                    <div class="fw-bold">
-                                        $70.00
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div>
-                                        外送費
-                                    </div>
-                                    <div class="fw-bold">
-                                        $3.00
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- list group item -->
-                            <li class="list-group-item px-4 py-3">
-                                <div class="d-flex align-items-center justify-content-between fw-bold">
-                                    <div>
-                                        總金額
-                                    </div>
-                                    <div>
-                                        $73.00
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </div>
+    </template>
 </div>
-
-
 
 @section Scripts {
     <!-- Javascript-->
     <script src="~/assets/libs/flatpickr/dist/flatpickr.min.js"></script>
     <!-- Libs JS -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
-    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
     <script>
-
-        var vueApp = {
+        var CheckoutApp = {
             data() {
                 return {
                     checkRadio: false,
-
-
-
+                    selectAddress: "",
+                    checkoutDatas: [],
+                    orderTime: "",
+                    orderNotes: "",
+                    checkoutData: {}, //陣列裡面第一筆物件
+                    sendBackStoreName: "",
+                    sendBackUserName: "",
+                    sendBackProductDetail: [],
+                    sendBackTotalPrice: null,
+                    loading: false,
+                    sendBackShippingFee: "",
+                    addForm: {
+                        MerchantID: '@ViewData["MerchantID"]'
+                        , ReturnURL: '@ViewData["ReturnURL"]'
+                        , NotifyURL: '@ViewData["NotifyURL"]'
+                        , ClientBackURL: '@ViewData["ClientBackURL"]'
+                    }
                 }
             },
+            computed: {
+                totalPrice: function () {
+                    var _this = this;
+                    var totalPrice = 0;
+                    _this.checkoutDatas.forEach(item => {
+                        totalPrice += item.totalPrice;
+                    });
+                    return totalPrice;
+                }
+            },
+            updated() {
+                this.processUserName(this.checkoutData.userName);
+                this.processStoreName(this.checkoutData.storeName);
+                this.processTotalPrice(this.totalPrice);
+                this.sendBackProductDetail = this.checkoutDatas.map(item => ({ productName: item.productName, quantity: item.quantity }));
+            },
+            mounted: function () {
+                var _this = this;
+                _this.getDataInfo();
+                _this.getOrderTime();
+            },
             methods: {
+                getDataInfo: function () {
+                    var _this = this;
+                    axios.get(`/Transaction/GetCheckoutData`)
+                        .then(response => {
+                            //alert(JSON.stringify(response.data))
+                            _this.checkoutDatas = response.data;
+                            _this.checkoutData = response.data[0];
+                        })
+                        .catch(err => {
+                            alert(err);
+                        });
+                },
+                processUserName(userName) {
+                    this.sendBackUserName = userName;
+                },
+                processStoreName(storeName) {
+                    this.sendBackStoreName = storeName;
+                },
+                processProductName(productName) {
+                    this.sendBackProductName = productName;
+                },
+                processTotalPrice(totalPrice) {
+                    this.sendBackTotalPrice = totalPrice;
+                },
                 chooseTakeout: function () {
-                    this.checkRadio = true
+                    this.checkRadio = true;
                 },
-                chooseDeliver: function(){
-                    this.checkRadio = false
+                chooseDeliver: function () {
+                    this.checkRadio = false;
                 },
-                CreateDeliverOrder: function(){
-
+                callNewebPayApi(postData) {
+                    var _this = this;
+                    $.ajax({
+                        url: '@Url.Content("~/Transaction/SendToNewebPay")',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: { inModel: postData },
+                        success: function (returnObj) {
+                            const form = document.createElement('form');
+                            form.method = 'post';
+                            form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway';
+                            for (const key in returnObj) {
+                                if (returnObj.hasOwnProperty(key)) {
+                                    const hiddenField = document.createElement('input');
+                                    hiddenField.type = 'hidden';
+                                    hiddenField.name = key;
+                                    hiddenField.value = returnObj[key];
+                                    form.appendChild(hiddenField);
+                                }
+                            }
+                            document.body.appendChild(form);
+                            form.submit();
+                        },
+                        error: function (err) {
+                            alert(err.status + " " + err.statusText + '\n' + err.responseText);
+                        }
+                    });
                 },
-                CreateTakeOutOrder: function(){
-
+                createTakeOutOrder(ChannelID) {
+                    var _this = this;
+                    _this.loading = true;
+                    axios.post(`/Transaction/TakeOutOrder`, {
+                        StoreName: _this.sendBackStoreName,
+                        UserName: _this.sendBackUserName,
+                        ProductDetails: _this.sendBackProductDetail,
+                        TotalPrice: _this.sendBackTotalPrice
+                    }, {
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    })
+                        .then(response => {
+                            var postData = {};
+                            postData['ChannelID'] = ChannelID;
+                            postData['MerchantID'] = _this.addForm.MerchantID;
+                            postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `${item.productName}: ${item.quantity}`).join(', ');
+                            postData['Amt'] = _this.sendBackTotalPrice
+                            postData['ReturnURL'] = _this.addForm.ReturnURL;
+                            postData['NotifyURL'] = _this.addForm.NotifyURL;
+                            postData['ClientBackURL'] = _this.addForm.ClientBackURL;
+                            postData['UserName'] = _this.sendBackUserName;
+                            _this.callNewebPayApi(postData);
+                        })
+                        .catch(err => {
+                            alert(err);
+                        });
+                },
+                createDeliverOrder(ChannelID) {
+                    var _this = this;
+                    _this.loading = true;
+                    axios.post(`/Transaction/DeliverOrder`, {
+                        StoreName: _this.sendBackStoreName,
+                        UserName: _this.sendBackUserName,
+                        ProductDetails: _this.sendBackProductDetail,
+                        TotalPrice: _this.sendBackTotalPrice,
+                        UserAddress: _this.selectAddress,
+                        //ShippingFee: _this.sendBackShippingFee,
+                    }, {
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }).then(response => {
+                        var postData = {};
+                        postData['ChannelID'] = ChannelID;
+                        postData['MerchantID'] = _this.addForm.MerchantID;
+                        postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `${item.productName}: ${item.quantity}`).join(', ');
+                        postData['Amt'] = _this.sendBackTotalPrice
+                        postData['ReturnURL'] = _this.addForm.ReturnURL;
+                        postData['NotifyURL'] = _this.addForm.NotifyURL;
+                        postData['ClientBackURL'] = _this.addForm.ClientBackURL;
+                        postData['UserName'] = _this.sendBackUserName;
+                        _this.callNewebPayApi(postData)
+                    }).catch(err => {
+                        alert(err);
+                    })
+                },
+                getOrderTime: function () {
+                    var _this = this;
+                    var currentDate = new Date();
+                    currentDate.setMinutes(currentDate.getMinutes() + 30);
+                    var year = currentDate.getFullYear();
+                    var month = (currentDate.getMonth() + 1);
+                    var day = currentDate.getDate();
+                    var hours = currentDate.getHours();
+                    var minutes = currentDate.getMinutes();
+                    var stringDateTime = year + '-' + month + '-' + day + '  ' + hours + ':' + minutes;
+                    _this.orderTime = stringDateTime;
+                },
+                sendAddress: function (item) {
+                    var _this = this;
+                    _this.selectAddress = item;
                 },
             },
         }
-        var Checkapp = Vue.createApp(vueApp).mount("#CheckOutApp")
+        var Checkapp = Vue.createApp(CheckoutApp).mount("#CheckOutApp")
     </script>
 }

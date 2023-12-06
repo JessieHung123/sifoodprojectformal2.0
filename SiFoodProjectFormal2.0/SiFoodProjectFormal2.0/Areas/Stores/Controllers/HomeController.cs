@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
 using SiFoodProjectFormal2._0.Models;
@@ -19,13 +20,13 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         {
             _context = context;
         }
-
+        //[Route("Main")]
         // GET: Products
         [HttpGet] //uri:/
         public async Task<IActionResult> Main()
         {
             //var sifoodContext = _context.Products.Include(p => p.Category).Include(p => p.Store).Where(p => p.Store.StoreId == targetStoreId);
-            var sifoodContext = _context.Products.Where(p => p.StoreId == targetStoreId);
+            var products = _context.Products.Where(p => p.StoreId == targetStoreId);
             string storeName = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.StoreName).FirstOrDefaultAsync();
             int SumReleasedQty = _context.Products.Where(p => p.StoreId == targetStoreId).Sum(p => p.OrderedQty);
             //int ReleasedQty = await _context.Products.Where(od => od.StoreId == targetStoreId).Sum(od => od.ReleasedQty);
@@ -38,43 +39,37 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             ViewBag.status2 = status2Count;
             ViewBag.status3 = status3Count;
             ViewBag.status4 = status4Count;
+            ViewBag.Storephoto = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.PhotosPath).FirstOrDefaultAsync();
             ViewBag.SumReleasedQty = SumReleasedQty;
-            return View(await sifoodContext.ToListAsync());
+            return View(await products.ToListAsync());
         }
 
-        public async Task<IActionResult> Main2()
+        public async Task<IActionResult> SaleInfo()
         {
-            var sifoodContext2 = _context.OrderDetails.Include(d => d.Product).Select(x => new { StoreId = x.Product.StoreId, UnitPrice = x.Product.UnitPrice, OrderId = x.OrderId, ProductId = x.ProductId, ProductName = x.Product.ProductName }).Where(e => e.StoreId == targetStoreId);
-            return Json(sifoodContext2);
+            var salesinfo = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new 
+            { StoreId = x.Product.StoreId,
+                UnitPrice = x.Product.UnitPrice,
+                OrderId = x.OrderId,
+                OrderDetailId = x.OrderDetailId,
+                ProductId = x.ProductId,
+                Quantity = x.Quantity,
+                ProductName = x.Product.ProductName,
+                OrderStatus = x.Order.StatusId
+            })
+                .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7);
+            return Json(salesinfo);
 
         }
-
-        //public async Task<IActionResult> Main2()
-        //{
-        //    var sifoodContext2 = _context.OrderDetails.Include(d => d.Product).Select(x => new { StoreId = x.Product.StoreId, OrderDetailId = x.OrderDetailId, OrderId = x.OrderId, ProductId = x.ProductId, ProductName = x.Product.ProductName }).Where(e => e.StoreId == targetStoreId);
-        //    return Json(sifoodContext2);
-
-        //}
-
-        //public async Task<IActionResult> Main3()
-        //{
-        //    var sifoodContext3 = _context.Products.Select(x => new { StoreId = x.StoreId, Description = x.Description, ProductName = x.ProductName, ReleasedQty = x.ReleasedQty }).Where(p => p.StoreId == targetStoreId);
-        //    return Json(sifoodContext3);
-
-        //}
-
-        //----------------------------------//
-        //public IActionResult Main()
-        //{
-        //    return View();
-        //}
+        //[Route("RealTimeOrders")]
         public IActionResult RealTimeOrders()
         {
             return View();
         }
 
+
         //=========歷史訂單========//
         public IActionResult History(string searchTerm = null, string sortOption = "Status", int pageSize = 20)
+
         {
             // 假定的用戶ID，之後需要替換為當前登入用戶的ID
             var loginuserId = "S001";
@@ -137,7 +132,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             // 在過濾後的結果上應用分頁
             var historyOrders = historyOrdersQuery
                 .Take(pageSize)
-                .Select(o => new HistoryOrderVM
+                .Select(o => new storeHistoryOrderVM
                 {
                     // ViewModel的初始化
                     StoreId = o.StoreId,
@@ -156,7 +151,6 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             return View(historyOrders);
         }
 
-
         //訂單明細方法GetOrderDetails
         public async Task<IActionResult> GetOrderDetails(string orderId)
         {
@@ -171,7 +165,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 return NotFound();
             }
 
-            var historyOrderDetailsVM = new HistoryOrderDetailVM
+            var historyOrderDetailsVM = new storeHistoryOrderDetailVM
             {
                 OrderId = order.OrderId,
                 OrderDate = order.OrderDate,
@@ -180,7 +174,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 UserName=order.User.UserName,
                 UserPhone=order.User.UserPhone,
 
-                Items = order.OrderDetails.Select(od => new HistoryOrderDetailItemVM
+                Items = order.OrderDetails.Select(od => new storeHistoryOrderDetailItemVM
                 {
                     PhotoPath = od.Product.PhotoPath,
                     ProductName = od.Product.ProductName,
@@ -192,19 +186,21 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             return PartialView("_OrderDetailPartialS", historyOrderDetailsVM);
         }
 
-
         public IActionResult ProductManage()
         {
             return View();
         }
+        [Route("InfoModify")]
         public IActionResult InfoModify()
         {
             return View();
         }
+        [Route("Review")]
         public IActionResult Review()
         {
             return View();
         }
+        [Route("FAQ")]
         public IActionResult FAQ()
         {
             return View();

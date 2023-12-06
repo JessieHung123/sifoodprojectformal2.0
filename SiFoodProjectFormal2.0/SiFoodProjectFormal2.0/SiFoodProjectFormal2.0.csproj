@@ -8,14 +8,40 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Drivers\NewFolder1\**" />
+    <Compile Remove="Areas\Drivers\NewFolder2\**" />
+    <Compile Remove="Areas\Drivers\NewFolder\**" />
     <Compile Remove="Areas\Users\Views\OrderDetails\**" />
+    <Compile Remove="wwwroot\images\JoinUs\NewFolder1\**" />
+    <Compile Remove="wwwroot\images\JoinUs\NewFolder\**" />
+    <Compile Remove="wwwroot\images\JoinUs\PhotosPaths3\**" />
+    <Content Remove="Areas\Drivers\NewFolder1\**" />
+    <Content Remove="Areas\Drivers\NewFolder2\**" />
+    <Content Remove="Areas\Drivers\NewFolder\**" />
     <Content Remove="Areas\Users\Views\OrderDetails\**" />
+    <Content Remove="wwwroot\images\JoinUs\NewFolder1\**" />
+    <Content Remove="wwwroot\images\JoinUs\NewFolder\**" />
+    <Content Remove="wwwroot\images\JoinUs\PhotosPaths3\**" />
+    <EmbeddedResource Remove="Areas\Drivers\NewFolder1\**" />
+    <EmbeddedResource Remove="Areas\Drivers\NewFolder2\**" />
+    <EmbeddedResource Remove="Areas\Drivers\NewFolder\**" />
     <EmbeddedResource Remove="Areas\Users\Views\OrderDetails\**" />
+    <EmbeddedResource Remove="wwwroot\images\JoinUs\NewFolder1\**" />
+    <EmbeddedResource Remove="wwwroot\images\JoinUs\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\images\JoinUs\PhotosPaths3\**" />
+    <None Remove="Areas\Drivers\NewFolder1\**" />
+    <None Remove="Areas\Drivers\NewFolder2\**" />
+    <None Remove="Areas\Drivers\NewFolder\**" />
     <None Remove="Areas\Users\Views\OrderDetails\**" />
+    <None Remove="wwwroot\images\JoinUs\NewFolder1\**" />
+    <None Remove="wwwroot\images\JoinUs\NewFolder\**" />
+    <None Remove="wwwroot\images\JoinUs\PhotosPaths3\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Areas\Users\Controllers\OrderDetailsController.cs" />
+    <Compile Remove="Areas\Users\Controllers\StoresController.cs" />
+    <Compile Remove="Areas\Users\Controllers\TestUsersController.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +56,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Areas\Admin\Views\Home\OrderManage.cshtml" />
     <Content Remove="wwwroot\assets\images\logo\SiFood_logo_BGclear.png" />
     <Content Remove="wwwroot\images\Drivers\1699453284197.jpg" />
     <Content Remove="wwwroot\images\Drivers\23718262.png" />
@@ -44,14 +71,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="ViewModels\Admin\" />
-    <Folder Include="ViewModels\Drivers\" />
     <Folder Include="wwwroot\assets\libs\flatpickr\dist\types\" />
     <Folder Include="wwwroot\assets\libs\flatpickr\dist\utils\" />
     <Folder Include="wwwroot\assets\libs\rater-js\example\" />
@@ -59,8 +83,10 @@
     <Folder Include="wwwroot\assets\libs\tiny-slider\dist\sourcemaps\" />
     <Folder Include="wwwroot\images\Admin\" />
     <Folder Include="wwwroot\images\Drivers\" />
-    <Folder Include="wwwroot\images\FAQ\" />
-    <Folder Include="wwwroot\images\JoinUs\" />
+    <Folder Include="wwwroot\images\JoinUs\Logo\" />
+    <Folder Include="wwwroot\images\JoinUs\PhotosPath3\" />
+    <Folder Include="wwwroot\images\JoinUs\PhotosPath2\" />
+    <Folder Include="wwwroot\images\JoinUs\PhotosPath\" />
   </ItemGroup>
 
   <ItemGroup>

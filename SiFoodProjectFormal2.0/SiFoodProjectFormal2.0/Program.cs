@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.OData;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 using SiFoodProjectFormal2._0.Models;
 
 
@@ -13,7 +15,8 @@ namespace SiFoodProjectFormal2._0
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<Sifood3Context>(options => {
+            builder.Services.AddDbContext<Sifood3Context>(options =>
+            {
                 options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Sifood"));
             });
 
@@ -27,8 +30,9 @@ namespace SiFoodProjectFormal2._0
                                 .OrderBy()
 
                 );
-
-
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddTransient<IUserIdentityService, UserIdentityService>();
+            builder.Services.AddTransient<IStoreIdentityService, StoreIdentityService>();
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
@@ -45,7 +49,7 @@ namespace SiFoodProjectFormal2._0
                 app.UseHsts();
 
             }
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -55,14 +59,27 @@ namespace SiFoodProjectFormal2._0
 
             app.UseAuthorization();
 
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "Users",
+            //        pattern: "{area:exists}/{controller=Home}/{action=Main}/{id?}");
 
-            app.MapControllerRoute(
-                name: "areas",
-                pattern: "{area:exists}/{controller=Home}/{action=Main}/{id?}");
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller=Home}/{action=Main}/{id?}");
 
+            //});
             app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+              name: "areas",
+              pattern: "{area=Users}/{controller=Home}/{action=Main}/{id?}"
+            );
+            //app.MapControllerRoute(
+            //    name: "default",
+            //    pattern: "{area=Users}/{controller=Home}/{action=MainPage}/{id?}");
+            //app.UseEndpoints(
+            //    endpoints => { endpoints.MapAreaControllerRoute(name: "Users", areaName: "Users", pattern: "{action=MainPage}");
+            //    endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Main}/{id?}"); });
 
             app.Run();
         }
