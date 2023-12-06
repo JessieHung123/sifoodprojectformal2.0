@@ -75,13 +75,13 @@
                                 </div>
                             </form>
                             <!-- form end -->
-                            <!--測試TempData-->
+                            @* <!--測試TempData-->
                             @if (TempData["SuccessMessage"] != null)
                             {
                                 <div class="alert alert-success">
                                     @TempData["SuccessMessage"]
                                 </div>
-                            }
+                            } *@
                         </div>
                     </div>
                 </div>
@@ -164,15 +164,18 @@
 
     @* /跳出修改成功alert *@
     <script>
-        document.getElementById('saveButton').addEventListener('click', function () {
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "資料已修改!",
-                showConfirmButton: false,
-                timer: 1500
+        $(document).ready(function () {
+            $('#saveButton').click(function () {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "資料已修改!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             });
         });
+
     </script>
 
     <script>
