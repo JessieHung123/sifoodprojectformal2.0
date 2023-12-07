@@ -76,6 +76,7 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Cart_Products");
 
             entity.HasOne(d => d.User).WithMany(p => p.Carts)
@@ -279,10 +280,12 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Products_Category1");
 
             entity.HasOne(d => d.Store).WithMany(p => p.Products)
                 .HasForeignKey(d => d.StoreId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Products_Stores");
         });
 
@@ -310,9 +313,7 @@ public partial class Sifood3Context : DbContext
                 .HasMaxLength(64)
                 .IsUnicode(false);
             entity.Property(e => e.EnrollDate).HasColumnType("date");
-            entity.Property(e => e.Latitude).HasColumnType("decimal(10, 8)");
             entity.Property(e => e.LogoPath).HasMaxLength(70);
-            entity.Property(e => e.Longitude).HasColumnType("decimal(11, 8)");
             entity.Property(e => e.OpeningTime).HasMaxLength(50);
             entity.Property(e => e.PasswordHash).HasMaxLength(64);
             entity.Property(e => e.PasswordSalt).HasMaxLength(64);
