@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SiFoodProjectFormal2._0;
 using SiFoodProjectFormal2._0.Areas.Users.Models.NewebPayModels;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
@@ -19,20 +21,27 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
     {
         private readonly Sifood3Context _context;
         private readonly IUserIdentityService _userIdentityService;
-        public TransactionController(Sifood3Context context, IUserIdentityService userIdentityService)
+        private readonly IConfiguration _configuration;
+        public TransactionController(Sifood3Context context, IUserIdentityService userIdentityService, IConfiguration configuration)
         {
 
             _userIdentityService = userIdentityService;
             _context = context;
+            _configuration = configuration;
         }
 
+        [Authorize]
         public IActionResult CheckOut()
         {
-            IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
-            ViewData["MerchantID"] = Config.GetSection("MerchantID").Value;
-            ViewData["ReturnURL"] = $"https://08cc-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackReturn";//上線換網址記得改
-            ViewData["NotifyURL"] = $"https://08cc-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
-            ViewData["ClientBackURL"] = $"https://08cc-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
+            ViewData["MerchantID"] = _configuration.GetSection("MerchantID").Value;
+            ViewData["ReturnURL"] = $"https://2b6c-1-164-243-82.ngrok-free.app/Users/Transaction/CallbackReturn";//上線換網址記得改
+            ViewData["NotifyURL"] = $"https://2b6c-1-164-243-82.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
+            ViewData["ClientBackURL"] = $"https://2b6c-1-164-243-82.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
+            return View();
+        }
+
+        public IActionResult PaymentFail()
+        {
             return View();
         }
 
@@ -100,7 +109,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             {
                 OrderId = order.OrderId,
                 PaymentMethodＮame = "藍新",
-                PaymentStatusＮame = "已付款",
+                PaymentStatusＮame = "未付款",
                 PaymentTime = DateTime.Now,
             };
 
@@ -114,7 +123,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         private int GetProductIdByName(string productName, string storeName)
         {
-            var storeId = _context.Stores.Where(x=>x.StoreName == storeName).Select(y=>y.StoreId).FirstOrDefault();
+            var storeId = _context.Stores.Where(x => x.StoreName == storeName).Select(y => y.StoreId).FirstOrDefault();
             return _context.Products.Where(p => p.ProductName == productName && p.StoreId == storeId && p.IsDelete == 1).Select(p => p.ProductId).FirstOrDefault();
         }
 
@@ -154,13 +163,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 int orderedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.OrderedQty).Single();
                 product.OrderedQty = orderedQty + item.Quantity;
             }
-           
 
             Payment payment = new Payment
             {
                 OrderId = order.OrderId,
                 PaymentMethodＮame = "藍新",
-                PaymentStatusＮame = "已付款",
+                PaymentStatusＮame = "未付款",
                 PaymentTime = DateTime.Now,
             };
 
@@ -196,9 +204,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             string TradeInfoParam = string.Join("&", TradeInfo.Select(x => $"{x.Key}={x.Value}"));
             outModel.MerchantID = inModel.MerchantID;
             outModel.Version = "2.0";
-            IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
-            string HashKey = Config.GetSection("HashKey").Value;
-            string HashIV = Config.GetSection("HashIV").Value;
+
+            string HashKey = _configuration.GetSection("HashKey").Value;
+            string HashIV = _configuration.GetSection("HashIV").Value;
             string TradeInfoEncrypt = EncryptAESHex(TradeInfoParam, HashKey, HashIV);
             outModel.TradeInfo = TradeInfoEncrypt;
             outModel.TradeSha = EncryptSHA256($"HashKey={HashKey}&{TradeInfoEncrypt}&HashIV={HashIV}");
@@ -214,55 +222,43 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         /// <summary>
         /// 支付完成返回網址
         /// </summary>
-        public IActionResult CallbackReturn()
+        public IActionResult CallbackReturn(CallBackVM model)
         {
-            StringBuilder receive = new StringBuilder();
-            foreach (var item in Request.Form)
+            string hashKey = _configuration.GetSection("HashKey").Value;
+            string hashIV = _configuration.GetSection("HashIV").Value;
+            string decryptedTradeInfo = DecryptAESHex(model.TradeInfo, hashKey, hashIV);
+            var keyValuePairs = decryptedTradeInfo.Split('&').Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
+            model.Status = keyValuePairs["Status"];
+            model.MerchantOrderNo = keyValuePairs["MerchantOrderNo"];
+            Payment? payment = _context.Payments.Where(x => x.OrderId == model.MerchantOrderNo).FirstOrDefault();
+            if (model.Status == "SUCCESS")
             {
-                receive.AppendLine(item.Key + "=" + item.Value + "<br>");
+                payment.PaymentStatusＮame = "已付款";
+                _context.SaveChanges();
+                return RedirectToAction("RealTimeOrders", "Home");
             }
-            ViewData["ReceiveObj"] = receive.ToString();
-
-            IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
-            string HashKey = Config.GetSection("HashKey").Value;
-            string HashIV = Config.GetSection("HashIV").Value;
-
-            string TradeInfoDecrypt = DecryptAESHex(Request.Form["TradeInfo"], HashKey, HashIV);
-            NameValueCollection decryptTradeCollection = HttpUtility.ParseQueryString(TradeInfoDecrypt);
-            receive.Length = 0;
-            foreach (String key in decryptTradeCollection.AllKeys)
+            else
             {
-                receive.AppendLine(key + "=" + decryptTradeCollection[key] + "<br>");
+                return RedirectToAction("PaymentFail", "Transaction");
             }
-            ViewData["TradeInfo"] = receive.ToString();
-
-            return RedirectToAction("RealTimeOrders", "Home");
         }
 
         /// <summary>
         /// 支付通知網址
         /// </summary>
-        public IActionResult CallbackNotify()
+        public IActionResult CallbackNotify(CallBackVM model)
         {
             StringBuilder receive = new StringBuilder();
-            foreach (var item in Request.Form)
-            {
-                receive.AppendLine(item.Key + "=" + item.Value + "<br>");
-            }
-            ViewData["ReceiveObj"] = receive.ToString();
-
-            IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
-            string HashKey = Config.GetSection("HashKey").Value;
-            string HashIV = Config.GetSection("HashIV").Value;
-            string TradeInfoDecrypt = DecryptAESHex(Request.Form["TradeInfo"], HashKey, HashIV);
+            receive.AppendLine("TradeInfo=" + model.TradeInfo + "<br>");
+            string HashKey = _configuration.GetSection("HashKey").Value;
+            string HashIV = _configuration.GetSection("HashIV").Value;
+            string TradeInfoDecrypt = DecryptAESHex(model.TradeInfo, HashKey, HashIV);
             NameValueCollection decryptTradeCollection = HttpUtility.ParseQueryString(TradeInfoDecrypt);
             receive.Length = 0;
             foreach (String key in decryptTradeCollection.AllKeys)
             {
                 receive.AppendLine(key + "=" + decryptTradeCollection[key] + "<br>");
             }
-            ViewData["TradeInfo"] = receive.ToString();
-
             return View();
         }
 

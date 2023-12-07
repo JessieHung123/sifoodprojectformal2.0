@@ -324,7 +324,7 @@
                     checkoutDatas: [],
                     orderTime: "",
                     orderNotes: "",
-                    checkoutData: {}, //陣列裡面第一筆物件
+                    checkoutData: {},
                     sendBackStoreName: "",
                     sendBackUserName: "",
                     sendBackProductDetail: [],
@@ -398,31 +398,30 @@
                 },
                 callNewebPayApi(postData) {
                     var _this = this;
-                    $.ajax({
-                        url: '@Url.Content("~/Transaction/SendToNewebPay")',
-                        method: 'POST',
-                        dataType: 'json',
-                        data: { inModel: postData },
-                        success: function (returnObj) {
-                            const form = document.createElement('form');
+                    axios.post(`/Transaction/SendToNewebPay`, postData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        }
+                    })
+                        .then(response => {
+                            var form = document.createElement('form');
                             form.method = 'post';
                             form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway';
-                            for (const key in returnObj) {
-                                if (returnObj.hasOwnProperty(key)) {
-                                    const hiddenField = document.createElement('input');
+                            for (var key in response.data) {
+                                if (response.data.hasOwnProperty(key)) {
+                                    var hiddenField = document.createElement('input');
                                     hiddenField.type = 'hidden';
                                     hiddenField.name = key;
-                                    hiddenField.value = returnObj[key];
+                                    hiddenField.value = response.data[key];
                                     form.appendChild(hiddenField);
                                 }
                             }
                             document.body.appendChild(form);
                             form.submit();
-                        },
-                        error: function (err) {
-                            alert(err.status + " " + err.statusText + '\n' + err.responseText);
-                        }
-                    });
+                        })
+                        .catch(error => {
+                            alert(error.response.status + " " + error.response.statusText + '\n' + error.response.data);
+                        });
                 },
                 createTakeOutOrder(ChannelID) {
                     var _this = this;
