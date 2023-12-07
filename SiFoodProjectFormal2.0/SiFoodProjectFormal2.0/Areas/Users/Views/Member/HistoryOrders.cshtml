@@ -1,18 +1,14 @@
 ﻿@using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 @model IEnumerable<HistoryOrderVM>
+
 @{
     Layout = "~/Areas/Users/Views/Shared/_Layout.cshtml";
-}
-
-<!-- Title -->
-@{
     ViewData["Title"] = "歷史訂單";
 }
 
 <!-- CSS -->
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="~/assets/libs/prismjs/themes/prism-okaidia.min.css" rel="stylesheet" />
     <!--改放大鏡和X顯示問題-->
     <style>
         .input-group-append .btn {
@@ -197,31 +193,15 @@
 
 @section Scripts{
 
-    <script src="~/js/rating.js"></script>
-
-@* 
-    <script src="https://cdn.jsdelivr.net/npm/rater-js@1.0.1/index.min.js"></script>
-    <script src="~/assets/libs/rater-js/index.js"></script> *@
-
-    <!--Elly測試改引用Bootstrap-->
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-
-    <!-- Javascript 放jQuery後面-->
-    
+    <!--星星評分-->
+    <script src="/js/rating.js"></script>
 
     <!-- Theme JS -->
-    <script src="~/assets/libs/prismjs/prism.js"></script>
-    <script src="~/assets/libs/prismjs/components/prism-scss.min.js"></script>
-    <script src="~/assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
-    <script src="~/assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
-    <script src="~/assets/js/vendors/sidebarMenu.js"></script>
 
 
     <script>
-        var currentOrderId; // 用於保存當前訂單的ID
-
-        var submitRatingUrl = '@Url.Action("SubmitRating", "Member")';
+        // 用於保存當前訂單的ID
+        var currentOrderId; 
 
         document.addEventListener('DOMContentLoaded', function () {
             // Text 搜索
@@ -272,33 +252,20 @@
                 });
             }
 
-            // // 定義初始化 rater-js 的函數
-            // function initializeRater() {
-            //     if (document.querySelector("#rater")) {
-            //         var raterOptions = {
-            //             starSize: 32,
-            //             element: document.querySelector("#rater"),
-            //             rateCallback: function (rating, done) {
-            //                 this.setRating(rating);
-            //                 done();
-            //             }
-            //         };
-            //         new Rater(raterOptions);
-            //     }
-            // }
-
             // 處理 Modal for Orderdetail
             window.loadOrderDetails = function (orderId) {
-                currentOrderId = orderId; // 保存當前訂單ID
+
+                // 保存當前訂單ID
+                currentOrderId = orderId; 
 
                 //偵錯:查orderID
                 console.log("載入訂單詳情，訂單 ID:", orderId);
                
-                // 構建正確的模態框 ID
+                // 構建正確的Modal ID
                 var modalId = 'exampleModalScrollable-' + orderId;
 
                 //偵錯:查modalId
-                console.log("模態框 ID:", modalId);
+                console.log("Modal框 ID:", modalId);
 
                 // 獲取模態框元素
                 var modalElement = document.getElementById(modalId);
@@ -307,61 +274,60 @@
                 fetch('@Url.Action("GetOrderDetails", "Member")?orderId=' + orderId)
                     .then(response => response.text())
                     .then(response => {
-                        // 確保模態框元素存在
+
+                        // 確保Modal元素存在
                         if (modalElement) {
-                            // 將返回的視圖填充到模態框中
+
+                            // 將返回的視圖填充到Modal中
                             modalElement.querySelector('.modal-content').innerHTML = response;
 
-                            // 初始化並顯示模態框
+                            // 初始化並顯示Modal
                             var myModal = new bootstrap.Modal(modalElement);
                             myModal.show();
-
-                           
+                                                       
                             // 添加 hidden.bs.modal 事件監聽器
                             modalElement.addEventListener('hidden.bs.modal', function () {
                                 clearModalsBackdrop();
                             });
 
-                            //Rater
-                            // setTimeout(function () {
-                            //     initializeRater();
-                            // }, 500); // 延遲 500 毫秒初始化
-
-                            // 在模態內容加載後初始化星級評分系統
+                            // 在Modal內容加載後初始化星級評分系統
                             initializeStarRatingSystem(modalElement);
                             }
                     })
                     .catch(err => {
                         // 處理錯誤情況
-                        console.error("發生錯誤: ", err);
+                        console.error("Modal又發生錯誤了: ", err);
                     });
             };
-
-
-            var getRatingValue; // 定義一個變量來保存閉包
-
+            
+            // 定義一個變量來保存Closure
+            var getRatingValue;
 
             // 新增的初始化星級評分系統函數
             function initializeStarRatingSystem(modalElement) {
                 const stars = modalElement.querySelector(".rating")?.children;
                 let ratingValue;
-                let index; // 目前選到的星星
+
+                // 目前選到的星星
+                let index; 
 
                 if (stars) {
                     document.getElementById("rating-value").innerHTML = "請給分";
-
-                   
+                                       
                     for (let i = 0; i < stars.length; i++) {
                         // 設置鼠標懸停在星星上時的事件
                         stars[i].addEventListener("mouseover", function () {
                             document.getElementById("rating-value").innerHTML = "正在打分數";
                             for (let j = 0; j < stars.length; j++) {
-                                stars[j].classList.remove("fa-star"); // reset 所有星星
+                                // reset 所有星星
+                                stars[j].classList.remove("fa-star"); 
                                 stars[j].classList.add("fa-star-o");
                             }
                             for (let j = 0; j <= i; j++) {
-                                stars[j].classList.remove("fa-star-o"); // 移除空心的星星
-                                stars[j].classList.add("fa-star"); // 添加新的星星
+                                // 移除空心的星星
+                                stars[j].classList.remove("fa-star-o");
+                                // 添加新的星星
+                                stars[j].classList.add("fa-star"); 
                             }
                         });
 
@@ -372,10 +338,11 @@
                             document.getElementById("rating-value").innerHTML = "你打的分數是 " + ratingValue;
                         });
 
-                        // 設置鼠標移開星星時的事件
+                        // 設置滑鼠移開星星時的事件
                         stars[i].addEventListener("mouseout", function () {
                             for (let j = 0; j < stars.length; j++) {
-                                stars[j].classList.remove("fa-star"); // reset 所有星星
+                                // reset 所有星星
+                                stars[j].classList.remove("fa-star"); 
                                 stars[j].classList.add("fa-star-o");
                             }
                             for (let j = 0; j <= index; j++) {
@@ -385,10 +352,10 @@
                         });
                     }
 
-                        // 創建一個閉包來返回評分值
-                        getRatingValue = function () {
-                            return ratingValue;
-                        };
+                    // 創建一個Closure來返回評分值
+                    getRatingValue = function () {
+                        return ratingValue;
+                    };
 
                 } else {
                     console.error("無法找到 .rating 元素");
@@ -398,7 +365,8 @@
 
             // 處理評價提交
             window.submitRating = function () {
-                var rating = getRatingValue ? getRatingValue() : 0; // 直接使用閉包或取評分值
+                // 直接使用Closure或取評分值
+                var rating = getRatingValue ? getRatingValue() : 0; 
                 var comment = document.querySelector("#commentContent").value;
 
                 // 使用 Fetch API 發送 POST 請求
@@ -414,7 +382,7 @@
                         // 處理成功提交後的邏輯
                         alert("評價提交成功");
                            
-                        // 關閉模態框
+                        // 關閉Modal
                         $('#exampleModalScrollable-' + currentOrderId).modal('hide');
                     })
                     .catch(err => {

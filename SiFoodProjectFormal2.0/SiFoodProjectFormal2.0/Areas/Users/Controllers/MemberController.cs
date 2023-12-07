@@ -233,8 +233,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     Quantity = od.Quantity
                 }).ToList(),
 
-                CommentRank = order.Comment.CommentRank, 
-                CommentContents = order.Comment.Contents 
+                CommentRank = order.Comment?.CommentRank, 
+                CommentContents = order.Comment?.Contents
             };
 
             return PartialView("_OrderDetailPartial", historyOrderDetailsVM);

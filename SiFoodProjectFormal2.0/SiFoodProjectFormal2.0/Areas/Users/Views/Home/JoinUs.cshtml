@@ -5,68 +5,12 @@
 <!-- 引用Layout -->
 @{
     Layout = "_Layout";
-}
-
-<!-- Title -->
-@{
     ViewData["Title"] = "加入我們";
 }
 
 <!-- CSS -->
 @section Styles{
-<!-- Required meta tags -->
-
     <link href="~/assets/libs/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
-    <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
-
-
-    <!-- Libs CSS -->
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
-
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
-@*     <link href="~/assets/libs/prismjs/themes/prism-okaidia.min.css" rel="stylesheet"> *@
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M8S4MT3EYG"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-M8S4MT3EYG');
-    </script>
-
-    @* <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    var myDropzone = new Dropzone(".profile-dropzone", {
-        // 其他配置選項
-    });
-});
-    </script> *@
-
-    @* <!-- 自己加的CSS，改最後按鈕的位置 -->
-    <style>
-        /* 這裡加入自定義樣式 */
-        .btn-primary {
-            position: relative; /* 調整位置 */
-            left: auto; /* 將左偏移設置為自動 */
-            right: auto; /* 將右偏移設置為自動 */
-            display: block; /* 使按鈕顯示為塊級元素 */
-            margin-left: 220px; /* 左邊距自動 */
-            margin-right: auto; /* 右邊距自動 */
-            /* 添加其他需要的樣式規則 */
-        }
-    </style> *@
-
-
-    <!-- End Tag -->
-
-
 }
 
 <main>
@@ -442,22 +386,7 @@
 
 @section Scripts{
     
-     <!-- Javascript-->
-    <script src="~/assets/libs/rater-js/index.js"></script>
-  
-
-    <!-- Libs JS -->
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-
-    <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js"></script>
-    <script src="~/assets/libs/quill/dist/quill.min.js"></script>
-    <script src="~/assets/js/vendors/sidebarMenu.js"></script>
-
     <!-- jQuery驗證 -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
