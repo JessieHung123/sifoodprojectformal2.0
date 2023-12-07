@@ -372,8 +372,8 @@
                     },
                     getOrder() {
                         let _this = this;
-                        var userId = "U002"
-                        fetch(`/api/RealTimeOrdersapi/${userId}`, { method: "GET" })
+                        // var userId = "U002"
+                        fetch(`/api/RealTimeOrdersapi`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);
