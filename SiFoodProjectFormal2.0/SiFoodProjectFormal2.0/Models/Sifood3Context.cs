@@ -137,7 +137,6 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.Phone)
                 .HasMaxLength(10)
                 .IsUnicode(false);
-            entity.Property(e => e.PhotoPath).HasMaxLength(50);
             entity.Property(e => e.PlateNumber)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -313,7 +312,9 @@ public partial class Sifood3Context : DbContext
                 .HasMaxLength(64)
                 .IsUnicode(false);
             entity.Property(e => e.EnrollDate).HasColumnType("date");
+            entity.Property(e => e.Latitude).HasColumnType("decimal(10, 8)");
             entity.Property(e => e.LogoPath).HasMaxLength(70);
+            entity.Property(e => e.Longitude).HasColumnType("decimal(11, 8)");
             entity.Property(e => e.OpeningTime).HasMaxLength(50);
             entity.Property(e => e.PasswordHash).HasMaxLength(64);
             entity.Property(e => e.PasswordSalt).HasMaxLength(64);

@@ -44,7 +44,11 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                     PhotosPath = x.PhotosPath,
                     LogoPath = x.LogoPath,
                     PhotosPath2 = x.PhotosPath2,
-                    PhotosPath3 = x.PhotosPath3
+                    PhotosPath3 = x.PhotosPath3,
+                    WeekdayOpen= x.OpeningTime.Substring(3, 5),
+                    WeekdayClose= x.OpeningTime.Substring(11, 5),
+                    WeekendOpen= x.OpeningTime.Substring(20, 5),
+                    WeekendClose= x.OpeningTime.Substring(28, 5)
                 }).ToListAsync();
         }
 

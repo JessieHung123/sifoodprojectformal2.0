@@ -43,6 +43,10 @@ public partial class Store
 
     public string? PhotosPath3 { get; set; }
 
+    public decimal? Latitude { get; set; }
+
+    public decimal? Longitude { get; set; }
+
     public int StoreIsAuthenticated { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
