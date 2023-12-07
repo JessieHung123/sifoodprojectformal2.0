@@ -16,10 +16,12 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public StoreRealTimeOrdersapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
+        private readonly IStoreIdentityService _storeIdentityService;
+        public StoreRealTimeOrdersapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IStoreIdentityService storeIdentityService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _storeIdentityService = storeIdentityService;
         }
 
         // GET: api/StoreRealTimeOrdersapi
@@ -31,9 +33,10 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 
         // GET: api/StoreRealTimeOrdersapi/5
         //[HttpGet("{id}")]
-        [HttpGet("filter/{storeId}")]
-        public object GetOrder(string storeId, string? searchKeyWords, int status)
+        [HttpGet("filter")]
+        public object GetOrder(string? searchKeyWords, int status)
         {
+            string storeId = _storeIdentityService.GetStoreId();
             TimeZoneInfo taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
             DateTime utcNow = DateTime.UtcNow;
             DateTime taiwanTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, taiwanTimeZone);
@@ -83,7 +86,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         }
 
         // PUT: api/StoreRealTimeOrdersapi/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<string> PutOrder(string id, [FromBody] RealTimeOrderVM realTimeOrderVM)
         {
@@ -123,7 +125,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             _context.SaveChanges();
         }
         // POST: api/StoreRealTimeOrdersapi
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
