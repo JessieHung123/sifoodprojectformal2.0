@@ -59,8 +59,8 @@
                         <!-- Image on Top -->
                         <div class="card col-4 border border-success" v-for="item in group">
                           <div class="row">
-                            <div class="col-5">
-                                   <img :src="item.logoPath" class="img-fluid" />
+                            <div class="col-5 d-flex align-items-center">
+                                <img :src="item.logoPath" class="img-fluid" />
                             </div>
                                     <div class="card-body col-7 align-content-between ">
                                 <a :href="'/Users/Home/Stores/'+item.storeId"><h5 class="card-title text-primary">{{item.storeName}}</h5></a>
@@ -217,7 +217,6 @@
             methods: {
                 prev() {
                     this.currentGroupIndex = Math.max(0, this.currentGroupIndex - 1);
-                
                 },
                 next() { this.currentGroupIndex = Math.min(this.storeGroup.length - 1, this.currentGroupIndex + 1); },
                 createPoint(x) {
@@ -273,7 +272,7 @@
                     let bounds = this.map.getBounds();
                     let NorthEast = bounds.getNorthEast();
                     let SouthWest = bounds.getSouthWest();
-
+                    this.currentGroupIndex = 0;
                     this.filteredLocations = this.storeData.filter(location => {
                         return (
                             location.latitude >= SouthWest.lat() &&
