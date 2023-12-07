@@ -157,7 +157,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { OrderId = orderDetail.OrderId, ProductId = orderDetail.ProductId });
             }
             catch (DbUpdateConcurrencyException)
             {

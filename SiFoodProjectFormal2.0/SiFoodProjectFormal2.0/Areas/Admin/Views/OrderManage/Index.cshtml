@@ -9,6 +9,31 @@
          <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
           <link href="~/assets/css/theme.min.css" rel="stylesheet" />
 }
+@section Styles
+{
+    <style>
+        .paginate_button {
+            border: 1px solid #ccc;
+            padding: 5px;
+            margin: 2px;
+            cursor: pointer;
+        }
+
+        .dataTables_length,
+        .dataTables_info,
+        .dataTables_filter {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #333;
+        }
+
+            .dataTables_length select,
+            .dataTables_filter input {
+                border: 1px solid #ccc;
+                padding: 5px;
+            }
+    </style>
+}
 
 <div class="text-center">
     <div class="container ">
@@ -88,7 +113,7 @@
      <script>
          $(document).ready(function () {
              $("#orderTable").DataTable({            
-                "dom": `<'row'<'col-sm-12 col-md-6'f><'col-sm-12 col-md-6'l>>
+                "dom": `<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-12'f>>
                     <'row'<'col-sm-12'tr>>
                     <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
                 "language": {
@@ -98,6 +123,7 @@
                      "oPaginate": {                  
                         "sPrevious":"前一頁" ,
                         "sNext":"後一頁",
+                        "sPageButton": "paginate_button",
                     },
                 },
                 "iDisplayLength": 5,
