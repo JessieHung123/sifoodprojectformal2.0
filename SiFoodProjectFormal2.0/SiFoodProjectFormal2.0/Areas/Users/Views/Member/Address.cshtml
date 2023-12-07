@@ -18,9 +18,8 @@
     <style>
 
         .fixed-card {
-            height: 250px; /* Set your desired fixed height here */
-            width: 280px; /* Set your desired fixed width here */
-            /* Add any other styles you want for the fixed-size card */
+            height: 250px; 
+            width: 280px; 
         }
     </style>
 }
@@ -309,8 +308,7 @@
                         let _this = this;
                         axios.put(`/api/UserAddressesapi/${item.userAddressId}`, {
                             UserAddressId: item.userAddressId,
-                            UserDetailAddress: item.userDetailAddress,
-                            UserId: item.userId,
+                            UserDetailAddress: item.userDetailAddress,                           
                             UserCity: item.userCity,
                             UserRegion: item.userRegion,
                             UserName: item.userName,
@@ -342,8 +340,7 @@
                         let _this = this;
                         axios.put(`/api/UserAddressesapi/${item.userAddressId}`, {
                             UserAddressId: item.userAddressId,
-                            UserDetailAddress: item.userDetailAddress,
-                            UserId: item.userId,
+                            UserDetailAddress: item.userDetailAddress,                            
                             UserName: item.userName,
                             UserCity: item.userCity,
                             UserRegion: item.userRegion,
@@ -440,7 +437,6 @@
                         var form = new FormData();
                         var combinedAddress = _this.selectedCity + _this.selectedRegion + _this.addressLine
                         form.append("UserAddressId", 0)
-                        form.append("UserId", _this.addresses[0].userId)
                         form.append("UserCity", _this.selectedCity)
                         form.append("UserRegion", _this.selectedRegion)
                         form.append("UserDetailAddress", combinedAddress)
@@ -486,8 +482,7 @@
                     },
                     getUserAddresses() {
                         let _this = this;
-                        var userId = "U001"
-                        fetch(`/api/UserAddressesapi/${userId}`, { method: "GET" })
+                        fetch(`/api/UserAddressesapi`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
