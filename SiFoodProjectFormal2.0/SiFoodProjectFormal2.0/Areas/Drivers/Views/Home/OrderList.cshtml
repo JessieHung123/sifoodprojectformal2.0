@@ -3,6 +3,9 @@
 
 }
 <div id="waitfordelivery">
+    <div>
+        <section id="map"></section>
+    </div>
     <h2>訂單列表</h2>
     <div class="order-category"  >
     <h4 @@click="toggle">待配送訂單▽&emsp;&emsp;&emsp;共有{{waitForDeliveryOrderSimple.length}}筆</h4>
@@ -39,30 +42,62 @@
     </div>
     <br>
 </div>
-    <div class="order-category">
-        <h4><a href="/Drivers/Home/FinishOrder" class="link-primary">歷史訂單</a></h4>
-    </div>
-    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+
+@section Scripts{
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI" async defer></script>
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
         var OrderList = Vue.createApp({
             data: function () {
                 return {
-                    categoryOne:true,
+                    map: null,
+                    categoryOne: true,
                     waitForDeliveryOrderSimple: [],
                     arrivingLocation: [],
-                    onTheWayOrder:[],
+                    onTheWayOrder: [],
                 }
             },
             mounted: function () {
+                navigator.geolocation.getCurrentPosition(this.showPosition);
+                window.addEventListener('load', () => {
+                    this.setMap();
+                    setInterval(() => {
+                        navigator.geolocation.getCurrentPosition(this.showPosition);
+                        this.setMap();
+                    }, 60000)
+                });
+                
                 this.findWaitForDeliveryOrderSimple();
-                // var f = this.findWaitForDeliveryOrderSimple();
-                 this.onTheWay();
-                 this.getDistanceToStore();
-                console.log("mount","mount");
+                this.onTheWay();
+                this.getDistanceToStore();
             },
             methods: {
                 toggle() {
                     this.categoryOne = !this.categoryOne;
+                },
+                showPosition(position) {
+                    this.current = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    }
+                },
+                setMap() {
+                    let location = {
+                        lat: 25.0520749,
+                        lng: 121.5430955
+                    };
+                    this.map = new google.maps.Map(document.getElementById('map'), {
+                        center: this.current == null ? location : this.current,
+                        zoom: 16,
+                        mapTypeId: 'terrain',
+                        mapTypeControl: false,
+                        fullscreenControl: false
+                    });
+                    let currentLocation = new google.maps.Marker({
+                        position: this.current == null ? location : this.current,
+                        icon: "https://img.onl/195tB0",
+                        map: this.map
+                    });
                 },
                 findWaitForDeliveryOrderSimple() {
                     fetch(`/api/DeliveryOrderapi/WaitForDeliveryOrderSimple`, { method: "GET" })
@@ -70,15 +105,15 @@
                         .then(data => {
                             this.waitForDeliveryOrderSimple = data;
                             // this.toStorelocation = data.map(o => ({ lat: o.latitude, lng: o.longitude }));
-                            this.toStorelocation = data.map(o =>o.storeAddress);
+                            this.toStorelocation = data.map(o => o.storeAddress);
                             this.arrivingLocation = data.map(o => o.address);
-                        console.log("fetch", data);
+                            console.log("fetch", data);
                         })
-                console.log("fetchfinish", "aaa");
+                    // console.log("fetchfinish", "aaa");
                 },
                 getDistanceToStore() {
                     var service = new google.maps.DistanceMatrixService();
-                    var currentArray = [setDriverMap.current]
+                    var currentArray = [this.current];
                     service.getDistanceMatrix(
                         {
                             origins: currentArray,
@@ -86,18 +121,19 @@
                             travelMode: 'DRIVING',
                             avoidHighways: true,
                             avoidTolls: true
-                    }, this.getDistanceResultToStore);
+                        }, this.getDistanceResultToStore);
                     this.getDistance();
+                    // console.log("fetchfinish", "aaa");
                 },
                 getDistanceResultToStore(response, status) {
-                        for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
-                            this.waitForDeliveryOrderSimple[i].distancetexttostore = response.rows[0].elements[i].distance.text;
-                            this.waitForDeliveryOrderSimple[i].distancetimetostore = response.rows[0].elements[i].duration.text;
-                        }
+                    for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
+                        this.waitForDeliveryOrderSimple[i].distancetexttostore = response.rows[0].elements[i].distance.text;
+                        this.waitForDeliveryOrderSimple[i].distancetimetostore = response.rows[0].elements[i].duration.text;
+                    }
                 },
                 getDistance() {
                     var service = new google.maps.DistanceMatrixService();
-                    var currentArray = [setDriverMap.current]
+                    var currentArray = [this.current];
                     service.getDistanceMatrix(
                         {
                             origins: this.toStorelocation,
@@ -108,10 +144,10 @@
                         }, this.getDistanceResult);
                 },
                 getDistanceResult(response, status) {
-                        for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
-                            this.waitForDeliveryOrderSimple[i].distance = response.rows[i].elements[i].distance.value;
-                            this.waitForDeliveryOrderSimple[i].distancetext = response.rows[i].elements[i].distance.text;
-                            this.waitForDeliveryOrderSimple[i].distancetime = response.rows[i].elements[i].duration.text;
+                    for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
+                        this.waitForDeliveryOrderSimple[i].distance = response.rows[i].elements[i].distance.value;
+                        this.waitForDeliveryOrderSimple[i].distancetext = response.rows[i].elements[i].distance.text;
+                        this.waitForDeliveryOrderSimple[i].distancetime = response.rows[i].elements[i].duration.text;
                     };
                     this.waitForDeliveryOrderSimple = this.waitForDeliveryOrderSimple.sort((a, b) => {
                         var distancetimeA = parseFloat(a.distancetime);
@@ -123,15 +159,17 @@
                         return sumA - sumB;
                     });
                 },
-                 onTheWay() {
-                  fetch(`/api/DeliveryOrderapi/OnTheWayOrder`, { method: "GET" })
-                    .then(response => response.json())
-                    .then(data => {
-                        this.onTheWayOrder = data;
-                    })
+                onTheWay() {
+                    fetch(`/api/DeliveryOrderapi/OnTheWayOrder`, { method: "GET" })
+                        .then(response => response.json())
+                        .then(data => {
+                            this.onTheWayOrder = data;
+                        })
                 },
 
             }
-    }).mount("#waitfordelivery")
+        }).mount("#waitfordelivery")
     </script>
+
+}
 
