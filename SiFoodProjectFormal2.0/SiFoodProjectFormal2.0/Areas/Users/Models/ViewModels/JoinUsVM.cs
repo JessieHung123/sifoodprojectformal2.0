@@ -67,5 +67,21 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         public IFormFile? PhotosPath2 { get; set; }
         public IFormFile? PhotosPath3 { get; set; }
 
+        [Required(ErrorMessage = "請填寫週間開始時間")]
+        [Display(Name = "週間開始時間")]
+        public string WeekdayStartTime { get; set; }
+
+        [Required(ErrorMessage = "請填寫週間結束時間")]
+        [Display(Name = "週間結束時間")]
+        public TimeSpan WeekdayEndTime { get; set; }
+
+        [Required(ErrorMessage = "請填寫週末開始時間")]
+        [Display(Name = "週末開始時間")]
+        public TimeSpan WeekendStartTime { get; set; }
+
+        [Required(ErrorMessage = "請填寫週末結束時間")]
+        [Display(Name = "週末結束時間")]
+        public TimeSpan WeekendEndTime { get; set; }
+
     }
 }

@@ -50,6 +50,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             {
                 try
                 {
+                    // 格式化營業時間
+                    string formattedOpeningTime = $"平日 {joinus.WeekdayStartTime} - {joinus.WeekdayEndTime}，週末 {joinus.WeekendStartTime} - {joinus.WeekendEndTime}";
+
                     // 處理 Logo 圖片上傳
                     string logoPathInDb = await SavePhoto(joinus.LogoPath, "logo");
 
@@ -74,7 +77,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                         Address = joinus.Address,
                         Description = joinus.Description,
                         ClosingDay = joinus.ClosingDay,
-                        OpeningTime = joinus.OpeningTime,
+                        OpeningTime = formattedOpeningTime,
                         LogoPath = logoPathInDb,
                         PhotosPath = photoPathInDb,
                         PhotosPath2 = photoPath2InDb,
