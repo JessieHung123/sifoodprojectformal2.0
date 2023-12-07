@@ -17,7 +17,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
     public class OrderManageController : Controller
     {
         private readonly Sifood3Context _context;
-       
+
         public OrderManageController(Sifood3Context context)
         {
             _context = context;
@@ -30,28 +30,28 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                 .Select(o => new OrderManageVM
                 {
                     UserName = o.Order.User.UserName,
-                    OrderAddress=o.Order.Address,
-                    ProductName=o.Product.ProductName,
-                    Quantity=o.Quantity,
-                    UserPhone=o.Order.User.UserPhone,
-                    OrderDetailId=o.OrderDetailId,
-                    OrderId=o.OrderId,
-                    OrderDate=o.Order.OrderDate,
-                    StatusName=o.Order.Status.StatusName,
-                    ProductId=o.ProductId,
-                    ProductUnitPrice=o.Product.UnitPrice,
-                    StoreName=o.Order.Store.StoreName,
-                    StorePhone=o.Order.Store.Phone,
-                    StoreAddress=o.Order.Store.Address,
+                    OrderAddress = o.Order.Address,
+                    ProductName = o.Product.ProductName,
+                    Quantity = o.Quantity,
+                    UserPhone = o.Order.User.UserPhone,
+                    OrderDetailId = o.OrderDetailId,
+                    OrderId = o.OrderId,
+                    OrderDate = o.Order.OrderDate,
+                    StatusName = o.Order.Status.StatusName,
+                    ProductId = o.ProductId,
+                    ProductUnitPrice = o.Product.UnitPrice,
+                    StoreName = o.Order.Store.StoreName,
+                    StorePhone = o.Order.Store.Phone,
+                    StoreAddress = o.Order.Store.Address,
                     Total = o.Quantity * o.Product.UnitPrice,
                 }).ToListAsync();
-                      return View(sifood3Context);    
+            return View(sifood3Context);
         }
 
         // GET: Admin/OrderManage/Details/5
-        public async Task<IActionResult> Details(string? OrderId,int? ProductId)
+        public async Task<IActionResult> Details(string? OrderId, int? ProductId)
         {
-            if (OrderId == null || ProductId==null || _context.OrderDetails == null)
+            if (OrderId == null || ProductId == null || _context.OrderDetails == null)
             {
                 return NotFound();
             }
@@ -78,7 +78,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                 })
                 .FirstOrDefaultAsync();
 
-           if (orderDetail == null)
+            if (orderDetail == null)
             {
                 return NotFound();
             }
@@ -126,14 +126,14 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
 
             return View(orderDetail);
         }
-    
+
 
         // POST: Admin/OrderManage/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-                public async Task<IActionResult> Edit(string OrderId, int ProductId, [Bind("OrderId,ProductId,UserName,OrderAddress,UserPhone")] OrderManageVM orderDetail)
+        public async Task<IActionResult> Edit(string OrderId, int ProductId, [Bind("OrderId,ProductId,UserName,OrderAddress,UserPhone")] OrderManageVM orderDetail)
         {
             if (OrderId != orderDetail.OrderId || ProductId != orderDetail.ProductId)
             {
@@ -151,8 +151,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             existingOrderDetail.Order.User.UserName = orderDetail.UserName;
             existingOrderDetail.Order.Address = orderDetail.OrderAddress;
             existingOrderDetail.Order.User.UserPhone = orderDetail.UserPhone;
-
-
 
             try
             {
@@ -207,7 +205,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             return View(orderDetail);
         }
 
@@ -224,7 +221,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                 _context.OrderDetails.Remove(orderDetail);
                 await _context.SaveChangesAsync();
             }
-
             return RedirectToAction(nameof(Index));
         }
 
