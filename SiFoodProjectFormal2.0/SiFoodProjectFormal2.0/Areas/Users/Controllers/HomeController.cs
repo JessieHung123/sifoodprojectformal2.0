@@ -46,12 +46,21 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         [ValidateAntiForgeryToken]
         public async Task<string> JoinUsSubmit([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,ClosingDay,PhotosPath,PhotosPath2,PhotosPath3,LogoPath")] JoinUsVM joinus)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // 格式化營業時間
-                    string formattedOpeningTime = $"平日 {joinus.WeekdayStartTime} - {joinus.WeekdayEndTime}，週末 {joinus.WeekendStartTime} - {joinus.WeekendEndTime}";
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+
+            //加上Jessie
+            //string Currentstore = await _context.Stores.OrderByDescending(s => s.StoreId).Select(s => s.StoreId).FirstOrDefaultAsync();
+            ////幫這個店家拿到新的號碼(+1)
+            //int newnumber = int.Parse(Currentstore.Substring(1)) + 1;
+            //var folderName = "S" + newnumber.ToString();
+            //Jessie止
+
+
+            // 格式化營業時間
+            string formattedOpeningTime = $"週間 {joinus.WeekdayStartTime} - {joinus.WeekdayEndTime}，週末 {joinus.WeekendStartTime} - {joinus.WeekendEndTime}";
 
                     // 處理 Logo 圖片上傳
                     string logoPathInDb = await SavePhoto(joinus.LogoPath, "logo");
@@ -83,6 +92,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                         PhotosPath2 = photoPath2InDb,
                         PhotosPath3 = photoPath3InDb,
                     };
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
 
                     _context.Add(store);
                     await _context.SaveChangesAsync();
