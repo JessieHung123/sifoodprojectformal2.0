@@ -304,37 +304,55 @@
                     }
                 },
                 insertFileChange: function (inputFile) {
-                    // alert("加入圖片")
                     let _this = this;
                     _this.readURL(inputFile, inputFile.previousElementSibling);
                 },
                 insertProduct(produt) {
-                    // alert("新增")
                     let _this = this;
-                    var form = new FormData();
-                    form.append("ProductId", -1);
-                    form.append("ProductName", _this.productName);
-                    form.append("CategoryId", _this.categoryId);
-                    form.append("Description", _this.description);
-                    form.append("ReleasedQty", _this.releasedQty);
-                    form.append("UnitPrice", _this.unitPrice);
-                    form.append("SuggestPickEndTime", _this.suggestPickEndTime);
-                    form.append("SuggestPickUpTime", _this.suggestPickUpTime);
-                    form.append("ImageFile", document.querySelector("#insertFile").files[0]);
-                    console.log(Object.fromEntries(form.entries()));
-                    fetch(`/api/ProductManageapi/postProduct`, { method: "Post", body: form })
-                    .then(response => {
-                            if (response.ok) {
-                                _this.startSeach();
-                                return response.text(); // 將回傳結果轉為文字
-                            } else {
-                                alert("更新失敗，請確認資料是否完整");
-                            }
-                        }).then(data => {
-                            alert(data);
-                        }).catch(err => {
-                            console.log(err)
-                    });
+                    let isDuplicate = false;
+                    for (let i = 0; i < _this.ProductInfo.length; i++){
+                        if(_this.ProductInfo[i].productName == _this.productName){
+                            isDuplicate = true;
+                            break;
+                        }
+                
+                    }
+                    if (isDuplicate == true) {
+                        _this.startSeach();
+                        return alert("不可重複上架相同產品!")
+                    }
+                    else if (_this.suggestPickUpTime >= _this.suggestPickEndTime) {
+                        _this.startSeach();
+                        return alert("建議取貨迄時不可早於建議取貨起時!");                          
+                    }
+                    else {
+                        var form = new FormData();
+                        form.append("ProductId", -1);
+                        form.append("ProductName", _this.productName);
+                        form.append("CategoryId", _this.categoryId);
+                        form.append("Description", _this.description);
+                        form.append("ReleasedQty", _this.releasedQty);
+                        form.append("UnitPrice", _this.unitPrice);
+                        form.append("SuggestPickEndTime", _this.suggestPickEndTime);
+                        form.append("SuggestPickUpTime", _this.suggestPickUpTime);
+                        form.append("ImageFile", document.querySelector("#insertFile").files[0]);
+                        console.log(Object.fromEntries(form.entries()));
+                        fetch(`/api/ProductManageapi/postProduct`, { method: "Post", body: form })
+                            .then(response => {
+                                if (response.ok) {
+                                    _this.startSeach();
+                                    return response.text(); // 將回傳結果轉為文字
+                                } else {
+                                    alert("更新失敗，請確認資料是否完整");
+                                }
+                            }).then(data => {
+                                alert(data);
+                            }).catch(err => {
+                                console.log(err)
+                            });
+
+
+                    }
                 },
                 softDelete(productId) {
                     let _this = this;
@@ -351,32 +369,42 @@
                         .catch(error => console.error(error));
                 },
                 updateProduct(produt) {
-                    // alert("修改")
                     let _this = this;
-                    var form = new FormData();
-                    form.append("ProductId", _this.selectedToEdit.productId);
-                    form.append("ProductName", _this.selectedToEdit.productName);
-                    form.append("CategoryId", _this.selectedToEdit.categoryId);
-                    form.append("Description", _this.selectedToEdit.description);
-                    form.append("ReleasedQty", _this.selectedToEdit.releasedQty);
-                    form.append("UnitPrice", _this.selectedToEdit.unitPrice);
-                    form.append("SuggestPickEndTime", _this.selectedToEdit.suggestPickEndTime);
-                    form.append("SuggestPickUpTime", _this.selectedToEdit.suggestPickUpTime);
-                    form.append("ImageFile", document.querySelector("#updateFile").files[0]);
-                    console.log(Object.fromEntries(form.entries()));
-                    fetch(`/api/ProductManageapi/putProduct/${_this.selectedToEdit.productId}`, { method: "Put", body: form })
-                        .then(response => {
-                            if (response.ok) {
-                                _this.startSeach();
-                                return response.text(); // 將回傳結果轉為文字
-                            } else {
-                                alert("更新失敗，請確認資料是否完整");
-                            }
-                        }).then(data => {
-                            alert(data);
-                        }).catch(err => {
-                            console.log(err)
-                        });
+                    if (_this.selectedToEdit.orderedQty > _this.selectedToEdit.releasedQty) {
+                        _this.startSeach();
+                        return alert("上架數量不可低於已訂購數量!");
+                    }
+                    else if(_this.selectedToEdit.suggestPickUpTime >= _this.selectedToEdit.suggestPickEndTime){
+                        _this.startSeach();
+                        return alert("建議取貨迄時不可早於建議取貨起時!");
+                    }
+                    else{
+                        var form = new FormData();
+                        form.append("ProductId", _this.selectedToEdit.productId);
+                        form.append("ProductName", _this.selectedToEdit.productName);
+                        form.append("CategoryId", _this.selectedToEdit.categoryId);
+                        form.append("Description", _this.selectedToEdit.description);
+                        form.append("ReleasedQty", _this.selectedToEdit.releasedQty);
+                        form.append("UnitPrice", _this.selectedToEdit.unitPrice);
+                        form.append("SuggestPickEndTime", _this.selectedToEdit.suggestPickEndTime);
+                        form.append("SuggestPickUpTime", _this.selectedToEdit.suggestPickUpTime);
+                        form.append("ImageFile", document.querySelector("#updateFile").files[0]);
+                        console.log(Object.fromEntries(form.entries()));
+                        fetch(`/api/ProductManageapi/putProduct/${_this.selectedToEdit.productId}`, { method: "Put", body: form })
+                            .then(response => {
+                                if (response.ok) {
+                                    _this.startSeach();
+                                    return response.text(); // 將回傳結果轉為文字
+                                } else {
+                                    alert("更新失敗，請確認資料是否完整");
+                                }
+                            }).then(data => {
+                                alert(data);
+                            }).catch(err => {
+                                console.log(err)
+                            });
+                    }
+                    
                     // $("#insertModal").modal('hide')
                 },
                 // 硬刪除(暫不用)
