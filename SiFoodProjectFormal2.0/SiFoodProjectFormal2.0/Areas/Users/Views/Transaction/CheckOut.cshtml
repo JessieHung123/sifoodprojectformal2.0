@@ -41,7 +41,6 @@
                             外送
                         </label>
                     </div>
-
                     <template v-if="this.checkRadio==false">
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -304,13 +303,7 @@
 </div>
 
 @section Scripts {
-    <!-- Javascript-->
     <script src="~/assets/libs/flatpickr/dist/flatpickr.min.js"></script>
-    <!-- Libs JS -->
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-    <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -440,7 +433,7 @@
                             var postData = {};
                             postData['ChannelID'] = ChannelID;
                             postData['MerchantID'] = _this.addForm.MerchantID;
-                            postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `${item.productName}: ${item.quantity}`).join(', ');
+                            postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `商品名稱:${item.productName}  數量:${item.quantity}`).join(' , ');
                             postData['Amt'] = _this.sendBackTkoTotalPrice
                             postData['ReturnURL'] = _this.addForm.ReturnURL;
                             postData['NotifyURL'] = _this.addForm.NotifyURL;
@@ -470,8 +463,8 @@
                         var postData = {};
                         postData['ChannelID'] = ChannelID;
                         postData['MerchantID'] = _this.addForm.MerchantID;
-                        postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `${item.productName}: ${item.quantity}`).join(', ');
-                        postData['Amt'] = _this.sendBackDeliTotalPrice
+                        postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `商品名稱:${item.productName}  數量:${item.quantity}`).join(' , ');
+                        postData['Amt'] = _this.sendBackDeliTotalPrice;
                         postData['ReturnURL'] = _this.addForm.ReturnURL;
                         postData['NotifyURL'] = _this.addForm.NotifyURL;
                         postData['ClientBackURL'] = _this.addForm.ClientBackURL;

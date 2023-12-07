@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using SiFoodProjectFormal2._0;
 using SiFoodProjectFormal2._0.Areas.Users.Models.NewebPayModels;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
@@ -24,7 +22,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         private readonly IConfiguration _configuration;
         public TransactionController(Sifood3Context context, IUserIdentityService userIdentityService, IConfiguration configuration)
         {
-
             _userIdentityService = userIdentityService;
             _context = context;
             _configuration = configuration;
@@ -34,12 +31,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public IActionResult CheckOut()
         {
             ViewData["MerchantID"] = _configuration.GetSection("MerchantID").Value;
-            ViewData["ReturnURL"] = $"https://2b6c-1-164-243-82.ngrok-free.app/Users/Transaction/CallbackReturn";//上線換網址記得改
-            ViewData["NotifyURL"] = $"https://2b6c-1-164-243-82.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
-            ViewData["ClientBackURL"] = $"https://2b6c-1-164-243-82.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
+            ViewData["ReturnURL"] = $"https://b9a8-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackReturn";//上線換網址記得改
+            ViewData["NotifyURL"] = $"https://b9a8-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
+            ViewData["ClientBackURL"] = $"https://b9a8-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
             return View();
         }
 
+        [Authorize]
         public IActionResult PaymentFail()
         {
             return View();
@@ -71,7 +69,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Transaction/TakeOutOrder")]
-        public string TakeOutOrder([FromBody] CreateTakeOutOrderVM model)
+        public string TakeOutOrder([FromBody]CreateTakeOutOrderVM model)
         {
             string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
             string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
@@ -97,14 +95,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     Quantity = items.Quantity,
                 };
                 _context.OrderDetails.Add(orderDetail);
-
                 Product? product = _context.Products.Where(x => x.ProductId == productId).FirstOrDefault();
                 int releasedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.ReleasedQty).Single();
                 product.ReleasedQty = releasedQty - items.Quantity;
                 int orderedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.OrderedQty).Single();
                 product.OrderedQty = orderedQty + items.Quantity;
             }
-
             Payment payment = new Payment
             {
                 OrderId = order.OrderId,
@@ -112,10 +108,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 PaymentStatusＮame = "未付款",
                 PaymentTime = DateTime.Now,
             };
-
             List<Cart> cartItems = _context.Carts.Where(c => c.UserId == UserId).ToList();
             _context.Carts.RemoveRange(cartItems);
-
             _context.Payments.Add(payment);
             _context.SaveChanges();
             return "訂單下訂成功";
@@ -129,7 +123,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Transaction/DeliverOrder")]
-        public string DeliverOrder([FromBody] CreateDeliverOrderVM model)
+        public string DeliverOrder([FromBody]CreateDeliverOrderVM model)
         {
             string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
             string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
@@ -156,14 +150,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     Quantity = item.Quantity,
                 };
                 _context.OrderDetails.Add(orderDetail);
-
                 Product? product = _context.Products.Where(x => x.ProductId == productId).FirstOrDefault();
                 int releasedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.ReleasedQty).Single();
                 product.ReleasedQty = releasedQty - item.Quantity;
                 int orderedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.OrderedQty).Single();
                 product.OrderedQty = orderedQty + item.Quantity;
             }
-
             Payment payment = new Payment
             {
                 OrderId = order.OrderId,
@@ -171,10 +163,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 PaymentStatusＮame = "未付款",
                 PaymentTime = DateTime.Now,
             };
-
             List<Cart> cartItems = _context.Carts.Where(c => c.UserId == UserId).ToList();
             _context.Carts.RemoveRange(cartItems);
-
             _context.Payments.Add(payment);
             _context.SaveChanges();
             return "訂單下訂成功!";
@@ -185,7 +175,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         /// </summary>
         [HttpPost]
         [Route("/Transaction/SendToNewebPay")]
-        public IActionResult SendToNewebPay([FromForm] SendToNewebPayIn inModel)
+        public IActionResult SendToNewebPay([FromForm]SendToNewebPayIn inModel)
         {
             string orderId = _context.Orders.Include(o => o.User).Where(o => o.User.UserName == inModel.UserName).OrderBy(o => o.OrderId).Select(o => o.OrderId).LastOrDefault().ToString();
             SendToNewebPayOut outModel = new SendToNewebPayOut();
@@ -204,7 +194,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             string TradeInfoParam = string.Join("&", TradeInfo.Select(x => $"{x.Key}={x.Value}"));
             outModel.MerchantID = inModel.MerchantID;
             outModel.Version = "2.0";
-
             string HashKey = _configuration.GetSection("HashKey").Value;
             string HashIV = _configuration.GetSection("HashIV").Value;
             string TradeInfoEncrypt = EncryptAESHex(TradeInfoParam, HashKey, HashIV);
@@ -248,18 +237,23 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         /// </summary>
         public IActionResult CallbackNotify(CallBackVM model)
         {
-            StringBuilder receive = new StringBuilder();
-            receive.AppendLine("TradeInfo=" + model.TradeInfo + "<br>");
-            string HashKey = _configuration.GetSection("HashKey").Value;
-            string HashIV = _configuration.GetSection("HashIV").Value;
-            string TradeInfoDecrypt = DecryptAESHex(model.TradeInfo, HashKey, HashIV);
-            NameValueCollection decryptTradeCollection = HttpUtility.ParseQueryString(TradeInfoDecrypt);
-            receive.Length = 0;
-            foreach (String key in decryptTradeCollection.AllKeys)
+            string hashKey = _configuration.GetSection("HashKey").Value;
+            string hashIV = _configuration.GetSection("HashIV").Value;
+            string decryptedTradeInfo = DecryptAESHex(model.TradeInfo, hashKey, hashIV);
+            var keyValuePairs = decryptedTradeInfo.Split('&').Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
+            model.Status = keyValuePairs["Status"];
+            model.MerchantOrderNo = keyValuePairs["MerchantOrderNo"];
+            Payment? payment = _context.Payments.Where(x => x.OrderId == model.MerchantOrderNo).FirstOrDefault();
+            if (model.Status == "SUCCESS")
             {
-                receive.AppendLine(key + "=" + decryptTradeCollection[key] + "<br>");
+                payment.PaymentStatusＮame = "已付款";
+                _context.SaveChanges();
+                return RedirectToAction("RealTimeOrders", "Home");
             }
-            return View();
+            else
+            {
+                return RedirectToAction("PaymentFail", "Transaction");
+            }
         }
 
         /// <summary>
@@ -274,7 +268,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             if (!string.IsNullOrEmpty(source))
             {
                 var encryptValue = EncryptAES(Encoding.UTF8.GetBytes(source), cryptoKey, cryptoIV);
-
                 if (encryptValue != null)
                 {
                     result = BitConverter.ToString(encryptValue)?.Replace("-", string.Empty)?.ToLower();

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
+using System.Security.Claims;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace sifoodprojectformal2._0.Areas.Admin.Controllers
 {
@@ -9,7 +11,7 @@ namespace sifoodprojectformal2._0.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private readonly Sifood3Context _context;
-        public HomeController(Sifood3Context context) 
+        public HomeController(Sifood3Context context)
         {
             _context = context;
         }
@@ -39,15 +41,21 @@ namespace sifoodprojectformal2._0.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Login(LoginVM model)
         {
-            var admin = _context.Admins.Where(x=>x.Account == model.Account).FirstOrDefault();
-            if (admin != null && model.Password == admin.Password)
+            var admin = _context.Admins.Where(x => x.Account == model.Account).FirstOrDefault();
+            if (admin != null)
             {
-                return RedirectToAction("Index", "OrderManagae");
+                string passwordWithSalt = $"{model.Password}{admin.PasswordSalt}";
+                Byte[] RealPasswordBytes = Encoding.ASCII.GetBytes(passwordWithSalt);
+                using (SHA256 Sha256 = SHA256.Create())
+                {
+                    Byte[] RealPasswordHash = Sha256.ComputeHash(RealPasswordBytes);
+                    if (Enumerable.SequenceEqual(RealPasswordHash, admin.Password))
+                    {
+                        return RedirectToAction("Index", "OrderManage");
+                    }
+                }
             }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            return View();
         }
     }
 }

@@ -4,14 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
 using System.Text;
-using Microsoft.Win32;
-
-using NuGet.Packaging;
 using System.Net.Mail;
 using System.Net;
 using System.Security.Cryptography;
-using System.Data.SqlTypes;
-using System.Collections.Generic;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 
 
@@ -26,12 +21,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             _context = context;
         }
-        
+
         [HttpGet]
         public IActionResult LoginRegister()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> LoginRegister(LoginVM model)
         {
