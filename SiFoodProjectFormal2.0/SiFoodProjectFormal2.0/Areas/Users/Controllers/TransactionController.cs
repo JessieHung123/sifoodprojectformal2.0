@@ -30,9 +30,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
             ViewData["MerchantID"] = Config.GetSection("MerchantID").Value;
-            ViewData["ReturnURL"] = $"https://f2fd-1-164-243-82.ngrok-free.app/Users/Home/RealTimeOrders";//上線換網址記得改
-            ViewData["NotifyURL"] = $"https://f2fd-1-164-243-82.ngrok-free.app/Transaction/CallbackNotify";//上線換網址記得改
-            ViewData["ClientBackURL"] = $"https://f2fd-1-164-243-82.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
+            ViewData["ReturnURL"] = $"https://08cc-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackReturn";//上線換網址記得改
+            ViewData["NotifyURL"] = $"https://08cc-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
+            ViewData["ClientBackURL"] = $"https://08cc-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
             return View();
         }
 
@@ -236,32 +236,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             }
             ViewData["TradeInfo"] = receive.ToString();
 
-            return View();
-        }
-
-        /// <summary>
-        /// 商店取號網址
-        /// </summary>
-        public IActionResult CallbackCustomer()
-        {
-            StringBuilder receive = new StringBuilder();
-            foreach (var item in Request.Form)
-            {
-                receive.AppendLine(item.Key + "=" + item.Value + "<br>");
-            }
-            ViewData["ReceiveObj"] = receive.ToString();
-            IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
-            string HashKey = Config.GetSection("HashKey").Value;
-            string HashIV = Config.GetSection("HashIV").Value;
-            string TradeInfoDecrypt = DecryptAESHex(Request.Form["TradeInfo"], HashKey, HashIV);
-            NameValueCollection decryptTradeCollection = HttpUtility.ParseQueryString(TradeInfoDecrypt);
-            receive.Length = 0;
-            foreach (String key in decryptTradeCollection.AllKeys)
-            {
-                receive.AppendLine(key + "=" + decryptTradeCollection[key] + "<br>");
-            }
-            ViewData["TradeInfo"] = receive.ToString();
-            return View();
+            return RedirectToAction("RealTimeOrders", "Home");
         }
 
         /// <summary>
