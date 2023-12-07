@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SiFoodProjectFormal2._0;
 using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -12,19 +13,21 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
     {
 
         //----指定特定Stores-到時候要從login裡面拿到sotresId---//
-        string targetStoreId = "S001";
         //------------------------//
         private readonly Sifood3Context _context;
+        private readonly IStoreIdentityService _storeIdentityService;
 
-        public HomeController(Sifood3Context context)
+        public HomeController(Sifood3Context context, IStoreIdentityService storeIdentityService)
         {
             _context = context;
+            _storeIdentityService = storeIdentityService;
         }
  
         // GET: Products
         [HttpGet] //uri:/
         public async Task<IActionResult> Main()
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
             //var sifoodContext = _context.Products.Include(p => p.Category).Include(p => p.Store).Where(p => p.Store.StoreId == targetStoreId);
             var products = _context.Products.Where(p => p.StoreId == targetStoreId);
             string storeName = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.StoreName).FirstOrDefaultAsync();
@@ -46,6 +49,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 
         public async Task<IActionResult> SaleInfo()
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
             var salesinfo = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new 
             { StoreId = x.Product.StoreId,
                 UnitPrice = x.Product.UnitPrice,
