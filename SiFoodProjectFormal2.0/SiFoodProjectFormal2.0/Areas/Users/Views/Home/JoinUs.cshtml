@@ -246,10 +246,22 @@
 
                         <div class="col-md-12 mb-3">
                             <label asp-for="Address" class="form-label">店家地址<span class="text-danger">*</span></label>
-                            <input asp-for="Address" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
+                            <input asp-for="Address" id="address" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
-
+                        <div class="col-md-12 mb-3">
+                            <label asp-for="Latitude" class="form-label">經度<span class="text-danger">*</span></label>
+                            <input asp-for="Latitude" id="Latitude" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
+                            <span asp-validation-for="Latitude" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label asp-for="Longitude" class="form-label">緯度<span class="text-danger">*</span></label>
+                            <input asp-for="Longitude" id="Longitude" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
+                            <span asp-validation-for="Longitude" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <button class="btn btn-success" id="calculate">按我算經緯度</button>
+                        </div>
                         <div class="col-md-12 mb-3">
                             <label asp-for="Email" class="form-label">註冊信箱<span class="text-danger">*</span></label>
                             <input asp-for="Email" class="form-control" id="emailContact" type="email" placeholder="請輸入email信箱地址" />
@@ -463,6 +475,29 @@
 
     <!-- Region下拉選單 -->
     <script>
+        var storeAddress = document.getElementById('address');
+        document.getElementById('calculate').addEventListener('click', codeAddress(storeAddress));
+        function codeAddress(storeAddress) {
+            geocoder.geocode({ 'address': storeAddress }, function (results, status) {
+                console.log(results);
+                var latLng = { lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() };
+                console.log(latLng);
+                document.getElementById("Latitude").value = latLng.lat;
+                document.getElementById("Longitude").value = latLng.lng;
+                // if (status == 'OK') {
+                //     var marker = new google.maps.Marker({
+                //         position: latLng,
+                //         map: map
+                //     });
+                //     console.log(map);
+                // } else {
+                //     alert('Geocode was not successful for the following reason: ' + status);
+                // }
+            });
+        
+        
+        };
+        
         document.getElementById('citySelect').addEventListener('change', function () {
             var city = this.value;
             var regionSelect = document.getElementById('regionSelect');

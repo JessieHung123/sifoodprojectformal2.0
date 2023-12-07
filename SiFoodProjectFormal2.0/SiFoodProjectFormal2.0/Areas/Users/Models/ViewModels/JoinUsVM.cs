@@ -67,5 +67,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         public IFormFile? PhotosPath2 { get; set; }
         public IFormFile? PhotosPath3 { get; set; }
 
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+
     }
 }
