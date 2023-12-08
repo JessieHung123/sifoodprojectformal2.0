@@ -46,13 +46,10 @@ namespace sifoodprojectformal2._0.Areas.Admin.Controllers
             {
                 string passwordWithSalt = $"{model.Password}{admin.PasswordSalt}";
                 Byte[] RealPasswordBytes = Encoding.ASCII.GetBytes(passwordWithSalt);
-                using (SHA256 Sha256 = SHA256.Create())
+                Byte[] RealPasswordHash = SHA256.HashData(RealPasswordBytes);
+                if (Enumerable.SequenceEqual(RealPasswordHash, admin.Password))
                 {
-                    Byte[] RealPasswordHash = Sha256.ComputeHash(RealPasswordBytes);
-                    if (Enumerable.SequenceEqual(RealPasswordHash, admin.Password))
-                    {
-                        return RedirectToAction("Index", "OrderManage");
-                    }
+                    return RedirectToAction("Index", "OrderManage");
                 }
             }
             return View();
