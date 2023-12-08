@@ -45,7 +45,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<string> JoinUsSubmit([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,ClosingDay,PhotosPath,PhotosPath2,PhotosPath3,LogoPath")] JoinUsVM joinus)
+        public async Task<string> JoinUsSubmit([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,ClosingDay,PhotosPath,PhotosPath2,PhotosPath3,LogoPath,Latitude,Longitude")] JoinUsVM joinus)
         {
             if (ModelState.IsValid)
             {
@@ -80,6 +80,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                         PhotosPath = photoPathInDb,
                         PhotosPath2 = photoPath2InDb,
                         PhotosPath3 = photoPath3InDb,
+                        Latitude=joinus.Latitude,
+                        Longitude=joinus.Longitude,
                     };
 
                     _context.Add(store);

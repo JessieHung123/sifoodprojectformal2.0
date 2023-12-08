@@ -249,18 +249,18 @@
                             <input asp-for="Address" id="address" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label asp-for="Latitude" class="form-label">經度<span class="text-danger">*</span></label>
                             <input asp-for="Latitude" id="Latitude" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
                             <span asp-validation-for="Latitude" class="text-danger"></span>
                         </div>
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label asp-for="Longitude" class="form-label">緯度<span class="text-danger">*</span></label>
                             <input asp-for="Longitude" id="Longitude" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
                             <span asp-validation-for="Longitude" class="text-danger"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <button class="btn btn-success" id="calculate">按我算經緯度</button>
+                        <button class="btn btn-success btn-sm" id="calculate" onclick="codeAddress">按我算經緯度</button>
                         </div>
                         <div class="col-md-12 mb-3">
                             <label asp-for="Email" class="form-label">註冊信箱<span class="text-danger">*</span></label>
@@ -472,32 +472,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI&callback=initMap" async defer></script>
     <!-- Region下拉選單 -->
     <script>
-        var storeAddress = document.getElementById('address');
-        document.getElementById('calculate').addEventListener('click', codeAddress(storeAddress));
-        function codeAddress(storeAddress) {
-            geocoder.geocode({ 'address': storeAddress }, function (results, status) {
-                console.log(results);
-                var latLng = { lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() };
-                console.log(latLng);
-                document.getElementById("Latitude").value = latLng.lat;
-                document.getElementById("Longitude").value = latLng.lng;
-                // if (status == 'OK') {
-                //     var marker = new google.maps.Marker({
-                //         position: latLng,
-                //         map: map
-                //     });
-                //     console.log(map);
-                // } else {
-                //     alert('Geocode was not successful for the following reason: ' + status);
-                // }
-            });
-        
-        
-        };
-        
+
         document.getElementById('citySelect').addEventListener('change', function () {
             var city = this.value;
             var regionSelect = document.getElementById('regionSelect');
@@ -531,7 +509,30 @@
             });
         });
     </script>
+    <script>
+        
+        document.getElementById('calculate').addEventListener('click', function(event) {
+            var selectElementCity = document.getElementById('citySelect');
+            var storeCity = selectElementCity.options[selectElementCity.selectedIndex].value;
 
+            var selectElementRegion = document.getElementById('regionSelect');
+            var storeRegion = selectElementRegion.options[selectElementRegion.selectedIndex].value;
+
+            var storeAddress = document.getElementById('address').value;
+            var storeFullAddress = storeCity + storeRegion + storeAddress;
+            alert(storeFullAddress);
+            event.preventDefault();
+            event.stopPropagation();
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'address': storeFullAddress }, function (results, status) {
+                console.log(results);
+                var latLng = { lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() };
+                console.log(latLng);
+                document.getElementById("Latitude").value = latLng.lat;
+                document.getElementById("Longitude").value = latLng.lng;
+            });
+        });
+    </script>
     <script>
         document.getElementById('myForm').addEventListener('submit', function (e) {
             e.preventDefault(); 
