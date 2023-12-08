@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<SiFoodProjectFormal2._0.Areas.Admin.Views.Models.OrderManageVM>
-
 @{
     Layout = "_AdminLayout";
     ViewData["Title"] = "訂單管理";
@@ -13,26 +12,19 @@
 {
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
   }
-
-<div class="text-center">
+  <div class="text-center">
     <div class="container">
-
-
         <div>
             <h2>訂單管理</h2>
-          
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="#">首頁</a></li>
                     <li class="breadcrumb-item active" aria-current="page">訂單管理</li>
                 </ol>
             </nav>
-
         </div>
     </div>
 </div>
-
-
 <table id="orderTable" class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
     <thead class="bg-light" height="68px">
         <tr class="text-center">
@@ -79,14 +71,11 @@
 }
     </tbody>
 </table>
-
-
 @section Scripts {
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-    <script src="~/assets/js/theme.min.js"></script>
-       
+    <script src="~/assets/js/theme.min.js"></script>    
      <script>
          $(document).ready(function () {
              $("#orderTable").DataTable({
@@ -110,8 +99,6 @@
                    },
                 },
                });
-        });         
-         
+        });            
      </script>
-    
 }

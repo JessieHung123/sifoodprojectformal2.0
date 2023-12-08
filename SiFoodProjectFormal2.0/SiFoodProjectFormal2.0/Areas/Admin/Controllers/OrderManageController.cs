@@ -17,12 +17,10 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
     public class OrderManageController : Controller
     {
         private readonly Sifood3Context _context;
-
         public OrderManageController(Sifood3Context context)
         {
             _context = context;
         }
-
         // GET: Admin/OrderManage
         public async Task<IActionResult> Index()
         {
@@ -47,7 +45,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                 }).ToListAsync();
             return View(sifood3Context);
         }
-
         // GET: Admin/OrderManage/Details/5
         public async Task<IActionResult> Details(string? OrderId, int? ProductId)
         {
@@ -55,7 +52,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             var orderDetail = await _context.OrderDetails
                 .Where(x => x.OrderId == OrderId && x.ProductId == ProductId)
                 .Select(o => new OrderManageVM
@@ -77,26 +73,20 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                     Total = o.Quantity * o.Product.UnitPrice,
                 })
                 .FirstOrDefaultAsync();
-
             if (orderDetail == null)
             {
                 return NotFound();
             }
-
             return View(orderDetail);
         }
 
-
-
         // GET: Admin/OrderManage/Edit/5
-
         public async Task<IActionResult> Edit(string? OrderId, int? ProductId)
         {
             if (OrderId == null || ProductId == null || _context.OrderDetails == null)
             {
                 return NotFound();
             }
-
             var orderDetail = await _context.OrderDetails
                 .Where(x => x.OrderId == OrderId && x.ProductId == ProductId)
                 .Select(o => new OrderManageVM
@@ -118,16 +108,12 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                     Total = o.Quantity * o.Product.UnitPrice,
                 })
                 .FirstOrDefaultAsync();
-
             if (orderDetail == null)
             {
                 return NotFound();
             }
-
             return View(orderDetail);
         }
-
-
         // POST: Admin/OrderManage/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -139,19 +125,15 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             var existingOrderDetail = await _context.OrderDetails
                 .FirstOrDefaultAsync(x => x.OrderId == OrderId && x.ProductId == ProductId);
-
             if (existingOrderDetail == null)
             {
                 return NotFound();
             }
-
             existingOrderDetail.Order.User.UserName = orderDetail.UserName;
             existingOrderDetail.Order.Address = orderDetail.OrderAddress;
             existingOrderDetail.Order.User.UserPhone = orderDetail.UserPhone;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -169,7 +151,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                 }
             }
         }
-
         // GET: Admin/OrderManage/Delete/5
         public async Task<IActionResult> Delete(string? OrderId, int? ProductId)
         {
@@ -177,7 +158,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             var orderDetail = await _context.OrderDetails
                 .Include(o => o.Order)
                 .Include(o => o.Product)
@@ -200,19 +180,15 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                     Total = o.Quantity * o.Product.UnitPrice,
                 })
                 .FirstOrDefaultAsync(od => od.OrderId == OrderId && od.ProductId == ProductId);
-
             if (orderDetail == null)
             {
                 return NotFound();
             }
             return View(orderDetail);
         }
-
-
         // POST: Admin/OrderManage/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> DeleteConfirmed(string OrderId, int ProductId)
         {
             var orderDetail = await _context.OrderDetails.FindAsync(OrderId, ProductId);
@@ -223,7 +199,6 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
         private bool OrderDetailExists(string OrderId, int ProductId)
         {
             return (_context.OrderDetails?.Any(e => e.OrderId == OrderId && e.ProductId == ProductId)).GetValueOrDefault();
