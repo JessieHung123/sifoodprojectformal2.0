@@ -27,8 +27,11 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [EnableQuery]
         public object Main2()
         {
+            //TimeZoneInfo taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
+            var products = _context.Products.Select(x => x.RealeasedTime);
+            //DateTime productstaiwanTime = TimeZoneInfo.ConvertTimeFromUtc(products, taiwanTimeZone);
             var stores = _context.Stores.Include(x => x.Products).ThenInclude(x => x.Category).Include(x => x.Orders)
-                .ThenInclude(x => x.Comment).Where(x => x.StoreIsAuthenticated == 1).AsEnumerable()
+                .ThenInclude(x => x.Comment).Where(x => x.StoreIsAuthenticated == 1)
                 .Select(z => new StoreVM
                 {
                     StoreId = z.StoreId,
@@ -55,7 +58,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     CategoryName = z.Products.Where(x => x.IsDelete == 1 && x.RealeasedTime.Date == DateTime.Now.Date && x.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay)
                     .Select(x => x.Category.CategoryName)
                     .Distinct()
-                }).ToList();
+                }).AsEnumerable();
             return stores;
         }
 
