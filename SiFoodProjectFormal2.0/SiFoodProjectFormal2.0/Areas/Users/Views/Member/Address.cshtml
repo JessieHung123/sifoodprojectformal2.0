@@ -1,20 +1,6 @@
 ﻿@section Styles{
-    <!-- Required meta tags -->
-    <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
-
-    <!-- Libs CSS -->
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 
-    <!-- Google tag (gtag.js) -->
-    <!-- End Tag -->
     <style>
 
         .fixed-card {
@@ -92,7 +78,6 @@
                                 <li class="nav-item">
                                     <a class="nav-link " href="~/index.html"><i class="feather-icon icon-log-out me-2"></i>Log out</a>
                                 </li>
-
                             </ul>
                         </div>
                     </div>
@@ -140,15 +125,6 @@
                                         <!-- form -->
                                         <div class="card fixed-card ">
                                             <div class="card-body p-6">
-                                                @* <div class="form-check mb-4">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
-                                                <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
-                                                住址{{index + 1}}
-                                                </label>
-                                                </div> *@
-                                                @* <p class="mb-2">
-                                                住址{{index + 1}}
-                                                </p> *@
                                                 <strong class="d-block mb-2">住址{{index + 1}}</strong>
                                                 <!-- address -->
                                                 <p class="mb-6">
@@ -266,21 +242,11 @@
     </main>
 
 
-    <!-- modal -->
     @section Scripts{
-        <!-- Javascript-->
-        <!-- Libs JS -->
-        <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-        @* <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
-        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-
-        <!-- Theme JS -->
-        <script src="~/assets/js/theme.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0x6KjO7MXibN-CgOFVpTv6ZsnMwLh5vg"></script>
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            // var baseAddress = "https://localhost:7042";
             const storeProductApp = Vue.createApp({
                 data: function () {
                     return {
@@ -325,7 +291,6 @@
                                     icon: 'error',
                                     text: response.data,
                                 });
-
                             }
                             _this.getUserAddresses();
                         }).catch(err => {
@@ -359,7 +324,6 @@
                                     text: response.data,
                                 });
                             }
-
                         }).catch(err => {
                             Swal.fire({
                                 icon: 'error',
@@ -405,7 +369,6 @@
                                         text: "地址刪除發生錯誤!"
                                     });
                                 }
-
                             }).catch(err => {
                                 Swal.fire({
                                     icon: 'error',
@@ -442,13 +405,6 @@
                         form.append("UserDetailAddress", combinedAddress)
                         form.append("IsDefault", _this.isDefaultAddress)
                         form.append("UserName", _this.addresses[0].userName)
-                        // let addressInfo = {
-                        //     UserAddressId: -1,
-                        //     UserId: _this.addresses[0].userId,
-                        //     UserCity: _this.selectedCity,
-                        //     UserRegion: _this.selectedRegion,
-                        //     UserDetailAddress: combinedAddress
-                        // }
                         axios.post(`/api/UserAddressesapi`, form, {
                             headers: {
                                 "Content-Type": "multipart/form-data"

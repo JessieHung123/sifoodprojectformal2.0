@@ -28,13 +28,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         }
 
         // GET: api/UserAddressesapi
-        //[HttpGet]
-        //public async Task<IEnumerable<UserAddress>> GetUserAddresses()
-        //{       
-        //    return  _context.UserAddresses;
-        //}
-
-        // GET: api/UserAddressesapi/5
         [HttpGet]
         public object GetUserAddress()
         {
@@ -53,7 +46,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         }
 
         // PUT: api/UserAddressesapi/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<string> PutUserAddress(int id, [FromBody] UserAddressesVM userAddressesVM)
         {
@@ -114,7 +106,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         }
 
         // POST: api/UserAddressesapi
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<string> PostUserAddress([FromForm] UserAddressesVM userAddressesVM)
         {
