@@ -145,7 +145,7 @@
                                     <input type="time" class="form-control" v-model="suggestPickEndTime" placeholder="請輸入數量" required>
                                 </div>
                                 <div class="form-group">
-                                    <img id="insertFilePreview" src="~/images/Noimage.png" title="待上傳" style="width:300px;width:240px" />
+                                    <img id="insertFilePreview" :src="photoPriview" title="待上傳" style="width:300px;width:240px" />
                                     <input type="file" id="insertFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                 </div>
                                 <div class="mb-3 col-lg-12 mt-5 form-group">
@@ -207,7 +207,7 @@
                                     <input type="time" class="form-control" v-model="selectedToEdit.suggestPickEndTime" placeholder="請輸入數量" required>
                                 </div>
                                 <div class="form-group">
-                                    <img id="insertFilePreview" :src="selectedToEdit.photoPath" title="待上傳" style="width:300px;width:240px" />
+                                    <img id="updateFilePreview" :src="selectedToEdit.photoPath" title="待上傳" style="width:300px;width:240px" />
                                     <input type="file" id="updateFile" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                 </div>
                                 <div class="mb-3 col-lg-12 mt-5">
@@ -249,6 +249,7 @@
                     unitPrice:null,
                     releasedQty:null,
                     description:"",
+                    photoPriview: "/images/Noimage.png",
                     categoryId:null,
                     suggestPickUpTime:null,
                     suggestPickEndTime:null,
@@ -281,7 +282,9 @@
                     _this.page.pageNumber = 1;
                     fetch(`/api/ProductManageapi/Filter?text=${_this.searchText}`)
                         .then(response => response.json())
-                        .then(data => _this.ProductInfo = data)
+                        .then(data => {
+                            _this.ProductInfo = data;
+                        } )
                         .catch(error => alert(error));
                 },
                 editProduct(item) {
@@ -302,6 +305,7 @@
                             alert("不支援的檔案上傳格式");
                         }
                     }
+   
                 },
                 insertFileChange: function (inputFile) {
                     let _this = this;
@@ -310,12 +314,12 @@
                 insertProduct(produt) {
                     let _this = this;
                     let isDuplicate = false;
-                    for (let i = 0; i < _this.ProductInfo.length; i++){
-                        if(_this.ProductInfo[i].productName == _this.productName){
+                    for (let i = 0; i < _this.ProductInfo.length; i++) {
+                        if (_this.ProductInfo[i].productName == _this.productName) {
                             isDuplicate = true;
                             break;
                         }
-                
+
                     }
                     if (isDuplicate == true) {
                         _this.startSeach();
@@ -323,7 +327,7 @@
                     }
                     else if (_this.suggestPickUpTime >= _this.suggestPickEndTime) {
                         _this.startSeach();
-                        return alert("建議取貨迄時不可早於建議取貨起時!");                          
+                        return alert("建議取貨迄時不可早於建議取貨起時!");
                     }
                     else {
                         var form = new FormData();
@@ -341,6 +345,15 @@
                             .then(response => {
                                 if (response.ok) {
                                     _this.startSeach();
+                                    _this.productName = "";
+                                    _this.categoryId = null;
+                                    _this.unitPrice = null;
+                                    _this.releasedQty = null;
+                                    _this.suggestPickUpTime = null;
+                                    _this.suggestPickEndTime = null;
+                                    _this.description = "";
+                                    document.getElementById("insertFilePreview").src = "/images/Noimage.png";
+                                    document.querySelector("#insertFile").value = ""; // 清空檔案輸入
                                     return response.text(); // 將回傳結果轉為文字
                                 } else {
                                     alert("更新失敗，請確認資料是否完整");
@@ -357,7 +370,7 @@
                 softDelete(productId) {
                     let _this = this;
                     fetch(`/api/ProductManageapi/softDelete/${productId}`,
-                    { method: "Put" })
+                        { method: "Put" })
                         .then(response => {
                             if (response.ok) {
                                 _this.startSeach();
@@ -374,11 +387,11 @@
                         _this.startSeach();
                         return alert("上架數量不可低於已訂購數量!");
                     }
-                    else if(_this.selectedToEdit.suggestPickUpTime >= _this.selectedToEdit.suggestPickEndTime){
+                    else if (_this.selectedToEdit.suggestPickUpTime >= _this.selectedToEdit.suggestPickEndTime) {
                         _this.startSeach();
                         return alert("建議取貨迄時不可早於建議取貨起時!");
                     }
-                    else{
+                    else {
                         var form = new FormData();
                         form.append("ProductId", _this.selectedToEdit.productId);
                         form.append("ProductName", _this.selectedToEdit.productName);
@@ -404,37 +417,9 @@
                                 console.log(err)
                             });
                     }
-                    
-                    // $("#insertModal").modal('hide')
+
                 },
-                // 硬刪除(暫不用)
-                deleteProduct(productId) {
-                    console.log(productId)
-                    let _this = this;
-                    fetch(`/api/ProductManageapi/deleteProduct/${productId}`, { method: "Delete" })
-                        .then(response => {
-                            console.log(response)
-                        })
-                        .catch(error => alert(error));
-                },
-                getProductAPI: function () {
-                    let _this = this; /* test */
-                    var uri = `/api/ProductManageapi/getAll`;
-                    fetch(uri, { method: "GET" })
-                        .then(response => {
-                            if (response.ok) {
-                                return response.json()
-                            }
-                            throw new Error(`HTTP error! Status: ${response.status}`)
-                        })
-                        .then(data => {
-                            _this.ProductInfo = data 
-                        })
-                        .catch(error => {
-                            alert(error)
-                        });
-                }
-            },
+            }
         }).component("paginate", VuejsPaginateNext).mount("#productapp")
     </script>
 }

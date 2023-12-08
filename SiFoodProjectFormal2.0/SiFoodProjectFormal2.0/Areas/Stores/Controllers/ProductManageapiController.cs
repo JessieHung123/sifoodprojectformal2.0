@@ -25,6 +25,8 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<List<ProductManageVM>> GetAll()
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
+            //string targetStoreId = "S001";
+
 
             return await _context.Products
                 .Include(p => p.Category)
@@ -49,6 +51,8 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<List<ProductManageVM>> Filter(string? text)
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
+            //string targetStoreId = "S001";
+
             //找到今天之前上架的商品
             var productsToUpdate = await _context.Products
                 .Where(e => e.StoreId == targetStoreId && e.IsDelete == 1 && e.RealeasedTime.Date < DateTime.Now.Date).ToListAsync();
@@ -154,6 +158,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<string> postProduct([FromForm]AddProductVM addProductDTO)
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
+            //string targetStoreId = "S001";
 
             Product prodct = new Product
             {
@@ -195,6 +200,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<string> putProduct(int id,[FromForm] PutProductVM putProductVM)
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
+            //string targetStoreId = "S001";
 
             if (id != putProductVM.ProductId)
             {
