@@ -25,9 +25,10 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<List<ProductManageVM>> GetAll()
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
+
             return await _context.Products
                 .Include(p => p.Category)
-                .Where(e => e.StoreId == targetStoreId && e.IsDelete==1).Select(x => new ProductManageVM
+                .Where(e => e.StoreId == targetStoreId && e.IsDelete == 1).Select(x => new ProductManageVM
                 {
                     StoreId = x.StoreId,
                     UnitPrice = x.UnitPrice,
@@ -40,7 +41,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                     PhotoPath = x.PhotoPath,
                     Description = x.Description,
                     RealeasedTime = x.RealeasedTime,
-                    SuggestPickUpTime= x.SuggestPickUpTime,
+                    SuggestPickUpTime = x.SuggestPickUpTime,
                     SuggestPickEndTime = x.SuggestPickEndTime,
                 }).ToListAsync();
         }
@@ -48,6 +49,20 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<List<ProductManageVM>> Filter(string? text)
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
+            //找到今天之前上架的商品
+            var productsToUpdate = await _context.Products
+                .Where(e => e.StoreId == targetStoreId && e.IsDelete == 1 && e.RealeasedTime.Date < DateTime.Now.Date).ToListAsync();
+
+            // 把非今天的產品軟刪除
+            foreach (var product in productsToUpdate)
+            {
+                product.IsDelete = 0;
+            }
+            await _context.SaveChangesAsync();
+
+
+
+
             var query = _context.Products.Include(p => p.Category).Where(e => e.StoreId == targetStoreId && e.IsDelete ==1);
 
             if (!string.IsNullOrEmpty(text))
