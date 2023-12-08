@@ -6,10 +6,8 @@ using SiFoodProjectFormal2._0;
 using SiFoodProjectFormal2._0.Areas.Users.Models.NewebPayModels;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Text;
-using System.Web;
 using static SiFoodProjectFormal2._0.Areas.Users.Models.NewebPayModels.PayModels;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
@@ -31,9 +29,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public IActionResult CheckOut()
         {
             ViewData["MerchantID"] = _configuration.GetSection("MerchantID").Value;
-            ViewData["ReturnURL"] = $"https://b9a8-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackReturn";//上線換網址記得改
-            ViewData["NotifyURL"] = $"https://b9a8-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
-            ViewData["ClientBackURL"] = $"https://b9a8-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
+            ViewData["ReturnURL"] = $"https://950c-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackReturn";//上線換網址記得改
+            ViewData["NotifyURL"] = $"https://950c-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
+            ViewData["ClientBackURL"] = $"https://950c-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
             return View();
         }
 
@@ -69,11 +67,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Transaction/TakeOutOrder")]
-        public string TakeOutOrder([FromBody]CreateTakeOutOrderVM model)
+        public string TakeOutOrder([FromBody] CreateTakeOutOrderVM model)
         {
             string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
             string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
-            Order order = new Order
+            Order order = new()
             {
                 OrderDate = DateTime.Now,
                 StoreId = StoreId,
@@ -84,11 +82,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             };
             _context.Orders.Add(order);
             _context.SaveChanges();
-
             foreach (var items in model.ProductDetails)
             {
                 int productId = GetProductIdByName(items.ProductName, items.StoreName);
-                OrderDetail orderDetail = new OrderDetail
+                OrderDetail orderDetail = new()
                 {
                     OrderId = order.OrderId,
                     ProductId = productId,
@@ -101,7 +98,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 int orderedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.OrderedQty).Single();
                 product.OrderedQty = orderedQty + items.Quantity;
             }
-            Payment payment = new Payment
+            Payment payment = new()
             {
                 OrderId = order.OrderId,
                 PaymentMethodＮame = "藍新",
@@ -123,11 +120,11 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [Route("/Transaction/DeliverOrder")]
-        public string DeliverOrder([FromBody]CreateDeliverOrderVM model)
+        public string DeliverOrder([FromBody] CreateDeliverOrderVM model)
         {
             string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
             string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
-            Order order = new Order
+            Order order = new()
             {
                 OrderDate = DateTime.Now,
                 StoreId = StoreId,
@@ -143,7 +140,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             foreach (var item in model.ProductDetails)
             {
                 int productId = GetProductIdByName(item.ProductName, item.StoreName);
-                OrderDetail orderDetail = new OrderDetail
+                OrderDetail orderDetail = new()
                 {
                     OrderId = order.OrderId,
                     ProductId = productId,
@@ -156,7 +153,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 int orderedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.OrderedQty).Single();
                 product.OrderedQty = orderedQty + item.Quantity;
             }
-            Payment payment = new Payment
+            Payment payment = new()
             {
                 OrderId = order.OrderId,
                 PaymentMethodＮame = "藍新",
@@ -175,25 +172,29 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         /// </summary>
         [HttpPost]
         [Route("/Transaction/SendToNewebPay")]
-        public IActionResult SendToNewebPay([FromForm]SendToNewebPayIn inModel)
+        public JsonResult SendToNewebPay([FromForm] SendToNewebPayIn inModel)
         {
             string orderId = _context.Orders.Include(o => o.User).Where(o => o.User.UserName == inModel.UserName).OrderBy(o => o.OrderId).Select(o => o.OrderId).LastOrDefault().ToString();
-            SendToNewebPayOut outModel = new SendToNewebPayOut();
-            List<KeyValuePair<string, string>> TradeInfo = new List<KeyValuePair<string, string>>();
-            TradeInfo.Add(new KeyValuePair<string, string>("MerchantID", inModel.MerchantID));
-            TradeInfo.Add(new KeyValuePair<string, string>("RespondType", "String"));
-            TradeInfo.Add(new KeyValuePair<string, string>("TimeStamp", DateTimeOffset.Now.ToOffset(new TimeSpan(8, 0, 0)).ToUnixTimeSeconds().ToString()));
-            TradeInfo.Add(new KeyValuePair<string, string>("Version", "2.0"));
-            TradeInfo.Add(new KeyValuePair<string, string>("MerchantOrderNo", orderId));
-            TradeInfo.Add(new KeyValuePair<string, string>("Amt", inModel.Amt));
-            TradeInfo.Add(new KeyValuePair<string, string>("ItemDesc", inModel.ItemDesc));
-            TradeInfo.Add(new KeyValuePair<string, string>("ReturnURL", inModel.ReturnURL));
-            TradeInfo.Add(new KeyValuePair<string, string>("NotifyURL", inModel.NotifyURL));
-            TradeInfo.Add(new KeyValuePair<string, string>("ClientBackURL", inModel.ClientBackURL));
-            TradeInfo.Add(new KeyValuePair<string, string>("EmailModify", "1"));
+            SendToNewebPayOut outModel = new()
+            {
+                MerchantID = inModel.MerchantID,
+                Version = "2.0"
+            };
+            List<KeyValuePair<string, string>> TradeInfo = new()
+            {
+            new("MerchantID", inModel.MerchantID),
+            new("RespondType", "String"),
+            new("TimeStamp", DateTimeOffset.Now.ToOffset(new TimeSpan(8, 0, 0)).ToUnixTimeSeconds().ToString()),
+            new("Version", "2.0"),
+            new("MerchantOrderNo", orderId),
+            new("Amt", inModel.Amt),
+            new("ItemDesc", inModel.ItemDesc),
+            new("ReturnURL", inModel.ReturnURL),
+            new("NotifyURL", inModel.NotifyURL),
+            new("ClientBackURL", inModel.ClientBackURL),
+            new("EmailModify", "1")
+            };
             string TradeInfoParam = string.Join("&", TradeInfo.Select(x => $"{x.Key}={x.Value}"));
-            outModel.MerchantID = inModel.MerchantID;
-            outModel.Version = "2.0";
             string HashKey = _configuration.GetSection("HashKey").Value;
             string HashIV = _configuration.GetSection("HashIV").Value;
             string TradeInfoEncrypt = EncryptAESHex(TradeInfoParam, HashKey, HashIV);
@@ -286,17 +287,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             byte[] dataKey = Encoding.UTF8.GetBytes(cryptoKey);
             byte[] dataIV = Encoding.UTF8.GetBytes(cryptoIV);
-            using (var aes = System.Security.Cryptography.Aes.Create())
-            {
-                aes.Mode = System.Security.Cryptography.CipherMode.CBC;
-                aes.Padding = System.Security.Cryptography.PaddingMode.PKCS7;
-                aes.Key = dataKey;
-                aes.IV = dataIV;
-                using (var encryptor = aes.CreateEncryptor())
-                {
-                    return encryptor.TransformFinalBlock(source, 0, source.Length);
-                }
-            }
+            using var aes = System.Security.Cryptography.Aes.Create();
+            aes.Mode = System.Security.Cryptography.CipherMode.CBC;
+            aes.Padding = System.Security.Cryptography.PaddingMode.PKCS7;
+            aes.Key = dataKey;
+            aes.IV = dataIV;
+            using var encryptor = aes.CreateEncryptor();
+            return encryptor.TransformFinalBlock(source, 0, source.Length);
         }
 
         /// <summary>
@@ -367,21 +364,17 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             byte[] dataKey = Encoding.UTF8.GetBytes(cryptoKey);
             byte[] dataIV = Encoding.UTF8.GetBytes(cryptoIV);
-            using (var aes = System.Security.Cryptography.Aes.Create())
-            {
-                aes.Mode = System.Security.Cryptography.CipherMode.CBC;
-                aes.Padding = System.Security.Cryptography.PaddingMode.None;
-                aes.Key = dataKey;
-                aes.IV = dataIV;
-                using (var decryptor = aes.CreateDecryptor())
-                {
-                    byte[] data = decryptor.TransformFinalBlock(source, 0, source.Length);
-                    int iLength = data[data.Length - 1];
-                    var output = new byte[data.Length - iLength];
-                    Buffer.BlockCopy(data, 0, output, 0, output.Length);
-                    return output;
-                }
-            }
+            using var aes = System.Security.Cryptography.Aes.Create();
+            aes.Mode = System.Security.Cryptography.CipherMode.CBC;
+            aes.Padding = System.Security.Cryptography.PaddingMode.None;
+            aes.Key = dataKey;
+            aes.IV = dataIV;
+            using var decryptor = aes.CreateDecryptor();
+            byte[] data = decryptor.TransformFinalBlock(source, 0, source.Length);
+            int iLength = data[^1];
+            var output = new byte[data.Length - iLength];
+            Buffer.BlockCopy(data, 0, output, 0, output.Length);
+            return output;
         }
     }
 }

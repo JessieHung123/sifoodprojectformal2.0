@@ -326,10 +326,10 @@
                     loading: false,
                     sendBackShippingFee: "",
                     addForm: {
-                        MerchantID: '@ViewData["MerchantID"]'
-                        , ReturnURL: '@ViewData["ReturnURL"]'
-                        , NotifyURL: '@ViewData["NotifyURL"]'
-                        , ClientBackURL: '@ViewData["ClientBackURL"]'
+                        MerchantID: '@ViewData["MerchantID"]',
+                        ReturnURL: '@ViewData["ReturnURL"]',
+                        NotifyURL: '@ViewData["NotifyURL"]',
+                        ClientBackURL: '@ViewData["ClientBackURL"]',
                     }
                 }
             },
@@ -395,26 +395,24 @@
                         headers: {
                             "Content-Type": "multipart/form-data"
                         }
-                    })
-                        .then(response => {
-                            var form = document.createElement('form');
-                            form.method = 'post';
-                            form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway';
+                    }).then(response => {
+                        var form = document.createElement('form');
+                        form.method = 'post';
+                        form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway';
+                        if (response.data && typeof response.data === 'object') {
                             for (var key in response.data) {
-                                if (response.data.hasOwnProperty(key)) {
-                                    var hiddenField = document.createElement('input');
-                                    hiddenField.type = 'hidden';
-                                    hiddenField.name = key;
-                                    hiddenField.value = response.data[key];
-                                    form.appendChild(hiddenField);
-                                }
+                                var hiddenField = document.createElement('input');
+                                hiddenField.type = 'hidden';
+                                hiddenField.name = key;
+                                hiddenField.value = response.data[key];
+                                form.appendChild(hiddenField);
                             }
                             document.body.appendChild(form);
                             form.submit();
-                        })
-                        .catch(error => {
-                            alert(error.response.status + " " + error.response.statusText + '\n' + error.response.data);
-                        });
+                        }
+                    }).catch(err => {
+                        alert(err);
+                    });
                 },
                 createTakeOutOrder(ChannelID) {
                     var _this = this;
@@ -428,22 +426,20 @@
                         headers: {
                             "Content-Type": "application/json"
                         }
-                    })
-                        .then(response => {
-                            var postData = {};
-                            postData['ChannelID'] = ChannelID;
-                            postData['MerchantID'] = _this.addForm.MerchantID;
-                            postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `商品名稱:${item.productName}  數量:${item.quantity}`).join(' , ');
-                            postData['Amt'] = _this.sendBackTkoTotalPrice
-                            postData['ReturnURL'] = _this.addForm.ReturnURL;
-                            postData['NotifyURL'] = _this.addForm.NotifyURL;
-                            postData['ClientBackURL'] = _this.addForm.ClientBackURL;
-                            postData['UserName'] = _this.sendBackUserName;
-                            _this.callNewebPayApi(postData);
-                        })
-                        .catch(err => {
-                            alert(err);
-                        });
+                    }).then(response => {
+                        var postData = {};
+                        postData['ChannelID'] = ChannelID;
+                        postData['MerchantID'] = _this.addForm.MerchantID;
+                        postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `商品名稱:${item.productName}  數量:${item.quantity}`).join(' , ');
+                        postData['Amt'] = _this.sendBackTkoTotalPrice
+                        postData['ReturnURL'] = _this.addForm.ReturnURL;
+                        postData['NotifyURL'] = _this.addForm.NotifyURL;
+                        postData['ClientBackURL'] = _this.addForm.ClientBackURL;
+                        postData['UserName'] = _this.sendBackUserName;
+                        _this.callNewebPayApi(postData);
+                    }).catch(err => {
+                        alert(err);
+                    });
                 },
                 createDeliverOrder(ChannelID) {
                     var _this = this;
