@@ -82,7 +82,10 @@
                                 </div>
                             </div>
                             <div class=" border-top d-md-flex justify-content-between align-items-center px-6 py-6">
-                                <span></span>
+                                <span>
+                                    顯示第 {{ Math.min((page.countPerPage * (page.pageNumber - 1)) + 1, itemCount) }}
+                                    至 {{ Math.min(page.countPerPage * page.pageNumber, itemCount) }} 項，共 {{ itemCount }} 個商品
+                                </span>
                                 <nav class="mt-2 mt-md-0">
                                     <paginate :page-count="total"
                                               :click-handler="pageClick"
@@ -253,6 +256,7 @@
                     categoryId:null,
                     suggestPickUpTime:null,
                     suggestPickEndTime:null,
+                    itemCount:0,
                     page: {
                         countPerPage: 6,
                         pageNumber: 1,
@@ -261,7 +265,7 @@
             },
             computed: {
                 total() {
-                    return Math.ceil(this.ProductInfo.length / this.page.countPerPage);
+                    return Math.ceil(this.itemCount / this.page.countPerPage);
                 },
                 filterList() {
                     var start = (this.page.pageNumber - 1) * this.page.countPerPage;
@@ -284,6 +288,9 @@
                         .then(response => response.json())
                         .then(data => {
                             _this.ProductInfo = data;
+                            _this.page.pageNumber = 1;
+                            _this.itemCount = _this.ProductInfo.length;
+
                         } )
                         .catch(error => alert(error));
                 },
