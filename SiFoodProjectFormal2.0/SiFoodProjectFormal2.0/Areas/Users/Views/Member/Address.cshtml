@@ -12,14 +12,14 @@
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
-    
+
     <!-- Google tag (gtag.js) -->
     <!-- End Tag -->
     <style>
 
         .fixed-card {
-            height: 250px; 
-            width: 280px; 
+            height: 250px;
+            width: 280px;
         }
     </style>
 }
@@ -114,10 +114,10 @@
                                         <div class="card fixed-card ">
                                             <div class="card-body p-6">
                                                 @* <div class="form-check mb-4">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
-                                                    <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
-                                                        住址{{index + 1}}
-                                                    </label>
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
+                                                <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
+                                                住址{{index + 1}}
+                                                </label>
                                                 </div> *@
                                                 <strong class="d-block mb-2">住址{{index + 1}}</strong>
                                                 <!-- address --><p class="card-text"></p>
@@ -141,13 +141,13 @@
                                         <div class="card fixed-card ">
                                             <div class="card-body p-6">
                                                 @* <div class="form-check mb-4">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
-                                                    <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
-                                                        住址{{index + 1}}
-                                                    </label>
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" checked>
+                                                <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
+                                                住址{{index + 1}}
+                                                </label>
                                                 </div> *@
                                                 @* <p class="mb-2">
-                                                    住址{{index + 1}}
+                                                住址{{index + 1}}
                                                 </p> *@
                                                 <strong class="d-block mb-2">住址{{index + 1}}</strong>
                                                 <!-- address -->
@@ -218,6 +218,7 @@
                             </div>
                             <div>
                                 <!-- button -->
+                                <button class="btn btn-dark " style="margin-right: 16px;" @@click="getCurrentLocation">自動填入現在位置</button>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                         </div>
@@ -266,8 +267,6 @@
 
 
     <!-- modal -->
-
-
     @section Scripts{
         <!-- Javascript-->
         <!-- Libs JS -->
@@ -277,6 +276,7 @@
 
         <!-- Theme JS -->
         <script src="~/assets/js/theme.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0x6KjO7MXibN-CgOFVpTv6ZsnMwLh5vg"></script>
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
@@ -308,7 +308,7 @@
                         let _this = this;
                         axios.put(`/api/UserAddressesapi/${item.userAddressId}`, {
                             UserAddressId: item.userAddressId,
-                            UserDetailAddress: item.userDetailAddress,                           
+                            UserDetailAddress: item.userDetailAddress,
                             UserCity: item.userCity,
                             UserRegion: item.userRegion,
                             UserName: item.userName,
@@ -340,7 +340,7 @@
                         let _this = this;
                         axios.put(`/api/UserAddressesapi/${item.userAddressId}`, {
                             UserAddressId: item.userAddressId,
-                            UserDetailAddress: item.userDetailAddress,                            
+                            UserDetailAddress: item.userDetailAddress,
                             UserName: item.userName,
                             UserCity: item.userCity,
                             UserRegion: item.userRegion,
@@ -359,7 +359,7 @@
                                     text: response.data,
                                 });
                             }
-                            
+
                         }).catch(err => {
                             Swal.fire({
                                 icon: 'error',
@@ -399,13 +399,13 @@
                                         title: '成功!',
                                         text: response.data,
                                     });
-                                }else{
+                                } else {
                                     Swal.fire({
                                         icon: 'error',
                                         text: "地址刪除發生錯誤!"
                                     });
                                 }
-                                
+
                             }).catch(err => {
                                 Swal.fire({
                                     icon: 'error',
@@ -471,7 +471,7 @@
                                     text: response.data,
                                 });
                             }
-                            _this.getUserAddresses();                            
+                            _this.getUserAddresses();
                         }).catch(err => {
                             Swal.fire({
                                 icon: 'error',
@@ -502,6 +502,59 @@
                                 });
                                 console.log('error', error);
                             });
+                    },
+                    getCurrentLocation: function () {
+                        let _this = this;
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(
+                                function (position) {
+                                    const latlng = {
+                                        lat: position.coords.latitude,
+                                        lng: position.coords.longitude
+                                    };
+                                    const geocoder = new google.maps.Geocoder();
+                                    geocoder.geocode({ location: latlng, language: 'zh-TW' }, function (results, status) {
+                                        if (status === "OK") {
+                                            const addressComponents = results[0].address_components;
+                                            let city, region, addressLine;
+                                            for (const component of addressComponents) {
+                                                if (component.types.includes('administrative_area_level_1')) {
+                                                    city = component.long_name;
+                                                } else if (component.types.includes('administrative_area_level_2')) {
+                                                    region = component.long_name;
+                                                }
+                                            }
+                                            const addressParts = results[0].formatted_address.split('區');
+                                            if (addressParts.length > 1) {
+                                                addressLine = addressParts[1].trim();
+                                            }
+                                            _this.selectedCity = city || '';
+                                            _this.selectedRegion = region || '';
+                                            _this.addressLine = addressLine || '';
+                                        } else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                text: "無法自動填寫,請手動輸入地址"
+                                            });
+                                            console.error("Geocoding failed:", status);
+                                        }
+                                    });
+                                },
+                                function (error) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: "無法自動填寫,請手動輸入地址"
+                                    });
+                                    console.error("Error getting current location:", error);
+                                }
+                            );
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                text: "無法自動填寫,請手動輸入地址"
+                            });
+                            console.error("Geolocation is not supported by this browser.");
+                        }
                     },
                 }
             }).mount("#userAddressesApp")
