@@ -14,9 +14,9 @@ namespace SiFoodProjectFormal2._0
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddResponseCaching();
             // Add services to the container.
-            builder.Services.AddDbContext<Sifood3Context>(options =>
+            builder.Services.AddDbContextPool<Sifood3Context>(options =>
             {
                 options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Sifood"));
             });
@@ -59,7 +59,7 @@ namespace SiFoodProjectFormal2._0
                 app.UseHsts();
 
             }
-
+            app.UseResponseCaching();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

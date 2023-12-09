@@ -83,5 +83,9 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         [Display(Name = "週末結束時間")]
         public string WeekendEndTime { get; set; }
 
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+
+
     }
 }

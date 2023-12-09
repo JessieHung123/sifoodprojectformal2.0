@@ -6,6 +6,9 @@
 
 <div class="box2 border border-success rounded" id="chooseOrder">
     <div>
+        <section id="map"></section>
+    </div>
+    <div>
         <h4 font-weight><span class="badge bg-info text-dark">訂單編號:{{waitForDeliveryOrder.orderId}}</span></h4>
                 <div>
                     預估完成時間：{{expectedtime}}分鐘<br>
@@ -46,12 +49,13 @@
     </div>
     <!--Modal-->
 </div>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI" async defer></script>
 <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
 <script>
     var chooseOrder = Vue.createApp({
         data: function () {
             return {
+                map: null,
                 waitForDeliveryOrder: {},
                 toStorelocation: "",
                 arrivingLocation:"",
@@ -60,10 +64,42 @@
             }
         },
         mounted: async function () {
+            navigator.geolocation.getCurrentPosition(this.showPosition);
+            window.addEventListener('load', () => {
+                this.setMap();
+                setInterval(() => {
+                    navigator.geolocation.getCurrentPosition(this.showPosition);
+                    this.setMap();
+                }, 60000)
+            });
             await this.getWaitForDeliveryOrder();
             await this.AllGetDistanceToStore();
         },
         methods: {
+            showPosition(position) {
+                this.current = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                }
+            },
+            setMap() {
+                let location = {
+                    lat: 25.0520749,
+                    lng: 121.5430955
+                };
+                this.map = new google.maps.Map(document.getElementById('map'), {
+                    center: this.current == null ? location : this.current,
+                    zoom: 16,
+                    mapTypeId: 'terrain',
+                    mapTypeControl: false,
+                    fullscreenControl: false
+                });
+                let currentLocation = new google.maps.Marker({
+                    position: this.current == null ? location : this.current,
+                    icon: "https://img.onl/195tB0",
+                    map: this.map
+                });
+            },
             async getWaitForDeliveryOrder() {
                 var orderId = window.location.pathname.slice("26");
                 await fetch(`/api/DeliveryOrderapi/WaitForDeliveryOrderDetails/${orderId}`, { method: "GET" })
@@ -76,7 +112,7 @@
             },
             AllGetDistanceToStore() {
                 var service = new google.maps.DistanceMatrixService();
-                var oridinArray = [setDriverMap.current, this.toStorelocation];
+                var oridinArray = [this.current, this.toStorelocation];
                 var destinationArray = [this.toStorelocation, this.arrivingLocation];
                 service.getDistanceMatrix(
                     {
@@ -107,7 +143,7 @@
                 var orderId = window.location.pathname.slice("26");
                 directionsService.route(
                     {
-                        origin: setDriverMap.current,//字串
+                        origin: this.current,//字串
                         destination: this.arrivingLocation.toString(),//字串
                         travelMode: 'DRIVING',
                         waypoints: [
@@ -125,7 +161,7 @@
             getRoute(response, status) {
                 if (status == 'OK') {
                     let directionsDisplay = new google.maps.DirectionsRenderer({
-                        map: setDriverMap.map,
+                        map: this.map,
                         directions: response,
                     });
                     this.isAccept = true;
@@ -135,7 +171,7 @@
                 let directionsService = new google.maps.DirectionsService();
                 directionsService.route(
                     {
-                        origin: setDriverMap.current,//字串
+                        origin: this.current,//字串
                         destination: this.arrivingLocation.toString(),//字串
                         travelMode: 'DRIVING',
                         waypoints: [
