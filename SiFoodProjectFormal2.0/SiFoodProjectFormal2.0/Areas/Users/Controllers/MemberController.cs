@@ -136,7 +136,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public IActionResult HistoryOrders(string searchTerm = null, string sortOption = "Status", int pageSize = 20, int currentPage = 1)
         {
 
-
             // 當前登入用戶的ID or 寫死ID
             //var loginuserId = _userIdentityService.GetUserId();
             var loginuserId ="U002";
@@ -234,7 +233,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
                 }).ToList();
 
-            return Json(new { Orders = paginatedOrders, TotalCount = totalOrdersCount });
+            //return Json(new { Orders = paginatedOrders, TotalCount = totalOrdersCount });
+            return View(paginatedOrders);
         }
 
 
