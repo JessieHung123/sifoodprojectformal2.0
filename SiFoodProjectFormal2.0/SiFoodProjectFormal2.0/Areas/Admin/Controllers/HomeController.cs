@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace sifoodprojectformal2._0.Areas.Admin.Controllers
 {
@@ -39,15 +41,18 @@ namespace sifoodprojectformal2._0.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Login(LoginVM model)
         {
-            var admin = _context.Admins.Where(x=>x.Account == model.Account).FirstOrDefault();
-            if (admin != null && model.Password == admin.Password)
+            var admin = _context.Admins.Where(x => x.Account == model.Account).FirstOrDefault();
+            if (admin != null)
             {
-                return RedirectToAction("Index", "OrderManagae");
+                string passwordWithSalt = $"{model.Password}{admin.PasswordSalt}";
+                Byte[] RealPasswordBytes = Encoding.ASCII.GetBytes(passwordWithSalt);
+                Byte[] RealPasswordHash = SHA256.HashData(RealPasswordBytes);
+                if (Enumerable.SequenceEqual(RealPasswordHash, admin.Password))
+                {
+                    return RedirectToAction("Index", "OrderManage");
+                }
             }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            return View();
         }
     }
 }
