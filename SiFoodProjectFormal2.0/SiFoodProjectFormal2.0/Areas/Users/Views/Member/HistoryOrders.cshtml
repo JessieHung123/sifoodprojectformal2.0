@@ -1,5 +1,4 @@
 ﻿@using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
-@model IEnumerable<HistoryOrderVM>
 
 @{
     Layout = "~/Areas/Users/Views/Shared/_Layout.cshtml";
@@ -9,6 +8,8 @@
 <!-- CSS -->
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
+    
     <!--改放大鏡和X顯示問題-->
     <style>
         .input-group-append .btn {
@@ -104,21 +105,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="order in orders" :key="order.OrderId">
+                                    <tr v-for="order in orders" :key="order.orderId">
                                         <td>
-                                            <button v-on:click="loadOrderDetails(order.OrderId)" class="btn btn-primary">查看詳情</button>
+                                            <a v-on:click="loadOrderDetails(order.OrderId)" ><i class="feather-icon icon-eye"></i></a>
                                         </td>
                                         <td>
                                             <img :src="order.FirstProductPhotoPath" alt="Product" class="icon-shape icon-xl">
                                         </td>
-                                        <td>{{ order.FirstProductName }}</td>
-                                        <td>{{ order.OrderId }}</td>
-                                        <td>{{ order.OrderDate }}</td>
-                                        <td>{{ order.Quantity }}</td>
+                                        <td>{{ order.firstProductName }}</td>
+                                        <td>{{ order.orderId }}</td>
+                                        <td>{{ order.orderDate }}</td>
+                                        <td>{{ order.quantity }}</td>
                                         <td>
-                                            <span :class="getStatusClass(order.Status)">{{ order.Status }}</span>
+                                            <span :class="getStatusClass(order.Status)">{{ order.status }}</span>
                                         </td>
-                                        <td>$ {{ order.TotalPrice }}</td>
+                                        <td>$ {{ order.totalPrice }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -144,13 +145,18 @@
                 </div>
             </div>
         </div>
+
+        <!--modal-->
+
+
     </div>
 </section>
 
 
 @section Scripts{
 
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>     
+    <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
 
     <!--星星評分-->
     <script src="/js/rating.js"></script>
@@ -365,6 +371,109 @@
         const historyApp = Vue.createApp({
             data() {
                 return {
+                    orders: [],
+                    searchTerm: '',
+                    sortOption: '',
+                    totalOrdersCount: 0,
+                    pageSize: 10,
+                    currentPage: 1,
+                    totalPages: 10, // 假設總頁數是 10
+                    currentOrderDetail: null,
+                    currentRating: 0,
+                    hoverRating: 0,
+                    comment: '',
+                };
+            },
+            mounted() {
+                this.loadOrders();
+            },
+            methods: {
+                // changePage(page) {
+                //     if (page < 1 || page > this.totalPages) {
+                //         return;
+                //     }
+                //     this.currentPage = page;
+                //     this.loadOrders();
+                // },
+                loadOrders() {
+                    let _this = this;
+                    const url = `/api/HistoryOrderapi/GetHistoryOrders`;
+                    fetch(url, { method: "GET" })
+                        .then(response => { return response.json() })
+                        .then(data => {
+                            _this.orders = data;
+                            // alert(JSON.stringify(this.orders))
+                            // _this.totalOrdersCount = data.totalCount;
+                            // _this.totalPages = Math.ceil(_this.totalOrdersCount / _this.pageSize);
+                        })
+                        .catch(err => console.error(err));
+                },
+                loadOrderDetails(orderId) {
+                    fetch(`/api/OrdersApi/OrderDetails/${orderId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            this.currentOrderDetail = data;
+                        })
+                        .catch(err => console.error(err));
+                },
+                // submitRating() {
+                //     fetch('/api/OrdersApi/SubmitRating', {
+                //         method: 'POST',
+                //         headers: {
+                //             'Content-Type': 'application/json',
+                //         },
+                //         body: JSON.stringify({
+                //             orderId: this.currentOrderDetail.OrderId,
+                //             rating: this.currentRating,
+                //             comment: this.comment,
+                //         })
+                //     })
+                //         .then(response => response.json())
+                //         .then(data => {
+                //             alert("評價提交成功");
+                //         })
+                //         .catch(err => console.error("提交評價出錯: ", err));
+                // },
+                getStatusClass(status) {
+                    switch (status) {
+                        case "已送達":
+                            return "badge bg-light-info text-dark-info";
+                        case "已領取":
+                            return "badge bg-light-danger text-dark-danger";
+                        case "已取消":
+                            return "badge bg-light text-dark";
+                        case "待確認":
+                            return "badge bg-warning text-dark";
+                        case "待配送":
+                            return "badge bg-info text-dark";
+                        case "待領取":
+                            return "badge bg-secondary";
+                        case "配送中":
+                            return "badge bg-primary";
+                        default:
+                            return "badge bg-secondary"; // 預設情況
+                    }
+                },
+                searchOrders() {
+                    this.currentPage = 1;
+                    this.loadOrders();
+                },
+                clearSearch() {
+                    this.searchTerm = '';
+                    this.loadOrders();
+                },
+            },
+        }).mount('#historyApp');
+    </script>
+
+
+
+
+    <!--原本版-->
+    @* <script>
+        const historyApp = Vue.createApp({
+            data() {
+                return {
                     // 訂單列表相關數據
                     orders: [],
                     searchTerm: '',
@@ -465,7 +574,7 @@
                 },
             },
         }).mount('#historyApp');
-    </script>
+    </script> *@
 
 
 
