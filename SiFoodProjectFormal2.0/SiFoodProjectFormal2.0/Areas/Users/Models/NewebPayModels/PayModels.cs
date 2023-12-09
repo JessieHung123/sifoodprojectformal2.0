@@ -6,14 +6,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.NewebPayModels
     {
         public class SendToNewebPayIn
         {
-            [JsonPropertyName("ChannelID")]
-            public string? ChannelID { get; set; }
-
             [JsonPropertyName("MerchantID")]
             public string? MerchantID { get; set; }
-
-            [JsonPropertyName("MerchantOrderNo")]
-            public string? MerchantOrderNo { get; set; }
 
             [JsonPropertyName("ItemDesc")]
             public string? ItemDesc { get; set; }
