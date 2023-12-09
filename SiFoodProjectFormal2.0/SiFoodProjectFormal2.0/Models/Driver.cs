@@ -9,8 +9,6 @@ public partial class Driver
 
     public string FullName { get; set; } = null!;
 
-    public string? PhotoPath { get; set; }
-
     public string Phone { get; set; } = null!;
 
     public string PlateNumber { get; set; } = null!;
