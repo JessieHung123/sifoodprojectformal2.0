@@ -50,7 +50,23 @@
                             <label asp-for="UserLatestLogInDate" class="control-label">最新登入日期</label>
                             <input asp-for="UserLatestLogInDate" class="form-control" />
                             <span asp-validation-for="UserLatestLogInDate" class="text-danger"></span>
-                        </div>                        
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="UserPasswordSalt" type="hidden" class="form-control" />
+                            <span asp-validation-for="UserPasswordSalt" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="UserAuthenticated" type="hidden" class="form-control" />
+                            <span asp-validation-for="UserAuthenticated" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="UserVerificationCode" type="hidden" class="form-control" />
+                            <span asp-validation-for="UserVerificationCode" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="ForgotPasswordRandom" type="hidden" class="form-control" />
+                            <span asp-validation-for="ForgotPasswordRandom" class="text-danger"></span>
+                        </div>
                         <div class="form-group">
                             <input type="submit" value="儲存" class="btn btn-primary" />
                         </div>

@@ -68,13 +68,13 @@
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.Description)
-                    </dd>                                    
+                    </dd>
                     <dt class="col-sm-3">
                         註冊日期
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.EnrollDate)
-                    </dd>                    
+                    </dd>
                     <dt class="col-sm-3">
                         開店時間
                     </dt>
@@ -91,15 +91,46 @@
                         商家照片
                     </dt>
                     <dd class="col-sm-9">
-                        <img src="@Model.PhotosPath" width="300" height="200" alt="Logo" />
-                        <img src="@Model.PhotosPath2" width="300" height="200" alt="Logo" />
-                        <img src="@Model.PhotosPath3" width="300" height="200" alt="Logo" />
+                        @if (!string.IsNullOrEmpty(Model.PhotosPath))
+                        {
+                            <img src="@Model.PhotosPath" width="300" height="200" alt="Logo" />
+                        }
+                        else
+                        {
+                            <img src="~/images/Noimage.png"
+                                 width="300" height="200" alt="Default Logo" />
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.PhotosPath2))
+                        {
+                            <img src="@Model.PhotosPath2" width="300" height="200" alt="Logo" />
+                        }
+                        else
+                        {
+                            <img src="~/images/Noimage.png" width="300" height="200" alt="Default Logo" />
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.PhotosPath3))
+                        {
+                            <img src="@Model.PhotosPath3" width="300" height="200" alt="Logo" />
+                        }
+                        else
+                        {
+                            <img src="~/images/Noimage.png" width="300" height="200" alt="Default Logo" />
+                        }
                     </dd>
                     <dt class="col-sm-3">
                         商家Logo
                     </dt>
-                    <dd class="col-sm-9" >
-                        <img src="@Model.LogoPath" width="300" height="300" alt="Logo" />
+                    <dd class="col-sm-9">
+                        @if (!string.IsNullOrEmpty(Model.LogoPath))
+                        {
+                            <img src="@Model.LogoPath" width="300" height="200" alt="Logo" />
+                        }
+                        else
+                        {
+                            <img src="~/images/Noimage.png" width="300" height="200" alt="Default Logo" />
+                        }
                     </dd>
                 </dl>
             </div>
