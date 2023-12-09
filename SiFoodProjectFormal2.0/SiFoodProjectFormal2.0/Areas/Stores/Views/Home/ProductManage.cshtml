@@ -411,6 +411,8 @@
                             .then(response => {
                                 if (response.ok) {
                                     _this.startSeach();
+                                    document.getElementById("insertFilePreview").src = "/images/Noimage.png";
+                                    document.querySelector("#insertFile").value = ""; // 清空檔案輸入
                                     return response.text(); // 將回傳結果轉為文字
                                 } else {
                                     alert("更新失敗，請確認資料是否完整");
