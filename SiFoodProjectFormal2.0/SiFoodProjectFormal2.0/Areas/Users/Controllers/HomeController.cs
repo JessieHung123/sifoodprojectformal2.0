@@ -94,6 +94,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                         PhotosPath = photoPathInDb,
                         PhotosPath2 = photoPath2InDb,
                         PhotosPath3 = photoPath3InDb,
+                        Latitude = joinus.Latitude,
+                        Longitude = joinus.Longitude,
                     };
 
             if (ModelState.IsValid)
