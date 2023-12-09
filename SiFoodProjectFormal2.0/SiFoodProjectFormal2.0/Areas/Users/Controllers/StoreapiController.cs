@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Castle.Core.Resource;
 using Microsoft.AspNetCore.Mvc;
@@ -25,41 +27,49 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         }
 
         [EnableQuery]
-        public object Main2()
+        [ResponseCache(Duration =60)]
+        public async Task<object> Main2()
         {
-            //TimeZoneInfo taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
-            var products = _context.Products.Select(x => x.RealeasedTime);
-            //DateTime productstaiwanTime = TimeZoneInfo.ConvertTimeFromUtc(products, taiwanTimeZone);
-            var stores = _context.Stores.Include(x => x.Products).ThenInclude(x => x.Category).Include(x => x.Orders)
-                .ThenInclude(x => x.Comment).Where(x => x.StoreIsAuthenticated == 1)
-                .Select(z => new StoreVM
-                {
-                    StoreId = z.StoreId,
-                    StoreName = z.StoreName,
-                    Description = z.Description,
-                    LogoPath = z.LogoPath,
-                    CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
-                    CommentRank = z.Orders.Where(x => x.Comment != null).Sum(x => x.Comment.CommentRank),
-                    //Inventory = z.Products.Where(x => x.IsDelete == 1 && x.RealeasedTime.AddHours(8).Date == DateTime.Now.Date && x.RealeasedTime.AddHours(8).TimeOfDay < DateTime.Now.TimeOfDay &&x.SuggestPickEndTime >= DateTime.Now.TimeOfDay)
-                    //.Select(x => x.ReleasedQty - x.OrderedQty)
-                    //.Sum(),
-                    Inventory = z.Products.Where(x => x.IsDelete == 1 && x.RealeasedTime.Date == DateTime.Now.Date && x.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay)
-                    .Select(x => x.ReleasedQty - x.OrderedQty)
-                    .Sum(),
-                    WeekdayOpeningTime = z.OpeningTime.Substring(3, 5),
-                    WeekdayClosingTime = z.OpeningTime.Substring(11, 5),
-                    WeekendOpeningTime = z.OpeningTime.Substring(20, 5),
-                    WeekendClosingTime = z.OpeningTime.Substring(28, 5),
-                    City = z.City,
-                    Region = z.Region,
-                    //CategoryName = z.Products.Where(x => x.IsDelete == 1 && x.RealeasedTime.AddHours(8).Date == DateTime.Now.Date &&x.RealeasedTime.AddHours(8).TimeOfDay < DateTime.Now.TimeOfDay &&x.SuggestPickEndTime >= DateTime.Now.TimeOfDay)
-                    //.Select(x => x.Category.CategoryName)
-                    //.Distinct()
-                    CategoryName = z.Products.Where(x => x.IsDelete == 1 && x.RealeasedTime.Date == DateTime.Now.Date && x.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay)
-                    .Select(x => x.Category.CategoryName)
-                    .Distinct()
-                }).AsEnumerable();
-            return stores;
+            var comment = _context.Comments.AsNoTracking().GroupBy(x => x.StoreId).Select(x => new { x.Key, Count = x.Count() }).ToList();
+            var commentRank = _context.Comments.AsNoTracking().GroupBy(x => x.StoreId).Select(x => new { x.Key, TotalRank = x.Sum(z => z.CommentRank) }).ToList();
+
+            var Product = _context.Products.AsNoTracking().Include(x => x.Category).Where(x => x.IsDelete == 1 && x.RealeasedTime.Date == DateTime.Now.Date &&
+               x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).GroupBy(x => x.StoreId).Select(x => new { x.Key, sumQty = x.Sum(z => z.ReleasedQty - z.OrderedQty), categoryList = x.Select(z => z.Category.CategoryName) }).ToList();
+
+            var stores =  _context.Stores.AsNoTracking().Where(x => x.StoreIsAuthenticated == 1).Select(z=> new 
+            {
+                StoreId = z.StoreId,
+                StoreName = z.StoreName,
+                Description = z.Description,
+                LogoPath = z.LogoPath,
+                City = z.City,
+                Region = z.Region,
+                WeekdayOpeningTime = z.OpeningTime.Substring(3, 5),
+                WeekdayClosingTime = z.OpeningTime.Substring(11, 5),
+                WeekendOpeningTime = z.OpeningTime.Substring(20, 5),
+                WeekendClosingTime = z.OpeningTime.Substring(28, 5),
+            }).ToList();
+
+
+            var total = stores.Select(x => new StoreVM
+            {
+                StoreId = x.StoreId,
+                StoreName = x.StoreName,
+                Description = x.Description,
+                LogoPath = x.LogoPath,
+                City = x.City,
+                Region = x.Region,
+                WeekdayOpeningTime = x.WeekdayOpeningTime,
+                WeekdayClosingTime = x.WeekdayClosingTime,
+                WeekendOpeningTime = x.WeekendOpeningTime,
+                WeekendClosingTime = x.WeekendClosingTime,
+                CommentCount = comment.FirstOrDefault(s => s.Key == x.StoreId)== null? 0: comment.FirstOrDefault(s => s.Key == x.StoreId).Count,
+                CommentRank = commentRank.FirstOrDefault(r => r.Key == x.StoreId)?.TotalRank,
+                Inventory = Product.FirstOrDefault(p => p.Key == x.StoreId)== null ? 0: Product.FirstOrDefault(p => p.Key == x.StoreId).sumQty,
+                CategoryName = Product.FirstOrDefault(p => p.Key == x.StoreId) == null? new List<string>(): Product.FirstOrDefault(p => p.Key == x.StoreId).categoryList
+            });
+
+            return total;
         }
 
         //找到店家是否已被收藏

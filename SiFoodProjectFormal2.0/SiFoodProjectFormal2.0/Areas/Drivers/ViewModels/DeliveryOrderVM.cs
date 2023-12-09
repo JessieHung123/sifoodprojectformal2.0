@@ -12,8 +12,8 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.NewFolder3
         public string UserName { get; set; } = null!;
         public string UserPhone { get; set; } = null!;
         public int StatusId { get; set; }
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
         public string? OrderDate { get; set; }
         public string? OrderTime { get; set; }
 

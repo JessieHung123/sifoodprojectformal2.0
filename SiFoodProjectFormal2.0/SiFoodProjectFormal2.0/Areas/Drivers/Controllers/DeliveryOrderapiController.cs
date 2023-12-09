@@ -26,10 +26,11 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.Controllers
                 Address = o.Address,
                 StoreName = o.Store.StoreName,
                 StoreAddress=o.Store.Address,
-                UserName = o.User.UserName,
+                UserName = o.User.UserName==null? "": o.User.UserName,
                 Latitude=(decimal)o.Store.Latitude,
                 Longitude= (decimal)o.Store.Longitude,
                 StatusId = o.StatusId,
+                DriverId=o.DriverId==null?"D001": o.DriverId,
             });
         }
         [HttpGet("{id}")]
@@ -50,7 +51,8 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.Controllers
                 {
                     ProductName = p.Product.ProductName,
                     Quantity = p.Quantity,
-                })
+                }),
+                DriverId = o.DriverId == null ? "D001" : o.DriverId,
             });
         }
         [HttpPut("{orderId}")]
@@ -80,6 +82,7 @@ namespace SiFoodProjectFormal2._0.Areas.Drivers.Controllers
                 UserPhone = o.User.UserPhone == null ? "NotFind" : o.User.UserPhone,
                 OrderDate = o.OrderDate.ToString("yyyy-MM-dd"),
                 OrderTime=o.OrderDate.ToShortTimeString(),
+                DriverId = o.DriverId == null ? "D001" : o.DriverId,
             }) ;
         }
         [HttpPut("{orderId}")]
