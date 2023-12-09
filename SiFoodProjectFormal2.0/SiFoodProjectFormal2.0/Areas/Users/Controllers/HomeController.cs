@@ -45,14 +45,28 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<string> JoinUsSubmit([Bind("StoreId,StoreName,ContactName,TaxId,Email,Phone,City,Region,Address,Description,OpeningTime,ClosingDay,PhotosPath,PhotosPath2,PhotosPath3,LogoPath")] JoinUsVM joinus)
+        public async Task<string> JoinUsSubmit( JoinUsVM joinus)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // 處理 Logo 圖片上傳
-                    string logoPathInDb = await SavePhoto(joinus.LogoPath, "logo");
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+
+            //加上Jessie
+            //string Currentstore = await _context.Stores.OrderByDescending(s => s.StoreId).Select(s => s.StoreId).FirstOrDefaultAsync();
+            ////幫這個店家拿到新的號碼(+1)
+            //int newnumber = int.Parse(Currentstore.Substring(1)) + 1;
+            //var folderName = "S" + newnumber.ToString();
+            //Jessie止
+
+
+            // 格式化營業時間
+            string formattedOpeningTime = $"平日 {joinus.WeekdayStartTime} - {joinus.WeekdayEndTime}，週末 {joinus.WeekendStartTime} - {joinus.WeekendEndTime}";
+            //string formattedOpeningTime = $"平日 {joinus.WeekdayStartTime:HH:mm} - {joinus.WeekdayEndTime:HH:mm}，週末 {joinus.WeekendStartTime:HH:mm} - {joinus.WeekendEndTime:HH:mm}";
+
+
+            // 處理 Logo 圖片上傳
+            string logoPathInDb = await SavePhoto(joinus.LogoPath, "logo");
 
                     // 處理三張店家照片上傳
                     string photoPathInDb = await SavePhoto(joinus.PhotosPath, "photo");
@@ -75,12 +89,17 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                         Address = joinus.Address,
                         Description = joinus.Description,
                         ClosingDay = joinus.ClosingDay,
-                        OpeningTime = joinus.OpeningTime,
+                        OpeningTime = formattedOpeningTime,
                         LogoPath = logoPathInDb,
                         PhotosPath = photoPathInDb,
                         PhotosPath2 = photoPath2InDb,
                         PhotosPath3 = photoPath3InDb,
                     };
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
 
                     _context.Add(store);
                     await _context.SaveChangesAsync();
