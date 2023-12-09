@@ -10,11 +10,10 @@ namespace sifoodprojectformal2._0.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private readonly Sifood3Context _context;
-        public HomeController(Sifood3Context context) 
+        public HomeController(Sifood3Context context)
         {
             _context = context;
         }
-     
         public IActionResult OrderManage()
         {
             return View();

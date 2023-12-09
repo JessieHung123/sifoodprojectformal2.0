@@ -1,10 +1,7 @@
 ﻿@using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 @model IEnumerable<HistoryOrderVM>
-
-
-<!-- 引用Layout -->
 @{
-    Layout = "_Layout";
+    Layout = "~/Areas/Users/Views/Shared/_Layout.cshtml";
 }
 
 <!-- Title -->
@@ -14,21 +11,7 @@
 
 <!-- CSS -->
 @section Styles{
-    @* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rater-js@1.0.1/lib/style.min.css"> *@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
-
-
-    <!-- Libs CSS -->
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
-
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
     <link href="~/assets/libs/prismjs/themes/prism-okaidia.min.css" rel="stylesheet" />
     <!--改放大鏡和X顯示問題-->
     <style>
@@ -223,14 +206,11 @@
     <!--Elly測試改引用Bootstrap-->
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Libs JS -->
-        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
     <!-- Javascript 放jQuery後面-->
     
 
     <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js"></script>
     <script src="~/assets/libs/prismjs/prism.js"></script>
     <script src="~/assets/libs/prismjs/components/prism-scss.min.js"></script>
     <script src="~/assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>

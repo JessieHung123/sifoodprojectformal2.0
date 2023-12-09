@@ -41,6 +41,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 UnitPrice = _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.UnitPrice).Single(),
                 StoreName = _context.Stores.Where(s => s.StoreId == c.Product.StoreId).Select(p => p.StoreName).Single(),
                 PhotoPath= _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.PhotoPath).Single(),
+                RemainingStock=_context.Products.Where(p=>p.ProductId==c.ProductId).Select(p=>p.ReleasedQty).Single()- _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.OrderedQty).Single(),
             }).ToListAsync();
             return cart;
         }

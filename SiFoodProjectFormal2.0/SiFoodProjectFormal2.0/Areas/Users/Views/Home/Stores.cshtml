@@ -1,7 +1,5 @@
 ﻿@section Styles{
     <title>Store Single eCommerce HTML Template - FreshCart </title>
-    <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
 
     <!-- Libs CSS -->
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -84,7 +82,6 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item"><a href="#!">首頁</a></li>
-                                <li class="breadcrumb-item"><a href="#!">店家</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">
                                     {{stores.storeName}}
                                 </li>
@@ -372,17 +369,7 @@
 
     @section Scripts{
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
-        <!-- Javascript-->
-        <!-- Libs JS -->
-        <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-        <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
-        <!-- Theme JS -->
-        <script src="~/assets/js/theme.min.js"></script>
-        <script src="~/assets/libs/tiny-slider/dist/min/tiny-slider.js"></script>
-        <script src="~/assets/js/vendors/tns-slider.js"></script>
-        <script src="~/assets/js/vendors/increment-value.js"></script>
         @* Carousel *@
         <!-- MDB -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
@@ -391,7 +378,6 @@
 
 
         <script>
-            // var baseAddress = "https://localhost:7042";
             var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
             const storeProductApp = Vue.createApp({
                 data: function () {
@@ -589,7 +575,8 @@
                     },
                     getStoreInfo() {
                         let _this = this;
-                        let storeId = "S001"
+                        let storeId = window.location.pathname.slice("19");
+                        
                         fetch(`/api/StoreProductsapi/${storeId}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
