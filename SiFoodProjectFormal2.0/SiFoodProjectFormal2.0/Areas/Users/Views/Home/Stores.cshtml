@@ -477,7 +477,6 @@
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
                                 }
-                                // return response;
                                 return response.json()
                             })
                             .then(result => {
@@ -510,7 +509,11 @@
                                     return response.text();
                                 })
                                 .then(result => {
-                                    alert(result);
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '成功!',
+                                        text: result
+                                    });
                                     this.isFavorite = true;
                                 })
                                 .catch(error => {
@@ -553,7 +556,11 @@
                                 return response.text();
                             })
                             .then(result => {
-                                alert(result);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '成功!',
+                                    text: result
+                                });
                                 this.isFavorite = false;
                             })
                             .catch(error => {
@@ -581,7 +588,6 @@
                                     _this.getFavoriteStatus();
                                 }
                             }).catch(error => {
-                                alert(error);
                                 console.log('error', error);
                             });
                     },
