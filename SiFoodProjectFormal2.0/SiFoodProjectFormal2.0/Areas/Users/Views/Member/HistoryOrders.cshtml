@@ -25,7 +25,7 @@
 <!-- Main -->
 <main>
     <section>
-        <div id="app">
+        <div id="historyApp">
             <div class="container">
                 <div class="row">
                     <!--左側Side bar PartialView-->
@@ -360,8 +360,8 @@
     </script> *@
 
     <!--Vue-->
-    <script>
-        Vue.createApp({
+     <script>
+        const historyApp = Vue.createApp({
             data() {
                 return {
                     // 訂單列表相關數據
@@ -454,7 +454,7 @@
                     }
                 },
             },
-        }).mount('#app');
+        }).mount('#historyApp');
 
     </script>
 
