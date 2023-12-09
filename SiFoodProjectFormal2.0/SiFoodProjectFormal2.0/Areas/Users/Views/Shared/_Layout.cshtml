@@ -9,7 +9,6 @@
     <link href="~/assets/libs/slick-carousel/slick/slick.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/slick-carousel/slick/slick-theme.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/tiny-slider/dist/tiny-slider.css" asp-append-version="true" rel="stylesheet" />
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.ico" />
     <!-- Libs CSS -->
@@ -239,7 +238,8 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <span class="small text-muted" style="font-size: 10px;display:flex;flex-wrap: wrap">
-                            © 2022 <span id="copyright">-
+                            © 2022 <span id="copyright">
+                                -
                                 <script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script>
                             </span>All rights reserved. Powered by THM103.
                         </span>
@@ -288,12 +288,13 @@
         </div>
     </div>
 
-    
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Javascript-->
     <!-- Libs JS -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js" asp-append-version="true"></script>
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Theme JS -->
     <script src="~/assets/js/theme.min.js"></script>
     <script src="~/assets/libs/jquery-countdown/dist/jquery.countdown.min.js" asp-append-version="true"></script>
@@ -325,7 +326,7 @@
                     this.getCart();
                 }
             },
-           
+
             methods: {
                 async getCart() {
                     await fetch(`/api/CartVMapi/GetCarts`, { method: "GET" })
@@ -344,7 +345,7 @@
                     }).then(response => response)
                 },
                 async clickAdd(item) {
-                    
+
                     if (item.quantity >= item.remainingStock) { $('#moreQty').modal('show'); }
                     else { item.quantity = item.quantity + 1; }
                     await fetch(`/api/CartVMapi/ChangeQty`, {

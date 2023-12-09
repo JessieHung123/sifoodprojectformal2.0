@@ -14,16 +14,19 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
     [ApiController]
     public class InfoModifyapiController : ControllerBase
     {
-        string targetStoreId = "S001";
         private readonly Sifood3Context _context;
+        private readonly IStoreIdentityService _storeIdentityService;
 
-        public InfoModifyapiController(Sifood3Context context)
+
+        public InfoModifyapiController(Sifood3Context context, IStoreIdentityService storeIdentityService)
         {
             _context = context;
+            _storeIdentityService = storeIdentityService;
         }
 
         public async Task<List<InfoModifyVM>> GetAll()
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
             return await _context.Stores
                 .Where(e => e.StoreId == targetStoreId).Select(x => new InfoModifyVM
                 {
@@ -41,7 +44,11 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                     PhotosPath = x.PhotosPath,
                     LogoPath = x.LogoPath,
                     PhotosPath2 = x.PhotosPath2,
-                    PhotosPath3 = x.PhotosPath3
+                    PhotosPath3 = x.PhotosPath3,
+                    WeekdayOpen= x.OpeningTime.Substring(3, 5),
+                    WeekdayClose= x.OpeningTime.Substring(11, 5),
+                    WeekendOpen= x.OpeningTime.Substring(20, 5),
+                    WeekendClose= x.OpeningTime.Substring(28, 5)
                 }).ToListAsync();
         }
 
