@@ -20,5 +20,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         public List<AddressItemVM>? UserAddressList { get; set; }
 
         public string? UserName { get; set;}
+
+        public string? PhotoPath { get; set; }
     }
 }

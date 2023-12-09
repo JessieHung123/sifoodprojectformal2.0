@@ -42,9 +42,21 @@
                                             <label class="form-label">公休時間</label>
                                             <input type="text" class="form-control" v-model="ModifyInfo.closingDay" required>
                                         </div>
-                                        <div class="mb-3 col-lg-12">
-                                            <label class="form-label">營業時間</label>
-                                            <input type="text" class="form-control" v-model="ModifyInfo.openingTime" required>
+                                        <div class="mb-3 col-lg-6 form-group" >
+                                            <label class="form-label">平日開始營業時間</label>~
+                                            <input type="time" class="form-control" v-model="ModifyInfo.weekdayOpen"  required>
+                                        </div>
+                                        <div class="mb-3 col-lg-6 form-group">
+                                            <label class="form-label">平日結束營業時間</label>
+                                            <input type="time" class="form-control" v-model="ModifyInfo.weekdayClose"  required>
+                                        </div>
+                                        <div class="mb-3 col-lg-6 form-group">
+                                            <label class="form-label">周末開始營業時間</label>~
+                                            <input type="time" class="form-control" v-model="ModifyInfo.weekendOpen"  required>
+                                        </div>
+                                        <div class="mb-3 col-lg-6 form-group">
+                                            <label class="form-label">周末結束營業時間</label>
+                                            <input type="time" class="form-control" v-model="ModifyInfo.weekendClose" required>
                                         </div>
                                         <div class="mb-3 col-lg-6">
                                             <label class="form-label">縣市</label>
@@ -140,22 +152,7 @@
             data: function () {
                 return {
                     ModifyInfo: {}, 
-                    storeId:"",
-                    storeName:"",
-                    contactName:"",
-                    email:"",
-                    phone:null,
-                    city:"",
-                    region:"",
-                    address:"",
-                    description:"",
-                    openingTime:"",
-                    closingDay:"",
-                    logoPath: null,
-                    photosPath: null,
-                    photosPath2: null,
-                    photosPath3: null,
-                    regionOptions:[]
+                    regionOptions:[],
                 }
             },
             computed: {
@@ -262,7 +259,7 @@
                     form.append("Region", _this.ModifyInfo.region);
                     form.append("Address", _this.ModifyInfo.address);
                     form.append("Description", _this.ModifyInfo.description);
-                    form.append("OpeningTime", _this.ModifyInfo.openingTime);
+                    form.append("OpeningTime", `平日 ${_this.ModifyInfo.weekdayOpen} - ${_this.ModifyInfo.weekdayClose}，週末 ${_this.ModifyInfo.weekendOpen} - ${_this.ModifyInfo.weekendClose}`);
                     form.append("ClosingDay", _this.ModifyInfo.closingDay);
                     form.append("LogoImageFile", document.querySelector("#updateFile1").files[0]);
                     form.append("PhotoImageFile1", document.querySelector("#updateFile2").files[0]);
