@@ -53,29 +53,33 @@
                     onTheWayOrder:[],
                 }
             },
-            mounted: async function () {
-               await this.findWaitForDeliveryOrderSimple();
-                await this.onTheWay();
-                await this.getDistanceToStore();
+            mounted: function () {
+                this.findWaitForDeliveryOrderSimple();
+                // var f = this.findWaitForDeliveryOrderSimple();
+                 this.onTheWay();
+                 this.getDistanceToStore();
+                console.log("mount","mount");
             },
             methods: {
                 toggle() {
                     this.categoryOne = !this.categoryOne;
                 },
-                async findWaitForDeliveryOrderSimple() {
-                    await fetch(`/api/DeliveryOrderapi/WaitForDeliveryOrderSimple`, { method: "GET" })
+                findWaitForDeliveryOrderSimple() {
+                    fetch(`/api/DeliveryOrderapi/WaitForDeliveryOrderSimple`, { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
                             this.waitForDeliveryOrderSimple = data;
                             // this.toStorelocation = data.map(o => ({ lat: o.latitude, lng: o.longitude }));
                             this.toStorelocation = data.map(o =>o.storeAddress);
                             this.arrivingLocation = data.map(o => o.address);
+                        console.log("fetch", data);
                         })
+                console.log("fetchfinish", "aaa");
                 },
-                async getDistanceToStore() {
+                getDistanceToStore() {
                     var service = new google.maps.DistanceMatrixService();
                     var currentArray = [setDriverMap.current]
-                    await service.getDistanceMatrix(
+                    service.getDistanceMatrix(
                         {
                             origins: currentArray,
                             destinations: this.toStorelocation,
@@ -83,7 +87,7 @@
                             avoidHighways: true,
                             avoidTolls: true
                     }, this.getDistanceResultToStore);
-                    await this.getDistance();
+                    this.getDistance();
                 },
                 getDistanceResultToStore(response, status) {
                         for (let i = 0; i < this.waitForDeliveryOrderSimple.length; i++) {
@@ -119,8 +123,8 @@
                         return sumA - sumB;
                     });
                 },
-                async onTheWay() {
-                    await fetch(`/api/DeliveryOrderapi/OnTheWayOrder`, { method: "GET" })
+                 onTheWay() {
+                  fetch(`/api/DeliveryOrderapi/OnTheWayOrder`, { method: "GET" })
                     .then(response => response.json())
                     .then(data => {
                         this.onTheWayOrder = data;

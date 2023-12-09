@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SiFoodProjectFormal2._0;
 using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -12,23 +13,25 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
     {
 
         //----指定特定Stores-到時候要從login裡面拿到sotresId---//
-        string targetStoreId = "S001";
         //------------------------//
         private readonly Sifood3Context _context;
+        private readonly IStoreIdentityService _storeIdentityService;
 
-        public HomeController(Sifood3Context context)
+        public HomeController(Sifood3Context context, IStoreIdentityService storeIdentityService)
         {
             _context = context;
+            _storeIdentityService = storeIdentityService;
         }
  
         // GET: Products
         [HttpGet] //uri:/
         public async Task<IActionResult> Main()
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
             //var sifoodContext = _context.Products.Include(p => p.Category).Include(p => p.Store).Where(p => p.Store.StoreId == targetStoreId);
             var products = _context.Products.Where(p => p.StoreId == targetStoreId);
             string storeName = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.StoreName).FirstOrDefaultAsync();
-            int SumReleasedQty = _context.Products.Where(p => p.StoreId == targetStoreId).Sum(p => p.OrderedQty);
+            int SumReleasedQty = _context.Products.Where(p => p.StoreId == targetStoreId && p.IsDelete == 1).Sum(p => p.ReleasedQty);
             //int ReleasedQty = await _context.Products.Where(od => od.StoreId == targetStoreId).Sum(od => od.ReleasedQty);
             int status1Count = await _context.Orders.CountAsync(od => od.StatusId == 1 && od.StoreId == targetStoreId);
             int status2Count = await _context.Orders.CountAsync(od => od.StatusId == 2 && od.StoreId == targetStoreId);
@@ -46,6 +49,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 
         public async Task<IActionResult> SaleInfo()
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
             var salesinfo = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new 
             { StoreId = x.Product.StoreId,
                 UnitPrice = x.Product.UnitPrice,
@@ -54,9 +58,10 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 ProductId = x.ProductId,
                 Quantity = x.Quantity,
                 ProductName = x.Product.ProductName,
-                OrderStatus = x.Order.StatusId
+                OrderStatus = x.Order.StatusId,
+                IsDelete = x.Product.IsDelete
             })
-                .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7);
+                .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7 && e.IsDelete == 1);
             return Json(salesinfo);
 
         }

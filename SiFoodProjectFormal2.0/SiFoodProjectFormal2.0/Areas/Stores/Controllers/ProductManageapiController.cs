@@ -25,9 +25,12 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<List<ProductManageVM>> GetAll()
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
+            //string targetStoreId = "S001";
+
+
             return await _context.Products
                 .Include(p => p.Category)
-                .Where(e => e.StoreId == targetStoreId && e.IsDelete==1).Select(x => new ProductManageVM
+                .Where(e => e.StoreId == targetStoreId && e.IsDelete == 1).Select(x => new ProductManageVM
                 {
                     StoreId = x.StoreId,
                     UnitPrice = x.UnitPrice,
@@ -40,7 +43,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                     PhotoPath = x.PhotoPath,
                     Description = x.Description,
                     RealeasedTime = x.RealeasedTime,
-                    SuggestPickUpTime= x.SuggestPickUpTime,
+                    SuggestPickUpTime = x.SuggestPickUpTime,
                     SuggestPickEndTime = x.SuggestPickEndTime,
                 }).ToListAsync();
         }
@@ -48,6 +51,22 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<List<ProductManageVM>> Filter(string? text)
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
+            //string targetStoreId = "S001";
+
+            //找到今天之前上架的商品
+            var productsToUpdate = await _context.Products
+                .Where(e => e.StoreId == targetStoreId && e.IsDelete == 1 && e.RealeasedTime.Date < DateTime.Now.Date).ToListAsync();
+
+            // 把非今天的產品軟刪除
+            foreach (var product in productsToUpdate)
+            {
+                product.IsDelete = 0;
+            }
+            await _context.SaveChangesAsync();
+
+
+
+
             var query = _context.Products.Include(p => p.Category).Where(e => e.StoreId == targetStoreId && e.IsDelete ==1);
 
             if (!string.IsNullOrEmpty(text))
@@ -139,6 +158,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<string> postProduct([FromForm]AddProductVM addProductDTO)
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
+            //string targetStoreId = "S001";
 
             Product prodct = new Product
             {
@@ -180,6 +200,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<string> putProduct(int id,[FromForm] PutProductVM putProductVM)
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
+            //string targetStoreId = "S001";
 
             if (id != putProductVM.ProductId)
             {
@@ -221,141 +242,3 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 }
 
 
-//// GET: api/StoreProducts
-//[HttpGet]
-//public async Task<IEnumerable<ProductManageDTO>> GetProducts()
-//{
-//    return await _context.Products
-//        .Include(p => p.Category)
-//        .Where(e => e.StoreId == targetStoreId).Select(x => new ProductManageDTO
-//        {
-//            StoreId = x.StoreId,
-//            UnitPrice = x.UnitPrice,
-//            ProductId = x.ProductId,
-//            ProductName = x.ProductName,
-//            CategoryId = x.CategoryId,
-//            CategoryName = x.Category.CategoryName,
-//            ReleasedQty = x.ReleasedQty,
-//            OrderedQty = x.OrderedQty,
-//            PhotoPath = x.PhotoPath,
-//            Description = x.Description,
-//            RealeasedTime = x.RealeasedTime,
-//        }).ToListAsync();
-//}
-
-//[HttpPost("Filter")] //api/ProductManage/Filter
-//public async Task<IEnumerable<ProductManageDTO>> Filter([FromBody] ProductManageDTO productManageDTO)
-//{
-//    return await _context.Products
-//        .Include(p => p.Category)
-//        .Where(e => e.StoreId == targetStoreId &&(e.ProductName.Contains(productManageDTO.ProductName) 
-//        || e.Category.CategoryName.Contains(productManageDTO.CategoryName))).Select(x => new ProductManageDTO
-//        {
-//            StoreId = x.StoreId,
-//            UnitPrice = x.UnitPrice,
-//            ProductId = x.ProductId,
-//            ProductName = x.ProductName,
-//            CategoryId = x.CategoryId,
-//            CategoryName = x.Category.CategoryName,
-//            ReleasedQty = x.ReleasedQty,
-//            OrderedQty = x.OrderedQty,
-//            PhotoPath = x.PhotoPath,
-//            Description = x.Description,
-//            RealeasedTime = x.RealeasedTime,
-//        }).ToListAsync();
-//}
-
-
-
-//// GET: api/ProductManage/5
-//[HttpGet("{id}")]
-//public async Task<ProductManageDTO> GetProduct(int id)
-//{
-//    return  await _context.Products
-//        .Include(p => p.Category)
-//        .Where(e => e.StoreId == targetStoreId).Select(x => new ProductManageDTO
-//        {
-//            StoreId = x.StoreId,
-//            UnitPrice = x.UnitPrice,
-//            ProductId = x.ProductId,
-//            ProductName = x.ProductName,
-//            CategoryId = x.CategoryId,
-//            CategoryName = x.Category.CategoryName,
-//            ReleasedQty = x.ReleasedQty,
-//            OrderedQty = x.OrderedQty,
-//            PhotoPath = x.PhotoPath,
-//            Description = x.Description,
-//            RealeasedTime = x.RealeasedTime,
-//        }).FirstOrDefaultAsync();
-//}
-
-//// PUT: api/ProductManage/5
-//// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-//[HttpPut("{id}")]
-//public async Task<string> PutProduct(int id, Product product)
-//{
-//    if (id != product.ProductId)
-//    {
-//        return "修改商品失敗!";
-//    }
-//    _context.Entry(product).State = EntityState.Modified;
-
-//    try
-//    {
-//        await _context.SaveChangesAsync();
-//    }
-//    catch (DbUpdateConcurrencyException)
-//    {
-//        if (!ProductExists(id))
-//        {
-//            return "修改商品失敗!";
-//        }
-//        else
-//        {
-//            throw;
-//        }
-//    }
-
-//    return "修改商品成功!";
-//}
-
-//// POST: api/StoreProducts
-//// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-//[HttpPost]
-//public async Task<string> PostProduct(Product product)
-//{
-//    _context.Products.Add(product);
-//    await _context.SaveChangesAsync();
-//    return "新增商品成功!";
-//}
-
-//// DELETE: api/StoreProducts/5
-//[HttpDelete("{id}")]
-//public async Task<string> DeleteProduct(int id)
-//{
-//    if (_context.Products == null)
-//    {
-//        return "刪除商品失敗!";
-//    }
-//    var product = await _context.Products.FindAsync(id);
-//    if (product == null)
-//    {
-//        return "刪除商品失敗!";
-//    }
-//    try
-//    {
-//        _context.Products.Remove(product);
-//        await _context.SaveChangesAsync();
-
-//    }
-//    catch(DbUpdateException ex)
-//    {
-//        return "刪除商品關聯紀錄失敗!";
-//    }
-//    return "刪除商品失敗!";
-//}
-
-//private bool ProductExists(int id)
-//{
-//    return (_context.Products?.Any(e => e.ProductId == id)).GetValueOrDefault();
-//}
