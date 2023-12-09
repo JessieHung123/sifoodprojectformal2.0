@@ -79,6 +79,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 Random UserVerification = new();
                 User user = new()
                 {
+                    UserName = model?.UserName,
                     UserEmail = $"{model?.EmailAccount}",
                     UserPasswordSalt = saltBytes,
                     UserPasswordHash = hashBytes,

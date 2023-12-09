@@ -10,5 +10,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 
         [Required(ErrorMessage = "請輸入欲註冊密碼")]
         public string? Password { get; set; }
+
+        public string? UserName { get; set; }
     }
 }
