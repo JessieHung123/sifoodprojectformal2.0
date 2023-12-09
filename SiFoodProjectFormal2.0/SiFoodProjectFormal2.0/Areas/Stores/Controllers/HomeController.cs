@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SiFoodProjectFormal2._0;
+using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -11,25 +13,25 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
     {
 
         //----指定特定Stores-到時候要從login裡面拿到sotresId---//
-        string targetStoreId = "S001";
         //------------------------//
         private readonly Sifood3Context _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IStoreIdentityService _storeIdentityService;
 
-        public HomeController(Sifood3Context context, IWebHostEnvironment webHostenvironment)
+        public HomeController(Sifood3Context context, IStoreIdentityService storeIdentityService)
         {
             _context = context;
-            _webHostEnvironment = webHostenvironment;
+            _storeIdentityService = storeIdentityService;
         }
-
+ 
         // GET: Products
         [HttpGet] //uri:/
         public async Task<IActionResult> Main()
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
             //var sifoodContext = _context.Products.Include(p => p.Category).Include(p => p.Store).Where(p => p.Store.StoreId == targetStoreId);
-            var sifoodContext = _context.Products.Where(p => p.StoreId == targetStoreId);
+            var products = _context.Products.Where(p => p.StoreId == targetStoreId);
             string storeName = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.StoreName).FirstOrDefaultAsync();
-            int SumReleasedQty = _context.Products.Where(p => p.StoreId == targetStoreId).Sum(p => p.OrderedQty);
+            int SumReleasedQty = _context.Products.Where(p => p.StoreId == targetStoreId && p.IsDelete == 1).Sum(p => p.ReleasedQty);
             //int ReleasedQty = await _context.Products.Where(od => od.StoreId == targetStoreId).Sum(od => od.ReleasedQty);
             int status1Count = await _context.Orders.CountAsync(od => od.StatusId == 1 && od.StoreId == targetStoreId);
             int status2Count = await _context.Orders.CountAsync(od => od.StatusId == 2 && od.StoreId == targetStoreId);
@@ -42,72 +44,168 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             ViewBag.status4 = status4Count;
             ViewBag.Storephoto = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.PhotosPath).FirstOrDefaultAsync();
             ViewBag.SumReleasedQty = SumReleasedQty;
-            return View(await sifoodContext.ToListAsync());
+            return View(await products.ToListAsync());
         }
 
-        public async Task<IActionResult> Main2()
+        public async Task<IActionResult> SaleInfo()
         {
-            var sifoodContext2 = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new
-            {
-                StoreId = x.Product.StoreId,
+            string targetStoreId = _storeIdentityService.GetStoreId();
+            var salesinfo = _context.OrderDetails.Include(d => d.Order).Include(d => d.Product).Select(x => new 
+            { StoreId = x.Product.StoreId,
                 UnitPrice = x.Product.UnitPrice,
                 OrderId = x.OrderId,
                 OrderDetailId = x.OrderDetailId,
                 ProductId = x.ProductId,
                 Quantity = x.Quantity,
                 ProductName = x.Product.ProductName,
-                OrderStatus = x.Order.StatusId
+                OrderStatus = x.Order.StatusId,
+                IsDelete = x.Product.IsDelete
             })
-                .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7);
-            return Json(sifoodContext2);
+                .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7 && e.IsDelete == 1);
+            return Json(salesinfo);
+
         }
 
         public IActionResult RealTimeOrders()
         {
             return View();
         }
-        public IActionResult History()
+
+
+        //=========歷史訂單========//
+        public IActionResult History(string searchTerm = null, string sortOption = "Status", int pageSize = 20)
+
         {
-            return View();
+            // 假定的用戶ID，之後需要替換為當前登入用戶的ID
+            var loginuserId = "S001";
+
+            IQueryable<Order> historyOrdersQuery = _context.Orders
+                // 添加這行以過濾該用戶的訂單
+                .Where(o => o.StoreId == loginuserId)
+
+            .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+            .Include(o => o.Status);
+
+            // 應用關鍵字過濾
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                historyOrdersQuery = historyOrdersQuery.Where(o =>
+                    o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)));
+            }
+
+            //保持搜尋關鍵字在搜尋欄
+            ViewBag.SearchTerm = searchTerm;
+
+            //計算總訂單數
+            var totalOrdersCount = historyOrdersQuery.Count();
+            ViewBag.TotalOrdersCount = totalOrdersCount;
+
+
+            // Sort排序
+            switch (sortOption)
+            {
+                case "Status":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.Status.StatusName);
+                    break;
+                case "Low to High":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o =>
+                        _context.OrderDetails
+                        .Where(od => od.OrderId == o.OrderId)
+                        .Sum(od => od.Quantity * od.Product.UnitPrice) +
+                        (o.ShippingFee));
+                    break;
+                case "High to Low":
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o =>
+                        _context.OrderDetails
+                        .Where(od => od.OrderId == o.OrderId)
+                        .Sum(od => od.Quantity * od.Product.UnitPrice) +
+                        (o.ShippingFee));
+                    break;
+                case "Newest":
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.OrderDate);
+                    break;
+                case "Oldest":
+                    historyOrdersQuery = historyOrdersQuery.OrderBy(o => o.OrderDate);
+                    break;
+                default:
+                    // 默認排序：按訂購日期由新到舊排序
+                    historyOrdersQuery = historyOrdersQuery.OrderByDescending(o => o.OrderDate);
+                    break;
+            }
+
+            // 在過濾後的結果上應用分頁
+            var historyOrders = historyOrdersQuery
+                .Take(pageSize)
+                .Select(o => new storeHistoryOrderVM
+                {
+                    // ViewModel的初始化
+                    StoreId = o.StoreId,
+                    OrderId = o.OrderId,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status.StatusName,
+                    Quantity = o.OrderDetails.Sum(od => od.Quantity),
+                    TotalPrice = Convert.ToInt32(_context.OrderDetails
+                                                    .Where(od => od.OrderId == o.OrderId)
+                                                    .Sum(od => od.Quantity * od.Product.UnitPrice) +
+                                                    o.ShippingFee),
+                    FirstProductPhotoPath = o.OrderDetails.FirstOrDefault().Product.PhotoPath,
+                    FirstProductName = o.OrderDetails.FirstOrDefault().Product.ProductName
+                }).ToList();
+
+            return View(historyOrders);
         }
+
+        //訂單明細方法GetOrderDetails
+        public async Task<IActionResult> GetOrderDetails(string orderId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+               
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var historyOrderDetailsVM = new storeHistoryOrderDetailVM
+            {
+                OrderId = order.OrderId,
+                OrderDate = order.OrderDate,
+                ShippingFee = Convert.ToInt32(order.ShippingFee),
+                DeliveryMethod=order.DeliveryMethod,
+                UserName=order.User.UserName,
+                UserPhone=order.User.UserPhone,
+
+                Items = order.OrderDetails.Select(od => new storeHistoryOrderDetailItemVM
+                {
+                    PhotoPath = od.Product.PhotoPath,
+                    ProductName = od.Product.ProductName,
+                    UnitPrice = Convert.ToInt32(od.Product.UnitPrice),
+                    Quantity = od.Quantity,
+                }).ToList(),
+            };
+
+            return PartialView("_OrderDetailPartialS", historyOrderDetailsVM);
+        }
+
         public IActionResult ProductManage()
         {
             return View();
         }
 
-        public IActionResult GetProduct()
-        {
-            var ProductContext = _context.Products.Include(d => d.Category).
-                Select(x => new {
-                    StoreId = x.StoreId,
-                    ProductId = x.ProductId,
-                    ProductName = x.ProductName,
-                    Category = x.Category.CategoryName,
-                    RealeasedQty = x.ReleasedQty,
-                    RealeasedTime = x.RealeasedTime,
-                    UnitPrice = x.UnitPrice,
-                    PhotoPath = x.PhotoPath
-                }).Where(e => e.StoreId == targetStoreId);
-            return Json(ProductContext);
-        }
-
-        //public async Task<FileResult> GetPicture(int id)
-        //{
-        //    string WebRootPath = _webHostEnvironment.WebRootPath;
-        //    string Filename = Path.Combine(WebRootPath, "images", "Noimage.png");
-        //    Product? c = await _context.Products.FindAsync(id);
-        //    byte[] ImageContent = c.PhotoPath != null ? c.PhotoPath : System.IO.File.ReadAllBytes(Filename);
-        //    return File(ImageContent, "image/jpeg");
-        //}
-
         public IActionResult InfoModify()
         {
             return View();
         }
+
         public IActionResult Review()
         {
             return View();
         }
+
         public IActionResult FAQ()
         {
             return View();

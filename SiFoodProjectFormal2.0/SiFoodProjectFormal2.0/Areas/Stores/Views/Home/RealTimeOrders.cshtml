@@ -11,6 +11,9 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    
     <style>
         th {
             border-bottom: none !important;
@@ -50,18 +53,18 @@
                                 <div class="row justify-content-between">
                                     <div class="col-md-4 col-12 mb-2 mb-md-0">
                                         <!-- form -->
-                                        <form class="d-flex" role="search">
-                                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-
-                                        </form>
+                                        <div class="d-flex" role="search">
+                                            <input class="form-control" type="search" placeholder="Search" aria-label="Search" v-model="searchKeyWords" @@keyup.enter="searchOrder">
+                                        </div>
                                     </div>
                                     <div class="col-lg-2 col-md-4 col-12">
                                         <!-- select -->
-                                        <select class="form-select">
-                                            <option selected>Status</option>
-                                            <option value="Success">Success</option>
-                                            <option value="Pending">Pending</option>
-                                            <option value="Cancel">Cancel</option>
+                                        <select class="form-select" v-model="selectedStatus" @@change="filterOrdersByStatus">
+                                            <option value=0 selected>全部訂單</option>
+                                            <option value=1>待確認</option>
+                                            <option value=2>待配送</option>
+                                            <option value=3>待領取</option>
+                                            <option value=4>配送中</option>
                                         </select>
                                     </div>
                                 </div>
@@ -81,19 +84,18 @@
 
                                                         </label>
                                                     </div>
-                                                </th><!--改-->
-                                                <th>訂單序號</th>
-                                                @* <th>商品名稱</th> *@
+                                                </th>
+                                                <th>訂單編號</th>
                                                 <th>商品數量</th>
-                                                <th>訂單產生時間</th>
+                                                <th>訂單日期</th>
                                                 <th>取餐方式</th>
                                                 <th>狀態</th>
                                                 <th>總價</th>
                                                 <th>是否接單</th>
                                             </tr>
                                         </thead>
-                                        <tbody v-for="item in orders">
-                                            <tr >
+                                        <tbody v-for="item in filterOrders">
+                                            <tr>
 
                                                 <td>
                                                     <div class="form-check">
@@ -104,36 +106,49 @@
                                                         </label>
                                                     </div>
                                                 </td>
-                                                <td>O001
+                                                <td>
+                                                    {{item.orderId}}
                                                     <a href="#" class="text-inherit"
                                                        data-bs-toggle="collapse"
-                                                       :data-bs-target="'#orderDetails' + item.orderId"                                                        
+                                                       :data-bs-target="'#orderDetails' + item.orderId"
                                                        data-bs-toggle="tooltip"
                                                        data-bs-placement="top"
                                                        data-bs-title="View">
                                                         <i class="feather-icon icon-eye"></i>
                                                     </a>
                                                 </td>
-                                                @* <td>雞肉飯</td> *@
-                                                <td>1</td>
+                                                <td>{{item.totalQuantity}}</td>
 
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
+                                                <td>{{item.orderDate}}</td>
+                                                <td>{{item.deliveryMethod}}</td>
 
                                                 <td>
-                                                    <span class="badge bg-light-warning text-dark-primary">待確認</span>
+                                                    <template v-if="item.statusId === 1">
+                                                        <span class="badge bg-warning">{{item.status}}</span>
+                                                    </template>
+                                                    <template v-else-if="item.statusId === 2 ">
+                                                        <span class="badge bg-info">{{item.status}}</span>
+                                                    </template>
+                                                    <template v-else-if="item.statusId === 3 ">
+                                                        <span class="badge bg-secondary">{{item.status}}</span>
+                                                    </template>
+                                                    <template v-else-if="item.statusId === 4">
+                                                        <span class="badge bg-primary">{{item.status}}</span>
+                                                    </template>
                                                 </td>
-                                                <td>$12.99</td>
+                                                <td>${{item.subtotal+item.shippingFee}}</td>
 
                                                 <td>
-                                                    <!-- Accept Order Button -->
-                                                    <button class="btn btn-success btn-sm">接單</button>
-                                                    <!-- Decline Order Button -->
-                                                    <button class="btn btn-danger btn-sm">退單</button>
+                                                    <template v-if="item.statusId === 1">
+                                                        <!-- Accept Order Button -->
+                                                        <button v-on:click="confirmAcceptOrder(item)" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" :title="'接單時限: ' + (10-Math.round(item.orderDuration)) + '分鐘'">接單</button>
+                                                        <!-- Decline Order Button -->
+                                                        <button v-on:click="confirmCancelOrder(item)" class="btn btn-danger btn-sm" style="margin-left: 3px;">退單</button>
+                                                    </template>
                                                 </td>
                                             </tr>
-                                            <!-- Add a collapsible row for order details -->
-                                            <tr >
+                                            <!--collapsible row for order details -->
+                                            <tr>
                                                 <td colspan="8" class="p-0">
                                                     <div class="collapse" :id="'orderDetails' + item.orderId">
                                                         <div class="p-3">
@@ -152,19 +167,12 @@
 
                                                                                     <!-- button -->
                                                                                     <div class="ms-md-3">
-                                                                                        <template v-if="item.statusId === 1">
-                                                                                            <a v-on:click="confirmCancelOrder(item)" href="#" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" :title="'取消時限: ' + (10-Math.round(item.orderDuration)) + '分鐘'">取消</a>
-                                                                                        </template>
-                                                                                        <template v-else>
-                                                                                            <a v-on:click="confirmCompleteOrder(item)" href="#" class="btn btn-success">完成訂單</a>
-                                                                                        </template>
                                                                                         <a href="#" class="btn btn-secondary">下載明細</a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="mt-8">
                                                                                 <div class="row">
-                                                                                    <!-- address -->
                                                                                     <div class="col-lg-4 col-md-4 col-12">
                                                                                         <div class="mb-6">
                                                                                             <h6>顧客資訊</h6>
@@ -177,16 +185,14 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <!-- address -->
-                                                                                    <div class="col-lg-4 col-md-4 col-12">
+                                                                                    <div class="col-lg-4 col-md-4 col-12" v-if="item.deliveryMethod === '外送'">
                                                                                         <div class="mb-6">
                                                                                             <h6>收件地址</h6>
                                                                                             <p class="mb-1 lh-lg">
                                                                                                 {{item.address}}
                                                                                             </p>
-
                                                                                         </div>
                                                                                     </div>
-                                                                                    <!-- address -->
                                                                                     <div class="col-lg-4 col-md-4 col-12">
                                                                                         <div class="mb-6">
                                                                                             <h6>訂單資訊</h6>
@@ -236,31 +242,34 @@
                                                                                                 <td><span class="text-body">${{product.unitPrice}}</span></td>
                                                                                                 <td>{{product.quantity}}</td>
                                                                                                 <td>${{product.total}}</td>
-                                                                                            </tr>                                                                                           
-                                                                                            <tr>
-                                                                                                <td class="border-bottom-0 pb-0"></td>
-                                                                                                <td class="border-bottom-0 pb-0"></td>
-                                                                                                <td colspan="1" class="fw-medium text-dark ">
-                                                                                                    <!-- text -->
-                                                                                                    小計 :
-                                                                                                </td>
-                                                                                                <td class="fw-medium text-dark ">
-                                                                                                    <!-- text -->
-                                                                                                    ${{item.subtotal}}
-                                                                                                </td>
                                                                                             </tr>
-                                                                                            <tr>
-                                                                                                <td class="border-bottom-0 pb-0"></td>
-                                                                                                <td class="border-bottom-0 pb-0"></td>
-                                                                                                <td colspan="1" class="fw-medium text-dark ">
-                                                                                                    <!-- text -->
-                                                                                                    運費
-                                                                                                </td>
-                                                                                                <td class="fw-medium text-dark  ">
-                                                                                                    <!-- text -->
-                                                                                                    ${{item.shippingFee}}
-                                                                                                </td>
-                                                                                            </tr>
+                                                                                            <template v-if="item.deliveryMethod === '外送'">
+                                                                                                <tr>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td colspan="1" class="fw-medium text-dark ">
+                                                                                                        <!-- text -->
+                                                                                                        小計
+                                                                                                    </td>
+                                                                                                    <td class="fw-medium text-dark ">
+                                                                                                        <!-- text -->
+                                                                                                        ${{item.subtotal}}
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td class="border-bottom-0 pb-0"></td>
+                                                                                                    <td colspan="1" class="fw-medium text-dark ">
+                                                                                                        <!-- text -->
+                                                                                                        運費
+                                                                                                    </td>
+                                                                                                    <td class="fw-medium text-dark  ">
+                                                                                                        <!-- text -->
+                                                                                                        ${{item.shippingFee}}
+                                                                                                    </td>
+                                                                                                </tr>
+
+                                                                                            </template>
                                                                                             <tr>
                                                                                                 <td></td>
                                                                                                 <td></td>
@@ -278,16 +287,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        @* <div class="card-body p-6">
-                                                                            <div class="row">
-                                                                                <div class="col-md-3 mb-4 mb-lg-0 ">
-                                                                                    <h6>付款資訊</h6>
-                                                                                    <span class="d-block">{{item.paymentMethodＮame}}</span>
-                                                                                    <span class="d-block">{{item.paymentDate}} {{item.paymentTime}}</span>
-                                                                                </div>
-                                                                               
-                                                                            </div>
-                                                                        </div> *@
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -295,154 +295,26 @@
                                                     </div>
                                                 </td>
                                             </tr>
-
-@*                                             <tr>
-
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
-
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-warning text-dark-primary">待確認</span>
-                                                </td>
-                                                <td>$12.99</td>
-
-                                                <td>
-                                                    <!-- Accept Order Button -->
-                                                    <button class="btn btn-success btn-sm">接單</button>
-                                                    <!-- Decline Order Button -->
-                                                    <button class="btn btn-danger btn-sm">退單</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
-
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-warning text-dark-primary">待確認</span>
-                                                </td>
-                                                <td>$12.99</td>
-
-                                                <td>
-                                                    <!-- Accept Order Button -->
-                                                    <button class="btn btn-success btn-sm">接單</button>
-                                                    <!-- Decline Order Button -->
-                                                    <button class="btn btn-danger btn-sm">退單</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
-
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O001</td>
-                                                <td>雞肉飯</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-info text-dark-primary">待取餐</span>
-                                                </td>
-                                                <td>$12.99</td>
-
-
-                                            </tr>
-                                            <tr>
-
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
-
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O003</td>
-                                                <td>控肉飯</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-info text-dark-primary">待配送</span>
-                                                </td>
-                                                <td>$12.99</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                               id="orderOne">
-                                                        <label class="form-check-label" for="orderOne">
-
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>O004</td>
-                                                <td>臭豆腐</td>
-                                                <td>1</td>
-
-                                                <td>01 May 2023 (10:12 am)</td>
-                                                <td>外送</td>
-
-                                                <td>
-                                                    <span class="badge bg-light-primary text-dark-primary">配送中</span>
-                                                </td>
-                                                <td>$12.99</td>
-
-                                            </tr>
- *@                                            <!-- 改 -->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                             <div class="border-top d-md-flex justify-content-between align-items-center p-6">
-                                <span>Showing 1 to 8 of 12 entries</span>
+                                <span>
+                                    顯示第 {{ Math.min((page.countPerPage * (page.pageNumber - 1)) + 1, ordersCount) }}
+                                    至 {{ Math.min(page.countPerPage * page.pageNumber, ordersCount) }} 項，共 {{ ordersCount }} 筆訂單
+                                </span>
                                 <nav class="mt-2 mt-md-0">
-                                    <ul class="pagination mb-0 ">
-                                        <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                                        <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                    </ul>
+                                    <paginate :page-count="total"
+                                              :click-handler="pageClick"
+                                              :force-page="page.pageNumber"
+                                              :prev-text="'<'"
+                                              :next-text="'>'"
+                                              :page-link-class="'page-link mx-1'"
+                                              :prev-link-class="'page-link mx-1'"
+                                              :next-link-class="'page-link mx-1'"
+                                              :container-class="'pagination justify-content-center'">
+                                    </paginate>
                                 </nav>
                             </div>
                         </div>
@@ -450,7 +322,6 @@
                 </div>
             </div>
         </main>
-
     </div>
 
     @section Scripts{
@@ -462,29 +333,140 @@
 
         <!-- Theme JS -->
         <script src="~/assets/js/theme.min.js"></script>
+        <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            var baseAddress = "https://localhost:7042";
-
             const orderApp = Vue.createApp({
                 data: function () {
                     return {
                         orders: [],
                         orderDetails: [],
+                        searchKeyWords: "",
+                        ordersCount: 0,
+                        page: {
+                            countPerPage: 5,
+                            pageNumber: 1,
+                        },
+                        selectedStatus: 0,
                     }
                 },
                 computed: {
-
+                    total() {
+                        let _this = this;
+                        return Math.ceil(_this.ordersCount / this.page.countPerPage);
+                    },
+                    filterOrders() {
+                        let _this = this;
+                        var start = (this.page.pageNumber - 1) * this.page.countPerPage;
+                        var end = start + this.page.countPerPage;
+                        return _this.orders.slice(start, end);
+                    },
                 },
                 mounted: function () {
                     let _this = this;
                     _this.getOrder();
-
                 },
                 methods: {
+                    filterOrdersByStatus() {
+                        this.getOrder();
+                    },
+                    pageClick(num) {
+                        this.page.pageNumber = num;
+                    },
+                    searchOrder() {
+                        this.getOrder();
+                    },
+                    confirmCancelOrder(item) {
+                        Swal.fire({
+                            title: "是否確定取消訂單?",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "確定",
+                            cancelButtonText: "取消",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.cancelOrder(item);
+                            }
+                        });
+                        // if (window.confirm("是否確定取消訂單?")) {
+                        //     this.cancelOrder(item);
+                        // }
+                    },
+                    confirmAcceptOrder(item) {
+                        Swal.fire({
+                            title: "是否確定接受訂單?",
+                            icon: "info",
+                            showCancelButton: true,
+                            confirmButtonText: "確定",
+                            cancelButtonText: "取消",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.acceptOrder(item);
+                            }
+                        });
+                        // if (window.confirm("是否確定接受訂單?")) {
+                        //     this.acceptOrder(item);
+                        // }
+                    },
+                    cancelOrder(item) {
+                        this.updateOrderStatus(item, 7)
+                        item.statusId = 7;
+                        this.orders = this.orders.filter(order => order.orderId !== item.orderId);
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功!',
+                            text: "訂單已取消!"
+                        });
+                        // alert("訂單已取消!")
+                    },
+                    acceptOrder(item) {
+                        if (item.deliveryMethod === '自取') {
+                            this.updateOrderStatus(item, 3)
+                            item.statusId = 3;
+                            item.status = "待領取";
+                        } else {
+                            this.updateOrderStatus(item, 2)
+                            item.statusId = 2;
+                            item.status = "待配送";
+                        }
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功!',
+                            text: "訂單已接受!"
+                        });
+                        // alert("訂單已接受!")
+                    },
+                    // **asynchronous nature of the fetch operation**
+                    updateOrderStatus(item, newStatusId) {
+
+                        fetch(`/api/StoreRealTimeOrdersapi/${item.orderId}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                orderId: item.orderId,
+                                statusId: newStatusId,
+                            }),
+                        }).then(response => {
+                            if (!response.ok) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: "發生錯誤!"
+                                });
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            } 
+                        }).then(data => {
+                            // console.log(data)
+                        }).catch(error => {
+                            console.error("PUT 請求發生錯誤:", error);
+                            // console.log(error);
+                        });
+                    },
                     getOrder() {
                         let _this = this;
-                        var userId = "U001"
-                        fetch(`${baseAddress}/api/TempOrdersapi/${userId}`, { method: "GET" })
+                        //var storeId = "S001"
+                        fetch(`/api/StoreRealTimeOrdersapi/filter?searchKeyWords=${_this.searchKeyWords}&status=${_this.selectedStatus}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -492,17 +474,15 @@
                                 return response.json();
                             })
                             .then(data => {
-                                // alert(JSON.stringify(data));
-
                                 _this.orders = data;
-                                // _this.orderDetails = data[0].orderDetails;
-
+                                _this.page.pageNumber = 1;
+                                _this.ordersCount = _this.orders.length;
                             }).catch(error => {
-                                alert(error);
+                                console.log(error);
                             });
                     },
                 }
-            }).mount("#orderApp")
+            }).component("paginate", VuejsPaginateNext).mount("#orderApp")
         </script>
     }
 

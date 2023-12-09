@@ -10,97 +10,73 @@
             <div class="modal-dialog modal-lg">
                 <dl class="row">
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.StoreId)
+                        商店編號
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.StoreId)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.StoreName)
+                        商店名稱
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.StoreName)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.ContactName)
+                        聯絡人姓名
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.ContactName)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.TaxId)
+                        統一編號
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.TaxId)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.Email)
+                        信箱
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.Email)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.Phone)
+                        電話
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.Phone)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.City)
+                        城市
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.City)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.Region)
+                        區
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.Region)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.Address)
+                        地址
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.Address)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.Description)
+                        簡介
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.Description)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.PasswordHash)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.PasswordHash)
-                    </dd>
-                    <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.PasswordSalt)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.PasswordSalt)
-                    </dd>
-                    <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.EnrollDate)
+                        註冊日期
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.EnrollDate)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.Latitude)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.Latitude)
-                    </dd>
-                    <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.Longitude)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.Longitude)
-                    </dd>
-                    <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.OpeningTime)
+                        開店時間
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.OpeningTime)
@@ -109,19 +85,52 @@
                         @Html.DisplayNameFor(model => model.ClosingDay)
                     </dt>
                     <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.ClosingDay)
+                        關店時間
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.PhotosPath)
+                        商家照片
                     </dt>
                     <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.PhotosPath)
+                        @if (!string.IsNullOrEmpty(Model.PhotosPath))
+                        {
+                            <img src="@Model.PhotosPath" width="300" height="200" alt="Logo" />
+                        }
+                        else
+                        {
+                            <img src="~/images/Noimage.png"
+                                 width="300" height="200" alt="Default Logo" />
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.PhotosPath2))
+                        {
+                            <img src="@Model.PhotosPath2" width="300" height="200" alt="Logo" />
+                        }
+                        else
+                        {
+                            <img src="~/images/Noimage.png" width="300" height="200" alt="Default Logo" />
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.PhotosPath3))
+                        {
+                            <img src="@Model.PhotosPath3" width="300" height="200" alt="Logo" />
+                        }
+                        else
+                        {
+                            <img src="~/images/Noimage.png" width="300" height="200" alt="Default Logo" />
+                        }
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.LogoPath)
+                        商家Logo
                     </dt>
                     <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.LogoPath)
+                        @if (!string.IsNullOrEmpty(Model.LogoPath))
+                        {
+                            <img src="@Model.LogoPath" width="300" height="200" alt="Logo" />
+                        }
+                        else
+                        {
+                            <img src="~/images/Noimage.png" width="300" height="200" alt="Default Logo" />
+                        }
                     </dd>
                 </dl>
             </div>

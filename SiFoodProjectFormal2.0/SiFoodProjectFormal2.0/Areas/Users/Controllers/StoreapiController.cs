@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Castle.Core.Resource;
 using Microsoft.AspNetCore.Mvc;
@@ -25,27 +27,49 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         }
 
         [EnableQuery]
-        public object Main2()
+        [ResponseCache(Duration =60)]
+        public async Task<object> Main2()
         {
-            return _context.Stores.Include(x => x.Products).ThenInclude(x => x.Category).Include(x => x.Orders)
-                .ThenInclude(x => x.Comment)
-                .Select(z => new StoreVM
-                {
-                    StoreId = z.StoreId,
-                    StoreName = z.StoreName,
-                    Description = z.Description,
-                    LogoPath = z.LogoPath,
-                    CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
-                    CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
-                    Inventory = z.Products.Where(x => x.RealeasedTime.Date == DateTime.Now.Date && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.ReleasedQty - x.OrderedQty).Sum(),
-                    WeekdayOpeningTime = z.OpeningTime.Substring(3, 5),
-                    WeekdayClosingTime = z.OpeningTime.Substring(11, 5),
-                    WeekendOpeningTime = z.OpeningTime.Substring(20, 5),
-                    WeekendClosingTime = z.OpeningTime.Substring(28, 5),
-                    City = z.City,
-                    Region = z.Region,
-                    CategoryName = z.Products.Where(x => x.RealeasedTime.Date == DateTime.Today && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.Category.CategoryName).Distinct(),
-                }).ToList();
+            var comment = _context.Comments.AsNoTracking().GroupBy(x => x.StoreId).Select(x => new { x.Key, Count = x.Count() }).ToList();
+            var commentRank = _context.Comments.AsNoTracking().GroupBy(x => x.StoreId).Select(x => new { x.Key, TotalRank = x.Sum(z => z.CommentRank) }).ToList();
+
+            var Product = _context.Products.AsNoTracking().Include(x => x.Category).Where(x => x.IsDelete == 1 && x.RealeasedTime.Date == DateTime.Now.Date &&
+               x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).GroupBy(x => x.StoreId).Select(x => new { x.Key, sumQty = x.Sum(z => z.ReleasedQty - z.OrderedQty), categoryList = x.Select(z => z.Category.CategoryName) }).ToList();
+
+            var stores =  _context.Stores.AsNoTracking().Where(x => x.StoreIsAuthenticated == 1).Select(z=> new 
+            {
+                StoreId = z.StoreId,
+                StoreName = z.StoreName,
+                Description = z.Description,
+                LogoPath = z.LogoPath,
+                City = z.City,
+                Region = z.Region,
+                WeekdayOpeningTime = z.OpeningTime.Substring(3, 5),
+                WeekdayClosingTime = z.OpeningTime.Substring(11, 5),
+                WeekendOpeningTime = z.OpeningTime.Substring(20, 5),
+                WeekendClosingTime = z.OpeningTime.Substring(28, 5),
+            }).ToList();
+
+
+            var total = stores.Select(x => new StoreVM
+            {
+                StoreId = x.StoreId,
+                StoreName = x.StoreName,
+                Description = x.Description,
+                LogoPath = x.LogoPath,
+                City = x.City,
+                Region = x.Region,
+                WeekdayOpeningTime = x.WeekdayOpeningTime,
+                WeekdayClosingTime = x.WeekdayClosingTime,
+                WeekendOpeningTime = x.WeekendOpeningTime,
+                WeekendClosingTime = x.WeekendClosingTime,
+                CommentCount = comment.FirstOrDefault(s => s.Key == x.StoreId)== null? 0: comment.FirstOrDefault(s => s.Key == x.StoreId).Count,
+                CommentRank = commentRank.FirstOrDefault(r => r.Key == x.StoreId)?.TotalRank,
+                Inventory = Product.FirstOrDefault(p => p.Key == x.StoreId)== null ? 0: Product.FirstOrDefault(p => p.Key == x.StoreId).sumQty,
+                CategoryName = Product.FirstOrDefault(p => p.Key == x.StoreId) == null? new List<string>(): Product.FirstOrDefault(p => p.Key == x.StoreId).categoryList
+            });
+
+            return total;
         }
 
         //找到店家是否已被收藏
@@ -103,246 +127,34 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 return false;
             }
         }
-        [HttpGet]
-        public IEnumerable<StoreVM> GetStoreOnMap()
-        {
-            return  _context.Stores.Select(s=>new StoreVM { 
-                StoreId = s.StoreId,
-                StoreName = s.StoreName,
-                Description = s.Description,
-                LogoPath = s.LogoPath,
-                City = s.City,
-                Region = s.Region,
-                Latitude= (decimal)s.Latitude,
-                Longitude= (decimal)s.Longitude,
-            });
-
-        }
         public object FilterInMap()
         {
-            return _context.Stores.Include(x => x.Orders).ThenInclude(x => x.Comment).Select(z => new StoreLocationVM
-                {
-                    StoreId = z.StoreId,
-                    StoreName = z.StoreName,
-                    Description = z.Description,
-                    LogoPath = z.LogoPath,
-                    City = z.City,
-                    Region = z.Region,
-                    Latitude=(decimal)z.Latitude==null?0: (decimal)z.Latitude,
-                    Longitude= (decimal)z.Longitude==null?0:(decimal)z.Longitude,
+            return _context.Stores.Include(x => x.Orders).ThenInclude(x => x.Comment).Where(x => x.StoreIsAuthenticated == 1).Select(z => new StoreLocationVM
+            {
+                StoreId = z.StoreId,
+                StoreName = z.StoreName,
+                Description = z.Description,
+                LogoPath = z.LogoPath,
+                City = z.City,
+                Region = z.Region,
+                Latitude = (decimal)z.Latitude == null ? 0 : (decimal)z.Latitude,
+                Longitude = (decimal)z.Longitude == null ? 0 : (decimal)z.Longitude,
                 CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
                 CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
+                PhotosPath = z.PhotosPath,
+                PhotosPath2 = z.PhotosPath2,
+                PhotosPath3 = z.PhotosPath3,
+                Address = z.Address,
+                ClosingDay = z.ClosingDay,
+                WeekdayOpeningTime = z.OpeningTime.Substring(3, 13),
+                WeekendOpeningTime = z.OpeningTime.Substring(20, 13),
+                Phone = z.Phone,
+                CategoryList = z.Products.Where(p => p.RealeasedTime.Date == DateTime.Today &&
+                                                        p.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay &&
+                                                     p.SuggestPickEndTime > DateTime.Now.TimeOfDay)
+                                         .Select(y => y.Category.CategoryName).Distinct().ToArray(),
             }).ToList();
         }
-
-        //[EnableQuery]
-        //public async Task<IQueryable<StoreVM>> FilterBy()
-        //{
-
-        //    var storelocation = _context.Stores.Select(s => new StoreVM
-        //    {
-        //        StoreName = s.StoreName,
-        //        Description = s.Description,
-        //        LogoPath = s.LogoPath,
-        //        CommentCount = _context.Orders.Where(o => o.StoreId == s.StoreId).Join(
-        //        _context.Orders,
-        //        store => store.StoreId,
-        //        order => order.StoreId,
-        //        (store, order) => order.OrderId
-        //        )
-        //        .Join(
-        //            _context.Comments,
-        //            orderId => orderId,
-        //            comment => comment.OrderId,
-        //            (orderId, comment) => comment
-        //        )
-        //        .Count(),
-        //        CommentRank = _context.Orders.Where(o => o.StoreId == s.StoreId)
-
-        //        .Join(
-        //            _context.Comments,
-        //            order => order.OrderId,
-        //            comment => comment.OrderId,
-        //            (order, comment) => (decimal)comment.CommentRank
-        //        )
-        //        .Average(),
-        //        CategoryName = _context.Products.Where(p => p.StoreId == s.StoreId).Join(
-        //            _context.Categories,
-        //            product => product.CategoryId,
-        //            category => category.CategoryId,
-        //            (product, category) => category.CategoryName
-        //        ).Single(),
-        //        City = s.City,
-        //        Region = s.Region,
-        //        Inventory = _context.Products.Where(p => p.StoreId == s.StoreId).Select(p => p.ReleasedQty).Single() - _context.Products.Where(p => p.StoreId == s.StoreId).Select(p => p.OrderedQty).Single(),
-        //    });
-
-        //    return storelocation;
-        //}
-
-        //public bool GetBusinessTime()
-        //{
-
-        //    //現在時間
-        //    //DateTime currentTime = DateTime.Now;
-        //    DateTime currentTime = new DateTime(2013, 9, 14, 9, 28, 0);
-
-        //    //_context
-
-        //    foreach (var store in _context.Stores)
-        //    {
-        //        string openingTime = store.OpeningTime;
-        //        if (!string.IsNullOrEmpty(openingTime))
-        //        {
-        //            string open = openingTime.ToString();
-        //            string starttimeweekday = open.Substring(3, 5);
-        //            string endtimeweekday = open.Substring(11, 5);
-        //            string starttimeweekend = open.Substring(20, 5);
-        //            string endtimeweekend = open.Substring(28, 5);
-
-        //            // 店家營業時間
-        //            TimeSpan[] weekdayBusinessHours = {
-        //            TimeSpan.Parse(starttimeweekday),//10:00
-        //            TimeSpan.Parse(endtimeweekday)//23:00
-        //            };
-
-        //            TimeSpan[] weekendBusinessHours = {
-        //            TimeSpan.Parse(starttimeweekend),
-        //            TimeSpan.Parse(endtimeweekend)
-        //            };
-
-
-        //            if (currentTime.DayOfWeek == DayOfWeek.Saturday || currentTime.DayOfWeek == DayOfWeek.Sunday)
-        //            {
-
-        //                bool isBusinessHours = IsBusinessHours(currentTime, weekendBusinessHours);
-        //                return isBusinessHours;
-        //            }
-        //            else
-        //            {
-
-        //                bool isBusinessHours = IsBusinessHours(currentTime, weekdayBusinessHours);
-        //                return isBusinessHours;
-        //            }
-
-
-        //        }
-
-        //    }
-        //    return false;
-
-        //}
-
-        //public bool IsBusinessHours(DateTime currentTime, TimeSpan[] businessHours)
-        //{
-
-        //    if (currentTime.DayOfWeek == DayOfWeek.Saturday || currentTime.DayOfWeek == DayOfWeek.Sunday)
-        //    {
-        //        TimeSpan startTime = businessHours[0];
-        //        TimeSpan endTime = businessHours[1];
-        //        return currentTime.TimeOfDay >= startTime && currentTime.TimeOfDay <= endTime;
-        //    }
-        //    else
-        //    {
-
-        //        TimeSpan startTime = businessHours[0];
-        //        TimeSpan endTime = businessHours[1];
-
-        //        return currentTime.TimeOfDay >= startTime && currentTime.TimeOfDay <= endTime;
-        //    }
-        //}
-
-        //[EnableQuery]
-        //public async Task<IQueryable<StoreVM>> FilterIsOpen()
-        //{
-        //    Sifood3Context context = new Sifood3Context();
-        //    if (GetBusinessTime())
-        //    {
-        //        var storeopen = _context.Stores.Select(s => new StoreVM
-        //        {
-        //            StoreName = s.StoreName,
-        //            Description = s.Description,
-        //            LogoPath = s.LogoPath,
-        //            CommentCount = _context.Orders.Where(o => o.StoreId == s.StoreId).Join(
-        //        _context.Orders,
-        //        store => store.StoreId,
-        //        order => order.StoreId,
-        //        (store, order) => order.OrderId
-        //        )
-        //        .Join(
-        //            _context.Comments,
-        //            orderId => orderId,
-        //            comment => comment.OrderId,
-        //            (orderId, comment) => comment
-        //        )
-        //        .Count(),
-        //            CommentRank = _context.Orders.Where(o => o.StoreId == s.StoreId)
-
-        //        .Join(
-        //            _context.Comments,
-        //            order => order.OrderId,
-        //            comment => comment.OrderId,
-        //            (order, comment) => (decimal)comment.CommentRank
-        //        )
-        //        .Average(),
-        //            CategoryName = _context.Products.Where(p => p.StoreId == s.StoreId).Join(
-        //            _context.Categories,
-        //            product => product.CategoryId,
-        //            category => category.CategoryId,
-        //            (product, category) => category.CategoryName
-        //        ).Single(),
-        //            City = s.City,
-        //            Region = s.Region,
-        //            //OpeningTime="營業中",
-        //        });
-
-        //        return storeopen;
-        //    }
-        //    else
-        //    {
-        //        var storeopen = _context.Stores.Select(s => new StoreVM
-        //        {
-        //            StoreName = s.StoreName,
-        //            Description = s.Description,
-        //            LogoPath = s.LogoPath,
-        //            CommentCount = _context.Orders.Where(o => o.StoreId == s.StoreId).Join(
-        //        _context.Orders,
-        //        store => store.StoreId,
-        //        order => order.StoreId,
-        //        (store, order) => order.OrderId
-        //        )
-        //        .Join(
-        //            _context.Comments,
-        //            orderId => orderId,
-        //            comment => comment.OrderId,
-        //            (orderId, comment) => comment
-        //        )
-        //        .Count(),
-        //            CommentRank = _context.Orders.Where(o => o.StoreId == s.StoreId)
-
-        //        .Join(
-        //            _context.Comments,
-        //            order => order.OrderId,
-        //            comment => comment.OrderId,
-        //            (order, comment) => (decimal)comment.CommentRank
-        //        )
-        //        .Average(),
-        //            CategoryName = _context.Products.Where(p => p.StoreId == s.StoreId).Join(
-        //            _context.Categories,
-        //            product => product.CategoryId,
-        //            category => category.CategoryId,
-        //            (product, category) => category.CategoryName
-        //        ).Single(),
-        //            City = s.City,
-        //            Region = s.Region,
-        //            //OpeningTime = "未營業",
-        //        });
-
-        //        return storeopen;
-        //    }
-
-        //}
-
 
     }
 }

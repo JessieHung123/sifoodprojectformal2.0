@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,27 +17,26 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _WebHostEnvironment;
-        public UserAddressesapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
+        private readonly IUserIdentityService _userIdentityService;
+        int minLength = 10;
+        int maxLength = 100;
+        public UserAddressesapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IUserIdentityService userIdentityService)
         {
             _context = context;
             _WebHostEnvironment = webHostEnvironment;
+            _userIdentityService = userIdentityService;
         }
 
         // GET: api/UserAddressesapi
         [HttpGet]
-        public async Task<IEnumerable<UserAddress>> GetUserAddresses()
-        {       
-            return  _context.UserAddresses;
-        }
-
-        // GET: api/UserAddressesapi/5
-        [HttpGet("{id}")]
-        public object GetUserAddress(string id)
+        public object GetUserAddress()
         {
-            return _context.UserAddresses.Where(u => u.UserId == id).Select(x => new UserAddressesVM
+            string userId = _userIdentityService.GetUserId();
+            return _context.UserAddresses.Where(u => u.UserId == userId).Select(x => new UserAddressesVM
             {
                 UserAddressId = x.UserAddressId,
                 UserId = x.UserId,
+                UserName = x.User.UserName,
                 UserDetailAddress = x.UserDetailAddress,
                 UserRegion = x.UserRegion,
                 UserCity = x.UserCity,
@@ -46,16 +46,44 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         }
 
         // PUT: api/UserAddressesapi/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<string> PutUserAddress(int id, [FromBody] UserAddressesVM userAddressesVM)
         {
+            string userId = _userIdentityService.GetUserId();
+            if (string.IsNullOrEmpty(userAddressesVM.UserDetailAddress))
+            {
+                return "請輸入完整地址";
+            }
+            if (userAddressesVM.UserDetailAddress.Length < minLength || userAddressesVM.UserDetailAddress.Length > maxLength)
+            {
+                return $"請輸入長度為{minLength}到{maxLength}之間的地址";
+            }
+            if (!IsValidChineseAddress(userAddressesVM.UserDetailAddress))
+            {
+                return "請輸入正確中文字";
+            }
+
             if (id != userAddressesVM.UserAddressId)
             {
                 return "修改地址失敗!";
             }
             UserAddress? userAddresses = await _context.UserAddresses.FindAsync(id);
+            if (userAddresses == null)
+            {
+                return "修改地址失敗!";
+            }
+            if (userAddressesVM.IsDefault)
+            {
+                var existingDefaultAddresses = await _context.UserAddresses.Where(a => a.UserId == userId && a.IsDefault && a.UserAddressId != id).ToListAsync();
+
+                foreach (var existingDefaultAddress in existingDefaultAddresses)
+                {
+                    existingDefaultAddress.IsDefault = false;
+                    _context.Entry(existingDefaultAddress).State = EntityState.Modified;
+                }
+            }
             userAddresses.UserDetailAddress = userAddressesVM.UserDetailAddress;
+            userAddresses.IsDefault = userAddressesVM.IsDefault;
             _context.Entry(userAddresses).State = EntityState.Modified;
 
             try
@@ -74,26 +102,46 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 }
             }
 
-            return "修改成功!";
+            return "更新成功!";
         }
 
         // POST: api/UserAddressesapi
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<string> PostUserAddress([FromForm] UserAddressesVM userAddressesVM)
         {
+            string userId = _userIdentityService.GetUserId();
+            if (string.IsNullOrEmpty(userAddressesVM.UserRegion) || string.IsNullOrEmpty(userAddressesVM.UserCity) || string.IsNullOrEmpty(userAddressesVM.UserDetailAddress))
+            {
+                return "請輸入完整地址";
+            }
+            if (userAddressesVM.UserDetailAddress.Length < minLength || userAddressesVM.UserDetailAddress.Length > maxLength)
+            {
+                return $"請輸入長度為{minLength}到{maxLength}之間的地址";
+            }
+            if (!IsValidChineseAddress(userAddressesVM.UserDetailAddress))
+            {
+                return "請輸入正確中文字";
+            }
             UserAddress userAddresses = new UserAddress
             {
-                UserId = userAddressesVM.UserId,
+                UserId = userId,
                 UserDetailAddress = userAddressesVM.UserDetailAddress,
                 UserRegion = userAddressesVM.UserRegion,
                 UserCity = userAddressesVM.UserCity,
                 IsDefault = userAddressesVM.IsDefault
             };
+            if (userAddresses.IsDefault)
+            {
+                var existingDefaultAddresses = await _context.UserAddresses.Where(a => a.UserId == userAddresses.UserId && a.IsDefault).ToListAsync();
+                foreach (var existingDefaultAddress in existingDefaultAddresses)
+                {
+                    existingDefaultAddress.IsDefault = false;
+                    _context.Entry(existingDefaultAddress).State = EntityState.Modified;
+                }
+            }
             _context.UserAddresses.Add(userAddresses);
             await _context.SaveChangesAsync();
-
-            return "新增商品種類成功";
+            return "新增地址成功!";
         }
 
         // DELETE: api/UserAddressesapi/5
@@ -114,7 +162,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 _context.UserAddresses.Remove(userAddress);
                 await _context.SaveChangesAsync();
             }
-           catch (DbUpdateException ex)
+           catch (DbUpdateException)
             {
                 return "刪除地址關聯紀錄失敗!";
             }
@@ -125,6 +173,11 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         private bool UserAddressExists(int id)
         {
             return (_context.UserAddresses?.Any(e => e.UserAddressId == id)).GetValueOrDefault();
+        }
+        private bool IsValidChineseAddress(string input)
+        {
+            //中文字及阿拉伯數字
+            return Regex.IsMatch(input, @"^[\u4e00-\u9fa50-9]+$");
         }
     }
 }

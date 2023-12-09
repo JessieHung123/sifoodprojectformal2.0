@@ -1,5 +1,6 @@
-﻿@using SiFoodProjectFormal2._0.ViewModels.Users;
-@model JoinUsViewModel
+﻿@using SiFoodProjectFormal2._0.Models;
+@using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
+@model JoinUsVM
 
 <!-- 引用Layout -->
 @{
@@ -192,18 +193,43 @@
                             <span asp-validation-for="TaxId" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label asp-for="ClosingDay" class="form-label">公休日<span class="text-danger">*</span></label>
                             <input asp-for="ClosingDay" class="form-control" placeholder="例:星期一" />
                             <span asp-validation-for="ClosingDay" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        @* <div class="col-md-6 mb-3">
                             <label asp-for="OpeningTime" class="form-label" >營業時間<span class="text-danger">*</span></label>
                             <input asp-for="OpeningTime" class="form-control"  type="time" placeholder="請輸入營業時間" />
                             <span asp-validation-for="OpeningTime" class="text-danger"></span>
+                        </div> *@
+
+                        <!-- 週間營業時間 -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="WeekdayStartTime" class="form-label">週間開始時間<span class="text-danger">*</span></label>
+                            <input asp-for="WeekdayStartTime" class="form-control" type="time" />
+                            <span asp-validation-for="WeekdayStartTime" class="text-danger"></span>
                         </div>
 
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="WeekdayEndTime" class="form-label">週間結束時間<span class="text-danger">*</span></label>
+                            <input asp-for="WeekdayEndTime" class="form-control" type="time" />
+                            <span asp-validation-for="WeekdayEndTime" class="text-danger"></span>
+                        </div>
+
+                        <!-- 週末營業時間 -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="WeekendStartTime" class="form-label">週末開始時間<span class="text-danger">*</span></label>
+                            <input asp-for="WeekendStartTime" class="form-control" type="time" />
+                            <span asp-validation-for="WeekendStartTime" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="WeekendEndTime" class="form-label">週末結束時間<span class="text-danger">*</span></label>
+                            <input asp-for="WeekendEndTime" class="form-control" type="time" />
+                            <span asp-validation-for="WeekendEndTime" class="text-danger"></span>
+                        </div>
 
                         @* <div class="col-md-6 mb-3">
                             <label asp-for="City" class="form-label">店家地址-市<span class="text-danger">*</span></label>
@@ -245,10 +271,22 @@
 
                         <div class="col-md-12 mb-3">
                             <label asp-for="Address" class="form-label">店家地址<span class="text-danger">*</span></label>
-                            <input asp-for="Address" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
+                            <input asp-for="Address" id="address" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
-
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Latitude" class="form-label">經度<span class="text-danger">*</span></label>
+                            <input asp-for="Latitude" id="Latitude" class="form-control" autocomplete="address-line3"/>
+                            <span asp-validation-for="Latitude" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Longitude" class="form-label">緯度<span class="text-danger">*</span></label>
+                            <input asp-for="Longitude" id="Longitude" class="form-control" autocomplete="address-line3"/>
+                            <span asp-validation-for="Longitude" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <button class="btn btn-success btn-sm" id="calculate">按我算經緯度</button>
+                        </div>
                         <div class="col-md-12 mb-3">
                             <label asp-for="Email" class="form-label">註冊信箱<span class="text-danger">*</span></label>
                             <input asp-for="Email" class="form-control" id="emailContact" type="email" placeholder="請輸入email信箱地址" />
@@ -402,7 +440,7 @@
                                     請稍待一至二天審核，謝謝~
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='https://localhost:7042/Users'">好</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='https://localhost:7042/Users/Home/Main'">好</button>
                                 </div>
                             </div>
                         </div>
@@ -459,9 +497,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI&callback=initMap" async defer></script>
     <!-- Region下拉選單 -->
     <script>
+
         document.getElementById('citySelect').addEventListener('change', function () {
             var city = this.value;
             var regionSelect = document.getElementById('regionSelect');
@@ -495,7 +534,29 @@
             });
         });
     </script>
+    <script>
 
+        document.getElementById('calculate').addEventListener('click', function (event) {
+            var selectElementCity = document.getElementById('citySelect');
+            var storeCity = selectElementCity.options[selectElementCity.selectedIndex].value;
+
+            var selectElementRegion = document.getElementById('regionSelect');
+            var storeRegion = selectElementRegion.options[selectElementRegion.selectedIndex].value;
+
+            var storeAddress = document.getElementById('address').value;
+            var storeFullAddress = storeCity + storeRegion + storeAddress;
+            event.preventDefault();
+            event.stopPropagation();
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'address': storeFullAddress }, function (results, status) {
+                console.log(results);
+                var latLng = { lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() };
+                console.log(latLng);
+                document.getElementById("Latitude").value = latLng.lat;
+                document.getElementById("Longitude").value = latLng.lng;
+            });
+        });
+    </script>
     <script>
         document.getElementById('myForm').addEventListener('submit', function (e) {
             e.preventDefault(); 

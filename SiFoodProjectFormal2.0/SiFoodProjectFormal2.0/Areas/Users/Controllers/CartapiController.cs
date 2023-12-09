@@ -32,22 +32,18 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         public async Task<List<CartVM>> GetCarts()
         {
             string userId = _userIdentityService.GetUserId();
-            //string userId = "U001";//先寫死
-
-            var cart = await _context.Carts.Where(c => c.UserId == userId).Select(c => new CartVM
+            var cart = await _context.Carts.Where(c => c.UserId == userId&&c.Product.IsDelete==1&& c.Product.RealeasedTime.Date == DateTime.Now.Date && c.Product.SuggestPickEndTime > DateTime.Now.TimeOfDay).Select(c => new CartVM
             {
                 UserId = userId,
                 ProductId = c.ProductId,
-                ProductName =  _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.ProductName).Single(),
+                ProductName = _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.ProductName).Single(),
                 Quantity = c.Quantity,
-                TotalPrice = (c.Quantity) * _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.UnitPrice).FirstOrDefault(),
                 UnitPrice = _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.UnitPrice).Single(),
                 StoreName = _context.Stores.Where(s => s.StoreId == c.Product.StoreId).Select(p => p.StoreName).Single(),
                 PhotoPath= _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.PhotoPath).Single(),
-
+                RemainingStock=_context.Products.Where(p=>p.ProductId==c.ProductId).Select(p=>p.ReleasedQty).Single()- _context.Products.Where(p => p.ProductId == c.ProductId).Select(p => p.OrderedQty).Single(),
             }).ToListAsync();
             return cart;
-
         }
 
         //修改商品數量
@@ -70,19 +66,19 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         //加入購物車:一個user的購物車只能限定一間商店，不然要alert(購物車只能放一間商店，是否要更換店家?)
         // POST: api/CartVMapi
         [HttpPost]
-        public string AddToCart([FromBody]CartVM cartVM)
+        public async Task<string> AddToCart([FromBody]CartVM cartVM)
         {
+            string userId = _userIdentityService.GetUserId();
+            Cart? cart = new Cart
+            {
+                ProductId = cartVM.ProductId,
+                Quantity = cartVM.Quantity,
+                UserId = userId,   //cartVM.UserId寫死
+            };
             try
             {
-                string userId = _userIdentityService.GetUserId();
-                Cart? cart = new Cart
-                {
-                    ProductId = cartVM.ProductId,
-                    Quantity = cartVM.Quantity,
-                    UserId = userId,   //cartVM.UserId寫死
-                };
-                _context.Carts.Add(cart);
-                 _context.SaveChangesAsync();
+                  _context.Carts.Add(cart);
+                 await _context.SaveChangesAsync();
                     return "新增商品成功!";
             }
             catch (Exception){ return "新增商品失敗!"; }

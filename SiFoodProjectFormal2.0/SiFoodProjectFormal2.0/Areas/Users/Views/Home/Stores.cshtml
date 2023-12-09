@@ -1,7 +1,5 @@
 ﻿@section Styles{
     <title>Store Single eCommerce HTML Template - FreshCart </title>
-    <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
 
     <!-- Libs CSS -->
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -10,437 +8,71 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+   
     <!-- Google tag (gtag.js) -->
                         @* Carousel *@
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-          rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
                         @* <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           rel="stylesheet" /> *@
     <!-- MDB -->
                         @* <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
     rel="stylesheet" /> *@
+    <style>
+        .custom-button,
+        .share-button,
+        .navigate-button {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-button {
+            background-color: #0aad0a;
+            color: #fff;
+            border: 1px solid #0aad0a;
+            border-radius: 0.2rem;
+        }
+
+            .custom-button:hover {
+                background-color: #099309;
+            }
+
+        .share-button {
+            background-color: #f0f3f2;
+            color: #000;
+            border: 1px solid #f0f3f2;
+            border-radius: 0.2rem;
+        }
+
+            .share-button:hover {
+                background-color: #cccfce;
+            }
+
+        .navigate-button {
+            background-color: #001e2b;
+            color: #fff;
+            border: 1px solid #001e2b;
+            border-radius: 0.2rem;
+        }
+
+            .navigate-button:hover {
+                background-color: #26404b;
+            }
+    </style>
 }
 
 @{
     ViewData["Title"] = "Stores";
 }
 
-
 <body>
 
-    <!-- Modal -->
-    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-4">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fs-3 fw-bold" id="userModalLabel">Sign Up</h5>
-
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="fullName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter Your Name" required="">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter Email address" required="">
-                        </div>
-
-                        <div class="mb-5">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Enter Password" required="">
-                            <small class="form-text">
-                                By Signup, you agree to our <a href="#!">Terms of Service</a> & <a href="#!">Privacy Policy</a>
-                            </small>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Sign Up</button>
-                    </form>
-                </div>
-                <div class="modal-footer border-0 justify-content-center">
-
-                    Already have an account? <a href="#">Sign in</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- Shop Cart -->
-
-@*     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header border-bottom">
-            <div class="text-start">
-                <h5 id="offcanvasRightLabel" class="mb-0 fs-4">Shop Cart</h5>
-                <small>Location in 382480</small>
-            </div>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-
-            <div class="">
-                <!-- alert -->
-                <div class="alert alert-danger p-2" role="alert">
-                    You’ve got FREE delivery. Start <a href="#!" class="alert-link">checkout now!</a>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <!-- list group -->
-                    <li class="list-group-item py-3 ps-0 border-top">
-                        <!-- row -->
-                        <div class="row align-items-center">
-
-                            <div class="col-6 col-md-6 col-lg-7">
-                                <div class="d-flex">
-                                    <img src="~/assets/images/products/product-img-1.jpg" alt="Ecommerce"
-                                         class="icon-shape icon-xxl">
-                                    <div class="ms-3">
-                                        <!-- title -->
-                                        <a href="~/pages/shop-single.html" class="text-inherit">
-                                            <h6 class="mb-0">Haldiram's Sev Bhujia</h6>
-                                        </a>
-                                        <span><small class="text-muted">.98 / lb</small></span>
-                                        <!-- text -->
-                                        <div class="mt-2 small lh-1">
-                                            <a href="#!" class="text-decoration-none text-inherit">
-                                                <span class="me-1 align-text-bottom">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-trash-2 text-success">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                    </svg>
-                                                </span><span class="text-muted">Remove</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- input group -->
-                            <div class="col-4 col-md-3 col-lg-3">
-                                <!-- input -->
-                                <div class="input-group input-spinner  ">
-                                    <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
-                                           class="quantity-field form-control-sm form-input   ">
-                                    <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                </div>
-
-                            </div>
-                            <!-- price -->
-                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                <span class="fw-bold">$5.00</span>
-
-                            </div>
-                        </div>
-
-                    </li>
-                    <!-- list group -->
-                    <li class="list-group-item py-3 ps-0">
-                        <!-- row -->
-                        <div class="row align-items-center">
-                            <div class="col-6 col-md-6 col-lg-7">
-                                <div class="d-flex">
-                                    <img src="~/assets/images/products/product-img-2.jpg" alt="Ecommerce"
-                                         class="icon-shape icon-xxl">
-                                    <div class="ms-3">
-                                        <a href="~/pages/shop-single.html" class="text-inherit">
-                                            <h6 class="mb-0">NutriChoice Digestive </h6>
-                                        </a>
-                                        <span><small class="text-muted">250g</small></span>
-                                        <!-- text -->
-                                        <div class="mt-2 small lh-1">
-                                            <a href="#!" class="text-decoration-none text-inherit">
-                                                <span class="me-1 align-text-bottom">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-trash-2 text-success">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                    </svg>
-                                                </span><span class="text-muted">Remove</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- input group -->
-                            <div class="col-4 col-md-3 col-lg-3">
-                                <!-- input -->
-                                <!-- input -->
-                                <div class="input-group input-spinner  ">
-                                    <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
-                                           class="quantity-field form-control-sm form-input   ">
-                                    <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                </div>
-                            </div>
-                            <!-- price -->
-                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                <span class="fw-bold text-danger">$20.00</span>
-                                <div class="text-decoration-line-through text-muted small">$26.00</div>
-                            </div>
-                        </div>
-
-                    </li>
-                    <!-- list group -->
-                    <li class="list-group-item py-3 ps-0">
-                        <!-- row -->
-                        <div class="row align-items-center">
-
-                            <div class="col-6 col-md-6 col-lg-7">
-                                <div class="d-flex">
-                                    <img src="~/assets/images/products/product-img-3.jpg" alt="Ecommerce"
-                                         class="icon-shape icon-xxl">
-                                    <div class="ms-3">
-                                        <!-- title -->
-                                        <a href="~/pages/shop-single.html" class="text-inherit">
-                                            <h6 class="mb-0">Cadbury 5 Star Chocolate</h6>
-                                        </a>
-                                        <span><small class="text-muted">1 kg</small></span>
-                                        <!-- text -->
-                                        <div class="mt-2 small lh-1">
-                                            <a href="#!" class="text-decoration-none text-inherit">
-                                                <span class="me-1 align-text-bottom">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-trash-2 text-success">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                    </svg>
-                                                </span><span class="text-muted">Remove</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- input group -->
-                            <div class="col-4 col-md-3 col-lg-3">
-
-                                <!-- input -->
-                                <div class="input-group input-spinner  ">
-                                    <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
-                                           class="quantity-field form-control-sm form-input   ">
-                                    <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                </div>
-                            </div>
-                            <!-- price -->
-                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                <span class="fw-bold">$15.00</span>
-                                <div class="text-decoration-line-through text-muted small">$20.00</div>
-                            </div>
-                        </div>
-
-                    </li>
-                    <!-- list group -->
-                    <li class="list-group-item py-3 ps-0">
-                        <!-- row -->
-                        <div class="row align-items-center">
-                            <div class="col-6 col-md-6 col-lg-7">
-                                <div class="d-flex">
-                                    <img src="~/assets/images/products/product-img-4.jpg" alt="Ecommerce"
-                                         class="icon-shape icon-xxl">
-                                    <div class="ms-3">
-
-                                        <!-- title -->
-                                        <a href="~/pages/shop-single.html" class="text-inherit">
-                                            <h6 class="mb-0">Onion Flavour Potato</h6>
-                                        </a>
-                                        <span><small class="text-muted">250g</small></span>
-                                        <!-- text -->
-                                        <div class="mt-2 small lh-1">
-                                            <a href="#!" class="text-decoration-none text-inherit">
-                                                <span class="me-1 align-text-bottom">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-trash-2 text-success">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                    </svg>
-                                                </span><span class="text-muted">Remove</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- input group -->
-                            <div class="col-4 col-md-3 col-lg-3">
-
-                                <!-- input -->
-                                <div class="input-group input-spinner  ">
-                                    <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
-                                           class="quantity-field form-control-sm form-input   ">
-                                    <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                </div>
-                            </div>
-                            <!-- price -->
-                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                <span class="fw-bold">$15.00</span>
-                                <div class="text-decoration-line-through text-muted small">$20.00</div>
-                            </div>
-                        </div>
-
-                    </li>
-                    <!-- list group -->
-                    <li class="list-group-item py-3 ps-0 border-bottom">
-                        <!-- row -->
-                        <div class="row align-items-center">
-                            <div class="col-6 col-md-6 col-lg-7">
-                                <div class="d-flex">
-                                    <img src="~/assets/images/products/product-img-5.jpg" alt="Ecommerce"
-                                         class="icon-shape icon-xxl">
-                                    <div class="ms-3">
-                                        <!-- title -->
-                                        <a href="~/pages/shop-single.html" class="text-inherit">
-                                            <h6 class="mb-0">Salted Instant Popcorn </h6>
-                                        </a>
-                                        <span><small class="text-muted">100g</small></span>
-                                        <!-- text -->
-                                        <div class="mt-2 small lh-1">
-                                            <a href="#!" class="text-decoration-none text-inherit">
-                                                <span class="me-1 align-text-bottom">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="feather feather-trash-2 text-success">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                    </svg>
-                                                </span><span class="text-muted">Remove</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- input group -->
-                            <div class="col-4 col-md-3 col-lg-3">
-
-                                <!-- input -->
-                                <div class="input-group input-spinner  ">
-                                    <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
-                                           class="quantity-field form-control-sm form-input   ">
-                                    <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                </div>
-                            </div>
-                            <!-- price -->
-                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
-                                <span class="fw-bold">$15.00</span>
-                                <div class="text-decoration-line-through text-muted small">$25.00</div>
-                            </div>
-                        </div>
-
-                    </li>
-
-                </ul>
-                <!-- btn -->
-                <div class="d-flex justify-content-between mt-4">
-                    <a href="#!" class="btn btn-primary">Continue Shopping</a>
-                    <a href="#!" class="btn btn-dark">Update Cart</a>
-                </div>
-
-            </div>
-        </div>
-    </div>
- *@
-    <!-- Modal -->
-    <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered">
-            <div class="modal-content">
-
-                <div class="modal-body p-6">
-                    <div class="d-flex justify-content-between align-items-start ">
-                        <div>
-                            <h5 class="mb-1" id="locationModalLabel">Choose your Delivery Location</h5>
-                            <p class="mb-0 small">Enter your address and we will specify the offer you area. </p>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="my-5">
-                        <input type="search" class="form-control" placeholder="Search your area">
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="mb-0">Select Location</h6>
-                        <a href="#" class="btn btn-outline-gray-400 text-muted btn-sm">Clear All</a>
-
-
-                    </div>
-                    <div>
-                        <div data-simplebar style="height:300px;">
-                            <div class="list-group list-group-flush">
-
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action active">
-                                    <span>Alabama</span><span>Min:$20</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Alaska</span><span>Min:$30</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Arizona</span><span>Min:$50</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>California</span><span>Min:$29</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Colorado</span><span>Min:$80</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Florida</span><span>Min:$90</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Arizona</span><span>Min:$50</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>California</span><span>Min:$29</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Colorado</span><span>Min:$80</span>
-                                </a>
-                                <a href="#"
-                                   class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                                    <span>Florida</span><span>Min:$90</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <!-- section-->
     <main id="storeProductsApp">
         <div class="mt-4">
@@ -452,8 +84,7 @@
                         <!-- breadcrumb -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="#!">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#!">Stores</a></li>
+                                <li class="breadcrumb-item"><a href="#!">首頁</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">
                                     {{stores.storeName}}
                                 </li>
@@ -471,7 +102,6 @@
                     <div class="col-12 col-lg-3 col-md-4 mb-4 mb-md-0">
                         <div class="d-flex flex-column">
                             <div>
-
                                 <!-- img -->
                                 <img :src="stores.logoPath"
                                      alt=""
@@ -482,7 +112,7 @@
                             <div class="mt-4">
                                 <h1 class="mb-1 h4">{{stores.storeName}}</h1>
                                 <div class="small text-muted">
-                                    <span v-for="category in storeCategoryList">{{category}}&nbsp;</span>
+                                    <span v-for="storeCategory in storeCategoryList">{{storeCategory}}&nbsp;</span>
                                 </div>
                                 <!-- Store Address -->
                                 <div>
@@ -493,46 +123,78 @@
                                     {{stores.phone}}
                                 </div>
                                 <div>
-                                    @* <span> *@
-                                    <small><a href="#!">{{stores.weekdayOpeningTime}}</a></small>
+                                    <small v-if="stores.openForBusiness" style="color: #0aad0a;">
+                                        <a>{{ stores.weekdayOpeningTime }}</a>
+                                    </small>
+                                    <small v-else style="color: red;">
+                                        <a>{{ stores.weekdayOpeningTime }}</a>
+                                    </small>
                                     <br />
-                                    <small><a href="#!">{{stores.weekendOpeningTime}}</a></small>
+                                    <small v-if="stores.openForBusiness" style="color: #0aad0a;">
+                                        <a>{{ stores.weekendOpeningTime }}</a>
+                                    </small>
+                                    <small v-else style="color: red">
+                                        <a>{{ stores.weekendOpeningTime }}</a>
+                                    </small>
                                     <br />
-                                    <small><a href="#!">(Open Now***)</a></small>
-                                    @* </span> *@
+                                    <small v-if="stores.openForBusiness" style="color: #0aad0a;">
+                                        <a>(營業中)</a>
+                                    </small>
+                                    <small v-else style="color: red;">
+                                        <a>(休息中)</a>
+                                    </small>
                                 </div>
                                 <!-- rating -->
                                 <div class="mt-2">
                                     <!-- rating -->
                                     <small class="text-warning">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-half"></i>
-                                    </small><span class="ms-2">{{stores.commentRank/stores.commentCount}}</span>
+                                        <td>
+                                            <span v-if="stores.commentRank / stores.commentCount >= 1" class="bi bi-star-fill text-warning"></span>
+                                            <span v-else-if="stores.commentRank / stores.commentCount >= 0.5" class="bi bi-star-half text-warning"></span>
+
+                                            <span v-if="stores.commentRank / stores.commentCount >= 2" class="bi bi-star-fill text-warning"></span>
+                                            <span v-else-if="stores.commentRank / stores.commentCount >= 1.5" class="bi bi-star-half text-warning"></span>
+
+                                            <span v-if="stores.commentRank / stores.commentCount >= 3" class="bi bi-star-fill text-warning"></span>
+                                            <span v-else-if="stores.commentRank / stores.commentCount >= 2.5" class="bi bi-star-half text-warning"></span>
+
+                                            <span v-if="stores.commentRank / stores.commentCount >= 4" class="bi bi-star-fill text-warning"></span>
+                                            <span v-else-if="stores.commentRank / stores.commentCount >= 3.5" class="bi bi-star-half text-warning"></span>
+
+                                            <span v-if="stores.commentRank / stores.commentCount >= 5" class="bi bi-star-fill text-warning"></span>
+                                            <span v-else-if="stores.commentRank / stores.commentCount >= 4.5" class="bi bi-star-half text-warning"></span>
+                                        </td>
+
+                                    </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10}}</span>
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
-                                    <a v-if="this.isFavorite" @@click="removeFromFavorites" class="btn btn-primary btn-sm">
+                                    <button class="custom-button" @@click="removeFromFavorites" v-if="this.isFavorite">
                                         <strong>取消收藏</strong>
-                                    </a>
-                                    <a v-else @@click="saveToFavorites" class="btn btn-primary btn-sm">
+                                    </button>
+                                    <button class="custom-button" @@click="saveToFavorites" v-else>
                                         <strong>收藏</strong>
-                                    </a>                                  
-                                    <a href="#" class="btn btn-info btn-sm ms-2"><strong>分享</strong></a>
-                                    <a href="#" class="btn btn-success btn-sm ms-2"><strong>導航</strong></a>
+                                    </button>
+                                    <button href="#" class="share-button">
+                                        <strong>
+                                            <a class="twitter-share-button"
+                                               :href="getTwitterIntentText()"
+                                               data-size="large">
+                                                分享
+                                            </a>
+                                        </strong>
+                                    </button>
+                                    @* <button href="#" class="navigate-button"><strong>導航</strong></button> *@
+                                    <button @@click="showDirections" class="navigate-button"><strong>導航</strong></button>
                                 </div>
                             </div>
-
                         </div>
-
                         <hr />
                         <div>
                             <ul class="nav flex-column nav-links">
                                 <!-- nav item -->
-                                <li class="nav-item" v-for="category in stores.categoryList" v-on:click="categoriesFilter(category)">
-                                    <a href="#!" class="nav-link">{{category}}</a>
+                                <li class="nav-item" v-for="categoryItem in stores.categoryList" v-on:click="categoriesFilter(categoryItem)">
+                                    <a href="#!" class="nav-link">{{categoryItem}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -550,7 +212,7 @@
                                     <h5>{{stores.description}}</h5>
                                 </div>
                                 <div class="position-relative">
-                                    <input v-model.lazy="searchKeyWords" type="text" class="form-control" placeholder="搜尋店家商品" @@keyup.enter="searchProducts">
+                                    <input v-model.lazy="keyWords" type="search" class="form-control" placeholder="搜尋店家商品" @@keyup.enter="searchProducts">
                                     <span class="position-absolute end-0 top-0 mt-2 me-3">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
                                             <circle cx="11" cy="11" r="8"></circle>
@@ -560,7 +222,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="d-md-flex justify-content-between mb-3 align-items-center">
                             <div>
                                 <p class="mb-3 mb-md-0">{{productsQty}}項商品</p>
@@ -581,16 +242,17 @@
                                         @* <option value="Featured">Sort by: Featured</option> *@
                                         <option value="PriceLowToHigh">價格: 低到高</option>
                                         <option value="PriceHighToLow">價格: 高到低</option>
-                                        @* <option value="ReleaseDate">Release Date</option> *@
                                         <option value="QtyHighToLow">剩餘數量: 多到少</option>
                                         <option value="QtyLowToHigh">剩餘數量: 少到多</option>
+                                        <option value="ReleasedTime">最新上架</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <!-- row -->
                         <div class="row g-4 row-cols-xl-3 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
-                            <div class="col  align-items-stretch" v-for="item in filteredProducts">
+                            <div class="col  align-items-stretch" v-for="item in productsCards">
+
                                 <!-- card -->
                                 <div class="card card-product">
                                     <div class="card-body">
@@ -599,37 +261,12 @@
                                             @* <div class="position-absolute top-0 start-0">
                                             <span class="badge bg-danger">Sale</span>
                                             </div> *@
-                                            <a href="#!">
+                                            <a :href="'/Users/Home/Products/' + item.productId">
                                                 <!-- img --><img :src="item.photoPath"
                                                                  alt="Grocery Ecommerce Template"
                                                                  class="mb-3 img-fluid rounded" />
                                             </a>
                                             <!-- btn action -->
-                                            <div class="card-product-action">
-                                                <a href="#!"
-                                                   class="btn-action"
-                                                   data-bs-toggle="modal"
-                                                   data-bs-target="#quickViewModal">
-                                                    <i class="bi bi-eye"
-                                                       data-bs-toggle="tooltip"
-                                                       data-bs-html="true"
-                                                       title="Quick View"></i>
-                                                </a>
-                                                <a href="#!"
-                                                   class="btn-action"
-                                                   data-bs-toggle="tooltip"
-                                                   data-bs-html="true"
-                                                   title="Wishlist">
-                                                    <i class="bi bi-heart"></i>
-                                                </a>
-                                                <a href="#!"
-                                                   class="btn-action"
-                                                   data-bs-toggle="tooltip"
-                                                   data-bs-html="true"
-                                                   title="Compare">
-                                                    <i class="bi bi-arrow-left-right"></i>
-                                                </a>
-                                            </div>
                                         </div>
                                         <div class="text-small mb-1">
                                             <a href="#!" class="text-decoration-none text-muted"><small>{{item.categoryName}}</small></a>
@@ -641,7 +278,6 @@
                                         <div class="mb-1">
                                             <small>剩餘數量: {{item.avalibleQty}}</small>
                                         </div>
-
                                         <!-- Estimated Pickup Time -->
                                         <div class="mb-1">
                                             <small>取貨期限: {{item.suggestPickUpTime}}</small>
@@ -653,27 +289,11 @@
                                                 <span class="text-dark">${{item.unitPrice}}</span>
                                                 @****二期 <span class="text-decoration-line-through text-muted">$***</span> *@
                                             </div>
-                                            @* <div>
-                                            <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="feather feather-plus">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                            </svg>
-                                            Add
-                                            </a>
-                                            </div> *@
+
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                         <!-- row -->
@@ -681,35 +301,16 @@
                             <div class="col">
                                 <!-- nav -->
                                 <nav>
-                                    <ul class="pagination">
-                                        <li class="page-item disabled">
-                                            <a class="page-link mx-1 "
-                                               href="#"
-                                               aria-label="Previous">
-                                                <i class="feather-icon icon-chevron-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link mx-1 active" href="#">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link mx-1 text-body" href="#">2</a>
-                                        </li>
-
-                                        <li class="page-item">
-                                            <a class="page-link mx-1 text-body" href="#">...</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link mx-1 text-body" href="#">12</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link mx-1 text-body"
-                                               href="#"
-                                               aria-label="Next">
-                                                <i class="feather-icon icon-chevron-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <paginate :page-count="total"
+                                              :click-handler="pageClick"
+                                              :force-page="page.pageNumber"
+                                              :prev-text="'<'"
+                                              :next-text="'>'"
+                                              :page-link-class="'page-link mx-1'"
+                                              :prev-link-class="'page-link mx-1'"
+                                              :next-link-class="'page-link mx-1'"
+                                              :container-class="'pagination justify-content-center'">
+                                    </paginate>
                                 </nav>
                             </div>
                         </div>
@@ -746,11 +347,12 @@
                                             {{person.contents}}
                                         </p>
                                         <ul class="list-unstyled d-flex justify-content-center text-warning mb-0">
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
-                                            <li><i class="fas fa-star fa-sm"></i></li>
+                                            {{person.commentRank}}
+                                            <li v-if="person.commentRank >= 1" class="bi bi-star-fill text-warning"></li>
+                                            <li v-if="person.commentRank >= 2" class="bi bi-star-fill text-warning"></li>
+                                            <li v-if="person.commentRank >= 3" class="bi bi-star-fill text-warning"></li>
+                                            <li v-if="person.commentRank >= 4" class="bi bi-star-fill text-warning"></li>
+                                            <li v-if="person.commentRank >= 5" class="bi bi-star-fill text-warning"></li>
                                         </ul>
                                     </div>
 
@@ -766,204 +368,20 @@
         </section>
     </main>
 
-    <!-- Modal -->
-    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body p-8">
-                    <div class="position-absolute top-0 end-0 me-3 mt-3">
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <!-- img slide -->
-                            <div class="product productModal" id="productModal">
-                                <div class="zoom"
-                                     onmousemove="zoom(event)"
-                                     style="
-                  background-image: url(~/assets/images/products/product-single-img-1.jpg);
-                ">
-                                    <!-- img -->
-                                    <img src="~/assets/images/products/product-single-img-1.jpg"
-                                         alt="">
-                                </div>
-                                <div>
-                                    <div class="zoom"
-                                         onmousemove="zoom(event)"
-                                         style="
-                    background-image: url(~/assets/images/products/product-single-img-2.jpg);
-                  ">
-                                        <!-- img -->
-                                        <img src="~/assets/images/products/product-single-img-2.jpg"
-                                             alt="">
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="zoom"
-                                         onmousemove="zoom(event)"
-                                         style="
-                    background-image: url(~/assets/images/products/product-single-img-3.jpg);
-                  ">
-                                        <!-- img -->
-                                        <img src="~/assets/images/products/product-single-img-3.jpg"
-                                             alt="">
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="zoom"
-                                         onmousemove="zoom(event)"
-                                         style="
-                    background-image: url(~/assets/images/products/product-single-img-4.jpg);
-                  ">
-                                        <!-- img -->
-                                        <img src="~/assets/images/products/product-single-img-4.jpg"
-                                             alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- product tools -->
-                            <div class="product-tools">
-                                <div class="thumbnails row g-3" id="productModalThumbnails">
-                                    <div class="col-3" class="tns-nav-active">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img src="~/assets/images/products/product-single-img-1.jpg"
-                                                 alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img src="~/assets/images/products/product-single-img-2.jpg"
-                                                 alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img src="~/assets/images/products/product-single-img-3.jpg"
-                                                 alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="thumbnails-img">
-                                            <!-- img -->
-                                            <img src="~/assets/images/products/product-single-img-4.jpg"
-                                                 alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="ps-lg-8 mt-6 mt-lg-0">
-                                <a href="#!" class="mb-4 d-block">Bakery Biscuits</a>
-                                <h2 class="mb-1 h1">Napolitanke Ljesnjak</h2>
-                                <div class="mb-4">
-                                    <small class="text-warning">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-half"></i>
-                                    </small><a href="#" class="ms-2">(30 reviews)</a>
-                                </div>
-                                <div class="fs-4">
-                                    <span class="fw-bold text-dark">$32</span>
-                                    <span class="text-decoration-line-through text-muted">$35</span><span><small class="fs-6 ms-2 text-danger">26% Off</small></span>
-                                </div>
-                                <hr class="my-6">
-                                <div class="mb-4">
-                                    <button type="button" class="btn btn-outline-secondary">
-                                        250g
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary">
-                                        500g
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary">
-                                        1kg
-                                    </button>
-                                </div>
-                                <div>
-
-                                    <!-- input -->
-                                    <div class="input-group input-spinner  ">
-                                        <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                                        <input type="number" step="1" max="10" value="1" name="quantity" class="quantity-field form-control-sm form-input   ">
-                                        <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
-                                    </div>
-                                </div>
-                                <div class="mt-3 row justify-content-start g-2 align-items-center">
-
-                                    <div class="col-lg-4 col-md-5 col-6 d-grid">
-                                        <!-- button -->
-                                        <!-- btn -->
-                                        <button type="button" class="btn btn-primary">
-                                            <i class="feather-icon icon-shopping-bag me-2"></i>Add to
-                                            cart
-                                        </button>
-                                    </div>
-                                    <div class="col-md-4 col-5">
-                                        <!-- btn -->
-                                        <a class="btn btn-light"
-                                           href="#"
-                                           data-bs-toggle="tooltip"
-                                           data-bs-html="true"
-                                           aria-label="Compare">
-                                            <i class="bi bi-arrow-left-right"></i>
-                                        </a>
-                                        <a class="btn btn-light"
-                                           href="#!"
-                                           data-bs-toggle="tooltip"
-                                           data-bs-html="true"
-                                           aria-label="Wishlist">
-                                            <i class="feather-icon icon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <hr class="my-6">
-                                <div>
-                                    <table class="table table-borderless">
-                                        <tbody>
-                                            <tr>
-                                                <td>Product Code:</td>
-                                                <td>FBB00255</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Availability:</td>
-                                                <td>In Stock</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Type:</td>
-                                                <td>Fruits</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Shipping:</td>
-                                                <td>
-                                                    <small>
-                                                        01 day shipping.<span class="text-muted">( Free pickup today)</span>
-                                                    </small>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     @section Scripts{
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+
+        @* Carousel *@
+        <!-- MDB -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+        <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+        @* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script> *@
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <script>
-            var baseAddress = "https://localhost:7042";
+            var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
             const storeProductApp = Vue.createApp({
                 data: function () {
                     return {
@@ -976,11 +394,22 @@
                         sortingOptions: 'PriceLowToHigh',
                         productsQty: 0,
                         isFavorite: false,
-                        searchKeyWords:""
+                        searchKeyWords: "",
+                        page: {
+                            countPerPage: 6,
+                            pageNumber: 1
+                        },
                     }
                 },
-                computed: {                  
-                            
+                computed: {
+                    total() {
+                        return Math.ceil(this.productsQty / this.page.countPerPage);
+                    },
+                    productsCards() {
+                        var start = (this.page.pageNumber - 1) * this.page.countPerPage;
+                        var end = start + this.page.countPerPage;
+                        return this.filteredProducts.slice(start, end);
+                    },
                     groupedPeople() {
                         const groupSize = 3;
                         const grouped = [];
@@ -991,21 +420,46 @@
                     },
 
                     filteredProducts() {
+                        // let filteredProducts = [...this.products];
                         let filteredProducts = this.products;
                         // filtering based on selected category
                         if (this.selectedCategory && this.selectedCategory !== "全部") {
                             filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
                         }
-                        // sorting based on sortingOptions
-                        if (this.sortingOptions === "PriceLowToHigh") {
-                            filteredProducts = filteredProducts.sort((a, b) => a.unitPrice - b.unitPrice);
-                        } else if (this.sortingOptions === "PriceHighToLow") {
-                            filteredProducts = filteredProducts.sort((a, b) => b.unitPrice - a.unitPrice);
-                        } else if (this.sortingOptions === "QtyLowToHigh") {
-                            filteredProducts = filteredProducts.sort((a, b) => a.avalibleQty - b.avalibleQty);
-                        } else if (this.sortingOptions === "QtyHighToLow") {
-                            filteredProducts = filteredProducts.sort((a, b) => b.avalibleQty - a.avalibleQty);
+                        // if (this.selectedCategory) {
+                        //     this.searchKeyWords = "";
+                        //     if (this.selectedCategory !== "全部") {
+                        //         filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
+                        //     }
+                        // }
+                        //search filter
+                        if (this.searchKeyWords && this.searchKeyWords.trim() !== "") {
+                            // this.selectedCategory = "";//改
+                            const searchQuery = this.searchKeyWords.toLowerCase();
+                            filteredProducts = filteredProducts.filter(item =>
+                                item.productName.toLowerCase().includes(searchQuery) ||
+                                item.categoryName.toLowerCase().includes(searchQuery)
+                            );
                         }
+                        // Sorting based on sortingOptions
+                        switch (this.sortingOptions) {
+                            case "PriceLowToHigh":
+                                filteredProducts.sort((a, b) => a.unitPrice - b.unitPrice);
+                                break;
+                            case "PriceHighToLow":
+                                filteredProducts.sort((a, b) => b.unitPrice - a.unitPrice);
+                                break;
+                            case "QtyLowToHigh":
+                                filteredProducts.sort((a, b) => a.avalibleQty - b.avalibleQty);
+                                break;
+                            case "QtyHighToLow":
+                                filteredProducts.sort((a, b) => b.avalibleQty - a.avalibleQty);
+                                break;
+                            case "ReleasedTime":
+                                filteredProducts.sort((a, b) => new Date(a.realeasedTime) - new Date(b.realeasedTime));
+                                break;
+                        }
+                        this.page.pageNumber = 1;
                         this.productsQty = filteredProducts.length;
                         return filteredProducts;
                     }
@@ -1015,21 +469,40 @@
                     _this.getStoreInfo();
                 },
                 methods: {
+                    showDirections() {
+                        const destination = encodeURI(this.stores.address);
+                        const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
+
+                        window.open(directionsUrl, '_blank');
+                    },
+
+                    getTwitterIntentText() {
+                        let storeLink = window.location.pathname;
+                        let encodedHashTag = encodeURIComponent("#減少食物浪費 #剩食餐廳 #綠色生活");
+                        return `https://twitter.com/intent/tweet?text=大家好🌍！今天想跟大家分享一家很不錯的剩食餐廳：${this.stores.storeName} 🍽️。這家位於${this.stores.address}的餐廳不僅提供美味的食物，還致力於減少食物浪費。絕對是個愛地球又愛美食的好選擇！🌱💚 ${storeLink} ${encodedHashTag}`;
+                    },
+                    pageClick(num) {
+                        this.page.pageNumber = num;
+                    },
                     categoriesFilter(category) {
+                        this.searchKeyWords = "";
                         this.selectedCategory = category;
+                    },
+                    searchProducts() {
+                        this.selectedCategory = "";
+                        this.searchKeyWords = this.keyWords;
                     },
                     getFavoriteStatus() {
                         let _this = this;
-                        const storeId = "S001"
-                        const userId = "U001"
-                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/status/${userId}/${storeId}`)
+                        let storeId = window.location.pathname.slice("19");
+                        fetch(`/api/StoreProductsapi/favorite/status/${storeId}`)
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
                                 }
                                 // return response;
                                 return response.json()
-                            })                          
+                            })
                             .then(result => {
                                 // _this.isFavorite = result;
                                 _this.isFavorite = result.isFavorite;
@@ -1039,40 +512,56 @@
                             });
                     },
                     saveToFavorites() {
-                        const storeId = "S001"; 
-                        const userId = "U001";
-                        let raw = {
-                            userId: userId,
-                            storeId: storeId,
+                        if (isLoggedIn) {
+                            let storeId = window.location.pathname.slice("19");
+                            let raw = {
+                                storeId: storeId,
+                            }
+                            var requestOptions = {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(raw),
+                            };
+                            fetch(`/api/StoreProductsapi/favorite/add`,
+                                requestOptions
+                            )
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(`${response.status}`);
+                                    }
+                                    return response.text();
+                                })
+                                .then(result => {
+                                    alert(result);
+                                    this.isFavorite = true;
+                                })
+                                .catch(error => {
+                                    console.error('Error', error);
+                                });
                         }
-                        var requestOptions = {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(raw),
-                        };
-                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/add`, 
-                            requestOptions
-                        )
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(`${response.status}`);
+                        else {
+                            Swal.fire({
+                                title: "請先登入",
+                                text: "是否前往登入註冊畫面？",
+                                icon: "info",
+                                showCancelButton: true,
+                                confirmButtonText: "前往",
+                                cancelButtonText: "取消",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/Users/Account/LoginRegister';
+                                } else {
+                                    Swal.fire("取消操作", "", "info");
                                 }
-                                return response.text();
-                            })
-                            .then(result => {
-                                // alert(result);
-                                this.isFavorite = true;
-                            })
-                            .catch(error => {
-                                console.error('Error', error);
                             });
+                        }
+
                     },
                     removeFromFavorites() {
-                        const storeId = "S001"; 
-                        const userId = "U001"; 
-                        var raw = JSON.stringify({ userId, storeId });
+                        let storeId = window.location.pathname.slice("19");
+                        var raw = JSON.stringify({storeId});
                         const requestOptions = {
                             method: 'DELETE',
                             headers: {
@@ -1080,12 +569,12 @@
                             },
                             body: raw,
                         };
-                        fetch(`${baseAddress}/api/StoreProductsapi/favorite/remove`, requestOptions)
+                        fetch(`/api/StoreProductsapi/favorite/remove`, requestOptions)
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
                                 }
-                                return response.text(); 
+                                return response.text();
                             })
                             .then(result => {
                                 alert(result);
@@ -1097,8 +586,9 @@
                     },
                     getStoreInfo() {
                         let _this = this;
-                        let storeId = "S001"
-                        fetch(`${baseAddress}/api/StoreProductsapi/${storeId}`, { method: "GET" })
+                        let storeId = window.location.pathname.slice("19");
+                        
+                        fetch(`/api/StoreProductsapi/${storeId}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
@@ -1109,53 +599,42 @@
                                 // alert(JSON.stringify(data));
                                 _this.stores = data[0];
                                 _this.products = data[0].products;
-                                _this.comment = data[0].comment;                              
+                                _this.comment = data[0].comment;
                                 _this.storeCategoryList = [..._this.stores.categoryList].filter(category => category !== "其他")
                                 _this.stores.categoryList.unshift("全部");
-                                _this.getFavoriteStatus();
+                                if (isLoggedIn) {
+                                    _this.getFavoriteStatus();
+                                }
                                 // console.table(_this.stores)
                             }).catch(error => {
                                 alert(error);
                                 console.log('error', error);
                             });
                     },
-                    searchProducts() {
-                        let _this = this;
-                        // alert(_this.searchKeyWords)
-                        fetch(`${baseAddress}/api/StoreProductsapi/Search?query=${_this.searchKeyWords}`)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(`${response.status}`);
-                                }
-                                return response.json()
-                            })
-                            .then(result => {
-                                // alert(JSON.stringify(result))
-                                _this.products = result;
-                            })
-                            .catch(error => {
-                                console.error('Error', error);
-                            });
-                    }
+                    // searchProducts() {
+                    //     let _this = this;
+                    //     // alert(_this.searchKeyWords)
+                    //     fetch(`${baseAddress}/api/StoreProductsapi/Search?query=${_this.searchKeyWords}`)
+                    //         .then(response => {
+                    //             if (!response.ok) {
+                    //                 throw new Error(`${response.status}`);
+                    //             }
+                    //             return response.json()
+                    //         })
+                    //         .then(result => {
+                    //             alert(JSON.stringify(result))
+                    //             _this.products = result.products;
+                    //             _this.stores.categoryList = result.categories;
+                    //             _this.stores.categoryList.unshift("全部");
+                    //         })
+                    //         .catch(error => {
+                    //             console.error('Error', error);
+                    //         });
+                    // }
                 }
-            }).mount("#storeProductsApp")
+            }).component("paginate", VuejsPaginateNext).mount("#storeProductsApp")
         </script>
 
-        <!-- Javascript-->
-        <!-- Libs JS -->
-        <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-        <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-
-        <!-- Theme JS -->
-        <script src="~/assets/js/theme.min.js"></script>
-        <script src="~/assets/libs/tiny-slider/dist/min/tiny-slider.js"></script>
-        <script src="~/assets/js/vendors/tns-slider.js"></script>
-        <script src="~/assets/js/vendors/increment-value.js"></script>
-        @* Carousel *@
-        <!-- MDB -->
-        <script type="text/javascript"
-                src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
     }
 
 </body>

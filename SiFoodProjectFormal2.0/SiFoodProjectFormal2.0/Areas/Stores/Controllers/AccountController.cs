@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using SiFoodProjectFormal2._0.ViewModels.Stores;
 using System.Security.Claims;
 using SiFoodProjectFormal2._0.Models;
 using System.Text;
 using System.Security.Cryptography;
+using SiFoodProjectFormal2._0.Areas.Stores.ViewModels;
 
 namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 {
@@ -37,25 +37,22 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             {
                 string passwordWithSalt = $"{model.SetPassword}{account.PasswordSalt}";
                 Byte[] RealPasswordBytes = Encoding.ASCII.GetBytes(passwordWithSalt);
-                using (SHA256 sha256 = SHA256.Create())
+                Byte[] RealPasswordHash = SHA256.HashData(RealPasswordBytes);
+                if (Enumerable.SequenceEqual(RealPasswordHash, account.PasswordHash))
                 {
-                    Byte[] RealPasswordHash = sha256.ComputeHash(RealPasswordBytes);
-                    if (Enumerable.SequenceEqual(RealPasswordHash, account.PasswordHash))
-                    {
-                        List<Claim> claims = new List<Claim>()
+                    List<Claim> claims = new()
                         {
                         new Claim(ClaimTypes.Name, $"{account.StoreId}"),
                         new Claim(ClaimTypes.Role, "Store"),
                         };
-                        ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                            principal, new AuthenticationProperties
-                            {
-                                ExpiresUtc = DateTime.UtcNow.AddDays(1)
-                            });
-                        return RedirectToAction("Main", "Home");
-                    }
+                    ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    ClaimsPrincipal principal = new(identity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                        principal, new AuthenticationProperties
+                        {
+                            ExpiresUtc = DateTime.UtcNow.AddDays(1)
+                        });
+                    return RedirectToAction("Main", "Home");
                 }
             }
             return View();
@@ -77,22 +74,22 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 {
                     ran.GetBytes(saltBytes);
                 }
-                SHA256 sha256 = SHA256.Create();
                 byte[] passwordBytes = Encoding.ASCII.GetBytes($"{model?.SetPassword}{saltBytes}");
-                byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+                byte[] hashBytes = SHA256.HashData(passwordBytes);
                 account.PasswordSalt = saltBytes;
                 account.PasswordHash = hashBytes;
+                account.StoreIsAuthenticated = 1;
                 _context.SaveChanges();
                 return "密碼設定成功，請重新登入";
             }
         }
 
         [HttpGet]
-        [Route("/Account/StroeLogout")]
+        [Route("/Account/StoreLogout")]
         public async Task<IActionResult> StoreLogout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Account", "StoreLogout");
+            return RedirectToAction("login","Account");
         }
     }
 }

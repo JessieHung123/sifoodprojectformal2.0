@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
-using SiFoodProjectFormal2._0.Areas.Users.Models.SPGatewayModels;
+using SiFoodProjectFormal2._0;
+using SiFoodProjectFormal2._0.Areas.Users.Models.NewebPayModels;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
-using SiFoodProjectFormal2._0.ViewModels.Users;
+using System.Diagnostics;
 using System.Text;
+using static SiFoodProjectFormal2._0.Areas.Users.Models.NewebPayModels.PayModels;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
@@ -12,21 +16,27 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
     public class TransactionController : Controller
     {
         private readonly Sifood3Context _context;
-        public TransactionController(Sifood3Context context)
+        private readonly IUserIdentityService _userIdentityService;
+        private readonly IConfiguration _configuration;
+        public TransactionController(Sifood3Context context, IUserIdentityService userIdentityService, IConfiguration configuration)
         {
+            _userIdentityService = userIdentityService;
             _context = context;
+            _configuration = configuration;
         }
-        private BankInfoModel _bankInfoModel = new BankInfoModel
-        {
-            MerchantID = "MS150834052",
-            HashKey = "EXyVmIxZL7uvX09Sk2wJp5hoDyGPocWn",
-            HashIV = "C09KA4wzx60UCOqP",
-            NotifyURL = "http://yourWebsitUrl/Bank/SpgatewayNotify",
-            ReturnURL = "https://localhost:7042/Users/Home/RealTimeOrders",
-            AuthUrl = " https://ccore.newebpay.com/MPG/mpg_gateway",
-        };
 
+        [Authorize]
         public IActionResult CheckOut()
+        {
+            ViewData["MerchantID"] = _configuration.GetSection("MerchantID").Value;
+            ViewData["ReturnURL"] = $"https://950c-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackReturn";//上線換網址記得改
+            ViewData["NotifyURL"] = $"https://950c-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
+            ViewData["ClientBackURL"] = $"https://950c-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult PaymentFail()
         {
             return View();
         }
@@ -35,28 +45,33 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         [Route("/Transaction/GetCheckoutData")]
         public IQueryable<CheckOutVM> GetCheckoutData()
         {
-            string id = "U002";
-            var CheckOutData = _context.Carts.Include(x => x.User).Where(y => y.UserId == id).Select(y => new CheckOutVM
+            string userId = _userIdentityService.GetUserId();
+            var CheckOutData = _context.Carts.Include(x => x.User).Where(y => y.UserId == userId).Select(y => new CheckOutVM
             {
                 UserName = y.User.UserName,
-                UserAddress = y.User.UserAddresses.Select(y => y.UserDetailAddress).FirstOrDefault(),
+                UserAddressList = (List<AddressItemVM>)y.User.UserAddresses.Select(x => new AddressItemVM
+                {
+                    UserAddress = x.UserDetailAddress,
+                    AdressIsDefault = x.IsDefault,
+                }),
                 ProductId = y.ProductId,
                 ProductName = _context.Products.Where(c => c.ProductId == y.ProductId).Select(x => x.ProductName).Single(),
                 Quantity = y.Quantity,
                 UnitPrice = _context.Products.Where(c => c.ProductId == y.ProductId).Select(x => x.UnitPrice).FirstOrDefault(),
                 TotalPrice = y.Quantity * _context.Products.Where(c => c.ProductId == y.ProductId).Select(x => x.UnitPrice).FirstOrDefault(),
                 StoreName = _context.Stores.Where(s => s.StoreId == y.Product.StoreId).Select(p => p.StoreName).Single(),
+                PhotoPath = _context.Products.Where(p => p.ProductId == y.ProductId).Select(c => c.PhotoPath).Single(),
             });
             return CheckOutData;
         }
 
         [HttpPost]
         [Route("/Transaction/TakeOutOrder")]
-        public string TakeOutOrder([FromBody] CreateOrderVM model)
+        public string TakeOutOrder([FromBody] CreateTakeOutOrderVM model)
         {
             string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
             string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
-            Order order = new Order
+            Order order = new()
             {
                 OrderDate = DateTime.Now,
                 StoreId = StoreId,
@@ -67,106 +82,299 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             };
             _context.Orders.Add(order);
             _context.SaveChanges();
+            foreach (var items in model.ProductDetails)
+            {
+                int productId = GetProductIdByName(items.ProductName, items.StoreName);
+                OrderDetail orderDetail = new()
+                {
+                    OrderId = order.OrderId,
+                    ProductId = productId,
+                    Quantity = items.Quantity,
+                };
+                _context.OrderDetails.Add(orderDetail);
+                Product? product = _context.Products.Where(x => x.ProductId == productId).FirstOrDefault();
+                int releasedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.ReleasedQty).Single();
+                product.ReleasedQty = releasedQty - items.Quantity;
+                int orderedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.OrderedQty).Single();
+                product.OrderedQty = orderedQty + items.Quantity;
+            }
+            Payment payment = new()
+            {
+                OrderId = order.OrderId,
+                PaymentMethodＮame = "藍新",
+                PaymentStatusＮame = "未付款",
+                PaymentTime = DateTime.Now,
+            };
+            List<Cart> cartItems = _context.Carts.Where(c => c.UserId == UserId).ToList();
+            _context.Carts.RemoveRange(cartItems);
+            _context.Payments.Add(payment);
+            _context.SaveChanges();
+            return "訂單下訂成功";
+        }
 
+        private int GetProductIdByName(string productName, string storeName)
+        {
+            var storeId = _context.Stores.Where(x => x.StoreName == storeName).Select(y => y.StoreId).FirstOrDefault();
+            return _context.Products.Where(p => p.ProductName == productName && p.StoreId == storeId && p.IsDelete == 1).Select(p => p.ProductId).FirstOrDefault();
+        }
+
+        [HttpPost]
+        [Route("/Transaction/DeliverOrder")]
+        public string DeliverOrder([FromBody] CreateDeliverOrderVM model)
+        {
+            string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
+            string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
+            Order order = new()
+            {
+                OrderDate = DateTime.Now,
+                StoreId = StoreId,
+                UserId = UserId,
+                DeliveryMethod = "外送",
+                StatusId = 1,
+                TotalPrice = model.TotalPrice,
+                ShippingFee = 40,
+                Address = model.UserAddress
+            };
+            _context.Orders.Add(order);
+            _context.SaveChanges();
             foreach (var item in model.ProductDetails)
             {
-                int productId = GetProductIdByName(item.ProductName);
-                OrderDetail orderDetail = new OrderDetail
+                int productId = GetProductIdByName(item.ProductName, item.StoreName);
+                OrderDetail orderDetail = new()
                 {
                     OrderId = order.OrderId,
                     ProductId = productId,
                     Quantity = item.Quantity,
                 };
                 _context.OrderDetails.Add(orderDetail);
+                Product? product = _context.Products.Where(x => x.ProductId == productId).FirstOrDefault();
+                int releasedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.ReleasedQty).Single();
+                product.ReleasedQty = releasedQty - item.Quantity;
+                int orderedQty = _context.Products.Where(x => x.ProductId == productId).Select(y => y.OrderedQty).Single();
+                product.OrderedQty = orderedQty + item.Quantity;
             }
+            Payment payment = new()
+            {
+                OrderId = order.OrderId,
+                PaymentMethodＮame = "藍新",
+                PaymentStatusＮame = "未付款",
+                PaymentTime = DateTime.Now,
+            };
+            List<Cart> cartItems = _context.Carts.Where(c => c.UserId == UserId).ToList();
+            _context.Carts.RemoveRange(cartItems);
+            _context.Payments.Add(payment);
             _context.SaveChanges();
-
             return "訂單下訂成功!";
-
-            //string version = "2";
-            //// 目前時間轉換 +08:00, 防止傳入時間或Server時間時區不同造成錯誤
-            //DateTimeOffset taipeiStandardTimeOffset = DateTimeOffset.Now.ToOffset(new TimeSpan(8, 0, 0));
-            //TradeInfo tradeInfo = new TradeInfo()
-            //{
-            //    // * 商店代號
-            //    MerchantID = _bankInfoModel.MerchantID,
-            //    // * 回傳格式
-            //    RespondType = "String",
-            //    // * TimeStamp
-            //    TimeStamp = taipeiStandardTimeOffset.ToUnixTimeSeconds().ToString(),
-            //    // * 串接程式版本
-            //    Version = version,
-            //    // * 商店訂單編號
-            //    //MerchantOrderNo = $"T{DateTime.Now.ToString("yyyyMMddHHmm")}",
-            //    MerchantOrderNo = $"{order.OrderId}",
-            //    // * 訂單金額
-            //    Amt = model.TotalPrice,
-            //    // * 商品資訊
-            //    ItemDesc = "商品資訊(自行修改)",
-            //    // 支付完成 返回商店網址
-            //    ReturnURL = _bankInfoModel.ReturnURL,
-
-            //    NotifyURL = _bankInfoModel.NotifyURL,
-            //    // * 付款人電子信箱
-            //    Email = string.Empty,
-            //    // 付款人電子信箱 是否開放修改(1=可修改 0=不可修改)
-            //    EmailModify = 1,
-            //    // 信用卡 一次付清啟用(1=啟用、0或者未有此參數=不啟用)
-            //    CREDIT = 1,
-            //};
-            //Atom<string> result = new Atom<string>()
-            //{
-            //    IsSuccess = true
-            //};
-            //var inputModel = new SpgatewayInputModel
-            //{
-            //    MerchantID = _bankInfoModel.MerchantID,
-            //    Version = version
-            //};
-            //// 將model 轉換為List<KeyValuePair<string, string>>, null值不轉
-            //List<KeyValuePair<string, string>> tradeData = LambdaUtil.ModelToKeyValuePairList<TradeInfo>(tradeInfo);
-            //// 將List<KeyValuePair<string, string>> 轉換為 key1=Value1&key2=Value2&key3=Value3...
-            //var tradeQueryPara = string.Join("&", tradeData.Select(x => $"{x.Key}={x.Value}"));
-            //// AES 加密
-            //inputModel.TradeInfo = CryptoUtil.EncryptAESHex(tradeQueryPara, _bankInfoModel.HashKey, _bankInfoModel.HashIV);
-            //// SHA256 加密
-            //inputModel.TradeSha = CryptoUtil.EncryptSHA256($"HashKey={_bankInfoModel.HashKey}&{inputModel.TradeInfo}&HashIV={_bankInfoModel.HashIV}");
-
-            //// 將model 轉換為List<KeyValuePair<string, string>>, null值不轉
-            //List<KeyValuePair<string, string>> postData = LambdaUtil.ModelToKeyValuePairList<SpgatewayInputModel>(inputModel);
-
-            //Response.Clear();
-
-            //StringBuilder s = new StringBuilder();
-            //s.Append("<html>");
-            //s.AppendFormat("<body onload='document.forms[\"form\"].submit()'>");
-            //s.AppendFormat("<form name='form' action='{0}' method='post'>", _bankInfoModel.AuthUrl);
-            //foreach (KeyValuePair<string, string> item in postData)
-            //{
-            //    s.AppendFormat("<input type='hidden' name='{0}' value='{1}' />", item.Key, item.Value);
-            //}
-
-            //s.Append("</form></body></html>");
-            //Response.WriteAsync(s.ToString());
-            //HttpContext.Response.CompleteAsync();
-
-            //return Content(string.Empty);
         }
 
-        private int GetProductIdByName(string productName)
-        {
-            return _context.Products.Where(p => p.ProductName == productName).Select(p => p.ProductId).FirstOrDefault();
-        }
-
+        /// <summary>
+        /// 傳送訂單至藍新金流
+        /// </summary>
         [HttpPost]
-        public string DeliverOrder(CreateOrderVM model)
+        [Route("/Transaction/SendToNewebPay")]
+        public JsonResult SendToNewebPay([FromForm] SendToNewebPayIn inModel)
         {
-            return "新增外送訂單成功";
+            string orderId = _context.Orders.Include(o => o.User).Where(o => o.User.UserName == inModel.UserName).OrderBy(o => o.OrderId).Select(o => o.OrderId).LastOrDefault().ToString();
+            SendToNewebPayOut outModel = new()
+            {
+                MerchantID = inModel.MerchantID,
+                Version = "2.0"
+            };
+            List<KeyValuePair<string, string>> TradeInfo = new()
+            {
+            new("MerchantID", inModel.MerchantID),
+            new("RespondType", "String"),
+            new("TimeStamp", DateTimeOffset.Now.ToOffset(new TimeSpan(8, 0, 0)).ToUnixTimeSeconds().ToString()),
+            new("Version", "2.0"),
+            new("MerchantOrderNo", orderId),
+            new("Amt", inModel.Amt),
+            new("ItemDesc", inModel.ItemDesc),
+            new("ReturnURL", inModel.ReturnURL),
+            new("NotifyURL", inModel.NotifyURL),
+            new("ClientBackURL", inModel.ClientBackURL),
+            new("EmailModify", "1")
+            };
+            string TradeInfoParam = string.Join("&", TradeInfo.Select(x => $"{x.Key}={x.Value}"));
+            string HashKey = _configuration.GetSection("HashKey").Value;
+            string HashIV = _configuration.GetSection("HashIV").Value;
+            string TradeInfoEncrypt = EncryptAESHex(TradeInfoParam, HashKey, HashIV);
+            outModel.TradeInfo = TradeInfoEncrypt;
+            outModel.TradeSha = EncryptSHA256($"HashKey={HashKey}&{TradeInfoEncrypt}&HashIV={HashIV}");
+            return Json(outModel);
         }
 
-        public IActionResult Payment()
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
         {
-            return View();
+            return View(new ErrorPayViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        /// <summary>
+        /// 支付完成返回網址
+        /// </summary>
+        public IActionResult CallbackReturn(CallBackVM model)
+        {
+            string hashKey = _configuration.GetSection("HashKey").Value;
+            string hashIV = _configuration.GetSection("HashIV").Value;
+            string decryptedTradeInfo = DecryptAESHex(model.TradeInfo, hashKey, hashIV);
+            var keyValuePairs = decryptedTradeInfo.Split('&').Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
+            model.Status = keyValuePairs["Status"];
+            model.MerchantOrderNo = keyValuePairs["MerchantOrderNo"];
+            Payment? payment = _context.Payments.Where(x => x.OrderId == model.MerchantOrderNo).FirstOrDefault();
+            if (model.Status == "SUCCESS")
+            {
+                payment.PaymentStatusＮame = "已付款";
+                _context.SaveChanges();
+                return RedirectToAction("RealTimeOrders", "Home");
+            }
+            else
+            {
+                return RedirectToAction("PaymentFail", "Transaction");
+            }
+        }
+
+        /// <summary>
+        /// 支付通知網址
+        /// </summary>
+        public IActionResult CallbackNotify(CallBackVM model)
+        {
+            string hashKey = _configuration.GetSection("HashKey").Value;
+            string hashIV = _configuration.GetSection("HashIV").Value;
+            string decryptedTradeInfo = DecryptAESHex(model.TradeInfo, hashKey, hashIV);
+            var keyValuePairs = decryptedTradeInfo.Split('&').Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
+            model.Status = keyValuePairs["Status"];
+            model.MerchantOrderNo = keyValuePairs["MerchantOrderNo"];
+            Payment? payment = _context.Payments.Where(x => x.OrderId == model.MerchantOrderNo).FirstOrDefault();
+            if (model.Status == "SUCCESS")
+            {
+                payment.PaymentStatusＮame = "已付款";
+                _context.SaveChanges();
+                return RedirectToAction("RealTimeOrders", "Home");
+            }
+            else
+            {
+                return RedirectToAction("PaymentFail", "Transaction");
+            }
+        }
+
+        /// <summary>
+        /// 加密後再轉 16 進制字串
+        /// </summary>
+        /// <param name="source">加密前字串</param>
+        /// <param name="cryptoKey">加密金鑰</param>
+        /// <param name="cryptoIV">cryptoIV</param>
+        public string EncryptAESHex(string source, string cryptoKey, string cryptoIV)
+        {
+            string result = string.Empty;
+            if (!string.IsNullOrEmpty(source))
+            {
+                var encryptValue = EncryptAES(Encoding.UTF8.GetBytes(source), cryptoKey, cryptoIV);
+                if (encryptValue != null)
+                {
+                    result = BitConverter.ToString(encryptValue)?.Replace("-", string.Empty)?.ToLower();
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 字串加密AES
+        /// </summary>
+        /// <param name="source">加密前字串</param>
+        /// <param name="cryptoKey">加密金鑰</param>
+        /// <param name="cryptoIV">cryptoIV</param>
+        public byte[] EncryptAES(byte[] source, string cryptoKey, string cryptoIV)
+        {
+            byte[] dataKey = Encoding.UTF8.GetBytes(cryptoKey);
+            byte[] dataIV = Encoding.UTF8.GetBytes(cryptoIV);
+            using var aes = System.Security.Cryptography.Aes.Create();
+            aes.Mode = System.Security.Cryptography.CipherMode.CBC;
+            aes.Padding = System.Security.Cryptography.PaddingMode.PKCS7;
+            aes.Key = dataKey;
+            aes.IV = dataIV;
+            using var encryptor = aes.CreateEncryptor();
+            return encryptor.TransformFinalBlock(source, 0, source.Length);
+        }
+
+        /// <summary>
+        /// 字串加密SHA256
+        /// </summary>
+        /// <param name="source">加密前字串</param>
+        public string EncryptSHA256(string source)
+        {
+            string result = string.Empty;
+            using (System.Security.Cryptography.SHA256 algorithm = System.Security.Cryptography.SHA256.Create())
+            {
+                var hash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(source));
+                if (hash != null)
+                {
+                    result = BitConverter.ToString(hash)?.Replace("-", string.Empty)?.ToUpper();
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 16 進制字串解密
+        /// </summary>
+        /// <param name="source">加密前字串</param>
+        /// <param name="cryptoKey">加密金鑰</param>
+        /// <param name="cryptoIV">cryptoIV</param>
+        public string DecryptAESHex(string source, string cryptoKey, string cryptoIV)
+        {
+            string result = string.Empty;
+            if (!string.IsNullOrEmpty(source))
+            {
+                byte[] sourceBytes = ToByteArray(source);
+                if (sourceBytes != null)
+                {
+                    result = Encoding.UTF8.GetString(DecryptAES(sourceBytes, cryptoKey, cryptoIV)).Trim();
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 將16進位字串轉換為byteArray
+        /// </summary>
+        /// <param name="source">欲轉換之字串</param>
+        public byte[] ToByteArray(string source)
+        {
+            byte[] result = null;
+            if (!string.IsNullOrWhiteSpace(source))
+            {
+                var outputLength = source.Length / 2;
+                var output = new byte[outputLength];
+                for (var i = 0; i < outputLength; i++)
+                {
+                    output[i] = Convert.ToByte(source.Substring(i * 2, 2), 16);
+                }
+                result = output;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 字串解密AES
+        /// </summary>
+        /// <param name="source">解密前字串</param>
+        /// <param name="cryptoKey">解密金鑰</param>
+        /// <param name="cryptoIV">cryptoIV</param>
+        public static byte[] DecryptAES(byte[] source, string cryptoKey, string cryptoIV)
+        {
+            byte[] dataKey = Encoding.UTF8.GetBytes(cryptoKey);
+            byte[] dataIV = Encoding.UTF8.GetBytes(cryptoIV);
+            using var aes = System.Security.Cryptography.Aes.Create();
+            aes.Mode = System.Security.Cryptography.CipherMode.CBC;
+            aes.Padding = System.Security.Cryptography.PaddingMode.None;
+            aes.Key = dataKey;
+            aes.IV = dataIV;
+            using var decryptor = aes.CreateDecryptor();
+            byte[] data = decryptor.TransformFinalBlock(source, 0, source.Length);
+            int iLength = data[^1];
+            var output = new byte[data.Length - iLength];
+            Buffer.BlockCopy(data, 0, output, 0, output.Length);
+            return output;
         }
     }
 }
