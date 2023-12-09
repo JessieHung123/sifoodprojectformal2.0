@@ -108,21 +108,17 @@
                     map: null,
                 }
             },
-            mounted() {
-                this.getLocation();
+            mounted() {;
+                navigator.geolocation.getCurrentPosition(this.showPosition);
                 window.addEventListener('load', () => {
                     this.setMap();
+                    setInterval(()=> {
+                        navigator.geolocation.getCurrentPosition(this.showPosition);
+                        this.setMap();
+                    },30000)
                 });
             },
             methods: {
-                getLocation() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(this.showPosition);
-                    }
-                    else {
-                        alert("不支持你的地理位置。");
-                    }
-                },
                 showPosition(position) {
                     this.current = {
                         lat: position.coords.latitude,
@@ -131,8 +127,8 @@
                 },
                 setMap() {
                     let location = {
-                        lat: 25.0374865, // 經度
-                        lng: 121.5647688 // 緯度
+                        lat: 25.0520749,
+                        lng: 121.5430955
                     };
                     this.map = new google.maps.Map(document.getElementById('map'), {
                         center: this.current == null ? location : this.current,

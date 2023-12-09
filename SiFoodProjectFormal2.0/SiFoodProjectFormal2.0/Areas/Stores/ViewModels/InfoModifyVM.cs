@@ -22,6 +22,14 @@
 
         public string OpeningTime { get; set; } = null!;
 
+        public string WeekdayOpen { get; set; } = null!;
+
+        public string WeekdayClose { get; set; } = null!;
+
+        public string WeekendOpen { get; set; } = null!;
+
+        public string WeekendClose { get; set; } = null!;
+
         public string ClosingDay { get; set; } = null!;
 
         public string? PhotosPath { get; set; }
