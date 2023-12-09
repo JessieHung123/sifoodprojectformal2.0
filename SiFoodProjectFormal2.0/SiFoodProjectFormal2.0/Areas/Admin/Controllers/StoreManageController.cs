@@ -65,7 +65,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
                 searchStores = TempData["SearchStores"] as string ?? "";
             }
 
-            var query = _context.Stores.AsQueryable();
+            var query = _context.Stores.Where(s => s.StoreIsAuthenticated == 1).AsQueryable();
 
             if (!string.IsNullOrEmpty(searchStores))
             {
