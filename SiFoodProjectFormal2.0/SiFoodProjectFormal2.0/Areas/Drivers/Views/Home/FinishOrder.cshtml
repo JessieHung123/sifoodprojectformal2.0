@@ -32,38 +32,27 @@
             </select>
         </div>
     </div>
-    <table class="table collapse" id="collapseExample">
-        <thead>
-            <tr>
-                <th scope="col">訂單編號</th>
-                <th scope="col">訂單日期</th>
-                <th scope="col">外送地址</th>
-                <th scope="col">顧客</th>
-                <th scope="col">店家</th>
-                <th scope="col">外送費</th>
-                <th scope="col">總價</th>
-                <th scope="col">訂單狀態</th>
-            </tr>
-        </thead>
-        <tbody v-if="completeDatas.length > 0">
-            <tr v-for="item in completeDatas" :key="item.orderId">
-                <th scope="row">{{item.orderId}}</th>
-                <td>{{formatDate(item.orderDate)}}</td>
-                <td>{{item.address}}</td>
-                <td>{{item.userName}}</td>
-                <td>{{item.storeName}}</td>
-                <td>{{item.shippingFee}}</td>
-                <td>{{item.totalPrice}}</td>
-                <td>{{item.statusName}}</td>
-                <td></td>
-            </tr>
-        </tbody>
-        <tbody v-else>
-            <tr>
-                <td colspan="8">沒有符合條件的訂單。</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="collapse"  id="collapseExample">
+        <div class="order-details1" v-if="completeDatas.length > 0" v-for="item in completeDatas" :key="item.orderId">
+            <p>
+                <div>訂單編號：{{item.orderId}}</div>
+                <div>訂單日期：{{formatDate(item.orderDate)}}</div>
+                <div>外送地址:{{item.address}}</div>
+                <div>顧客:{{item.userName}}</div>
+                <div>店家:{{item.distancetexttostore}}</div>
+                <div>外送費:{{item.shippingFee}}</div>
+                <div>總價:{{item.shippingFee}}</div>
+                <div>訂單狀態:{{item.statusName}}</div>
+            </p>
+        </div>
+        <div class="order-details1" v-else>
+            <p>
+                <div colspan="8">沒有符合條件的訂單。</div>
+            </p>
+        </div>
+    </div>
+   
+</div>
     <div class="row mt-6">
         <div class="col">
             <nav>

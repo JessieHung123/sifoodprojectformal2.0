@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 using SiFoodProjectFormal2._0.Models;
 using System.Security.Cryptography;
@@ -11,7 +10,7 @@ namespace sifoodprojectformal2._0.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private readonly Sifood3Context _context;
-        public HomeController(Sifood3Context context) 
+        public HomeController(Sifood3Context context)
         {
             _context = context;
         }

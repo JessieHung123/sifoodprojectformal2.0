@@ -12,14 +12,16 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
     [ApiController]
     public class ReviewapiController : ControllerBase
     {
-        string targetStoreId = "S001";
         private readonly Sifood3Context _context;
+        private readonly IStoreIdentityService _storeIdentityService;
 
 
 
-        public ReviewapiController(Sifood3Context context)
+
+        public ReviewapiController(Sifood3Context context, IStoreIdentityService storeIdentityService)
         {
             _context = context;
+            _storeIdentityService = storeIdentityService;
 
         }
 
@@ -45,6 +47,9 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 
         public async Task<List<ReviewVM>> Filter(string? text)
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
+            //string targetStoreId = "S001";
+
             var review = _context.Orders.Include(p => p.Comment)
                 .Include(p => p.User)
                 .Where(x => x.Comment != null)
@@ -68,6 +73,9 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
 
         public async Task<List<ReviewVM>> SelectStars(int? num)
         {
+            string targetStoreId = _storeIdentityService.GetStoreId();
+            //string targetStoreId = "S001";
+
             var review = _context.Orders.Include(p => p.Comment)
                 .Include(p => p.User)
                 .Where(x => x.Comment != null)
