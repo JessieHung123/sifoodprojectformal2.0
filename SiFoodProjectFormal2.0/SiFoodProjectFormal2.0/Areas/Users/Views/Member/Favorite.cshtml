@@ -1,11 +1,6 @@
 @using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
 @model IEnumerable<FavoriteVM>
 
-<!-- 引用Layout -->
-@{
-    Layout = "_Layout";
-}
-
 <!-- Title -->
 @{
     ViewData["Title"] = "我的收藏";
@@ -289,7 +284,7 @@
         <div class="container">
             <!-- row -->
             <div class="row">
-
+                <partial name="_MembershipPartial"></partial>
                 @*<!-- 新增的partial標籤，有時間要再調整調整col-lg-*的值以適應版面 -->
                 <div class="col-lg-3 col-md-4 col-6 border-end  d-none d-md-block">
                 <partial name="_MembershipPartial">
@@ -300,76 +295,80 @@
                         <!-- heading -->
                         <h1 class="mb-1">收藏店家</h1>
                         <p>目前共有 @ViewBag.FavoriteStoresCount 個喜愛的店家</p>
+                        <div class="card border border-danger p-6" style="max-width: 768px">
+                            <!--加上form-->
+                            <form method="post" action="@Url.Action("DeleteFavorite", "Member")">
+                                <!-- table -->
+                                <div class="table-responsive">
+                                    <table class="table text-nowrap table-with-checkbox">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>
+                                                    <!-- form check -->
+                                                    <div class="form-check">
+                                                        <!-- input -->
+                                                        <input class="form-check-input" type="checkbox" id="checkAll">
+                                                        <!-- label -->
+                                                        <label class="form-check-label" for="checkAll">全選</label>
+                                                    </div>
+                                                </th>
+                                                <th></th>
+                                                <th>店家</th>
+                                                <th>刪除收藏</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @*  <!--在 <tbody> 部分使用 @foreach 循環來動態生成每一行--> *@
+                                            @foreach (var store in Model)
+                                            {
+                                                <tr>
+                                                    <td class="align-middle">
+                                                        <!-- form check -->
+                                                        <div class="form-check">
+                                                            @*  <!-- input 這邊value="@store.FavoriteId"--> id="checkbox-@store.FavoriteId"*@
+                                                            <input class="form-check-input" type="checkbox" name="selectedFavorites" value="@store.FavoriteId" id="checkbox-@store.FavoriteId">
+                                                            @* <!-- label for="checkbox-@store.FavoriteId"--> *@
+                                                            <label class="form-check-label" for="checkbox-@store.FavoriteId"></label>
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="align-middle">
+                                                        <a href="#">
+                                                            <img src="@store.LogoPath" class="icon-shape icon-xxl" alt="">
+                                                        </a>
+                                                    </td>
+
+                                                    <td class="align-middle">
+                                                        <div>
+                                                            <h5 class="fs-6 mb-0"><a href="#" class="text-inherit">@store.StoreName</a></h5>
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="align-middle ">
+                                                        <button type="submit" name="singleDelete" value="@store.FavoriteId" class="text-muted" data-bs-toggle="tooltip"
+                                                                data-bs-placement="top" title="Delete">
+                                                            <i class="feather-icon icon-trash-2"></i>
+                                                        </button>
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button type="submit" class="btn btn-soft-danger mb-2" name="bulkDelete">刪除勾選的店家</button>
+                            </form>
+
+
+                        </div>
+
+
+
                     </div>
                 </div>
 
-                <div class="card border border-danger p-6" style="max-width: 768px">
-                    <!--加上form-->
-                    <form method="post" action="@Url.Action("DeleteFavorite", "Member")">
-                        <!-- table -->
-                        <div class="table-responsive">
-                            <table class="table text-nowrap table-with-checkbox">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>
-                                            <!-- form check -->
-                                            <div class="form-check">
-                                                <!-- input -->
-                                                <input class="form-check-input" type="checkbox" id="checkAll">
-                                                <!-- label -->
-                                                <label class="form-check-label" for="checkAll">全選</label>
-                                            </div>
-                                        </th>
-                                        <th></th>
-                                        <th>店家</th>
-                                        <th>刪除收藏</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    @*  <!--在 <tbody> 部分使用 @foreach 循環來動態生成每一行--> *@
-                                    @foreach (var store in Model)
-                                    {
-                                        <tr>
-                                            <td class="align-middle">
-                                                <!-- form check -->
-                                                <div class="form-check">
-                                                    @*  <!-- input 這邊value="@store.FavoriteId"--> id="checkbox-@store.FavoriteId"*@
-                                                    <input class="form-check-input" type="checkbox" name="selectedFavorites" value="@store.FavoriteId" id="checkbox-@store.FavoriteId">
-                                                    @* <!-- label for="checkbox-@store.FavoriteId"--> *@
-                                                    <label class="form-check-label" for="checkbox-@store.FavoriteId"></label>
-                                                </div>
-                                            </td>
-
-                                            <td class="align-middle">
-                                                <a href="#">
-                                                    <img src="@store.LogoPath" class="icon-shape icon-xxl" alt="">
-                                                </a>
-                                            </td>
-
-                                            <td class="align-middle">
-                                                <div>
-                                                    <h5 class="fs-6 mb-0"><a href="#" class="text-inherit">@store.StoreName</a></h5>
-                                                </div>
-                                            </td>
-
-                                            <td class="align-middle ">
-                                                <button type="submit" name="singleDelete" value="@store.FavoriteId" class="text-muted" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="Delete">
-                                                    <i class="feather-icon icon-trash-2"></i>
-                                                </button>
-                                            </td>
-
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                        <button type="submit" class="btn btn-soft-danger mb-2" name="bulkDelete">刪除勾選的店家</button>
-                    </form>
-
-
-                </div>
+             
 
             </div>
 
