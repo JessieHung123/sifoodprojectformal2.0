@@ -1,17 +1,7 @@
 ﻿@section Styles{
-    <title>Store Single eCommerce HTML Template - FreshCart </title>
-
-    <!-- Libs CSS -->
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
    
-    <!-- Google tag (gtag.js) -->
                         @* Carousel *@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -184,7 +174,6 @@
                                             </a>
                                         </strong>
                                     </button>
-                                    @* <button href="#" class="navigate-button"><strong>導航</strong></button> *@
                                     <button @@click="showDirections" class="navigate-button"><strong>導航</strong></button>
                                 </div>
                             </div>
@@ -257,10 +246,6 @@
                                 <div class="card card-product">
                                     <div class="card-body">
                                         <div class="text-center position-relative">
-                                            <!-- badge-二期*** -->
-                                            @* <div class="position-absolute top-0 start-0">
-                                            <span class="badge bg-danger">Sale</span>
-                                            </div> *@
                                             <a :href="'/Users/Home/Products/' + item.productId">
                                                 <!-- img --><img :src="item.photoPath"
                                                                  alt="Grocery Ecommerce Template"
@@ -287,7 +272,6 @@
                                         <div class="d-flex justify-content-between align-items-center mt-3">
                                             <div>
                                                 <span class="text-dark">${{item.unitPrice}}</span>
-                                                @****二期 <span class="text-decoration-line-through text-muted">$***</span> *@
                                             </div>
 
                                         </div>
@@ -426,15 +410,8 @@
                         if (this.selectedCategory && this.selectedCategory !== "全部") {
                             filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
                         }
-                        // if (this.selectedCategory) {
-                        //     this.searchKeyWords = "";
-                        //     if (this.selectedCategory !== "全部") {
-                        //         filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
-                        //     }
-                        // }
                         //search filter
                         if (this.searchKeyWords && this.searchKeyWords.trim() !== "") {
-                            // this.selectedCategory = "";//改
                             const searchQuery = this.searchKeyWords.toLowerCase();
                             filteredProducts = filteredProducts.filter(item =>
                                 item.productName.toLowerCase().includes(searchQuery) ||
@@ -504,7 +481,6 @@
                                 return response.json()
                             })
                             .then(result => {
-                                // _this.isFavorite = result;
                                 _this.isFavorite = result.isFavorite;
                             })
                             .catch(error => {
@@ -596,7 +572,6 @@
                                 return response.json();
                             })
                             .then(data => {
-                                // alert(JSON.stringify(data));
                                 _this.stores = data[0];
                                 _this.products = data[0].products;
                                 _this.comment = data[0].comment;
@@ -605,7 +580,6 @@
                                 if (isLoggedIn) {
                                     _this.getFavoriteStatus();
                                 }
-                                // console.table(_this.stores)
                             }).catch(error => {
                                 alert(error);
                                 console.log('error', error);
