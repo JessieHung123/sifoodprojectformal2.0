@@ -10,6 +10,7 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 
 }
 @{
@@ -291,7 +292,7 @@
 
     @section Scripts{
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             // var baseAddress = "https://localhost:7042";
 
@@ -319,32 +320,80 @@
                         const currentTime = new Date();
                         const orderDuration = Math.floor((currentTime - orderDateTime) / (1000 * 60));
                         if (orderDuration <= 10) {
-                            if (window.confirm("是否確定取消訂單?")) {
-                                this.cancelOrder(item);
-                            }
+                            Swal.fire({
+                                title: '訂單確認',
+                                text: '是否確定取消訂單?',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: '確定取消'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.cancelOrder(item);
+                                }
+                            });
+
+                            // if (window.confirm("是否確定取消訂單?")) {
+                            //     this.cancelOrder(item);
+                            // }
                         }
                         else {
-                            alert("取消時間已過");
+                            Swal.fire({
+                                icon: 'error',
+                                text: "取消時間已過"
+                            });
+                            // alert("取消時間已過");
                             item.orderDuration = orderDuration;
                         }
                     },
                     confirmCompleteOrder(item) {
-                        if (window.confirm("是否確定完成訂單?")) {
-                            this.completeOrder(item);
-                        }
+                        Swal.fire({
+                            title: '訂單確認',
+                            text: '是否確定完成訂單?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: '確定完成'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.completeOrder(item);
+                            }
+                        });
+
+
+                        // if (window.confirm("是否確定完成訂單?")) {
+                        //     this.completeOrder(item);
+                        // }
                     },
                     cancelOrder(item) {
 
                         this.updateOrderStatus(item, 7)
                         item.statusId = 7;
                         this.orders = this.orders.filter(order => order.orderId !== item.orderId);
-                        alert("訂單已取消!")
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功!',
+                            text: "訂單已取消!"
+                        });
+                        // alert("訂單已取消!")
                     },
                     completeOrder(item) {
-                        this.updateOrderStatus(item, 6)
-                        item.statusId = 6;
+                        if (item.statusId === 3) {
+                            this.updateOrderStatus(item, 6)
+                            item.statusId = 6;
+                        } else {
+                            this.updateOrderStatus(item, 5)
+                            item.statusId = 5;
+                        }
                         this.orders = this.orders.filter(order => order.orderId !== item.orderId);
-                        alert("訂單已完成!")
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功!',
+                            text: "訂單已完成!"
+                        });
+                        // alert("訂單已完成!")
                     },
                     // **asynchronous nature of the fetch operation**
                     updateOrderStatus(item, newStatusId) {
@@ -360,20 +409,20 @@
                             }),
                         }).then(response => {
                             if (!response.ok) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: "發生錯誤!"
+                                });
                                 throw new Error(`HTTP error! Status: ${response.status}`);
-                                alert("成功");
                             }
                         }).then(data => {
-                            // console.log(data)
                         }).catch(error => {
                             console.error("PUT 請求發生錯誤:", error);
-                            // console.log(error);
                         });
                     },
                     getOrder() {
                         let _this = this;
-                        var userId = "U002"
-                        fetch(`/api/RealTimeOrdersapi/${userId}`, { method: "GET" })
+                        fetch(`/api/RealTimeOrdersapi`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -381,13 +430,9 @@
                                 return response.json();
                             })
                             .then(data => {
-                                // alert(JSON.stringify(data));
-
                                 _this.orders = data;
-                                // _this.orderDetails = data[0].orderDetails;
-
                             }).catch(error => {
-                                alert(error);
+                                console.log(error);
                             });
                     },
                 }

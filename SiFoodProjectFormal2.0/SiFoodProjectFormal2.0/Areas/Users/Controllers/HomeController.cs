@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels;
@@ -202,6 +203,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             CO.Secure = true;
             Response.Cookies.Append("Records", RecentBrowse, CO);
         }
+        [Authorize]
         [HttpGet]
         public IActionResult RealTimeOrders()
         {

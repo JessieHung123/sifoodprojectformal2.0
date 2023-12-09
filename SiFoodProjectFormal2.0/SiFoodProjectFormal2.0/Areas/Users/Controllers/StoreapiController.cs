@@ -27,8 +27,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         [EnableQuery]
         public object Main2()
         {
-            //var c = DateTime.Today;
-            //var a = DateTime.Now.TimeOfDay;
             return _context.Stores.Include(x => x.Products).ThenInclude(x => x.Category).Include(x => x.Orders)
                 .ThenInclude(x => x.Comment).Where(x=>x.StoreIsAuthenticated==1)
                 .Select(z => new StoreVM
@@ -39,14 +37,14 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     LogoPath = z.LogoPath,
                     CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
                     CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
-                    Inventory = z.Products.Where(x => x.RealeasedTime.Date == DateTime.Now.Date && x.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay &&  x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.ReleasedQty - x.OrderedQty).Sum(),
+                    Inventory = z.Products.Where(x => x.IsDelete == 1&& x.RealeasedTime.Date == DateTime.Today && x.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay &&  x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.ReleasedQty - x.OrderedQty).Sum(),
                     WeekdayOpeningTime = z.OpeningTime.Substring(3, 5),
                     WeekdayClosingTime = z.OpeningTime.Substring(11, 5),
                     WeekendOpeningTime = z.OpeningTime.Substring(20, 5),
                     WeekendClosingTime = z.OpeningTime.Substring(28, 5),
                     City = z.City,
                     Region = z.Region,
-                    CategoryName = z.Products.Where(x => x.RealeasedTime.Date == DateTime.Today && x.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.Category.CategoryName).Distinct(),
+                    CategoryName = z.Products.Where(x => x.IsDelete == 1&& x.RealeasedTime.Date == DateTime.Today && x.RealeasedTime.TimeOfDay < DateTime.Now.TimeOfDay && x.SuggestPickEndTime >= DateTime.Now.TimeOfDay).Select(x => x.Category.CategoryName).Distinct(),
                 }).ToList();
         }
 

@@ -100,7 +100,10 @@
                                     </table>
                                 </div>
                                 <div class="border-top d-md-flex justify-content-between align-items-center p-6">
-                                    <span>Showing 1 to 8 of 12 entries</span>
+                                    <span>
+                                        顯示第 {{ Math.min((page.countPerPage * (page.pageNumber - 1)) + 1, itemCount) }}
+                                        至 {{ Math.min(page.countPerPage * page.pageNumber, itemCount) }} 項，共 {{ itemCount }} 筆評論
+                                    </span>
                                     <nav class="mt-2 mt-md-0">
                                         <paginate :page-count="total"
                                                   :click-handler="pageClick"
@@ -148,6 +151,7 @@
                     commentTime:null,
                     commentRank:null,
                     starNum:0,
+                    itemCount: 0,
                     page: {
                         countPerPage: 6,
                         pageNumber: 1,
@@ -172,15 +176,19 @@
                 startSeach() {
                     let _this = this;
                     console.log(`Search Text: ${_this.searchText}`);
-                    fetch(`${baseAddress}/api/Review/Filter?text=${_this.searchText}`)
+                    fetch(`${baseAddress}/api/Reviewapi/Filter?text=${_this.searchText}`)
                         .then(response => response.json())
-                        .then(data => _this.ReviewInfo = data)
+                        .then(data => {
+                            _this.ReviewInfo = data;
+                            _this.page.pageNumber = 1;
+                            _this.itemCount = _this.ReviewInfo.length;
+                        })
                         .catch(error => alert(error));
                 },
                 selectStars() {
                     let _this = this;
                     console.log(`Star Number: ${_this.starNum}`);
-                    fetch(`${baseAddress}/api/Review/SelectStars?num=${_this.starNum}`)
+                    fetch(`${baseAddress}/api/Reviewapi/SelectStars?num=${_this.starNum}`)
                         .then(response => response.json())
                         .then(data => _this.ReviewInfo = data)
                         .catch(error => alert(error));
@@ -188,7 +196,7 @@
 
                 getReviewAPI: function () {
                     let _this = this;
-                    fetch(`${baseAddress}/api/Review/getAll`)
+                    fetch(`${baseAddress}/api/Reviewapi/getAll`)
                         .then(response => response.json())
                         .then(data => _this.ReviewInfo = data)
                         .catch(error => alert(error));

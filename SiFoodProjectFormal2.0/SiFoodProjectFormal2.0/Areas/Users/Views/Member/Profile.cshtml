@@ -3,24 +3,12 @@
 @model ProfileVM
 <!-- 引用Layout -->
 @{
-    Layout = "_Layout";
+    Layout = "~/Areas/Users/Views/Shared/_Layout.cshtml";
 }
 <!-- Title -->
 @{
     ViewData["Title"] = "會員資料修改";
 }
-<!-- Style -->
-@section Styles {
-    <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
-    <!-- Libs CSS -->
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
-}
-
 <!-- section 左邊sidebar 共用partial -->
 <!-- container -->
 <div class="container" id="userProfileApp">
@@ -75,13 +63,13 @@
                                 </div>
                             </form>
                             <!-- form end -->
-                            @* <!--測試TempData-->
+                            <!--測試TempData-->
                             @if (TempData["SuccessMessage"] != null)
                             {
                                 <div class="alert alert-success">
                                     @TempData["SuccessMessage"]
                                 </div>
-                            } *@
+                            }
                         </div>
                     </div>
                 </div>
@@ -142,16 +130,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <!-- Javascript-->
-    <script src="~/assets/libs/rater-js/index.js"></script>
-    <!-- Libs JS -->
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-    <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js"></script>
-    <script src="~/assets/libs/quill/dist/quill.min.js"></script>
-    <script src="~/assets/js/vendors/sidebarMenu.js"></script>
+  
     <!-- jQuery驗證 -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>

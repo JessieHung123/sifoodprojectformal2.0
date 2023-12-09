@@ -66,7 +66,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
 
         [HttpPost]
         public IActionResult Edit1(User user)
-        {
+        {           
             _context.Users.Update(user);
             _context.SaveChanges();
             return RedirectToAction("Index");

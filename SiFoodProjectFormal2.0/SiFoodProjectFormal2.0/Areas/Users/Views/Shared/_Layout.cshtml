@@ -10,8 +10,6 @@
     <link href="~/assets/libs/slick-carousel/slick/slick.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/slick-carousel/slick/slick-theme.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/tiny-slider/dist/tiny-slider.css" asp-append-version="true" rel="stylesheet" />
-    <script src="https://unpkg.com/@@popperjs/core@2/dist/umd/popper.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.ico" />
     <!-- Libs CSS -->
@@ -184,6 +182,7 @@
                                         @*  <input type="number" step="1" max="10" v-model.lazy="item.quantity" name="quantity" class="quantity-field form-control-sm form-input   ">*@
                                         <input type="button" value="+" v-on:click="clickAdd(item)" class="button-plus btn btn-sm " data-field="quantity">
                                     </div>
+                                    <small>庫存剩餘:{{item.remainingStock}}</small>
                                 </div>
                                 <!-- price -->
                                 <div class="col-2 text-lg-end text-start text-md-end col-md-2">
@@ -194,7 +193,7 @@
                     </ul>
                     <!-- btn -->
                     <div class="d-flex justify-content-end mt-4">
-                        <button class="btn btn-success" type="button">前往結帳</button>
+                        <a href="/Users/Transaction/CheckOut"><button class="btn btn-success" type="button">前往結帳</button></a>
                     </div>
                 </div>
             </div>
@@ -288,13 +287,16 @@
             </div>
         </div>
     </div>
+
+    
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Javascript-->
     <!-- Libs JS -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js" asp-append-version="true"></script>
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js" asp-append-version="true"></script>
+    <script src="~/assets/js/theme.min.js"></script>
     <script src="~/assets/libs/jquery-countdown/dist/jquery.countdown.min.js" asp-append-version="true"></script>
     <script src="~/assets/js/vendors/countdown.js" asp-append-version="true"></script>
     <script src="~/assets/libs/slick-carousel/slick/slick.min.js" asp-append-version="true"></script>
@@ -332,11 +334,7 @@
                         .then(data => {
                             this.carts = data;
                             this.cartCount = this.carts.length > 0 ? this.carts.length : 0;
-
-                            console.log("Successfully retrieved cart data:", this.carts);
-                        }).catch(error => {
-                            alert("請先登入");
-                        });
+                        })
                 },
                 async clickMinus(item) {
                     item.quantity = item.quantity <= 1 ? item.quantity = 1 : item.quantity - 1;
@@ -347,8 +345,8 @@
                     }).then(response => response)
                 },
                 async clickAdd(item) {
-                    let remainingStock = productApp.remainingStock;
-                    if (item.quantity >= remainingStock) { $('#moreQty').modal('show'); }
+                    
+                    if (item.quantity >= item.remainingStock) { $('#moreQty').modal('show'); }
                     else { item.quantity = item.quantity + 1; }
                     await fetch(`/api/CartVMapi/ChangeQty`, {
                         method: "PUT",
@@ -388,7 +386,7 @@
                     }).then(response => {
                         if (response.ok) {
                             setTimeout(() => {
-                                window.location.reload();
+                                window.location.href="/Users/Home/Main"
                             }, 1000);
                         }
                     }).catch(error => alert("發生錯誤"));

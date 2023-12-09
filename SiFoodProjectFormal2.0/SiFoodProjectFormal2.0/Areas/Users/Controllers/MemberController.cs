@@ -9,9 +9,11 @@ using System.Text;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Routing;
 using SiFoodProjectFormal2._0;
+using Microsoft.AspNetCore.Authorization;
 
 namespace sifoodprojectformal2._0.Areas.Users.Controllers
 {
+    
     [Area("Users")]
     public class MemberController : Controller
     {
@@ -24,7 +26,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             _userIdentityService = userIdentityService;
         }
 
-
+        [Authorize]
         //11/23新版
         [HttpGet]
         public async Task<IActionResult> Profile()
@@ -63,8 +65,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
         //11/23新版
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        
         public async Task<IActionResult> Profile(string id, [Bind("UserName,UserEmail,UserPhone,UserBirthDate")] ProfileVM profileViewModel)
         {
             //if (ModelState.IsValid)
@@ -89,7 +89,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Profile));
-
+            
         }
 
         [HttpPost]
@@ -127,21 +127,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return "找不到此使用者";
 
         }
-
-        public IActionResult Products()
-        {
-            return View();
-        }
-        public IActionResult RealTimeOrders()
-        {
-            return View();
-        }
+        
 
         //=========歷史訂單========//
         public IActionResult HistoryOrders(string searchTerm = null, string sortOption = "Status" ,int pageSize = 20)
         {
             // 假定的用戶ID，之後需要替換為當前登入用戶的ID
-            var loginuserId = "U001";
+            var loginuserId = _userIdentityService.GetUserId();
 
             IQueryable<Order> historyOrdersQuery = _context.Orders
                 // 添加這行以過濾該用戶的訂單
@@ -211,7 +203,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             return View(historyOrders);
         }
-
+        [Authorize]
         //訂單明細方法GetOrderDetails
         public async Task<IActionResult> GetOrderDetails(string orderId)
         {
@@ -278,21 +270,20 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         }
 
 
-
+        [Authorize]
         //=========收藏店家========//  
         public async Task<IActionResult> Favorite()
         {
             // var userId = "當前用戶的ID"; // 從用戶會話或身份驗證系統獲取
             //暫時先寫死
-            var userId = "U001";
-
+            var loginuserId = _userIdentityService.GetUserId();
             //加入計算收藏幾間店家的功能
-            var favoriteStoresCount = _context.Favorites.Count(f => f.UserId == userId);
+            var favoriteStoresCount = _context.Favorites.Count(f => f.UserId == loginuserId);
             ViewBag.FavoriteStoresCount = favoriteStoresCount;
 
             // 查詢收藏的商家
             var favoriteStores = await _context.Favorites
-                .Where(f => f.UserId == userId)
+                .Where(f => f.UserId == loginuserId)
                 .Include(f => f.Store)
                 .Select(f => new FavoriteVM
                 {
@@ -318,13 +309,13 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             // 假設 currentUserId 是當前用戶的 UserId
             // 從用戶身份驗證系統獲取,現在先暫時指定鈺晴首頁使用的ID
-            string currentUserId = "U001";
+            var loginuserId = _userIdentityService.GetUserId();
 
             // 根據 selectedFavorites 刪除收藏項目
             foreach (var favoriteId in selectedFavorites)
             {
                 var favorite = _context.Favorites
-                    .FirstOrDefault(f => f.UserId == currentUserId && f.FavoriteId == favoriteId);
+                    .FirstOrDefault(f => f.UserId == loginuserId && f.FavoriteId == favoriteId);
 
                 if (favorite != null)
                 {
@@ -336,7 +327,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
             return RedirectToAction("Favorite");
         }
 
-
+        [Authorize]
         public IActionResult Address()
         {
             return View();

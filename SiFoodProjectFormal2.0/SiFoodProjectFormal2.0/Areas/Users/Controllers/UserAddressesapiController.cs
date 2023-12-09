@@ -17,26 +17,22 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _WebHostEnvironment;
+        private readonly IUserIdentityService _userIdentityService;
         int minLength = 10;
         int maxLength = 100;
-        public UserAddressesapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
+        public UserAddressesapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IUserIdentityService userIdentityService)
         {
             _context = context;
             _WebHostEnvironment = webHostEnvironment;
+            _userIdentityService = userIdentityService;
         }
 
         // GET: api/UserAddressesapi
         [HttpGet]
-        public async Task<IEnumerable<UserAddress>> GetUserAddresses()
-        {       
-            return  _context.UserAddresses;
-        }
-
-        // GET: api/UserAddressesapi/5
-        [HttpGet("{id}")]
-        public object GetUserAddress(string id)
+        public object GetUserAddress()
         {
-            return _context.UserAddresses.Where(u => u.UserId == id).Select(x => new UserAddressesVM
+            string userId = _userIdentityService.GetUserId();
+            return _context.UserAddresses.Where(u => u.UserId == userId).Select(x => new UserAddressesVM
             {
                 UserAddressId = x.UserAddressId,
                 UserId = x.UserId,
@@ -50,10 +46,10 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         }
 
         // PUT: api/UserAddressesapi/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<string> PutUserAddress(int id, [FromBody] UserAddressesVM userAddressesVM)
         {
+            string userId = _userIdentityService.GetUserId();
             if (string.IsNullOrEmpty(userAddressesVM.UserDetailAddress))
             {
                 return "請輸入完整地址";
@@ -78,7 +74,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             }
             if (userAddressesVM.IsDefault)
             {
-                var existingDefaultAddresses = await _context.UserAddresses.Where(a => a.UserId == userAddressesVM.UserId && a.IsDefault && a.UserAddressId != id).ToListAsync();
+                var existingDefaultAddresses = await _context.UserAddresses.Where(a => a.UserId == userId && a.IsDefault && a.UserAddressId != id).ToListAsync();
 
                 foreach (var existingDefaultAddress in existingDefaultAddresses)
                 {
@@ -110,11 +106,10 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         }
 
         // POST: api/UserAddressesapi
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<string> PostUserAddress([FromForm] UserAddressesVM userAddressesVM)
         {
-           
+            string userId = _userIdentityService.GetUserId();
             if (string.IsNullOrEmpty(userAddressesVM.UserRegion) || string.IsNullOrEmpty(userAddressesVM.UserCity) || string.IsNullOrEmpty(userAddressesVM.UserDetailAddress))
             {
                 return "請輸入完整地址";
@@ -129,7 +124,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             }
             UserAddress userAddresses = new UserAddress
             {
-                UserId = userAddressesVM.UserId,
+                UserId = userId,
                 UserDetailAddress = userAddressesVM.UserDetailAddress,
                 UserRegion = userAddressesVM.UserRegion,
                 UserCity = userAddressesVM.UserCity,

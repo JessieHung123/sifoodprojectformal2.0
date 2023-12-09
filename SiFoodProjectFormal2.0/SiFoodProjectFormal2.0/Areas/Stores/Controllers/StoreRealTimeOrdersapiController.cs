@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,30 +17,37 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public StoreRealTimeOrdersapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
+        private readonly IStoreIdentityService _storeIdentityService;
+        public StoreRealTimeOrdersapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IStoreIdentityService storeIdentityService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _storeIdentityService = storeIdentityService;
         }
 
-        // GET: api/StoreRealTimeOrdersapi
         [HttpGet]
-        public async Task<IEnumerable<Order>> GetOrders()
+        public void ScheduleOrderStatusCheck()
         {
-            return _context.Orders;
+            RecurringJob.AddOrUpdate("CheckUnconfirmedOrdersJob", () => CheckUnconfirmedOrders(), "*/1 * * * *");
         }
+        // GET: api/StoreRealTimeOrdersapi
+        //[HttpGet]
+        //public async Task<IEnumerable<Order>> GetOrders()
+        //{
+        //    return _context.Orders;
+        //}
 
         // GET: api/StoreRealTimeOrdersapi/5
-        //[HttpGet("{id}")]
-        [HttpGet("filter/{storeId}")]
-        public object GetOrder(string storeId, string? searchKeyWords, int status)
+        [HttpGet("filter")]
+        public object GetOrder(string? searchKeyWords, int status)
         {
+            string storeId = _storeIdentityService.GetStoreId();
             TimeZoneInfo taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
             DateTime utcNow = DateTime.UtcNow;
             DateTime taiwanTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, taiwanTimeZone);
             //List<int> StatusIdToCheck = new List<int> {1, 2, 3, 4};
             //var order = await _context.Orders.FindAsync(id);
-            CheckUnconfirmedOrders(taiwanTime);
+            CheckUnconfirmedOrders();
             return _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product)
                                                  .Where(c => c.StoreId == storeId &&
                                                  c.Status.StatusId != 5 &&
@@ -83,7 +91,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         }
 
         // PUT: api/StoreRealTimeOrdersapi/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<string> PutOrder(string id, [FromBody] RealTimeOrderVM realTimeOrderVM)
         {
@@ -112,9 +119,12 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             return "已完成";
 
         }
-        private void CheckUnconfirmedOrders(DateTime currentTaiwanTime)
+        public void CheckUnconfirmedOrders()
         {
-            var unconfirmedOrders = _context.Orders.Where(o => o.Status.StatusId == 1 &&  o.OrderDate.AddMinutes(15) < currentTaiwanTime);
+            TimeZoneInfo taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
+            DateTime utcNow = DateTime.UtcNow;
+            DateTime taiwanTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, taiwanTimeZone);
+            var unconfirmedOrders = _context.Orders.Where(o => o.Status.StatusId == 1 &&  o.OrderDate.AddMinutes(15) < taiwanTime);
             foreach (Order? order in unconfirmedOrders)
             {
                 order.StatusId = 7; 
@@ -123,7 +133,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             _context.SaveChanges();
         }
         // POST: api/StoreRealTimeOrdersapi
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
