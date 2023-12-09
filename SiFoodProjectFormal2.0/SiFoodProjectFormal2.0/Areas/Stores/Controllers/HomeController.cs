@@ -31,7 +31,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
             //var sifoodContext = _context.Products.Include(p => p.Category).Include(p => p.Store).Where(p => p.Store.StoreId == targetStoreId);
             var products = _context.Products.Where(p => p.StoreId == targetStoreId);
             string storeName = await _context.Stores.Where(s => s.StoreId == targetStoreId).Select(s => s.StoreName).FirstOrDefaultAsync();
-            int SumReleasedQty = _context.Products.Where(p => p.StoreId == targetStoreId).Sum(p => p.OrderedQty);
+            int SumReleasedQty = _context.Products.Where(p => p.StoreId == targetStoreId && p.IsDelete == 1).Sum(p => p.ReleasedQty);
             //int ReleasedQty = await _context.Products.Where(od => od.StoreId == targetStoreId).Sum(od => od.ReleasedQty);
             int status1Count = await _context.Orders.CountAsync(od => od.StatusId == 1 && od.StoreId == targetStoreId);
             int status2Count = await _context.Orders.CountAsync(od => od.StatusId == 2 && od.StoreId == targetStoreId);
@@ -58,9 +58,10 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
                 ProductId = x.ProductId,
                 Quantity = x.Quantity,
                 ProductName = x.Product.ProductName,
-                OrderStatus = x.Order.StatusId
+                OrderStatus = x.Order.StatusId,
+                IsDelete = x.Product.IsDelete
             })
-                .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7);
+                .Where(e => e.StoreId == targetStoreId && e.OrderStatus != 1 && e.OrderStatus != 7 && e.IsDelete == 1);
             return Json(salesinfo);
 
         }
