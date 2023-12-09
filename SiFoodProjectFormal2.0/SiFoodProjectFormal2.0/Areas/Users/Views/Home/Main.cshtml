@@ -286,17 +286,14 @@
                 },
                 filterActiveTime(stores) {
                     if (!this.selectedSetting.isStoreActive) return stores;
-                    let _this = this;
                     let now = new Date();
                     let day = now.getDay();
                     let localHours = now.getHours();
                     let localMinutes = now.getMinutes();
                     if (day >= 1 && day <= 5) {
                         return stores.filter(s => localHours >= parseInt(s.weekdayOpeningTime.slice(0, 2)) && localMinutes >= 0 && localHours < parseInt(s.weekdayClosingTime.slice(0, 2)) && localMinutes >= 0);
-                        // _this.showStore = weekdayopenstores.map(x => ({ ...x, opened: true })); //如果未營業呈現灰暗>還沒做
                     } else {
                         return stores.filter(s => localHours >= parseInt(s.weekendOpeningTime.slice(0, 2)) && localMinutes >= 0 && localHours < parseInt(s.weekendClosingTime.slice(0, 2)) && localMinutes >= 0);
-                        // _this.showStore = weekendopenstores.map(x => ({ ...x, opened: true }));
                     }
                 },
                 filtercategory(stores) {

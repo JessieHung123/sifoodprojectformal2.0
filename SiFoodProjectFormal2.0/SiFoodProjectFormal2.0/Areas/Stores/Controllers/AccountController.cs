@@ -89,7 +89,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
         public async Task<IActionResult> StoreLogout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Account", "StoreLogout");
+            return RedirectToAction("login","Account");
         }
     }
 }

@@ -11,6 +11,9 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    
     <style>
         th {
             border-bottom: none !important;
@@ -144,7 +147,7 @@
                                                     </template>
                                                 </td>
                                             </tr>
-                                            <!-- Add a collapsible row for order details -->
+                                            <!--collapsible row for order details -->
                                             <tr>
                                                 <td colspan="8" class="p-0">
                                                     <div class="collapse" :id="'orderDetails' + item.orderId">
@@ -170,7 +173,6 @@
                                                                             </div>
                                                                             <div class="mt-8">
                                                                                 <div class="row">
-                                                                                    <!-- address -->
                                                                                     <div class="col-lg-4 col-md-4 col-12">
                                                                                         <div class="mb-6">
                                                                                             <h6>顧客資訊</h6>
@@ -189,10 +191,8 @@
                                                                                             <p class="mb-1 lh-lg">
                                                                                                 {{item.address}}
                                                                                             </p>
-
                                                                                         </div>
                                                                                     </div>
-                                                                                    <!-- address -->
                                                                                     <div class="col-lg-4 col-md-4 col-12">
                                                                                         <div class="mb-6">
                                                                                             <h6>訂單資訊</h6>
@@ -249,7 +249,7 @@
                                                                                                     <td class="border-bottom-0 pb-0"></td>
                                                                                                     <td colspan="1" class="fw-medium text-dark ">
                                                                                                         <!-- text -->
-                                                                                                        小計 
+                                                                                                        小計
                                                                                                     </td>
                                                                                                     <td class="fw-medium text-dark ">
                                                                                                         <!-- text -->
@@ -287,7 +287,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -322,7 +322,6 @@
                 </div>
             </div>
         </main>
-
     </div>
 
     @section Scripts{
@@ -335,16 +334,15 @@
         <!-- Theme JS -->
         <script src="~/assets/js/theme.min.js"></script>
         <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            // var baseAddress = "https://localhost:7042";
-
             const orderApp = Vue.createApp({
                 data: function () {
                     return {
                         orders: [],
                         orderDetails: [],
-                        searchKeyWords:"",
-                        ordersCount : 0,
+                        searchKeyWords: "",
+                        ordersCount: 0,
                         page: {
                             countPerPage: 5,
                             pageNumber: 1,
@@ -370,7 +368,6 @@
                 },
                 methods: {
                     filterOrdersByStatus() {
-                        
                         this.getOrder();
                     },
                     pageClick(num) {
@@ -380,32 +377,64 @@
                         this.getOrder();
                     },
                     confirmCancelOrder(item) {
-                            if (window.confirm("是否確定取消訂單?")) {
+                        Swal.fire({
+                            title: "是否確定取消訂單?",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "確定",
+                            cancelButtonText: "取消",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
                                 this.cancelOrder(item);
                             }
+                        });
+                        // if (window.confirm("是否確定取消訂單?")) {
+                        //     this.cancelOrder(item);
+                        // }
                     },
                     confirmAcceptOrder(item) {
-                        if (window.confirm("是否確定接受訂單?")) {
-                            this.acceptOrder(item);
-                        }
+                        Swal.fire({
+                            title: "是否確定接受訂單?",
+                            icon: "info",
+                            showCancelButton: true,
+                            confirmButtonText: "確定",
+                            cancelButtonText: "取消",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.acceptOrder(item);
+                            }
+                        });
+                        // if (window.confirm("是否確定接受訂單?")) {
+                        //     this.acceptOrder(item);
+                        // }
                     },
                     cancelOrder(item) {
                         this.updateOrderStatus(item, 7)
                         item.statusId = 7;
                         this.orders = this.orders.filter(order => order.orderId !== item.orderId);
-                        alert("訂單已取消!")
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功!',
+                            text: "訂單已取消!"
+                        });
+                        // alert("訂單已取消!")
                     },
                     acceptOrder(item) {
                         if (item.deliveryMethod === '自取') {
                             this.updateOrderStatus(item, 3)
                             item.statusId = 3;
-                            item.status = "待領取";                        
+                            item.status = "待領取";
                         } else {
                             this.updateOrderStatus(item, 2)
                             item.statusId = 2;
                             item.status = "待配送";
                         }
-                        alert("訂單已接受!")
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功!',
+                            text: "訂單已接受!"
+                        });
+                        // alert("訂單已接受!")
                     },
                     // **asynchronous nature of the fetch operation**
                     updateOrderStatus(item, newStatusId) {
@@ -421,9 +450,12 @@
                             }),
                         }).then(response => {
                             if (!response.ok) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: "發生錯誤!"
+                                });
                                 throw new Error(`HTTP error! Status: ${response.status}`);
-                                alert("成功");
-                            }
+                            } 
                         }).then(data => {
                             // console.log(data)
                         }).catch(error => {
@@ -433,8 +465,8 @@
                     },
                     getOrder() {
                         let _this = this;
-                        var storeId = "S001"
-                        fetch(`/api/StoreRealTimeOrdersapi/filter/${storeId}?searchKeyWords=${_this.searchKeyWords}&status=${_this.selectedStatus}`, { method: "GET" })
+                        //var storeId = "S001"
+                        fetch(`/api/StoreRealTimeOrdersapi/filter?searchKeyWords=${_this.searchKeyWords}&status=${_this.selectedStatus}`, { method: "GET" })
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -446,7 +478,7 @@
                                 _this.page.pageNumber = 1;
                                 _this.ordersCount = _this.orders.length;
                             }).catch(error => {
-                                alert(error);
+                                console.log(error);
                             });
                     },
                 }

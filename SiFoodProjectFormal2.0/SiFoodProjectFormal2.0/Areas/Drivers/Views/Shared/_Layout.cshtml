@@ -76,81 +76,39 @@
         }
     </style>
     @await RenderSectionAsync("Styles", required: false)
+    
 </head>
 <body>
-    <div class="container">
-        <div class="sticky-sm-top box0">
-            <a href='/Drivers/Home/OrderList/'><img src="~/assets/images/logo/SiFood_logo_BGclear.png" class="rounded float-start" alt="logo" height="40px"></a>
-            <button class="btn btn-primary rounded float-end">登出</button>
-        </div>
-        <div id="driverMap">
-            <section id="map">
-            </section>
-        </div>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/Drivers/Home/OrderList/"><img src="~/assets/images/logo/SiFood_logo_BGclear.png" class="rounded float-start" alt="logo" height="40px"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0 me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/Drivers/Home/FinishOrder">歷史訂單</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
         <div>
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
         </div>
     </div>
+    @await RenderSectionAsync("Scripts", required: false)
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Javascript-->
     <script src="~/assets/libs/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/assets/js/theme.min.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI" async defer></script>
-    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
-    <script>
-        var setDriverMap = Vue.createApp({
-            data: function () {
-                return {
-                    map: null,
-                }
-            },
-            mounted() {
-                this.getLocation();
-                window.addEventListener('load', () => {
-                    this.setMap();
-                });
-            },
-            methods: {
-                getLocation() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(this.showPosition);
-                    }
-                    else {
-                        alert("不支持你的地理位置。");
-                    }
-                },
-                showPosition(position) {
-                    this.current = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    }
-                },
-                setMap() {
-                    let location = {
-                        lat: 25.0374865, // 經度
-                        lng: 121.5647688 // 緯度
-                    };
-                    this.map = new google.maps.Map(document.getElementById('map'), {
-                        center: this.current == null ? location : this.current,
-                        zoom: 16,
-                        mapTypeId: 'terrain',
-                        mapTypeControl: false,
-                        fullscreenControl: false
-                    });
-                    let currentLocation = new google.maps.Marker({
-                        position: this.current == null ? location : this.current,
-                        icon: "https://img.onl/195tB0",
-                        map: this.map
-                    });
-                }
-            },
-        }).mount("#driverMap");
-    </script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
 

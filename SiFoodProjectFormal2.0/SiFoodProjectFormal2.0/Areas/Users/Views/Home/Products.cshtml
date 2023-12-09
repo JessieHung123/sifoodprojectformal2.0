@@ -5,7 +5,6 @@
     ViewData["Title"] = "商品頁面";
 }
 <body>
-
     <main id="product">
         <div class="mt-4">
             <div class="container">
@@ -88,7 +87,7 @@
                     </div>
                 </div>
         </section>
-        <!-- 前次瀏覽的商品? -->
+        <!-- 前次瀏覽的商品 -->
         <section class="my-lg-10 my-10">
             <div class="container">
                 <!-- row -->
@@ -197,13 +196,6 @@
             mounted: function () {
                 this.getProductApi();
             },
-            watch: {
-                // number(newValue) {
-                //     if (newValue > this.remainingStock) {
-                //         alert("必須小於庫存數量!");
-                //     }
-                // }
-            },
             methods: {
                 getProductApi: function () {
                     var productId=window.location.pathname.slice("21");
@@ -275,8 +267,6 @@
                                     alert(error.message);
                                 });
                             shoppingCart.getCart();
-                            console.log(shoppingCart.carts);
-                            console.log(shoppingCart.cartCount);
                         }
                     }
                     else { $('#CartModal').modal('show'); }

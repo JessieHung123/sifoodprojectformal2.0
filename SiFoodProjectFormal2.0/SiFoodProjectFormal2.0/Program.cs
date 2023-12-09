@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.OData;
 using Microsoft.Data.SqlClient;
@@ -13,12 +14,19 @@ namespace SiFoodProjectFormal2._0
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddResponseCaching();
             // Add services to the container.
-            builder.Services.AddDbContext<Sifood3Context>(options =>
+            builder.Services.AddDbContextPool<Sifood3Context>(options =>
             {
                 options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Sifood"));
             });
+
+            builder.Services.AddHangfire(configuration => configuration
+                           .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                           .UseSimpleAssemblyNameTypeSerializer()
+                           .UseRecommendedSerializerSettings()
+                           .UseSqlServerStorage(builder.Configuration.GetConnectionString("Sifood")));
+            builder.Services.AddHangfireServer();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddControllers().AddOData(
@@ -51,7 +59,7 @@ namespace SiFoodProjectFormal2._0
                 app.UseHsts();
 
             }
-
+            app.UseResponseCaching();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -61,6 +69,7 @@ namespace SiFoodProjectFormal2._0
 
             app.UseAuthorization();
 
+            app.UseHangfireDashboard();
             //app.UseEndpoints(endpoints =>
             //{
             //    endpoints.MapControllerRoute(
