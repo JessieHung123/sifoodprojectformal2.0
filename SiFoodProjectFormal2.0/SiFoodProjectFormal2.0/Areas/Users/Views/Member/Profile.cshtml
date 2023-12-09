@@ -95,7 +95,7 @@
                             <!-- 現在密碼輸入欄位 -->
                             <div class="mb-3 col">
                                 <label class="form-label">現在密碼</label>
-                                <input type="password" class="form-control" placeholder="**********" v-bind:readonly="allowEnter" v-model="oldPassword">
+                                    <input type="password" ref="currentPasswordInput" class="form-control" placeholder="**********" v-bind:readonly="allowEnter" v-model="oldPassword">
                                 <span class="text-danger"></span>
                             </div>
                             <!-- 新密碼輸入欄位 -->
@@ -113,7 +113,7 @@
                     <!-- 重設密碼連結 -->
                     <p class="mb-4">
                         想要更新密碼嗎?
-                        <button class="btn btn-primary d-flex align-items-center justify-content-center" @@click="allowEnter = !allowEnter" style="height:30px;width:135px">按這裡輸入密碼</button>
+                            <button class="btn btn-primary d-flex align-items-center justify-content-center" @@click="toggleAndFocus()" style="height:30px;width:135px">按這裡輸入密碼</button>
                     </p>
                 </div>
 
@@ -205,7 +205,15 @@
                     }).catch(err => {
                         alert(err);
                     })
-                },                  
+                },
+                toggleAndFocus() {
+                    this.allowEnter = !this.allowEnter;
+                    if (!this.allowEnter) {
+                        this.$nextTick(() => {
+                            this.$refs.currentPasswordInput.focus();
+                        });
+                    }
+                },
             },
             mounted() {
                 this.userEmail = document.querySelector("#email").value;
