@@ -34,35 +34,35 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
         // GET: api/StoreProductsapi/5
         [HttpGet("{id}")]
-        public object GetStore(string id)
+        public async Task<List<StoreProductsVM>> GetStore(string id)
         {
             var today = DateTime.Today;
             var currentTime = DateTime.Now.TimeOfDay;
-            var store = _context.Stores.AsNoTracking()
+            return await _context.Stores.AsNoTracking()
                 .Include(x => x.Products)
                 .Include(x => x.Orders)
                 .ThenInclude(x => x.Comment)
-                .Where(c => c.StoreId == id);
-            return store.Select(z => new StoreProductsVM
-            {
-                StoreName = z.StoreName,
-                StoreId = z.StoreId,
-                Email = z.Email,
-                Phone = $"{z.Phone.Substring(0, 2)} {z.Phone.Substring(2,4)} {z.Phone.Substring(4,4)}",
-                Address = z.Address,
-                OpeningTime = z.OpeningTime,
-                PhotosPath = z.PhotosPath,
-                Description = z.Description,
-                LogoPath = z.LogoPath,
-                CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
-                CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
-                WeekdayOpeningTime = z.OpeningTime.Substring(0, 16),
-                WeekendOpeningTime = z.OpeningTime.Substring(17, 16),
-                OpenForBusiness = CheckOpenTime(z.OpeningTime, currentTime),
-                Products = z.Products.Where(p => p.RealeasedTime.Date == today &&
-                                                 p.RealeasedTime.TimeOfDay < currentTime &&
-                                                 p.SuggestPickEndTime > currentTime &&
-                                                 p.IsDelete == 1)
+                .Where(c => c.StoreId == id)
+                .Select(z => new StoreProductsVM
+                {
+                    StoreName = z.StoreName,
+                    StoreId = z.StoreId,
+                    Email = z.Email,
+                    Phone = $"{z.Phone.Substring(0, 2)} {z.Phone.Substring(2, 4)} {z.Phone.Substring(4, 4)}",
+                    Address = z.Address,
+                    OpeningTime = z.OpeningTime,
+                    PhotosPath = z.PhotosPath,
+                    Description = z.Description,
+                    LogoPath = z.LogoPath,
+                    CommentCount = z.Orders.Where(x => x.Comment != null).Count(),
+                    CommentRank = z.Orders.Sum(x => x.Comment.CommentRank),
+                    WeekdayOpeningTime = z.OpeningTime.Substring(0, 16),
+                    WeekendOpeningTime = z.OpeningTime.Substring(17, 16),
+                    OpenForBusiness = CheckOpenTime(z.OpeningTime, currentTime),
+                    Products = z.Products.Where(p => p.RealeasedTime.Date == today &&
+                                                     p.RealeasedTime.TimeOfDay < currentTime &&
+                                                     p.SuggestPickEndTime > currentTime &&
+                                                     p.IsDelete == 1)
                                      .Select(p => new ProductsVM
                                      {
                                          ProductId = p.ProductId,
@@ -76,13 +76,13 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                                          PhotoPath = p.PhotoPath,
                                      }),
 
-                CategoryList = z.Products.Where(p => p.RealeasedTime.Date == today &&
-                                                     p.RealeasedTime.TimeOfDay < currentTime &&
-                                                     p.SuggestPickEndTime > currentTime &&
-                                                     p.IsDelete == 1)
+                    CategoryList = z.Products.Where(p => p.RealeasedTime.Date == today &&
+                                                         p.RealeasedTime.TimeOfDay < currentTime &&
+                                                         p.SuggestPickEndTime > currentTime &&
+                                                         p.IsDelete == 1)
                                          .Select(y => y.Category.CategoryName).Distinct().ToArray(),
 
-                Comment = z.Orders
+                    Comment = z.Orders
                     .Where(x => x.Comment != null)
                     .Select(d => new CommentVM
                     {
@@ -91,14 +91,14 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                         User = d.User.UserName,
                         DeliveryMethod = d.DeliveryMethod
                     })
-            });
+                }).ToListAsync();
         }
         [HttpGet("favorite/status/{storeId}")]
-        public object GetFavoriteStatus(string storeId)
+        public async Task<object> GetFavoriteStatus(string storeId)
         {
             string userId = _userIdentityService.GetUserId();
             //return _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
-            bool isFavorite = _context.Favorites.Any(f => f.UserId == userId && f.StoreId == storeId);
+            bool isFavorite = await _context.Favorites.AnyAsync(f => f.UserId == userId && f.StoreId == storeId);
             return Ok(new { IsFavorite = isFavorite });
         }
         [HttpPost("favorite/add")]
@@ -156,7 +156,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             var parsedOpeningTime = TimeSpan.Parse(applicableOpeningTime.Substring(0, 5));
             var parsedClosingTime = TimeSpan.Parse(applicableOpeningTime.Substring(8, 5));
 
-            return  parsedOpeningTime <= currentTime && currentTime <= parsedClosingTime;
+            return parsedOpeningTime <= currentTime && currentTime <= parsedClosingTime;
 
             //var weekdaysOpeningTime = openingTime.Substring(3, 11);
             //var weekendsOpeningTime = openingTime.Substring(20, 11);
