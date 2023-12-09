@@ -9,7 +9,9 @@ public partial class Admin
 
     public string? Account { get; set; }
 
-    public string? Password { get; set; }
+    public byte[]? Password { get; set; }
 
     public string? Name { get; set; }
+
+    public byte[]? PasswordSalt { get; set; }
 }
