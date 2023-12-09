@@ -26,8 +26,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
             //string targetStoreId = "S001";
-
-
             return await _context.Products
                 .Include(p => p.Category)
                 .Where(e => e.StoreId == targetStoreId && e.IsDelete == 1).Select(x => new ProductManageVM
@@ -63,9 +61,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                 product.IsDelete = 0;
             }
             await _context.SaveChangesAsync();
-
-
-
 
             var query = _context.Products.Include(p => p.Category).Where(e => e.StoreId == targetStoreId && e.IsDelete ==1);
 
