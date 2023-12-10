@@ -87,7 +87,6 @@
                                                 <a href="#" class="text-inherit"
                                                    data-bs-toggle="collapse"
                                                    :data-bs-target="'#orderDetails' + item.orderId"
-                                                   data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
                                                    data-bs-title="View">
                                                     <i class="feather-icon icon-eye"></i>
@@ -250,8 +249,9 @@
                                                                                 <span class="d-block">{{item.paymentDate}} {{item.paymentTime}}</span>
                                                                             </div>
                                                                             <div class="col-md-3 mb-4 mb-lg-0">
-                                                                                <h6>外送員: {{item.driverFullName}}</h6>
-                                                                                <a href="#" class="btn btn-success btn-sm">聯繫外送員</a>
+                                                                                <h6>外送員</h6>
+                                                                                <span class="d-block">{{item.driverFullName}}</span>
+                                                                                @* <a href="#" class="btn btn-success btn-sm">聯繫外送員</a> *@
                                                                             </div>
                                                                         </div>
                                                                     </div>

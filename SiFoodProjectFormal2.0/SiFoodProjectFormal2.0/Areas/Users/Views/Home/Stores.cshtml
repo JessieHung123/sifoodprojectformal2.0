@@ -155,7 +155,7 @@
                                             <span v-else-if="stores.commentRank / stores.commentCount >= 4.5" class="bi bi-star-half text-warning"></span>
                                         </td>
 
-                                    </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10}}</span>
+                                    </small><span class="ms-2">{{isNaN(this.stores.commentRank / this.stores.commentCount) ? '0' : Math.round(this.stores.commentRank / this.stores.commentCount * 10) / 10}}</span>
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
@@ -194,7 +194,7 @@
 
                             <div class="p-8">
                                 <!-- img -->
-                                <img :src="stores.photosPath" alt="Description of the image" class="img-fluid rounded">
+                                <img :src="stores.photosPath" alt="Store image" class="img-fluid rounded" style="width: 600px;">
                             </div>
                             <div class="align-self-center p-8">
                                 <div class="mb-3">
@@ -203,7 +203,7 @@
                                 <div class="position-relative">
                                     <input v-model.lazy="keyWords" type="search" class="form-control" placeholder="搜尋店家商品" @@keyup.enter="searchProducts">
                                     <span class="position-absolute end-0 top-0 mt-2 me-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search" style="cursor: pointer;" @@click="searchProducts">
                                             <circle cx="11" cy="11" r="8"></circle>
                                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                         </svg>
