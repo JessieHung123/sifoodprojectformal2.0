@@ -4,9 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SiFoodProjectFormal2._0</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
     <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
+    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SiFoodProjectFormal2._0.styles.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
@@ -61,10 +64,14 @@
             @RenderBody()
         </main>
     </div>
- <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    
+    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
+    <script src="~/assets/js/theme.min.js"></script>
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+
+
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
         async function logout() {
