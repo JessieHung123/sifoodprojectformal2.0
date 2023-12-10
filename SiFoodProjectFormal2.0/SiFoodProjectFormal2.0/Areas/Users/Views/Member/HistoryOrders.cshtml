@@ -250,14 +250,19 @@
                                     <div class="rating-box">
                                         <div class="rating">
                                             @* :class="getStarClass(star)" v-on:mouseover="setHoverRating(star)" v-on:mouseout="setHoverRating(0)" v-on:click="setCurrentRating(star)" *@
-                                            <span v-for="star in 5" style="font-size:35px;"></span>
+                                            <span v-for="star in 5" :key="star"
+                                                      class="fa" :class="getStarClass(star)"
+                                                  v-on:mouseover="setHoverRating(star)"
+                                                  v-on:mouseout="setHoverRating(0)"
+                                                  v-on:click="setCurrentRating(star)"
+                                                      style="font-size:35px;"></span>
                                             @* <span class="fa fa-star-o text-warning" style="font-size:35px;"></span>
                                             <span class="fa fa-star-o text-warning" style="font-size:35px;"></span>
                                             <span class="fa fa-star-o text-warning" style="font-size:35px;"></span>
                                             <span class="fa fa-star-o text-warning" style="font-size:35px;"></span>
                                             <span class="fa fa-star-o text-warning" style="font-size:35px;"></span> *@
                                         </div>
-                                        @* <h5 class="mt-4" {{ ratingText }}></h5> *@
+                                        <h5 class="mt-4"> {{ ratingText }}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -285,19 +290,25 @@
 
 
 @section Scripts{
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
     <script>
         const historyApp = Vue.createApp({
             data() {
                 return {
                     orders: [],
+                    //filter&分頁
                     countPerPage: 5,
                     pageNumber: 1,
                     searchTerm: '',
                     sortOption: "default",
+                    //星星
                     currentRating: 0,
                     hoverRating: 0,
+                    ratingText: "請給分",
+                    //文字評論
                     comment: "",
+                    //訂單明細
                     orderDetail: {
                         orderId: "1",
                         items: [],
@@ -390,15 +401,67 @@
                     this.searchTerm = '';
                     this.loadOrders();
                 },
-                // submitRating() {
-                //     fetch('/api/OrdersApi/SubmitRating', {
-                //         method: 'POST',
+
+                //星星
+                
+                getStarClass(star) {
+                    if (star <= this.hoverRating || (this.hoverRating === 0 && star <= this.currentRating)) {
+                        return 'fa-star text-warning'; // 實心星星
+                    } else {
+                        return 'fa-star-o text-warning'; // 空心星星
+                    }
+                },
+
+                setHoverRating(star) {
+                    this.hoverRating = star;
+                    if (star > 0) {
+                        this.ratingText = "正在打分數";
+                    } else if (this.currentRating > 0) {
+                        // 當滑鼠離開且已有選定評分時，顯示選定的評分
+                        this.ratingText = "你打的分數是 " + this.currentRating;
+                    } else {
+                        this.ratingText = "請給分";
+                    }
+                },
+                setCurrentRating(star) {
+                    this.currentRating = star;
+                    this.hoverRating = star; // 讓滑鼠離開的時候星值保留
+                    this.ratingText = "你打的分數是 " + star;
+                },
+
+                submitRating() {
+                    fetch('/api/HistoryOrderapi/SubmitRating', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            orderId: this.orderDetail.orderId,
+                            rating: this.currentRating,
+                            comment: this.comment,
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message || "評價提交成功"); // 這裡可以自定義 alert 的內容
+                            $('#orderDetailModal').modal('hide'); // 這將會關閉 Modal
+                        })
+                        .catch(err => {
+                            console.error("提交評價出錯: ", err);
+                            alert("提交評價出錯"); // 發生錯誤時的 alert
+                        });
+                }
+
+
+                // submitrating() {
+                //     fetch('/api/ordersapi/submitrating', {
+                //         method: 'post',
                 //         headers: {
-                //             'Content-Type': 'application/json',
+                //             'content-type': 'application/json',
                 //         },
-                //         body: JSON.stringify({
-                //             orderId: this.currentOrderDetail.OrderId,
-                //             rating: this.currentRating,
+                //         body: json.stringify({
+                //             orderid: this.currentorderdetail.orderid,
+                //             rating: this.currentrating,
                 //             comment: this.comment,
                 //         })
                 //     })
