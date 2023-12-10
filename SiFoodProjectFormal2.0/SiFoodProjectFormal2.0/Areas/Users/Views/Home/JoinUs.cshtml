@@ -6,72 +6,16 @@
 @{
     Layout = "_Layout";
 }
-
 <!-- Title -->
 @{
     ViewData["Title"] = "加入我們";
 }
-
 <!-- CSS -->
 @section Styles{
-<!-- Required meta tags -->
-
     <link href="~/assets/libs/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
-    <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
-
-
-    <!-- Libs CSS -->
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
-
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
-@*     <link href="~/assets/libs/prismjs/themes/prism-okaidia.min.css" rel="stylesheet"> *@
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M8S4MT3EYG"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-M8S4MT3EYG');
-    </script>
-
-    @* <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    var myDropzone = new Dropzone(".profile-dropzone", {
-        // 其他配置選項
-    });
-});
-    </script> *@
-
-    @* <!-- 自己加的CSS，改最後按鈕的位置 -->
-    <style>
-        /* 這裡加入自定義樣式 */
-        .btn-primary {
-            position: relative; /* 調整位置 */
-            left: auto; /* 將左偏移設置為自動 */
-            right: auto; /* 將右偏移設置為自動 */
-            display: block; /* 使按鈕顯示為塊級元素 */
-            margin-left: 220px; /* 左邊距自動 */
-            margin-right: auto; /* 右邊距自動 */
-            /* 添加其他需要的樣式規則 */
-        }
-    </style> *@
-
-
-    <!-- End Tag -->
-
-
 }
-
 <main>
     <!-- section -->
-
     <section class="my-lg-14 my-8">
         <!-- container -->
         <div class="container">
@@ -85,108 +29,24 @@
                         <P class="lead mb-0">如審核成功，將寄出審核成功信件至信箱;</P>
                         <P class="lead mb-0">未審核成功，我們也將會寄出信件告知，謝謝~</P>
                     </div>
-
-
-
-
                     <!-- form -->
                     <form asp-controller="Home" asp-action="JoinUs" class="row" id="myForm" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                        <!-- input -->
-
-                        @*<div class="col-md-6 mb-3">
-                        <label class="form-label" for="fname"> 聯絡人姓名<span class="text-danger">*</span></label>
-                        <input type="text" id="fname" class="form-control" name="fname" placeholder="請輸入一位負責聯繫的人員姓名"
-                        required>
-                        </div>
-                        <!-- 這段改寫成下面那段-->
-                        *@
-
                         <div class="col-md-6 mb-3">
                             <label asp-for="ContactName" class="form-label">聯絡人姓名<span class="text-danger">*</span></label>
                             <input asp-for="ContactName" class="form-control"  placeholder="請輸入一位負責聯繫的人員姓名" />
                             <span asp-validation-for="ContactName" class="text-danger"></span>
                         </div>
-
-
-                        <!-- input -->
-                        @*<div class="col-md-6 mb-3">
-                        <label class="form-label" for="lname"> 平台顯示店名<span class="text-danger">*</span></label>
-                        <input type="text" id="lname" class="form-control" name="lname" placeholder="請輸入您在惜食平台要顯示的店名名稱"
-                        required>
-                        </div>
-                        <!-- 這段改寫成下面那段-->
-                        *@
-
                         <div class="col-md-6 mb-3">
                             <label asp-for="StoreName" class="form-label" >店名<span class="text-danger">*</span></label>
                             <input asp-for="StoreName" class="form-control" autocomplete="organization" placeholder="請輸入您在惜食平台欲顯示的店名名稱" />
                             <span asp-validation-for="StoreName" class="text-danger"></span>
                         </div>
-
-
-
-                        <!-- <div class="col-md-12 mb-3"> -->
-                        <!-- input -->
-                        <!-- <label class="form-label" for="title"> Title</label><span class="text-danger">*</span> -->
-                        <!-- <input type="text" id="title" name="title" class="form-control" placeholder="Your Title" required> -->
-                        <!-- </div> -->
-
-                        @*
-                        <div class="col-md-6 mb-3">
-                        <!-- input -->
-                        <label class="form-label" for="phone"> 聯絡電話<span class="text-danger">*</span></label>
-                        <input type="text" id="phone" name="phone" class="form-control" placeholder="請輸入聯絡電話" required
-                        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                        <!-- input -->
-                        <label class="form-label" for="taxID">公司統編<span class="text-danger">*</span></label>
-                        <input type="text" id="" name="" class="form-control" placeholder="請輸入統編" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                        <!-- input -->
-                        <label class="form-label" for="taxID">營業日<span class="text-danger">*</span></label>
-                        <input type="text" id="" name="" class="form-control" placeholder="請輸入營業日" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                        <!-- input -->
-                        <label class="form-label" for="taxID">營業時間<span class="text-danger">*</span></label>
-                        <input type="text" id="" name="" class="form-control" placeholder="請輸入營業時間" required>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                        <!-- input -->
-                        <label class="form-label" for="company">店家地址<span class="text-danger">*</span></label>
-                        <input type="text" id="company" name="company" class="form-control" placeholder="請輸入完整地址"
-                        required>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                        <label class="form-label" for="emailContact">註冊信箱<span class="text-danger">*</span></label>
-                        <input type="email" id="emailContact" name="emailContact" class="form-control"
-                        placeholder="請輸入email信箱地址" required>
-                        </div>
-
-
-                        <div class="col-md-12 mb-3">
-                        <!-- input -->
-                        <label class="form-label" for="comments">店家介紹<span class="text-danger">*</span></label>
-                        <textarea rows="3" id="comments" class="form-control" placeholder="請輸入150字內的店家介紹"></textarea>
-                        </div>
-
-                        *@
-
                         <div class="col-md-6 mb-3">
                             <label asp-for="Phone" class="form-label">聯絡電話<span class="text-danger">*</span></label>
                             <input asp-for="Phone" class="form-control" placeholder="0912345678" />
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label asp-for="TaxId" class="form-label">公司統編<span class="text-danger">*</span></label>
                             <input asp-for="TaxId" class="form-control" placeholder="請輸入統編" />
@@ -198,13 +58,6 @@
                             <input asp-for="ClosingDay" class="form-control" placeholder="例:星期一" />
                             <span asp-validation-for="ClosingDay" class="text-danger"></span>
                         </div>
-
-                        @* <div class="col-md-6 mb-3">
-                            <label asp-for="OpeningTime" class="form-label" >營業時間<span class="text-danger">*</span></label>
-                            <input asp-for="OpeningTime" class="form-control"  type="time" placeholder="請輸入營業時間" />
-                            <span asp-validation-for="OpeningTime" class="text-danger"></span>
-                        </div> *@
-
                         <!-- 週間營業時間 -->
                         <div class="col-md-6 mb-3">
                             <label asp-for="WeekdayStartTime" class="form-label">週間開始時間<span class="text-danger">*</span></label>
@@ -231,14 +84,6 @@
                             <span asp-validation-for="WeekendEndTime" class="text-danger"></span>
                         </div>
 
-                        @* <div class="col-md-6 mb-3">
-                            <label asp-for="City" class="form-label">店家地址-市<span class="text-danger">*</span></label>
-                            <input asp-for="City" class="form-control" autocomplete="address-level2" placeholder="請輸入臺北市或新北市" />
-                            <span asp-validation-for="City" class="text-danger"></span>
-                        </div> *@
-
-
-
                         <!-- City 改下拉選單 -->
                         <div class="col-md-6 mb-3">
                         <label asp-for="City" class="form-label">店家地址-市<span class="text-danger">*</span></label>
@@ -250,13 +95,6 @@
                         </select>
                         </div>
 
-                        @* <div class="col-md-6 mb-3">
-                            <label asp-for="Region" class="form-label">店家地址-區<span class="text-danger">*</span></label>
-                            <input asp-for="Region" class="form-control" autocomplete="address-level3" placeholder="請輸入區，例:大安區" />
-                            <span asp-validation-for="Region" class="text-danger"></span>
-                        </div> *@
-
-
                         <!--  區改下拉選單,並依照City動態改變 -->
                        
                         <div class="col-md-6 mb-3">
@@ -266,9 +104,6 @@
                             </select>
                             <span asp-validation-for="Region" class="text-danger"></span>
                         </div>
-
-
-
                         <div class="col-md-12 mb-3">
                             <label asp-for="Address" class="form-label">店家地址<span class="text-danger">*</span></label>
                             <input asp-for="Address" id="address" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
@@ -294,26 +129,10 @@
                         </div>
 
                         <div class="col-md-12 mb-3">
-                            <label asp-for="Description" class="form-label" >店家介紹<span class="text-danger">*</span></label>
-                            <textarea asp-for="Description" class="form-control" placeholder="請輸入150字內的店家介紹" rows="3"></textarea>
+                            <label asp-for="Description" class="form-label" >店家介紹<span class="text-danger">*(限制25字內)</span></label>
+                            <textarea asp-for="Description" class="form-control" placeholder="請輸入25字內的店家介紹" rows="3"></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
-
-
-
-                        @*<div class="col-md-12 mb-3">
-                        <!-- input -->
-                        <label class="form-label" for="comments">備註</label>
-                        <textarea rows="3" id="comments" class="form-control" placeholder="我想說..."></textarea>
-                        </div>*@
-
-
-
-
-
-
-                        <!-- form control -->
-
                         <div class="py-4 mb-4">
                             <label asp-for="LogoPath"><h4 class="mb-5 h5">請上傳您的LOGO</h4></label>
                             
@@ -363,9 +182,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
-
                                     </div>
                                     <!-- 第二個上傳元素 -->
                                     <div class="col-md-4">
@@ -411,16 +227,10 @@
                                     </div>
                                 </div>
                             </div>
-
-
-                            
                          <div class="col-md-6 mb-3">
                             <!-- btn -->
                             <button id="submitButton" type="submit" value="JoinUs" class="btn btn-primary">送出申請</button>
                         </div>
-                            
-
-
                     </form>
 
                     <div>
@@ -462,14 +272,7 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div> 
-
-
-                
-
             </div>
         </div>
         </div>
@@ -478,21 +281,6 @@
 </main>
 
 @section Scripts{
-    
-     <!-- Javascript-->
-    <script src="~/assets/libs/rater-js/index.js"></script>
-  
-
-    <!-- Libs JS -->
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-
-    <!-- Theme JS -->
-    <script src="~/assets/js/theme.min.js"></script>
-    <script src="~/assets/libs/quill/dist/quill.min.js"></script>
-    <script src="~/assets/js/vendors/sidebarMenu.js"></script>
-
     <!-- jQuery驗證 -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -500,14 +288,11 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI&callback=initMap" async defer></script>
     <!-- Region下拉選單 -->
     <script>
-
         document.getElementById('citySelect').addEventListener('change', function () {
             var city = this.value;
             var regionSelect = document.getElementById('regionSelect');
-
             // 清空 Region 下拉選單
             regionSelect.innerHTML = '';
-
             // 添加一個提示選擇的預設選項
             var defaultOption = document.createElement('option');
             defaultOption.value = "";
@@ -535,7 +320,6 @@
         });
     </script>
     <script>
-
         document.getElementById('calculate').addEventListener('click', function (event) {
             var selectElementCity = document.getElementById('citySelect');
             var storeCity = selectElementCity.options[selectElementCity.selectedIndex].value;
@@ -585,9 +369,6 @@
                     // 這裡可以處理網路錯誤等問題
                 });
         });
-
-
     </script>
-
     }
        

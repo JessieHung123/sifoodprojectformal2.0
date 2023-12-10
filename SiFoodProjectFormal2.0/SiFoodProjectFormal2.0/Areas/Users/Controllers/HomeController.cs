@@ -97,24 +97,19 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                         Latitude = joinus.Latitude,
                         Longitude = joinus.Longitude,
                     };
-
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-
+                if (ModelState.IsValid) {
                     _context.Add(store);
                     await _context.SaveChangesAsync();
                     return "成功";
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"錯誤: {ex.Message}");
                 }
 
             }
-            // 如果模型狀態無效，返回錯誤信息
+            catch (Exception ex)
+            {
+                Console.WriteLine($"錯誤: {ex.Message}");
+            }
             return "失敗";
 
         }
