@@ -4,11 +4,11 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="EditStoreLabel">顧客資料修改</h5>
+                <h5 class="modal-title" id="EditStoreLabel">商家資料修改</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="col-md-6">
+                <div>
                     <form asp-action="Edit" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="StoreId" />
@@ -82,6 +82,7 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="LogoPath" class="control-label">商家照片</label>
+                            <br />
                             @if (!string.IsNullOrEmpty(Model.PhotosPath))
                             {
                                 <img src="@Model.PhotosPath" width="300" height="200" alt="Logo" />
@@ -114,6 +115,7 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="LogoPath" class="control-label">商家Logo</label>
+                            <br />
                             <img src="@Model.LogoPath" width="300" height="300" alt="Logo" />
                             <span asp-validation-for="LogoPath" class="text-danger"></span>
                         </div>
@@ -129,8 +131,10 @@
                             <input type="hidden" asp-for="StoreIsAuthenticated" class="form-control" />
                             <span asp-validation-for="StoreIsAuthenticated" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <input type="submit" value="Save" class="btn btn-primary" />
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <input type="submit" value="儲存" class="btn btn-primary" />
+                            </div>
                         </div>
                     </form>
                 </div>
