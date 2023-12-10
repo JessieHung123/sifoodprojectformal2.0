@@ -156,7 +156,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
         [Authorize]
         // 取得訂單明細
-        [HttpGet("OrderDetails/{orderId}")]
+        [HttpGet("{orderId}")]
         public async Task<IActionResult> GetOrderDetails(string orderId)
         {
             var order = await _context.Orders.Include(o => o.OrderDetails).ThenInclude(od => od.Product)
