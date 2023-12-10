@@ -16,41 +16,31 @@
         <ul class="nav flex-column nav-pills nav-pills-dark">
             <!-- nav item -->
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="account-orders.html">
-                    <i class="feather-icon icon-shopping-bag me-2"></i>Your Orders
+                <a asp-area="Users" asp-controller="Member" asp-action="HistoryOrders" class="nav-link" aria-current="page">
+                    <i class="feather-icon icon-shopping-bag me-2"></i>歷史訂單
                 </a>
             </li>
             <!-- nav item -->
             <li class="nav-item">
-                <a class="nav-link" href="account-settings.html">
-                    <i class="feather-icon icon-settings me-2"></i>Settings
+                <a asp-area="Users" asp-controller="Member" asp-action="Profile" class="nav-link">
+                    <i class="feather-icon icon-settings me-2"></i>資料修改
                 </a>
             </li>
             <!-- nav item -->
             <li class="nav-item">
-                <a class="nav-link" href="account-address.html">
-                    <i class="feather-icon icon-map-pin me-2"></i>Address
+                <a asp-area="Users" asp-controller="Member" asp-action="Address" class="nav-link" >
+                    <i class="feather-icon icon-map-pin me-2"></i>地址管理
                 </a>
             </li>
             <!-- nav item -->
             <li class="nav-item">
-                <a class="nav-link" href="account-payment-method.html">
-                    <i class="feather-icon icon-credit-card me-2"></i>Payment Method
-                </a>
-            </li>
-            <!-- nav item -->
-            <li class="nav-item">
-                <a class="nav-link" href="account-notification.html">
-                    <i class="feather-icon icon-bell me-2"></i>Notification
+                <a asp-area="Users" asp-controller="Member" asp-action="Favorite" class="nav-link">
+                    <i class="feather-icon icon-credit-card me-2"></i>收藏店家
                 </a>
             </li>
             <!-- nav item -->
             <li class="nav-item">
                 <hr>
-            </li>
-            <!-- nav item -->
-            <li class="nav-item">
-                <a class="nav-link " href="~/index.html"><i class="feather-icon icon-log-out me-2"></i>Log out</a>
             </li>
         </ul>
     </div>
