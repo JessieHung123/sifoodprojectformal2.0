@@ -14,7 +14,7 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="mb-3 col-lg-6">
-                                            <label class="form-label" style="font-weight: bold;" >商家名稱</label>
+                                            <label class="form-label" style="font-weight: bold;">商家名稱</label>
                                             <input type="text" class="form-control" v-model="ModifyInfo.storeName" required>
                                         </div>
                                         <div class="mb-3 col-lg-6">
@@ -29,17 +29,17 @@
                                             <label class="form-label" style="font-weight: bold;">公休時間</label>
                                             <input type="text" class="form-control" v-model="ModifyInfo.closingDay" required>
                                         </div>
-                                        <div class="mb-3 col-lg-6 form-group" >
+                                        <div class="mb-3 col-lg-6 form-group">
                                             <label class="form-label" style="font-weight: bold;">平日開始營業時間</label>~
-                                            <input type="time" class="form-control" v-model="ModifyInfo.weekdayOpen"  required>
+                                            <input type="time" class="form-control" v-model="ModifyInfo.weekdayOpen" required>
                                         </div>
                                         <div class="mb-3 col-lg-6 form-group">
                                             <label class="form-label" style="font-weight: bold;">平日結束營業時間</label>
-                                            <input type="time" class="form-control" v-model="ModifyInfo.weekdayClose"  required>
+                                            <input type="time" class="form-control" v-model="ModifyInfo.weekdayClose" required>
                                         </div>
                                         <div class="mb-3 col-lg-6 form-group">
                                             <label class="form-label" style="font-weight: bold;">周末開始營業時間</label>~
-                                            <input type="time" class="form-control" v-model="ModifyInfo.weekendOpen"  required>
+                                            <input type="time" class="form-control" v-model="ModifyInfo.weekendOpen" required>
                                         </div>
                                         <div class="mb-3 col-lg-6 form-group">
                                             <label class="form-label" style="font-weight: bold;">周末結束營業時間</label>
@@ -79,7 +79,9 @@
                                         <div class="mb-3 col-lg-6 mt-5">
                                             <div class="card" style="height: 300px;">
                                                 <div class="form-group fallback ">
-                                                    <label for="files" class="form-label"><h4 class="mb-5 h5">店家LOGO</h4></label><br />
+                                                    <div class="p-3" style="background-color: #B0E0E6;">
+                                                        <h3 class="mb-0 fs-5">店家Logo</h3>
+                                                    </div>
                                                     <img id="insertFilePreview" :src="getPath(ModifyInfo.logoPath)" title="待上傳" style="width:300px;height:240px" />
                                                     <input type="file" id="updateFile1" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                                 </div>
@@ -88,7 +90,9 @@
                                         <div class="mb-3 col-lg-6 mt-5">
                                             <div class="card" style="height: 300px;">
                                                 <div class="form-group fallback ">
-                                                    <label for="files" class="form-label"><h4 class="mb-5 h5">店家照片1</h4></label><br />
+                                                    <div class="p-3" style="background-color: #B0E0E6;">
+                                                        <h3 class="mb-0 fs-5">店家照片1</h3>
+                                                    </div>
                                                     <img id="insertFilePreview" :src="getPath(ModifyInfo.photosPath)" title="待上傳" style="width:300px;height:240px" />
                                                     <input type="file" id="updateFile2" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                                 </div>
@@ -97,7 +101,9 @@
                                         <div class="mb-3 col-lg-6 mt-5">
                                             <div class="card" style="height: 300px;">
                                                 <div class="form-group fallback ">
-                                                    <label for="files" class="form-label"><h4 class="mb-5 h5">店家照片2</h4></label><br />
+                                                    <div class="p-3" style="background-color: #B0E0E6;">
+                                                        <h3 class="mb-0 fs-5">店家照片2</h3>
+                                                    </div>
                                                     <img id="insertFilePreview" :src="getPath(ModifyInfo.photosPath2)" title="待上傳" style="width:300px;height:240px" />
                                                     <input type="file" id="updateFile3" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                                 </div>
@@ -106,7 +112,9 @@
                                         <div class="mb-3 col-lg-6 mt-5">
                                             <div class="card" style="height: 300px;">
                                                 <div class="form-group fallback ">
-                                                    <label for="files" class="form-label"><h4 class="mb-5 h5">店家照片3</h4></label><br />
+                                                    <div class="p-3" style="background-color: #B0E0E6;">
+                                                        <h3 class="mb-0 fs-5">店家照片3</h3>
+                                                    </div>
                                                     <img id="insertFilePreview" :src="getPath(ModifyInfo.photosPath3)" title="待上傳" style="width:300px;height:240px" />
                                                     <input type="file" id="updateFile4" class="form-control" @@change="insertFileChange($event.target)" accept="image/*" />
                                                 </div>
@@ -138,8 +146,8 @@
         const ModifyApp = Vue.createApp({
             data: function () {
                 return {
-                    ModifyInfo: {}, 
-                    regionOptions:[],
+                    ModifyInfo: {},
+                    regionOptions: [],
                 }
             },
             computed: {
@@ -172,8 +180,8 @@
                 },
                 getRegion: function (city) {
                     let _this = this;
-                        // 配合縣市給地區
-                        if (city == '臺北市') {
+                    // 配合縣市給地區
+                    if (city == '臺北市') {
                         _this.RegionOptions = [
                             { id: "中正區", name: '中正區' },
                             { id: "大同區", name: '大同區' },
@@ -187,8 +195,8 @@
                             { id: "內湖區", name: '內湖區' },
                             { id: "南港區", name: '南港區' },
                             { id: "文山區", name: '文山區' },
-                            ];
-                        } else if (city == '新北市') {
+                        ];
+                    } else if (city == '新北市') {
                         _this.RegionOptions = [
                             { id: "板橋區", name: '板橋區' },
                             { id: "土城區", name: '土城區' },
@@ -218,14 +226,14 @@
                             { id: "石碇區", name: '石碇區' },
                             { id: "坪林區", name: '坪林區' },
                             { id: "烏來區", name: '烏來區' },
-                            ];
-                        } else {
-                            // 若其他縣市，清空地區選項
+                        ];
+                    } else {
+                        // 若其他縣市，清空地區選項
                         _this.RegionOptions = [];
-                        }
+                    }
                     return _this.RegionOptions;
                     console.log(_this.RegionOptions);
-                    
+
                 },
                 getPath: function (path) {
                     if (path == null) {

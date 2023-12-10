@@ -118,7 +118,7 @@
                                 <!-- badge -->
                                 <div class="text-center position-relative ">
                                     <div class=" position-absolute top-0 start-0">
-                                        <span class="badge bg-danger">庫存:{{item.inventory}}</span>
+                                        <span class="badge bg-danger">庫存:{{item.inventory>0?item.inventory:0}}</span>
                                     </div>
                                     <a :href="'/Users/Home/Stores/'+item.storeId">
                                         <!-- img --><img :src="item.logoPath" class="mb-3 img-fluid" />

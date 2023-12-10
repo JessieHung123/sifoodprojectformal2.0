@@ -10,7 +10,7 @@
                                  style="background-image: url(@ViewBag.Storephoto); background-repeat: no-repeat; background-size: cover; background-position: right;">
                                 <div class="card-body p-lg-12">
                                     <h1>
-                                        <span class="badge bg-secondary">歡迎回來! @ViewBag.StoreName</span>                                      
+                                        <span class="badge bg-secondary">歡迎回來! @ViewBag.StoreName</span>
                                     </h1>
                                 </div>
                             </div>
@@ -21,7 +21,7 @@
                             <div class="row ">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-6">
                                     <div class="card h-100 card-lg">
-                                        <div class="p-6">
+                                        <div class="p-6" style="background-color: #B0E0E6;">
                                             <h3 class="mb-0 fs-5">商家概況</h3>
                                         </div>
                                         <div class="card-body p-0">
@@ -64,8 +64,10 @@
                         </div>
                         <div class="col-xl-6 col-lg-6 col-12 mb-6">
                             <div class="card h-100 card-lg">
-                                <div class="card-body p-6">
+                                <div class="p-6" style="background-color: #B0E0E6;">
                                     <h3 class="mb-0 fs-5">今日銷售</h3>
+                                </div>
+                                <div class="card-body p-6">
                                     <div id="totalSale1" class="mt-6 d-flex justify-content-center"></div>
                                     <div id="main" class="mt-4">
                                         <ul v-for="(item, productName) in TotalSales" class="list-unstyled mb-0">
@@ -113,8 +115,8 @@
                     TotalSales: {},
                     TodaySales: 0,
                     chartData: {
-                        series: [], 
-                        labels: []  
+                        series: [],
+                        labels: []
                     },
                     circleFillColors: ['#0aad0a', '#ffc107', '#db3030', '#016bf8'],
                     currentColorIndex: 0,
@@ -167,7 +169,7 @@
                     });
                     for (const productName in _this.TotalSales) {
                         const product = _this.TotalSales[productName];
-                        product.percentage = ((product.totalPrice / _this.TodaySales) * 100).toFixed(2); 
+                        product.percentage = ((product.totalPrice / _this.TodaySales) * 100).toFixed(2);
                     }
                 },
                 //取得各類別商品的總金額作為chart.js功能所需要的變數

@@ -1,10 +1,12 @@
-﻿@section Styles{
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+﻿@{
+    Layout = "Index";
+}
+@section Styles{
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SiFoodProjectFormal2._0.styles.css" asp-append-version="true" />
     <link href="~/assets/css/theme.css" rel="stylesheet" />
 }
-
 <div class="container">
     <div class="text-center"><img src="~/images/sifood_logo_bgclear.png" style="width:200px" /></div>
     <div class="row justify-content-center align-items-center">
@@ -32,12 +34,10 @@
         </div>
     </div>
 </div>
-
 @section Scripts{
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="~/assets/js/main.js"></script>
-    <script src="~/assets/js/dropdown.js"></script>
     <script src="~/assets/js/vendors/password.js"></script>
 }

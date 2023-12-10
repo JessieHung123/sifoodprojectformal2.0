@@ -27,15 +27,13 @@
     </style>
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body style="background-color: #E1F0C0;">
-    <header id="header" style="background-color: #B0E0E6;">
-        <nav class="navbar navbar-expand-lg  navbar-light sticky-top px-4 px-lg-5 py-lg-0" style="background-color: #B0E0E6;">
-            <a href="index.html" class="navbar-brand d-flex align-items-center" style="background-color: #B0E0E6;">
+<body style="background-color: #FFF8DC;">
+    <header id="header">
+        <nav class="navbar navbar-expand-lg  navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+            <a href="@Url.Action("Main", "Home")" class="navbar-brand d-flex align-items-center">
                 <h1 class="m-0">
                     <i class="fa fa-building text-primary me-3"></i>Sifood
-                    <img src="~/images/SiFood_logo_BGclear.png" alt="Site Logo" style="height:70px; width: 90px" class="navbar-brand"  />
-@*                     <img src="~/assets/images/logo/SiFood_logo BGclear.png" alt="Site Logo" style="height:70px; width: 90px" class="navbar-brand" href="@Url.Action("Index", "Home")   />
- *@                    
+                    <img src="~/images/SiFood_logo_BGclear.png" alt="Site Logo" style="height:70px; width: 90px" class="navbar-brand"  />       
                 </h1>
             </a>
             <button type="button"
@@ -46,8 +44,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-3 py-lg-0">
-
-
                     @if (User.Identity.IsAuthenticated)
                     {
                         <a class="nav-item nav-link active" style="font-weight: bold; font-size: 14px;" asp-area="Stores" asp-controller="Home" asp-action="Main">首頁</a>
@@ -63,13 +59,10 @@
                     }
                     else
                     {
-                        
                     }
-
                 </div>
             </div>
             </nav>
-
     </header>
     <div class="container">
 

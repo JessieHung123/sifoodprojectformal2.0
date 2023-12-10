@@ -1,4 +1,4 @@
-﻿namespace SiFoodProjectFormal2._0.Areas.Admin.Views.Models
+﻿namespace SiFoodProjectFormal2._0.Areas.Admin.Models
 {
     public class SendMail
     {

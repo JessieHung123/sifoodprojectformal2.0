@@ -37,6 +37,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 
         public string Phone { get; set; } = null!;
 
-        public Array? CategoryList { get; set; }
+        public IEnumerable<string>? CategoryList { get; set; }
     }
 }

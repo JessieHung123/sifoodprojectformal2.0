@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SiFoodProjectFormal2._0.Areas.Admin.Views.Models;
+using SiFoodProjectFormal2._0.Areas.Admin.Models;
 using SiFoodProjectFormal2._0.Models;
 
 namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
