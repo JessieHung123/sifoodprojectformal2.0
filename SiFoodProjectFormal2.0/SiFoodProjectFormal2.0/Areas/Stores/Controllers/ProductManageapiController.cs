@@ -54,7 +54,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                 OrderedQty = x.OrderedQty,
                 PhotoPath = x.PhotoPath,
                 Description = x.Description,
-                RealeasedTime = x.RealeasedTime,
+                RealeasedTime = x.RealeasedTime.ToString("yyyy-MM-dd HH:mm:ss"),
                 SuggestPickUpTime = x.SuggestPickUpTime,
                 SuggestPickEndTime = x.SuggestPickEndTime,
             }).ToListAsync();
