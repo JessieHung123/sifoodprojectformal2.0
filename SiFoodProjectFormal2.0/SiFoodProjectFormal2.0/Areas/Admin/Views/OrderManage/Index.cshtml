@@ -1,15 +1,13 @@
-﻿@model IEnumerable<SiFoodProjectFormal2._0.Areas.Admin.Views.Models.OrderManageVM>
+﻿@model IEnumerable<OrderManageVM>
 @{
     Layout = "_AdminLayout";
-    // ViewData["Title"] = "訂單管理";
-   
-              <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
-              <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
-              <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
-              <link href="~/assets/css/theme.min.css" rel="stylesheet" />
 }
 @section Styles
-{
+ {
+    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
+    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+    <link href="~/assets/css/theme.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
   }
   <div class="text-center">
@@ -18,7 +16,7 @@
             <h2>訂單管理</h2>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="#">首頁</a></li>
+                    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="OrderManage" asp-action="Index">首頁</a></li>
                     <li class="breadcrumb-item active" aria-current="page">訂單管理</li>
                 </ol>
             </nav>

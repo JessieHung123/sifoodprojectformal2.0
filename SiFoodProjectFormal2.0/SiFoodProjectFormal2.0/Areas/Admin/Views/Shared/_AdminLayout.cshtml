@@ -17,13 +17,10 @@
     <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
 
-
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.ico" />
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
     @RenderSection("Styles", required: false)
-    <!-- Google tag (gtag.js) -->
-    <!-- End Tag -->
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/sifoodprojectformal.styles2.0.css" asp-append-version="true" />
@@ -34,12 +31,12 @@
             <div class="container">
                 <div class="row w-100 align-items-center gx-lg-2 gx-0">
                     <div class="col-xxl-2 col-lg-3">
-                        <a class="navbar-brand d-none d-lg-block">
-                            <img src="~/images/sifood_logo_bgclear.png" max-width="200" height="150" alt="eCommerce HTML Template">
+                        <a class="navbar-brand d-none d-lg-block" asp-area="Admin" asp-controller="OrderManage" asp-action="Index">
+                            <img src="~/images/sifood_logo_bgclear.png" max-width="50" height="50">
                         </a>
                         <div class="d-flex justify-content-between w-100 d-lg-none">
-                            <a class="navbar-brand">
-                                <img src="~/images/sifood_logo_bgclear.png" max-width="300" height="200" alt="eCommerce HTML Template">
+                            <a class="navbar-brand" asp-area="Admin" asp-controller="OrderManage" asp-action="Index">
+                                <img src="~/images/sifood_logo_bgclear.png" max-width="50" height="50">
                             </a>
                             <ul class="navbar-nav flex-column" id="sideNavbar">
                                 <li class="nav-item">
@@ -67,76 +64,22 @@
             <nav class="navbar navbar-expand-lg navbar-light navbar-default py-0 pb-lg-4 " aria-label="Offcanvas navbar large">
                 <div class="container">
                     <div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default" aria-labelledby="navbar-defaultLabel">
-                        <div class="offcanvas-header pb-1">
-                            <a href="./index.html"><img src="./assets/images/logo/freshcart-logo.svg" alt="eCommerce HTML Template"></a>
-                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
                         <div class="">
-                            <div class="d-block d-lg-none mb-4">
-                                <form action="#">
-                                    <div class="input-group ">
-                                        <input class="form-control rounded" type="search" placeholder="Search for products">
-                                        <span class="input-group-append">
-                                            <button class="btn bg-white border border-start-0 ms-n10 rounded-0 rounded-end" type="button">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                     class="feather feather-search">
-                                                    <circle cx="11" cy="11" r="8"></circle>
-                                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </form>
-                                <div class="mt-2">
-                                    <button type="button" class="btn  btn-outline-gray-400 text-muted w-100 " data-bs-toggle="modal"
-                                            data-bs-target="#locationModal">
-                                        <i class="feather-icon icon-map-pin me-2"></i>Pick Location
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="d-block d-lg-none mb-4">
-                                <a class="btn btn-primary w-100 d-flex justify-content-center align-items-center" data-bs-toggle="collapse"
-                                   href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    <span class="me-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                             fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                             class="feather feather-grid">
-                                            <rect x="3" y="3" width="7" height="7"></rect>
-                                            <rect x="14" y="3" width="7" height="7"></rect>
-                                            <rect x="14" y="14" width="7" height="7"></rect>
-                                            <rect x="3" y="14" width="7" height="7"></rect>
-                                        </svg>
-                                    </span> All Departments
-                                </a>
-                                <div class="collapse mt-2" id="collapseExample">
-                                    <div class="card card-body">
-                                        <ul class="mb-0 list-unstyled">
-                                            <li><a class="dropdown-item" href="./pages/shop-grid.html">Dairy, Bread & Eggs</a></li>
-                                            <li><a class="dropdown-item" href="./pages/shop-grid.html">Snacks & Munchies</a></li>
-                                            <li><a class="dropdown-item" href="./pages/shop-grid.html">Fruits & Vegetables</a></li>
-                                            <li><a class="dropdown-item" href="./pages/shop-grid.html">Cold Drinks & Juices</a></li>
-                                            <li><a class="dropdown-item" href="./pages/shop-grid.html">Breakfast & Instant Food</a></li>
-                                            <li><a class="dropdown-item" href="./pages/shop-grid.html">Bakery & Biscuits</a></li>
-                                            <li><a class="dropdown-item" href="./pages/shop-grid.html">Chicken, Meat & Fish</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="">
                                 <ul class="navbar-nav align-items-center ">
                                     <li class="nav-item dropdown w-100 w-lg-auto">
-                                        <a class="nav-link" role="button" asp-controller="StoreManage" asp-action="Index">
+                                        <a class="nav-link fw-bolder" role="button" asp-controller="OrderManage" asp-action="Index">
                                             訂單管理
                                         </a>
                                     </li>
+                                   
                                     <li class="nav-item w-100 w-lg-auto">
-                                        <a class="nav-link" role="button" asp-controller="MemberManage" asp-action="Index">
+                                        <a class="nav-link fw-bolder" role="button" asp-controller="MemberManage" asp-action="Index">
                                             顧客管理
                                         </a>
                                     </li>
                                     <li class="nav-item dropdown w-100 w-lg-auto">
-                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        <a class="nav-link dropdown-toggle fw-bolder" href="#" role="button" data-bs-toggle="dropdown"
                                            aria-expanded="false">商家</a>
                                         <ul class="dropdown-menu">
                                             <li><a class="dropdown-item" asp-controller="Storemanage" asp-action="StoreConfirm">商家審核</a></li>
@@ -156,11 +99,6 @@
             </div>
         </div>
     </div>
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - sifoodprojectformal - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <!-- Libs JS -->
@@ -176,10 +114,7 @@
     <script src="~/assets/libs/jquery-countdown/dist/jquery.countdown.min.js"></script>
     <script src="~/assets/js/vendors/countdown.js"></script>
     <script src="~/assets/libs/slick-carousel/slick/slick.min.js"></script>
-    <script src="~/assets/js/vendors/slick-slider.js"></script>
-    <script src="~/assets/libs/tiny-slider/dist/min/tiny-slider.js"></script>
     <script src="~/assets/js/vendors/tns-slider.js"></script>
-    <script src="~/assets/js/vendors/zoom.js"></script>
     <script src="~/assets/js/vendors/increment-value.js"></script>
 
 

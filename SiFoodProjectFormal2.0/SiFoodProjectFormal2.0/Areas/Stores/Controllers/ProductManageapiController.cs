@@ -20,12 +20,9 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             _webHostEnvironment = webHostEnvironment;
             _storeIdentityService = storeIdentityService;
         }
-
-
         public async Task<List<ProductManageVM>> GetAll()
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
-            //string targetStoreId = "S001";
             return await _context.Products
                 .Include(p => p.Category)
                 .Where(e => e.StoreId == targetStoreId && e.IsDelete == 1).Select(x => new ProductManageVM
@@ -45,11 +42,9 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                     SuggestPickEndTime = x.SuggestPickEndTime,
                 }).ToListAsync();
         }
-
         public async Task<List<ProductManageVM>> Filter(string? text)
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
-            //string targetStoreId = "S001";
 
             //找到今天之前上架的商品
             var productsToUpdate = await _context.Products
@@ -85,8 +80,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                 SuggestPickEndTime = x.SuggestPickEndTime,
             }).ToListAsync();
         }
-
-
         [HttpPut("{id}")]
         public async Task<string> SoftDelete(int id)
         {
@@ -195,7 +188,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         public async Task<string> putProduct(int id,[FromForm] PutProductVM putProductVM)
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
-            //string targetStoreId = "S001";
 
             if (id != putProductVM.ProductId)
             {

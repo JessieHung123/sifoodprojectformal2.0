@@ -300,7 +300,6 @@
                             alert("不支援的檔案上傳格式");
                         }
                     }
-   
                 },
                 insertFileChange: function (inputFile) {
                     let _this = this;
@@ -314,7 +313,6 @@
                             isDuplicate = true;
                             break;
                         }
-
                     }
                     if (isDuplicate == true) {
                         _this.startSeach();
@@ -354,12 +352,10 @@
                                     alert("更新失敗，請確認資料是否完整");
                                 }
                             }).then(data => {
-                                alert(data);
+                                // alert(data);
                             }).catch(err => {
                                 console.log(err)
                             });
-
-
                     }
                 },
                 softDelete(productId) {
@@ -409,12 +405,11 @@
                                     alert("更新失敗，請確認資料是否完整");
                                 }
                             }).then(data => {
-                                alert(data);
+                                // alert(data);
                             }).catch(err => {
                                 console.log(err)
                             });
                     }
-
                 },
             }
         }).component("paginate", VuejsPaginateNext).mount("#productapp")

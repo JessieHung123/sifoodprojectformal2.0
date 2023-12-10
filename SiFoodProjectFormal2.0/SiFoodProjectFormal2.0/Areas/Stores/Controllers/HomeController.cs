@@ -77,7 +77,7 @@ namespace sifoodprojectformal2._0.Areas.Stores.Controllers
 
         {
             // 假定的用戶ID，之後需要替換為當前登入用戶的ID
-            var loginuserId = "S001";
+            string loginuserId = _storeIdentityService.GetStoreId();
 
             IQueryable<Order> historyOrdersQuery = _context.Orders
                 // 添加這行以過濾該用戶的訂單
