@@ -23,6 +23,74 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         }
 
         // 取得歷史訂單
+        [HttpGet]
+        //public async Task<ActionResult<IEnumerable<HistoryOrderVM>>> GetHistoryOrders(string searchTerm = "", int pageSize = 5, int pageNumber = 1, string sortOption = "default")
+        //{
+        //    var query = _context.Orders.AsQueryable();
+
+        //    // 搜索過濾
+        //    if (!string.IsNullOrEmpty(searchTerm))
+        //    {
+        //        query = query.Where(o => o.OrderDetails.Any(od => od.Product.ProductName.Contains(searchTerm)));
+        //    }
+
+        //    // 排序
+        //    switch (sortOption.ToLower())
+        //    {
+        //        case "priceasc":
+        //            query = query.OrderBy(o => o.OrderDetails.Sum(od => od.Quantity * od.Product.UnitPrice) + o.ShippingFee);
+        //            break;
+        //        case "pricedesc":
+        //            query = query.OrderByDescending(o => o.OrderDetails.Sum(od => od.Quantity * od.Product.UnitPrice) + o.ShippingFee);
+        //            break;
+        //        case "dateasc":
+        //            query = query.OrderBy(o => o.OrderDate);
+        //            break;
+        //        case "datedesc":
+        //            query = query.OrderByDescending(o => o.OrderDate);
+        //            break;
+        //        default:
+        //            break; // 保持原有的默認排序方式
+        //    }
+
+        //    // 分頁
+        //    var totalItems = await query.CountAsync();
+        //    var orders = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        //    // 轉換為 ViewModel
+        //    var result = orders.Select(o => new HistoryOrderVM
+        //    {
+        //        StoreId = o.StoreId,
+        //        OrderId = o.OrderId,
+        //        OrderDate = o.OrderDate,
+        //        Status = o.Status.StatusName,
+        //        Quantity = o.OrderDetails.Sum(od => od.Quantity),
+        //        TotalPrice = Convert.ToInt32(o.OrderDetails.Sum(od => od.Quantity * od.Product.UnitPrice) + o.ShippingFee),
+        //        FirstProductPhotoPath = o.OrderDetails.FirstOrDefault()?.Product.PhotoPath,
+        //        FirstProductName = o.OrderDetails.FirstOrDefault()?.Product.ProductName,
+        //        // 加入 OrderDetails 轉換
+        //        OrderDetails = new HistoryOrderDetailVM
+        //        {
+        //            OrderId = o.OrderId,
+        //            OrderDate = o.OrderDate,
+        //            // ... 其他相關屬性
+        //            Items = o.OrderDetails.Select(od => new HistoryOrderDetailItemVM
+        //            {
+        //                PhotoPath = od.Product.PhotoPath,
+        //                ProductName = od.Product.ProductName,
+        //                UnitPrice = od.Product.UnitPrice,
+        //                Quantity = od.Quantity
+        //            }).ToList()
+        //        }
+        //    }).ToList();
+
+        //    // 返回分頁信息和數據
+        //    return Ok(new { TotalItems = totalItems, Orders = result });
+        //}
+
+
+
+        //為了改排序先註解掉----------------->
         public async Task<List<HistoryOrderVM>> GetHistoryOrders()
         {
             var loginUserId = "U002";  // 這裡應該用方法獲取當前用戶ID
@@ -46,7 +114,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
             return ordersList;
         }
-
+        //------------------>為了改排序先註解掉
 
         //=========歷史訂單========//
         //public async Task<IEnumerable<HistoryOrderVM>> HistoryOrders(string searchTerm = null, string sortOption = "Status", int pageSize = 20, int currentPage = 1)

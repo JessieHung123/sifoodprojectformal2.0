@@ -50,7 +50,7 @@
                             <div class="col-12">
                                 <div class="d-lg-flex justify-content-between align-items-center">
                                     <div class="mb-3 mb-lg-0">
-                                        <p class="mb-0">共 <span class="text-dark">1 </span> 筆</p>
+                                        <p class="mb-0">共 <span class="text-dark">{{ totalOrdersCount }}</span> 筆</p>
                                     </div>
 
                                     <!-- text搜索框-->
@@ -59,13 +59,13 @@
                                             <input class="form-control rounded" type="text" placeholder="Search for products" v-model="searchTerm">
                                             <span class="input-group-append">
                                                 <button class="btn bg-white" v-on:click="searchOrders">
+                                                    <!-- 放大鏡圖標 -->
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.414-1.415l-3.85-3.85a1.002 1.002 0 0 0-.114-.098zM13 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                                                     </svg>
                                                 </button>
-                                                <button class="btn bg-white">
-                                                    X
-                                                </button>
+                                                <!-- X 圖標（當有輸入時顯示） -->
+                                                <button class="btn bg-white" v-if="searchTerm.length > 0" v-on:click="clearSearch">X</button>
                                             </span>
                                         </div>
                                     </div>
@@ -85,8 +85,8 @@
                                         <select class="form-select" v-model="sortOption">
                                             <option value="default">預設排序</option>
                                             <option value="Status">訂單狀態</option>
-                                            <option value="priceAsc">金額：由低到高</option>
-                                            <option value="priceDesc">金額: 由高到低</option>
+                                            <option value="priceAsc">金額：由高到低</option>
+                                            <option value="priceDesc">金額: 由低到高</option>
                                             <option value="dateAsc">訂購日期：由新到舊</option>
                                             <option value="dateDesc">訂購日期：由舊到新</option>
                                         </select>
@@ -94,7 +94,13 @@
                                 </div>
                             </div>
                         </div>
-
+                        <!--搜尋結果錯誤顯示-->
+                        <div v-if="orders.length === 0">
+                            沒有找到匹配的訂單。
+                        </div>
+                        <div v-if="errorMessage" class="alert alert-danger">
+                            {{ errorMessage }}
+                        </div>
                         <div class="mt-10 table-responsive-xxl border-0">
                             <table class="table mb-0 text-nowrap table-centered">
                                 <thead class="bg-light">
@@ -307,16 +313,19 @@
 @section Scripts{
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <script>
         const historyApp = Vue.createApp({
             data() {
                 return {
                     orders: [],
                     //filter&分頁
-                    countPerPage: 5,
-                    pageNumber: 1,
+                    countPerPage: 5, //每頁顯示的數量
+                    pageNumber: 1, //當前頁碼
                     searchTerm: '',
                     sortOption: "default",
+                    errorMessage: "", // 初始化為空字符串
+                    totalOrdersCount: 0, //總訂單數量
                     //星星
                     currentRating: 0,
                     hoverRating: 0,
@@ -371,6 +380,18 @@
                 showTime(dateString) {
                     return new Date(dateString).toTimeString().split(' ')[0]
                 },
+
+                //filter
+                searchOrders() {
+                    this.pageNumber = 1; // 重置到第一頁
+                    this.loadOrders(); // 調用加載訂單的方法
+                },
+
+                clearSearch() {
+                    this.searchTerm = ''; // 清空搜尋條件
+                    this.searchOrders(); // 重新加載訂單
+                },
+
                 loadOrders() {
                     let _this = this;
                     fetch(`/api/HistoryOrderapi/GetHistoryOrders`)
@@ -379,8 +400,11 @@
                         .catch(err => console.error(err));
                 },
                 pageClick(num) {
-                    this.pageNumber = num;
+                    this.pageNumber = num; // 設置當前頁碼
+                    this.loadOrders(); // 加載新頁面的訂單
                 },
+
+
                 getDeliveryMethodClass(type) {
                     if (type == "外送") return "badge bg-light-info text-dark-info"
                     if (type == "自取") return "badge bg-light-danger text-dark-danger"
@@ -412,14 +436,7 @@
                             return "badge bg-secondary"; // 預設情況
                     }
                 },
-                searchOrders() {
-                    this.currentPage = 1;
-                    this.loadOrders();
-                },
-                clearSearch() {
-                    this.searchTerm = '';
-                    this.loadOrders();
-                },
+               
 
                 //星星
                 
@@ -471,25 +488,6 @@
                         });
                 }
 
-
-                // submitrating() {
-                //     fetch('/api/ordersapi/submitrating', {
-                //         method: 'post',
-                //         headers: {
-                //             'content-type': 'application/json',
-                //         },
-                //         body: json.stringify({
-                //             orderid: this.currentorderdetail.orderid,
-                //             rating: this.currentrating,
-                //             comment: this.comment,
-                //         })
-                //     })
-                //         .then(response => response.json())
-                //         .then(data => {
-                //             alert("評價提交成功");
-                //         })
-                //         .catch(err => console.error("提交評價出錯: ", err));
-                // },
             }
         }).component("paginate", VuejsPaginateNext).mount('#historyApp');
     </script>
