@@ -114,6 +114,8 @@
                     var _this = this
                     if (_this.vuePassword != _this.vuePasswordConfirm || _this.vueAccount == "" || _this.vueUserName == "" || _this.vuePassword == "") {
                         alert("註冊失敗");
+                    } else if (/[a-zA-Z]/.test(_this.vueUserName)) {
+                        alert("使用者名稱不能包含英文");
                     } else {
                         _this.loading = true;
                         var form = new FormData();

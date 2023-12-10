@@ -29,9 +29,9 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public IActionResult CheckOut()
         {
             ViewData["MerchantID"] = _configuration.GetSection("MerchantID").Value;
-            ViewData["ReturnURL"] = $"https://950c-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackReturn";//上線換網址記得改
-            ViewData["NotifyURL"] = $"https://950c-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
-            ViewData["ClientBackURL"] = $"https://950c-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
+            ViewData["ReturnURL"] = $"https://b869-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackReturn";//上線換網址記得改
+            ViewData["NotifyURL"] = $"https://b869-114-34-121-89.ngrok-free.app/Users/Transaction/CallbackNotify";//上線換網址記得改
+            ViewData["ClientBackURL"] = $"https://b869-114-34-121-89.ngrok-free.app/Users/Transaction/Checkout"; //上線換網址記得改
             return View();
         }
 
@@ -71,6 +71,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
             string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
+            User? user = _context.Users.FirstOrDefault(x => x.UserName == model.UserName);
+            user.TotalOrderAmount += model.TotalPrice;
             Order order = new()
             {
                 OrderDate = DateTime.Now,
@@ -124,6 +126,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             string StoreId = _context.Stores.Where(s => s.StoreName == model.StoreName).Select(s => s.StoreId).Single();
             string UserId = _context.Users.Where(x => x.UserName == model.UserName).Select(x => x.UserId).Single();
+            User? user = _context.Users.FirstOrDefault(x => x.UserName == model.UserName);
+            user.TotalOrderAmount += model.TotalPrice;
             Order order = new()
             {
                 OrderDate = DateTime.Now,
