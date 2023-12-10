@@ -356,17 +356,29 @@
                     var start = (_this.pageNumber - 1) * _this.countPerPage;
                     var end = start + _this.countPerPage;
 
-                    var arr = [];
-                    _this.orders
+                    // 篩選訂單
+                    var filteredOrders = _this.searchTerm ? _this.orders.filter(function (order) {
+                        return order.orderId.includes(_this.searchTerm) || order.firstProductName.includes(_this.searchTerm);
+                    }) : _this.orders;
 
+                    // 排序
+                    switch (_this.sortOption) {
+                        case "priceDesc":
+                            filteredOrders.sort((x, y) => y.totalPrice - x.totalPrice);
+                            break;
+                        case "priceAsc":
+                            filteredOrders.sort((x, y) => x.totalPrice - y.totalPrice);
+                            break;
+                        case "dateDesc":
+                            filteredOrders.sort((x, y) => new Date(y.orderDate).getTime() - new Date(x.orderDate).getTime());
+                            break;
+                        case "dateAsc":
+                            filteredOrders.sort((x, y) => new Date(x.orderDate).getTime() - new Date(y.orderDate).getTime());
+                            break;
+                        // 如果是 "default" 或其他值，則不進行排序
+                    }
 
-                    if (_this.sortOption == "default") return _this.orders.slice(start, end);
-                    return _this.orders.sort(function (x, y) {
-                        if (_this.sortOption == "priceDesc") return x.totalPrice - y.totalPrice;
-                        if (_this.sortOption == "priceAsc") return y.totalPrice - x.totalPrice;
-                        if (_this.sortOption == "dateDesc") return new Date(x.orderDate).getTime() - new Date(y.orderDate).getTime();
-                        if (_this.sortOption == "dateAsc") return new Date(y.orderDate).getTime() - new Date(x.orderDate).getTime();
-                    }).slice(start, end)                    
+                    return filteredOrders.slice(start, end);
                 },
                 //評論剩幾個字
                 remainingCharacters() {
