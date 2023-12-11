@@ -122,7 +122,7 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("/StoreManage/SendSetPasswordEmail")]
-        public string SendSetPasswordEmail([FromBody]SendMail model)
+        public string SendSetPasswordEmail([FromBody] SendMail model)
         {
             SmtpClient client = new()
             {
