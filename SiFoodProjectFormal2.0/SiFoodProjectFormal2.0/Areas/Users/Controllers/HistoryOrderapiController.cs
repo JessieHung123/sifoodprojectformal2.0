@@ -13,13 +13,13 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        
+        private readonly IUserIdentityService _userIdentityService;
 
-        public HistoryOrderapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
+        public HistoryOrderapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IUserIdentityService userIdentityService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
-           
+            _userIdentityService = userIdentityService;
         }
 
         // 取得歷史訂單
@@ -93,7 +93,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         //為了改排序先註解掉 然後又復原----------------->
         public async Task<List<HistoryOrderVM>> GetHistoryOrders()
         {
-            var loginUserId = "U002";  // 這裡應該用方法獲取當前用戶ID
+            //var loginUserId = "U002";  // 這裡應該用方法獲取當前用戶ID
+            var loginUserId = _userIdentityService.GetUserId();
 
             var ordersQuery = _context.Orders
                 .Where(o => o.UserId == loginUserId)
@@ -121,12 +122,12 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         //{
 
         //    // 當前登入用戶的ID or 寫死ID
-        //    //var loginuserId = _userIdentityService.GetUserId();
-        //    var loginuserId = "U002";
+        //    //var loginUserId = _userIdentityService.GetUserId();
+        //    var loginUserId = "U002";
 
         //    // 首先應用過濾條件
         //    var historyOrdersQuery = _context.Orders
-        //        .Where(o => o.UserId == loginuserId);
+        //        .Where(o => o.UserId == loginUserId);
 
         //    if (!string.IsNullOrWhiteSpace(searchTerm))
         //    {
