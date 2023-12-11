@@ -1,17 +1,7 @@
 ﻿@section Styles{
-    <title>Store Single eCommerce HTML Template - FreshCart </title>
-
-    <!-- Libs CSS -->
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
    
-    <!-- Google tag (gtag.js) -->
                         @* Carousel *@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -165,7 +155,7 @@
                                             <span v-else-if="stores.commentRank / stores.commentCount >= 4.5" class="bi bi-star-half text-warning"></span>
                                         </td>
 
-                                    </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10 > 0 ? Math.round(stores.commentRank / stores.commentCount * 10) / 10 : 0 }}</span>
+                                    </small><span class="ms-2">{{isNaN(this.stores.commentRank / this.stores.commentCount) ? '0' : Math.round(this.stores.commentRank / this.stores.commentCount * 10) / 10}}</span>
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
@@ -184,7 +174,6 @@
                                             </a>
                                         </strong>
                                     </button>
-                                    @* <button href="#" class="navigate-button"><strong>導航</strong></button> *@
                                     <button @@click="showDirections" class="navigate-button"><strong>導航</strong></button>
                                 </div>
                             </div>
@@ -205,7 +194,7 @@
 
                             <div class="p-8">
                                 <!-- img -->
-                                <img :src="stores.photosPath" alt="Description of the image" class="img-fluid rounded">
+                                <img :src="stores.photosPath" alt="Store image" class="img-fluid rounded" style="width: 600px;">
                             </div>
                             <div class="align-self-center p-8">
                                 <div class="mb-3">
@@ -214,7 +203,7 @@
                                 <div class="position-relative">
                                     <input v-model.lazy="keyWords" type="search" class="form-control" placeholder="搜尋店家商品" @@keyup.enter="searchProducts">
                                     <span class="position-absolute end-0 top-0 mt-2 me-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search" style="cursor: pointer;" @@click="searchProducts">
                                             <circle cx="11" cy="11" r="8"></circle>
                                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                         </svg>
@@ -257,10 +246,6 @@
                                 <div class="card card-product">
                                     <div class="card-body">
                                         <div class="text-center position-relative">
-                                            <!-- badge-二期*** -->
-                                            @* <div class="position-absolute top-0 start-0">
-                                            <span class="badge bg-danger">Sale</span>
-                                            </div> *@
                                             <a :href="'/Users/Home/Products/' + item.productId">
                                                 <!-- img --><img :src="item.photoPath"
                                                                  alt="Grocery Ecommerce Template"
@@ -287,7 +272,6 @@
                                         <div class="d-flex justify-content-between align-items-center mt-3">
                                             <div>
                                                 <span class="text-dark">${{item.unitPrice}}</span>
-                                                @****二期 <span class="text-decoration-line-through text-muted">$***</span> *@
                                             </div>
 
                                         </div>
@@ -426,15 +410,8 @@
                         if (this.selectedCategory && this.selectedCategory !== "全部") {
                             filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
                         }
-                        // if (this.selectedCategory) {
-                        //     this.searchKeyWords = "";
-                        //     if (this.selectedCategory !== "全部") {
-                        //         filteredProducts = filteredProducts.filter(item => item.categoryName === this.selectedCategory);
-                        //     }
-                        // }
                         //search filter
                         if (this.searchKeyWords && this.searchKeyWords.trim() !== "") {
-                            // this.selectedCategory = "";//改
                             const searchQuery = this.searchKeyWords.toLowerCase();
                             filteredProducts = filteredProducts.filter(item =>
                                 item.productName.toLowerCase().includes(searchQuery) ||
@@ -500,11 +477,9 @@
                                 if (!response.ok) {
                                     throw new Error(`${response.status}`);
                                 }
-                                // return response;
                                 return response.json()
                             })
                             .then(result => {
-                                // _this.isFavorite = result;
                                 _this.isFavorite = result.isFavorite;
                             })
                             .catch(error => {
@@ -534,7 +509,11 @@
                                     return response.text();
                                 })
                                 .then(result => {
-                                    alert(result);
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '成功!',
+                                        text: result
+                                    });
                                     this.isFavorite = true;
                                 })
                                 .catch(error => {
@@ -577,7 +556,11 @@
                                 return response.text();
                             })
                             .then(result => {
-                                alert(result);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '成功!',
+                                    text: result
+                                });
                                 this.isFavorite = false;
                             })
                             .catch(error => {
@@ -596,7 +579,6 @@
                                 return response.json();
                             })
                             .then(data => {
-                                // alert(JSON.stringify(data));
                                 _this.stores = data[0];
                                 _this.products = data[0].products;
                                 _this.comment = data[0].comment;
@@ -605,9 +587,7 @@
                                 if (isLoggedIn) {
                                     _this.getFavoriteStatus();
                                 }
-                                // console.table(_this.stores)
                             }).catch(error => {
-                                alert(error);
                                 console.log('error', error);
                             });
                     },

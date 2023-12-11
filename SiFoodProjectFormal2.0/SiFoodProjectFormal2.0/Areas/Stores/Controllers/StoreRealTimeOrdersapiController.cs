@@ -30,16 +30,10 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
         {
             RecurringJob.AddOrUpdate("CheckUnconfirmedOrdersJob", () => CheckUnconfirmedOrders(), "*/1 * * * *");
         }
-        // GET: api/StoreRealTimeOrdersapi
-        //[HttpGet]
-        //public async Task<IEnumerable<Order>> GetOrders()
-        //{
-        //    return _context.Orders;
-        //}
 
-        // GET: api/StoreRealTimeOrdersapi/5
+
         [HttpGet("filter")]
-        public object GetOrder(string? searchKeyWords, int status)
+        public async Task<List<OrderVM>> GetOrder(string? searchKeyWords, int status)
         {
             string storeId = _storeIdentityService.GetStoreId();
             TimeZoneInfo taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
@@ -47,12 +41,12 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             DateTime taiwanTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, taiwanTimeZone);
             //List<int> StatusIdToCheck = new List<int> {1, 2, 3, 4};
             //var order = await _context.Orders.FindAsync(id);
-            CheckUnconfirmedOrders();
-            return _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product)
+            await CheckUnconfirmedOrders();
+            return await _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product)
                                                  .Where(c => c.StoreId == storeId &&
                                                  c.Status.StatusId != 5 &&
                                                  c.Status.StatusId != 6 &&
-                                                 c.Status.StatusId != 7&&
+                                                 c.Status.StatusId != 7 &&
                                                  (status == 0 || c.Status.StatusId == status) &&
                                                  (string.IsNullOrEmpty(searchKeyWords) ||
                                                  c.OrderId.Contains(searchKeyWords) ||
@@ -87,7 +81,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                      Subtotal = z.OrderDetails.Sum(p => p.Quantity * p.Product.UnitPrice),
                      TotalQuantity = z.OrderDetails.Sum(p => p.Quantity),
                      DriverFullName = z.Driver.FullName
-                 });
+                 }).ToListAsync();
         }
 
         // PUT: api/StoreRealTimeOrdersapi/5
@@ -107,7 +101,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderExists(id))
+                if (!await OrderExists(id))
                 {
                     return "取消失敗";
                 }
@@ -119,27 +113,27 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             return "已完成";
 
         }
-        public void CheckUnconfirmedOrders()
+        public async Task CheckUnconfirmedOrders()
         {
             TimeZoneInfo taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
             DateTime utcNow = DateTime.UtcNow;
             DateTime taiwanTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, taiwanTimeZone);
-            var unconfirmedOrders = _context.Orders.Where(o => o.Status.StatusId == 1 &&  o.OrderDate.AddMinutes(15) < taiwanTime);
+            var unconfirmedOrders = _context.Orders.Where(o => o.Status.StatusId == 1 && o.OrderDate.AddMinutes(15) < taiwanTime);
             foreach (Order? order in unconfirmedOrders)
             {
-                order.StatusId = 7; 
+                order.StatusId = 7;
                 _context.Entry(order).State = EntityState.Modified;
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         // POST: api/StoreRealTimeOrdersapi
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-          if (_context.Orders == null)
-          {
-              return Problem("Entity set 'Sifood3Context.Orders'  is null.");
-          }
+            if (_context.Orders == null)
+            {
+                return Problem("Entity set 'Sifood3Context.Orders'  is null.");
+            }
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
@@ -166,9 +160,9 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             return NoContent();
         }
 
-        private bool OrderExists(string id)
+        private async Task<bool> OrderExists(string id)
         {
-            return (_context.Orders?.Any(e => e.OrderId == id)).GetValueOrDefault();
+            return _context.Orders != null && await _context.Orders.AnyAsync(e => e.OrderId == id);
         }
     }
 }
