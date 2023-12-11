@@ -20,12 +20,12 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         Sifood3Context _context;
 
         //登入
-       // private readonly IUserIdentityService _userIdentityService;
+        private readonly IUserIdentityService _userIdentityService;
 
         public MemberController(Sifood3Context context, IUserIdentityService userIdentityService)
         {
             _context = context;
-        //    _userIdentityService = userIdentityService;
+            _userIdentityService = userIdentityService;
         }
 
         [Authorize]
@@ -33,16 +33,10 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            //if (id == null || _context.Users == null)
-            //{
-            //    return NotFound();
-            //}
-
-            var loginuserId = "U002";
-            //var loginuserId = _userIdentityService.GetUserId();
+            var loginUserId = _userIdentityService.GetUserId();
 
             //先測試寫死ID，之後要改成取當前登入者的資料
-            var user = await _context.Users.Where(u => u.UserId == loginuserId).SingleAsync();
+            var user = await _context.Users.Where(u => u.UserId == loginUserId).SingleAsync();
 
             if (user != null)
             {
@@ -55,7 +49,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     UserPhone = user.UserPhone,
                     UserBirthDate = user.UserBirthDate
                 };
-                ViewBag.ID = loginuserId;
+                ViewBag.ID = loginUserId;
 
                 return View(viewModel);
             }
@@ -122,7 +116,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 }
                 else
                 {
-                    return "新密碼與舊密碼不符";
+                    return "密碼輸入錯誤請確認";
                 }
             }
 
@@ -137,8 +131,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
 
             // 當前登入用戶的ID or 寫死ID
-            //var loginuserId = _userIdentityService.GetUserId();
-            var loginuserId ="U002";
+            var loginuserId = _userIdentityService.GetUserId();
+            //var loginUserId ="U002";
 
             // 首先應用過濾條件
             var historyOrdersQuery = _context.Orders
@@ -331,15 +325,15 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         {
             // var userId = "當前用戶的ID"; // 從用戶會話或身份驗證系統獲取
             //暫時先寫死
-            var loginuserId = "U002";
-            //var loginuserId = _userIdentityService.GetUserId();
+            //var loginUserId = "U002";
+            var loginUserId = _userIdentityService.GetUserId();
             //加入計算收藏幾間店家的功能
-            var favoriteStoresCount = _context.Favorites.Count(f => f.UserId == loginuserId);
+            var favoriteStoresCount = _context.Favorites.Count(f => f.UserId == loginUserId);
             ViewBag.FavoriteStoresCount = favoriteStoresCount;
 
             // 查詢收藏的商家
             var favoriteStores = await _context.Favorites
-                .Where(f => f.UserId == loginuserId)
+                .Where(f => f.UserId == loginUserId)
                 .Include(f => f.Store)
                 .Select(f => new FavoriteVM
                 {
@@ -365,8 +359,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
 
             // 假設 currentUserId 是當前用戶的 UserId
             // 從用戶身份驗證系統獲取,現在先暫時指定鈺晴首頁使用的ID
-            //var loginuserId = _userIdentityService.GetUserId();
-            var loginuserId = "U002";
+            var loginuserId = _userIdentityService.GetUserId();
+            //var loginUserId = "U002";
 
 
             // 根據 selectedFavorites 刪除收藏項目

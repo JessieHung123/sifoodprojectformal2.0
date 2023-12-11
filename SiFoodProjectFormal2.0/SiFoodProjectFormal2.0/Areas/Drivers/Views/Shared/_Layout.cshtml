@@ -14,12 +14,7 @@
     <link rel="stylesheet" href="~/assets/css/theme.min.css" />
     <style>
         .container {
-            /* max-width: 420px; */
-            /* margin: 20px auto; */
             background-color: #fff;
-            /* border: 1px solid #ccc; */
-            /* border-radius: 5px; */
-            /* padding: 20px; */
             height: min-content;
         }
         .order-category {
@@ -27,11 +22,8 @@
             background-color: rgb(217, 240, 170);
         }
         .order-details {
-            /* padding: 5px; */
-            /* display: none; */
             background-color: #f9f9f9;
             overflow: auto;
-            /* max-height: 200px; */
         }
         .order-details1 {
             display: 0;
@@ -76,77 +68,39 @@
         }
     </style>
     @await RenderSectionAsync("Styles", required: false)
+    
 </head>
 <body>
-    <div class="container">
-        <div class="sticky-sm-top box0">
-            <a href='/Drivers/Home/OrderList/'><img src="~/assets/images/logo/SiFood_logo_BGclear.png" class="rounded float-start" alt="logo" height="40px"></a>
-            <button class="btn btn-primary rounded float-end">登出</button>
-        </div>
-        <div id="driverMap">
-            <section id="map">
-            </section>
-        </div>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/Drivers/Home/OrderList/"><img src="~/assets/images/logo/SiFood_logo_BGclear.png" class="rounded float-start" alt="logo" height="40px"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0 me-auto">
+                        <li class="ms-auto nav-item">
+                            <a class="nav-link active fw-bolder" aria-current="page" href="/Drivers/Home/FinishOrder">歷史訂單</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
         <div>
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
         </div>
     </div>
+    @await RenderSectionAsync("Scripts", required: false)
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Javascript-->
     <script src="~/assets/libs/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/assets/js/theme.min.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI" async defer></script>
-    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
-    <script>
-        var setDriverMap = Vue.createApp({
-            data: function () {
-                return {
-                    map: null,
-                }
-            },
-            mounted() {;
-                navigator.geolocation.getCurrentPosition(this.showPosition);
-                window.addEventListener('load', () => {
-                    this.setMap();
-                    setInterval(()=> {
-                        navigator.geolocation.getCurrentPosition(this.showPosition);
-                        this.setMap();
-                    },30000)
-                });
-            },
-            methods: {
-                showPosition(position) {
-                    this.current = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    }
-                },
-                setMap() {
-                    let location = {
-                        lat: 25.0520749,
-                        lng: 121.5430955
-                    };
-                    this.map = new google.maps.Map(document.getElementById('map'), {
-                        center: this.current == null ? location : this.current,
-                        zoom: 16,
-                        mapTypeId: 'terrain',
-                        mapTypeControl: false,
-                        fullscreenControl: false
-                    });
-                    let currentLocation = new google.maps.Marker({
-                        position: this.current == null ? location : this.current,
-                        icon: "https://img.onl/195tB0",
-                        map: this.map
-                    });
-                }
-            },
-        }).mount("#driverMap");
-    </script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
 

@@ -67,7 +67,6 @@
                                 <p class="card-text text-body">
                                     {{item.description}}
                                 </p>
-                                
                                     <div class="d-flex align-items-center align-bottom mt-3">
                                         <div>
                                             <small class="text-warning">
@@ -75,7 +74,6 @@
                                             </small> <span class="text-muted">{{item.commentRank}} ({{item.commentCount}})</span>
                                         </div>
                                     </div>
-                                
                             </div>
                            </div>
 
@@ -294,7 +292,7 @@
 
                         })
                         .catch(error => {
-                            alert(error);
+                            console.log(error);
                         })
                 },
             },

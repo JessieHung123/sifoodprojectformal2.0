@@ -1,7 +1,6 @@
 ﻿using SiFoodProjectFormal2._0.Models;
-using SiFoodProjectFormal2._0.Areas.Admin.Views.Models;
 
-namespace SiFoodProjectFormal2._0.Areas.Admin.Views.Models
+namespace SiFoodProjectFormal2._0.Areas.Admin.Models
 {
     public class OrderManageVM
     {
@@ -16,8 +15,8 @@ namespace SiFoodProjectFormal2._0.Areas.Admin.Views.Models
         public ICollection<UserAddress>? UserAddress { get; internal set; }
         public DateTime OrderDate { get; set; }
         public string? StatusName { get; internal set; }
-        public decimal ProductUnitPrice { get;  set; }
-        public string? StoreName { get;  set; }
+        public decimal ProductUnitPrice { get; set; }
+        public string? StoreName { get; set; }
         public string? StorePhone { get; set; }
         public string? StoreAddress { get; set; }
         public decimal Total { get; set; }

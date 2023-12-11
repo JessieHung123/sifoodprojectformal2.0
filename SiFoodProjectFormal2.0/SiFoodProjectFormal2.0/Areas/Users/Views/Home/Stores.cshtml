@@ -8,6 +8,9 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+   
     <!-- Google tag (gtag.js) -->
                         @* Carousel *@
     <!-- Font Awesome -->
@@ -162,7 +165,7 @@
                                             <span v-else-if="stores.commentRank / stores.commentCount >= 4.5" class="bi bi-star-half text-warning"></span>
                                         </td>
 
-                                    </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10}}</span>
+                                    </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10 > 0 ? Math.round(stores.commentRank / stores.commentCount * 10) / 10 : 0 }}</span>
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
@@ -273,7 +276,7 @@
                                         </h2>
                                         <!-- Remaining Quantity -->
                                         <div class="mb-1">
-                                            <small>剩餘數量: {{item.avalibleQty}}</small>
+                                            <small>剩餘數量: {{item.avalibleQty>0?item.avalibleQty:0 }}</small>
                                         </div>
                                         <!-- Estimated Pickup Time -->
                                         <div class="mb-1">
@@ -375,7 +378,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
         <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
         @* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script> *@
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
             var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
@@ -470,7 +473,6 @@
                         const destination = encodeURI(this.stores.address);
                         const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
 
-                        // Open the Google Maps URL in a new tab or window
                         window.open(directionsUrl, '_blank');
                     },
 
@@ -492,8 +494,7 @@
                     },
                     getFavoriteStatus() {
                         let _this = this;
-                        const storeId = "S001"
-                        // const userId = "U001"
+                        let storeId = window.location.pathname.slice("19");
                         fetch(`/api/StoreProductsapi/favorite/status/${storeId}`)
                             .then(response => {
                                 if (!response.ok) {
@@ -512,10 +513,8 @@
                     },
                     saveToFavorites() {
                         if (isLoggedIn) {
-                            const storeId = "S001";
-                            // const userId = "U001";
+                            let storeId = window.location.pathname.slice("19");
                             let raw = {
-                                // userId: userId,
                                 storeId: storeId,
                             }
                             var requestOptions = {
@@ -543,14 +542,26 @@
                                 });
                         }
                         else {
-                            alert("請先登入")
+                            Swal.fire({
+                                title: "請先登入",
+                                text: "是否前往登入註冊畫面？",
+                                icon: "info",
+                                showCancelButton: true,
+                                confirmButtonText: "前往",
+                                cancelButtonText: "取消",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/Users/Account/LoginRegister';
+                                } else {
+                                    Swal.fire("取消操作", "", "info");
+                                }
+                            });
                         }
 
                     },
                     removeFromFavorites() {
-                        const storeId = "S001";
-                        // const userId = "U001";
-                        var raw = JSON.stringify({ userId, storeId });
+                        let storeId = window.location.pathname.slice("19");
+                        var raw = JSON.stringify({storeId});
                         const requestOptions = {
                             method: 'DELETE',
                             headers: {

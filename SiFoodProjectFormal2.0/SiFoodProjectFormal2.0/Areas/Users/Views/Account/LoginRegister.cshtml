@@ -1,8 +1,4 @@
 ﻿@section Styles {
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
     <link href="~/css/loginsite.css" rel="stylesheet" />
 }
 
@@ -29,6 +25,9 @@
                                             <input type="email" v-model="vueAccount" class="form-control" id="inputEmail4" placeholder="Email" required="">
                                         </div>
                                         <div class="col-12">
+                                            <input type="text" v-model="vueUserName" class="form-control" id="inputEmail5" placeholder="UserName" required="">
+                                        </div>
+                                        <div class="col-12">
                                             <div class="password-field position-relative">
                                                 <input v-bind:type="registerPwdShowType" v-model="vuePassword" id="fakePassword" placeholder="Enter Password" class="form-control" required="">
                                                 <span><i id="passwordToggler" v-bind:class="registerPwdShowClass" @@click="registerPwdShow = !registerPwdShow"></i></span>
@@ -50,47 +49,38 @@
                     </div>
                 </div>
             </div>
-
             <div class="col">
                 <div class="my-lg-8 my-8">
                     <div class="container">
-                        <!-- row -->
                         <div class="row justify-content-center align-items-center">
-                            <!-- col -->
                             <div>
                                 <div>
                                     <h1 class="mb-1 h2 fw-bold">登入Sifood</h1>
                                     <p>歡迎回來Sifood, 登入並開始享受美食!</p>
                                 </div>
-
                                 <form method="post">
                                     <div class="row g-4">
-                                        <!-- row -->
-
                                         <div class="col-12">
-                                            <!-- input -->
                                             <input type="email" class="form-control" name="Account" placeholder="Email" required="">
                                         </div>
                                         <div class="col-12">
-                                            <!-- input -->
                                             <div class="password-field position-relative">
                                                 <input v-bind:type="loginPwdToggleType" id="fakePassword3" name="Password" placeholder="Enter Password" class="form-control" required="">
                                                 <span><i id="passwordToggler" v-bind:class="loginPwdToggleClass" @@click="loginPwdShow = !loginPwdShow"></i></span>
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <!-- input -->
                                             <div class="d-flex justify-content-end">
                                                 <div>忘記密碼? <a asp-controller="Account" asp-action="ForgotPassword">重設密碼</a></div>
                                             </div>
                                         </div>
+                                        <div style="height:40px"></div>
                                         <div style="height:3px"></div>
                                         <div class="col-12 d-grid">
                                             <button type="submit" class="btn btn-primary" style="height:43px" @@click="login">登入</button>
                                         </div>
                                     </div>
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -101,10 +91,6 @@
 </div>
 
 @section Scripts {
-    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-    <script src="~/assets/js/theme.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -114,6 +100,7 @@
             data: function () {
                 return {
                     vueAccount: "",
+                    vueUserName: "",
                     vuePassword: "",
                     vuePasswordConfirm: "",
                     loading: false,
@@ -125,13 +112,14 @@
             methods: {
                 register() {
                     var _this = this
-                    if (_this.vuePassword != _this.vuePasswordConfirm) {
-                        alert("密碼輸入不一致");
+                    if (_this.vuePassword != _this.vuePasswordConfirm || _this.vueAccount == "" || _this.vueUserName == "" || _this.vuePassword == "") {
+                        alert("註冊失敗");
                     } else {
                         _this.loading = true;
                         var form = new FormData();
                         form.append("EmailAccount", _this.vueAccount);
                         form.append("Password", _this.vuePassword);
+                        form.append("UserName", _this.vueUserName);
                         axios.post(`/Account/PostAccount`, form, {
                             headers: {
                                 "Content-Type": "multipart/form-data"
@@ -146,6 +134,7 @@
                                 _this.vueAccount = "";
                                 _this.vuePassword = "";
                                 _this.vuePasswordConfirm = "";
+                                _this.vueUserName = "";
                             }
                             _this.loading = false;
                         }).catch(err => {

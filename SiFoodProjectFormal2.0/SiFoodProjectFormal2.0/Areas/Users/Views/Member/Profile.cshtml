@@ -83,7 +83,7 @@
                             <!-- 現在密碼輸入欄位 -->
                             <div class="mb-3 col">
                                 <label class="form-label">現在密碼</label>
-                                <input type="password" class="form-control" placeholder="**********" v-bind:readonly="allowEnter" v-model="oldPassword">
+                                    <input type="password" ref="currentPasswordInput" class="form-control" placeholder="**********" v-bind:readonly="allowEnter" v-model="oldPassword">
                                 <span class="text-danger"></span>
                             </div>
                             <!-- 新密碼輸入欄位 -->
@@ -101,26 +101,12 @@
                     <!-- 重設密碼連結 -->
                     <p class="mb-4">
                         想要更新密碼嗎?
-                        <button class="btn btn-primary d-flex align-items-center justify-content-center" @@click="allowEnter = !allowEnter" style="height:30px;width:135px">按這裡輸入密碼</button>
+                            <button class="btn btn-primary d-flex align-items-center justify-content-center" @@click="toggleAndFocus()" style="height:30px;width:135px">按這裡輸入密碼</button>
                     </p>
                 </div>
 
                 <!-- 一般性錯誤消息 -->
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @*  <hr class="my-10">
-                <div class="ms-10 mb-10">
-                <!-- heading -->
-                <h5 class="mb-4">刪除帳號</h5>
-                <p class="mb-2">你想要刪除在惜食的帳號嗎？</p>
-                <p class="mb-5">刪除帳號就沒辦法再享有實惠又環保的愛惜食物購買平台喔～</p>
-                <!-- btn -->
-                <a href="#" class="btn btn-outline-danger">我確定要刪除帳號</a>
-                </div>
-                </div>
-                </div>
-                </section>
-                </main>*@
-                
             </div>
         </div>
     </div>
@@ -180,11 +166,19 @@
                         }
                     }).then(response => {
                         alert(response.data);
-                        window.location.href = 'https://localhost:7042/Users/Member/Profile'
+                        window.location.href = '/Users/Member/Profile'
                     }).catch(err => {
                         alert(err);
                     })
-                },                  
+                },
+                toggleAndFocus() {
+                    this.allowEnter = !this.allowEnter;
+                    if (!this.allowEnter) {
+                        this.$nextTick(() => {
+                            this.$refs.currentPasswordInput.focus();
+                        });
+                    }
+                },
             },
             mounted() {
                 this.userEmail = document.querySelector("#email").value;

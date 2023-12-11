@@ -10,6 +10,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         public decimal UnitPrice { get; set; }
 
         public string StoreName { get; set; } = null!;
+        public string StoreId { get; set; } = null!;
 
         public string Address { get; set; } = null!;
 

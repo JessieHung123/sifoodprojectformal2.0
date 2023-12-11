@@ -5,7 +5,6 @@
     ViewData["Title"] = "商品頁面";
 }
 <body>
-
     <main id="product">
         <div class="mt-4">
             <div class="container">
@@ -17,7 +16,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item"><a href="#">首頁</a></li>
-                                <li class="breadcrumb-item"><a href="#">{{productData.storeName}}</a></li>
+                                <li class="breadcrumb-item"><a :href="'/Users/Home/Stores/'+productData.storeId">{{productData.storeName}}</a></li>
                                 <li class="breadcrumb-item active" aria-current="page" v-cloak>{{productData.productName}}</li>
                             </ol>
                         </nav>
@@ -88,7 +87,7 @@
                     </div>
                 </div>
         </section>
-        <!-- 前次瀏覽的商品? -->
+        <!-- 前次瀏覽的商品 -->
         <section class="my-lg-10 my-10">
             <div class="container">
                 <!-- row -->
@@ -196,13 +195,6 @@
             },
             mounted: function () {
                 this.getProductApi();
-            },
-            watch: {
-                // number(newValue) {
-                //     if (newValue > this.remainingStock) {
-                //         alert("必須小於庫存數量!");
-                //     }
-                // }
             },
             methods: {
                 getProductApi: function () {

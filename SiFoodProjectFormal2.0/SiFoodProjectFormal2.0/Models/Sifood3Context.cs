@@ -17,15 +17,29 @@ public partial class Sifood3Context : DbContext
 
     public virtual DbSet<Admin> Admins { get; set; }
 
+    public virtual DbSet<AggregatedCounter> AggregatedCounters { get; set; }
+
     public virtual DbSet<Cart> Carts { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Comment> Comments { get; set; }
 
+    public virtual DbSet<Counter> Counters { get; set; }
+
     public virtual DbSet<Driver> Drivers { get; set; }
 
     public virtual DbSet<Favorite> Favorites { get; set; }
+
+    public virtual DbSet<Hash> Hashes { get; set; }
+
+    public virtual DbSet<Job> Jobs { get; set; }
+
+    public virtual DbSet<JobParameter> JobParameters { get; set; }
+
+    public virtual DbSet<JobQueue> JobQueues { get; set; }
+
+    public virtual DbSet<List> Lists { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
 
@@ -34,6 +48,14 @@ public partial class Sifood3Context : DbContext
     public virtual DbSet<Payment> Payments { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
+
+    public virtual DbSet<Schema> Schemas { get; set; }
+
+    public virtual DbSet<Server> Servers { get; set; }
+
+    public virtual DbSet<Set> Sets { get; set; }
+
+    public virtual DbSet<State> States { get; set; }
 
     public virtual DbSet<Status> Statuses { get; set; }
 
@@ -57,7 +79,20 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.Account).HasMaxLength(30);
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.Name).HasMaxLength(30);
-            entity.Property(e => e.Password).HasMaxLength(30);
+            entity.Property(e => e.Password).HasMaxLength(64);
+            entity.Property(e => e.PasswordSalt).HasMaxLength(64);
+        });
+
+        modelBuilder.Entity<AggregatedCounter>(entity =>
+        {
+            entity.HasKey(e => e.Key).HasName("PK_HangFire_CounterAggregated");
+
+            entity.ToTable("AggregatedCounter", "HangFire");
+
+            entity.HasIndex(e => e.ExpireAt, "IX_HangFire_AggregatedCounter_ExpireAt").HasFilter("([ExpireAt] IS NOT NULL)");
+
+            entity.Property(e => e.Key).HasMaxLength(100);
+            entity.Property(e => e.ExpireAt).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Cart>(entity =>
@@ -76,6 +111,7 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Cart_Products");
 
             entity.HasOne(d => d.User).WithMany(p => p.Carts)
@@ -120,6 +156,17 @@ public partial class Sifood3Context : DbContext
                 .HasConstraintName("FK_Comments_Stores");
         });
 
+        modelBuilder.Entity<Counter>(entity =>
+        {
+            entity.HasKey(e => new { e.Key, e.Id }).HasName("PK_HangFire_Counter");
+
+            entity.ToTable("Counter", "HangFire");
+
+            entity.Property(e => e.Key).HasMaxLength(100);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.ExpireAt).HasColumnType("datetime");
+        });
+
         modelBuilder.Entity<Driver>(entity =>
         {
             entity.HasKey(e => e.DriveId).HasName("PK__Drivers__9610CA387C354DCE");
@@ -136,7 +183,6 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.Phone)
                 .HasMaxLength(10)
                 .IsUnicode(false);
-            entity.Property(e => e.PhotoPath).HasMaxLength(50);
             entity.Property(e => e.PlateNumber)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -167,6 +213,70 @@ public partial class Sifood3Context : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Favorites_Users");
+        });
+
+        modelBuilder.Entity<Hash>(entity =>
+        {
+            entity.HasKey(e => new { e.Key, e.Field }).HasName("PK_HangFire_Hash");
+
+            entity.ToTable("Hash", "HangFire");
+
+            entity.HasIndex(e => e.ExpireAt, "IX_HangFire_Hash_ExpireAt").HasFilter("([ExpireAt] IS NOT NULL)");
+
+            entity.Property(e => e.Key).HasMaxLength(100);
+            entity.Property(e => e.Field).HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<Job>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_HangFire_Job");
+
+            entity.ToTable("Job", "HangFire");
+
+            entity.HasIndex(e => e.ExpireAt, "IX_HangFire_Job_ExpireAt").HasFilter("([ExpireAt] IS NOT NULL)");
+
+            entity.HasIndex(e => e.StateName, "IX_HangFire_Job_StateName").HasFilter("([StateName] IS NOT NULL)");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.ExpireAt).HasColumnType("datetime");
+            entity.Property(e => e.StateName).HasMaxLength(20);
+        });
+
+        modelBuilder.Entity<JobParameter>(entity =>
+        {
+            entity.HasKey(e => new { e.JobId, e.Name }).HasName("PK_HangFire_JobParameter");
+
+            entity.ToTable("JobParameter", "HangFire");
+
+            entity.Property(e => e.Name).HasMaxLength(40);
+
+            entity.HasOne(d => d.Job).WithMany(p => p.JobParameters)
+                .HasForeignKey(d => d.JobId)
+                .HasConstraintName("FK_HangFire_JobParameter_Job");
+        });
+
+        modelBuilder.Entity<JobQueue>(entity =>
+        {
+            entity.HasKey(e => new { e.Queue, e.Id }).HasName("PK_HangFire_JobQueue");
+
+            entity.ToTable("JobQueue", "HangFire");
+
+            entity.Property(e => e.Queue).HasMaxLength(50);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.FetchedAt).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<List>(entity =>
+        {
+            entity.HasKey(e => new { e.Key, e.Id }).HasName("PK_HangFire_List");
+
+            entity.ToTable("List", "HangFire");
+
+            entity.HasIndex(e => e.ExpireAt, "IX_HangFire_List_ExpireAt").HasFilter("([ExpireAt] IS NOT NULL)");
+
+            entity.Property(e => e.Key).HasMaxLength(100);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.ExpireAt).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -279,11 +389,67 @@ public partial class Sifood3Context : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Products_Category1");
 
             entity.HasOne(d => d.Store).WithMany(p => p.Products)
                 .HasForeignKey(d => d.StoreId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Products_Stores");
+        });
+
+        modelBuilder.Entity<Schema>(entity =>
+        {
+            entity.HasKey(e => e.Version).HasName("PK_HangFire_Schema");
+
+            entity.ToTable("Schema", "HangFire");
+
+            entity.Property(e => e.Version).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<Server>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_HangFire_Server");
+
+            entity.ToTable("Server", "HangFire");
+
+            entity.HasIndex(e => e.LastHeartbeat, "IX_HangFire_Server_LastHeartbeat");
+
+            entity.Property(e => e.Id).HasMaxLength(200);
+            entity.Property(e => e.LastHeartbeat).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Set>(entity =>
+        {
+            entity.HasKey(e => new { e.Key, e.Value }).HasName("PK_HangFire_Set");
+
+            entity.ToTable("Set", "HangFire");
+
+            entity.HasIndex(e => e.ExpireAt, "IX_HangFire_Set_ExpireAt").HasFilter("([ExpireAt] IS NOT NULL)");
+
+            entity.HasIndex(e => new { e.Key, e.Score }, "IX_HangFire_Set_Score");
+
+            entity.Property(e => e.Key).HasMaxLength(100);
+            entity.Property(e => e.Value).HasMaxLength(256);
+            entity.Property(e => e.ExpireAt).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<State>(entity =>
+        {
+            entity.HasKey(e => new { e.JobId, e.Id }).HasName("PK_HangFire_State");
+
+            entity.ToTable("State", "HangFire");
+
+            entity.HasIndex(e => e.CreatedAt, "IX_HangFire_State_CreatedAt");
+
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Name).HasMaxLength(20);
+            entity.Property(e => e.Reason).HasMaxLength(100);
+
+            entity.HasOne(d => d.Job).WithMany(p => p.States)
+                .HasForeignKey(d => d.JobId)
+                .HasConstraintName("FK_HangFire_State_Job");
         });
 
         modelBuilder.Entity<Status>(entity =>
@@ -305,7 +471,7 @@ public partial class Sifood3Context : DbContext
             entity.Property(e => e.City).HasMaxLength(10);
             entity.Property(e => e.ClosingDay).HasMaxLength(15);
             entity.Property(e => e.ContactName).HasMaxLength(10);
-            entity.Property(e => e.Description).HasMaxLength(20);
+            entity.Property(e => e.Description).HasMaxLength(25);
             entity.Property(e => e.Email)
                 .HasMaxLength(64)
                 .IsUnicode(false);
@@ -378,7 +544,7 @@ public partial class Sifood3Context : DbContext
                 .HasConstraintName("FK_UserAddresses_Users");
         });
         modelBuilder.HasSequence<int>("SifoodDriverIdSeq").StartsAt(3L);
-        modelBuilder.HasSequence<int>("SifoodOrderIdSeq").StartsAt(140L);
+        modelBuilder.HasSequence<int>("SifoodOrderIdSeq").StartsAt(10L);
         modelBuilder.HasSequence<int>("SifoodStoreIdSeq").StartsAt(6L);
         modelBuilder.HasSequence<int>("SifoodUserIdSeq").StartsAt(5L);
 

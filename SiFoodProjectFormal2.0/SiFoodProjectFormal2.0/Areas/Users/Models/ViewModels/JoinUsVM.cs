@@ -4,7 +4,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 {
     public class JoinUsVM
     {
-       
+
         [Required(ErrorMessage = "店名未填寫")]
         [Display(Name = "平台顯示店名")]
         public string? StoreName { get; set; }
@@ -41,14 +41,10 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
         [Required(ErrorMessage = "店家地址未填寫")]
         [Display(Name = "店家地址")]
         public string? Address { get; set; }
-
+        [MaxLength(25, ErrorMessage = "描述不得多於25個字元")]
         [Required(ErrorMessage = "店家介紹未填寫")]
         [Display(Name = "店家介紹")]
         public string? Description { get; set; }
-
-        [Required(ErrorMessage = "營業時間未填寫")]
-        [Display(Name = "營業時間")]
-        public string? OpeningTime { get; set; }
 
         [Required(ErrorMessage = "公休日未填寫")]
         [Display(Name = "公休日")]
@@ -66,6 +62,28 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Models.ViewModels
 
         public IFormFile? PhotosPath2 { get; set; }
         public IFormFile? PhotosPath3 { get; set; }
+
+        [Required(ErrorMessage = "請填寫週間開始時間")]
+        [Display(Name = "週間開始時間")]
+        public string WeekdayStartTime { get; set; }
+
+        [Required(ErrorMessage = "請填寫週間結束時間")]
+        [Display(Name = "週間結束時間")]
+        public string WeekdayEndTime { get; set; }
+
+        [Required(ErrorMessage = "請填寫週末開始時間")]
+        [Display(Name = "週末開始時間")]
+        public string WeekendStartTime { get; set; }
+
+        [Required(ErrorMessage = "請填寫週末結束時間")]
+        [Display(Name = "週末結束時間")]
+        public string WeekendEndTime { get; set; }
+
+        [Required(ErrorMessage = "經緯度未填寫")]
+        public decimal Latitude { get; set; }
+        [Required(ErrorMessage = "經緯度未填寫")]
+        public decimal Longitude { get; set; }
+
 
     }
 }

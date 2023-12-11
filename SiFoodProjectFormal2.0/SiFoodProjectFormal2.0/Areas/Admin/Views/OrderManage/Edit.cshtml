@@ -1,4 +1,4 @@
-﻿@model SiFoodProjectFormal2._0.Areas.Admin.Views.Models.OrderManageVM
+﻿@model OrderManageVM
       
 @{
     ViewData["Title"] = "修改訂單明細";
@@ -9,7 +9,6 @@
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
     <link href="~/assets/css/theme.min.css" rel="stylesheet" />
 }
-
 <h1>修改</h1>
 
 <h4>訂單明細</h4>
@@ -61,9 +60,6 @@
         </form>
     </div>
 </div>
-
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

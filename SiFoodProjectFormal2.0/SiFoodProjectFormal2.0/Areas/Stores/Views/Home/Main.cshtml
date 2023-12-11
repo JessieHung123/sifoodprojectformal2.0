@@ -1,23 +1,4 @@
-﻿<!--測試連線--->
-@* @model IEnumerable<SiFoodProjectFormal2._0.Models.Product>
- *@<!--測試連線--->
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Codescandy" name="author">
-    <title>Dashboard - FreshCart </title>
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
-
-</head>
-
+﻿
 <body>
     <div>
         <div class="main-wrapper">
@@ -54,23 +35,23 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>待確認訂單</td>
+                                                            <td style="font-weight: bold;">待確認訂單</td>
                                                             <td>@ViewBag.status1</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>待配送訂單</td>
+                                                            <td style="font-weight: bold;">待配送訂單</td>
                                                             <td>@ViewBag.status2</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>待領取訂單</td>
+                                                            <td style="font-weight: bold;">待領取訂單</td>
                                                             <td>@ViewBag.status3</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>配送中訂單</td>
+                                                            <td style="font-weight: bold;">配送中訂單</td>
                                                             <td>@ViewBag.status4</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>上架商品數</td>
+                                                            <td style="font-weight: bold;">上架商品數</td>
                                                             <td>@ViewBag.SumReleasedQty</td>
                                                         </tr>
                                                     </tbody>
