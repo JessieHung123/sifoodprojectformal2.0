@@ -138,7 +138,7 @@
                                 <div class="mt-2">
                                     <!-- rating -->
                                     <small class="text-warning">
-                                        <td>
+                                        
                                             <span v-if="stores.commentRank / stores.commentCount >= 1" class="bi bi-star-fill text-warning"></span>
                                             <span v-else-if="stores.commentRank / stores.commentCount >= 0.5" class="bi bi-star-half text-warning"></span>
 
@@ -153,8 +153,7 @@
 
                                             <span v-if="stores.commentRank / stores.commentCount >= 5" class="bi bi-star-fill text-warning"></span>
                                             <span v-else-if="stores.commentRank / stores.commentCount >= 4.5" class="bi bi-star-half text-warning"></span>
-                                        </td>
-
+                                       
                                     </small><span class="ms-2">{{isNaN(this.stores.commentRank / this.stores.commentCount) ? '0' : Math.round(this.stores.commentRank / this.stores.commentCount * 10) / 10}}</span>
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
@@ -591,26 +590,6 @@
                                 console.log('error', error);
                             });
                     },
-                    // searchProducts() {
-                    //     let _this = this;
-                    //     // alert(_this.searchKeyWords)
-                    //     fetch(`${baseAddress}/api/StoreProductsapi/Search?query=${_this.searchKeyWords}`)
-                    //         .then(response => {
-                    //             if (!response.ok) {
-                    //                 throw new Error(`${response.status}`);
-                    //             }
-                    //             return response.json()
-                    //         })
-                    //         .then(result => {
-                    //             alert(JSON.stringify(result))
-                    //             _this.products = result.products;
-                    //             _this.stores.categoryList = result.categories;
-                    //             _this.stores.categoryList.unshift("全部");
-                    //         })
-                    //         .catch(error => {
-                    //             console.error('Error', error);
-                    //         });
-                    // }
                 }
             }).component("paginate", VuejsPaginateNext).mount("#storeProductsApp")
         </script>
