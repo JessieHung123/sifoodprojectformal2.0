@@ -5,19 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SiFoodProjectFormal2._0</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/theme.min.css">
+    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SiFoodProjectFormal2._0.styles.css" asp-append-version="true" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.ico" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
+<body style="background-color: #FFF8DC;">
     <header id="header">
         <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
-            <a href="index.html" class="navbar-brand d-flex align-items-center">
+            <a href="@Url.Action("Main", "Home")" class="navbar-brand d-flex align-items-center">
                 <h1 class="m-0">
                     <i class="fa fa-building text-primary me-3"></i>Sifood
-                    <img src="~/images/SiFood_logo_BGclear.png" alt="Site Logo" style="height:70px; width: 90px" class="navbar-brand"  />
-@*                     <img src="~/assets/images/logo/SiFood_logo BGclear.png" alt="Site Logo" style="height:70px; width: 90px" class="navbar-brand" href="@Url.Action("Index", "Home")   />
- *@                    
+                    <img src="~/images/SiFood_logo_BGclear.png" alt="Site Logo" style="height:70px; width: 90px" class="navbar-brand"  />       
                 </h1>
             </a>
             <button type="button"
@@ -28,8 +29,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-3 py-lg-0">
-
-
                     @if (User.Identity.IsAuthenticated)
                     {
                         <a class="nav-item nav-link active" asp-area="Stores" asp-controller="Home" asp-action="Main">首頁</a>
@@ -40,17 +39,13 @@
                         <a class="nav-item nav-link" asp-area="Stores" asp-controller="Home" asp-action="Review">客戶評價</a>
                         <a class="nav-item nav-link" asp-area="Stores" asp-controller="Home" asp-action="FAQ">常見問題</a>
                         <button type="button" class="nav-item nav-link" onclick="logout()" >登出</button>
-
-
                     }
                     else
                     {
-                        
                     }
-
                 </div>
             </div>
-
+            </nav>
     </header>
     <div class="container">
 
@@ -61,7 +56,7 @@
  <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <script>
         async function logout() {
@@ -79,7 +74,7 @@
             }).catch(error => alert("發生錯誤"));
         }
     </script>
-
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

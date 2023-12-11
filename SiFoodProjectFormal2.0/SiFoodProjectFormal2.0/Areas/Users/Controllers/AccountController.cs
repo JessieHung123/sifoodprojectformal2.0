@@ -63,7 +63,8 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         public string PostAccount([FromForm] RegisterVM model)
         {
             IQueryable<string> AllAccount = _context.Users.Select(x => x.UserEmail);
-            if (AllAccount.Contains(model.EmailAccount))
+            IQueryable<string?> AllUserName = _context.Users.Select(x => x.UserName);
+            if (AllAccount.Contains(model.EmailAccount) || AllUserName.Contains(model.UserName))
             {
                 return "此帳號已被註冊";
             }
@@ -85,6 +86,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                     UserPasswordHash = hashBytes,
                     UserVerificationCode = UserVerification.Next(100000, 999999).ToString(),
                     UserEnrollDate = DateTime.UtcNow,
+                    TotalOrderAmount = 0,
                 };
                 _context.Users.Add(user);
                 _context.SaveChanges();

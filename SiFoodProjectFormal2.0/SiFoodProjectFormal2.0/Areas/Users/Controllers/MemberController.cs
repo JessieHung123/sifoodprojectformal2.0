@@ -31,12 +31,6 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            //if (id == null || _context.Users == null)
-            //{
-            //    return NotFound();
-            //}
-
-            // var loginuserId = "U002";
             var loginuserId = _userIdentityService.GetUserId();
 
             //先測試寫死ID，之後要改成取當前登入者的資料
@@ -120,7 +114,7 @@ namespace sifoodprojectformal2._0.Areas.Users.Controllers
                 }
                 else
                 {
-                    return "新密碼與舊密碼不符";
+                    return "密碼輸入錯誤請確認";
                 }
             }
 

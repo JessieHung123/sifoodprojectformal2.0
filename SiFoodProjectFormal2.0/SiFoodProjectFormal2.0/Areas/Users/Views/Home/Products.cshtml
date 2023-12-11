@@ -16,7 +16,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item"><a href="#">首頁</a></li>
-                                <li class="breadcrumb-item"><a href="#">{{productData.storeName}}</a></li>
+                                <li class="breadcrumb-item"><a :href="'/Users/Home/Stores/'+productData.storeId">{{productData.storeName}}</a></li>
                                 <li class="breadcrumb-item active" aria-current="page" v-cloak>{{productData.productName}}</li>
                             </ol>
                         </nav>

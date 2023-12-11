@@ -14,23 +14,6 @@ namespace sifoodprojectformal2._0.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public IActionResult OrderManage()
-        {
-            return View();
-        }
-        public IActionResult MemberManage()
-        {
-            return View();
-        }
-        public IActionResult DriverManage()
-        {
-            return View();
-        }
-        public IActionResult StoreManage()
-        {
-            return View();
-        }
-
         [HttpGet]
         public IActionResult Login()
         {

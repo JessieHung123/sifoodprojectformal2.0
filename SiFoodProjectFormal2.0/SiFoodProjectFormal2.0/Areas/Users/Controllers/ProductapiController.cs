@@ -34,6 +34,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                     PhotoPath = p.PhotoPath,
                     UnitPrice = p.UnitPrice,
                     StoreName = p.Store.StoreName,
+                    StoreId=p.StoreId,
                     Address = p.Store.Address,
                     SuggestPickUpTime = p.SuggestPickUpTime.ToString().Substring(0, 5),
                     SuggestPickEndTime = p.SuggestPickEndTime.ToString().Substring(0, 5),

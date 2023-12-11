@@ -1,16 +1,4 @@
 ﻿
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Codescandy" name="author">
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
-</head>
 <body>
     <div class="main-wrapper" id="productapp">
         <main class="main-content-wrapper">
@@ -312,7 +300,6 @@
                             alert("不支援的檔案上傳格式");
                         }
                     }
-   
                 },
                 insertFileChange: function (inputFile) {
                     let _this = this;
@@ -326,7 +313,6 @@
                             isDuplicate = true;
                             break;
                         }
-
                     }
                     if (isDuplicate == true) {
                         _this.startSeach();
@@ -366,12 +352,10 @@
                                     alert("更新失敗，請確認資料是否完整");
                                 }
                             }).then(data => {
-                                alert(data);
+                                // alert(data);
                             }).catch(err => {
                                 console.log(err)
                             });
-
-
                     }
                 },
                 softDelete(productId) {
@@ -414,17 +398,18 @@
                             .then(response => {
                                 if (response.ok) {
                                     _this.startSeach();
+                                    document.getElementById("insertFilePreview").src = "/images/Noimage.png";
+                                    document.querySelector("#insertFile").value = ""; // 清空檔案輸入
                                     return response.text(); // 將回傳結果轉為文字
                                 } else {
                                     alert("更新失敗，請確認資料是否完整");
                                 }
                             }).then(data => {
-                                alert(data);
+                                // alert(data);
                             }).catch(err => {
                                 console.log(err)
                             });
                     }
-
                 },
             }
         }).component("paginate", VuejsPaginateNext).mount("#productapp")

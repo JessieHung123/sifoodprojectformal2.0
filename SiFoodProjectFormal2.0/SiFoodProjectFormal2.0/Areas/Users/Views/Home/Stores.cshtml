@@ -165,7 +165,7 @@
                                             <span v-else-if="stores.commentRank / stores.commentCount >= 4.5" class="bi bi-star-half text-warning"></span>
                                         </td>
 
-                                    </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10}}</span>
+                                    </small><span class="ms-2">{{Math.round(stores.commentRank / stores.commentCount * 10) / 10 > 0 ? Math.round(stores.commentRank / stores.commentCount * 10) / 10 : 0 }}</span>
                                     <!-- text --><span class="text-muted ms-1">({{stores.commentCount}} reviews)</span>
                                 </div>
                                 <div class="mt-2">
@@ -276,7 +276,7 @@
                                         </h2>
                                         <!-- Remaining Quantity -->
                                         <div class="mb-1">
-                                            <small>剩餘數量: {{item.avalibleQty}}</small>
+                                            <small>剩餘數量: {{item.avalibleQty>0?item.avalibleQty:0 }}</small>
                                         </div>
                                         <!-- Estimated Pickup Time -->
                                         <div class="mb-1">
