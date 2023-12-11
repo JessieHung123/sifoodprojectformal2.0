@@ -147,16 +147,24 @@
             },
             methods: {
                 startSeach() {
-                    let _this = this;
-                    console.log(`Search Text: ${_this.searchText}`);
-                    fetch(`/api/Reviewapi/Filter?text=${_this.searchText}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            _this.ReviewInfo = data;
-                            _this.page.pageNumber = 1;
-                            _this.itemCount = _this.ReviewInfo.length;
-                        })
-                        .catch(error => alert(error));
+                    var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
+                    if (!isLoggedIn) {
+                        alert("請先登入")
+                        window.location.href = "/Stores/Account/Login";
+                    }
+                    else {
+                        let _this = this;
+                        console.log(`Search Text: ${_this.searchText}`);
+                        fetch(`/api/Reviewapi/Filter?text=${_this.searchText}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                _this.ReviewInfo = data;
+                                _this.page.pageNumber = 1;
+                                _this.itemCount = _this.ReviewInfo.length;
+                            })
+                            .catch(error => alert(error));
+
+                    }
                 },
                 selectStars() {
                     let _this = this;
@@ -166,13 +174,13 @@
                         .then(data => _this.ReviewInfo = data)
                         .catch(error => alert(error));
                 },
-                getReviewAPI: function () {
-                    let _this = this;
-                    fetch(`/api/Reviewapi/getAll`)
-                        .then(response => response.json())
-                        .then(data => _this.ReviewInfo = data)
-                        .catch(error => alert(error));
-                }
+                // getReviewAPI: function () {
+                //     let _this = this;
+                //     fetch(`/api/Reviewapi/getAll`)
+                //         .then(response => response.json())
+                //         .then(data => _this.ReviewInfo = data)
+                //         .catch(error => alert(error));
+                // }
             },
         }).component("paginate", VuejsPaginateNext).mount("#reviewapp")
     </script>

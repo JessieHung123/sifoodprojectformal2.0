@@ -46,6 +46,15 @@ namespace SiFoodProjectFormal2._0
             {
                 options.LoginPath = "/Users/Account/LoginRegister";
                 options.AccessDeniedPath = "/Account/LoginRegister";
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnRedirectToLogin = context =>
+                    {
+                        var loginPath = "/Users/Account/LoginRegister";
+                        context.Response.Redirect(loginPath);
+                        return Task.CompletedTask;
+                    }
+                };
             });
             builder.Services.AddSingleton(builder.Configuration);
 

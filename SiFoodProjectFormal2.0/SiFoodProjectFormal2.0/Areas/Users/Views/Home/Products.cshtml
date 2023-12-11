@@ -15,7 +15,7 @@
                         <!-- breadcrumb -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="#">首頁</a></li>
+                                <li class="breadcrumb-item"><a href="/Users/Home/Main">首頁</a></li>
                                 <li class="breadcrumb-item"><a :href="'/Users/Home/Stores/'+productData.storeId">{{productData.storeName}}</a></li>
                                 <li class="breadcrumb-item active" aria-current="page" v-cloak>{{productData.productName}}</li>
                             </ol>
@@ -32,7 +32,7 @@
                     <div class="col-md-6">
                         <div class="ps-lg-10 mt-6 mt-md-0">
                             <!-- content -->
-                            <a href="#!" class="mb-2 d-block" v-cloak>{{productData.storeName}}</a>
+                            <a :href="'/Users/Home/Stores/'+productData.storeId" class="mb-2 d-block" v-cloak>{{productData.storeName}}</a>
                             <a  class="mb-2 d-block" v-cloak>{{productData.address}}</a>
                             <!-- heading -->
                             <h1 class="mb-1" v-cloak>{{productData.productName}}</h1>
@@ -162,7 +162,7 @@
                 <h5 class="modal-title" id="CartLabel">加入購物車前請先登入!</h5>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+                <button type="button" class="btn btn-primary" id="confirm" data-bs-dismiss="modal">好</button>
             </div>
         </div>
     </div>
@@ -230,6 +230,7 @@
                     }; 
                     let cartCurrentStoreName = shoppingCart.carts.length > 0 ? shoppingCart.carts[0].storeName : "";
                     if (isLogin) {
+                        if (this.remainingStock == 0) { alert("目前尚未有庫存!"); return; };
                         if (productData.storeName != cartCurrentStoreName && cartCurrentStoreName != "") {
                             let isChangeStore = confirm(`目前購物車內商品的店家屬於${cartCurrentStoreName}，是否要挑選其他商家做購買?`);
                             if (isChangeStore) {
@@ -269,7 +270,12 @@
                             shoppingCart.getCart();
                         }
                     }
-                    else { $('#CartModal').modal('show'); }
+                    else { $('#CartModal').modal('show'); 
+                        $('#confirm').on('click', function () {
+                            $('#cancel').modal('hide');
+                            window.location.href = '/Users/Account/LoginRegister';
+                        });
+                    }
                 },
             }
         }).mount("#product")

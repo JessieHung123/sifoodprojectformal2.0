@@ -270,17 +270,25 @@
                     this.page.pageNumber = num;
                 },
                 startSeach() {
-                    let _this = this;
-                    _this.page.pageNumber = 1;
-                    fetch(`/api/ProductManageapi/Filter?text=${_this.searchText}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            _this.ProductInfo = data;
-                            _this.page.pageNumber = 1;
-                            _this.itemCount = _this.ProductInfo.length;
+                    var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
+                    if (!isLoggedIn) {
+                        alert("請先登入")
+                        window.location.href = "/Stores/Account/Login";
+                    }
+                    else {
+                        let _this = this;
+                        _this.page.pageNumber = 1;
+                        fetch(`/api/ProductManageapi/Filter?text=${_this.searchText}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                _this.ProductInfo = data;
+                                _this.page.pageNumber = 1;
+                                _this.itemCount = _this.ProductInfo.length;
 
-                        } )
-                        .catch(error => alert(error));
+                            })
+                            .catch(error => console.log(error));
+                    }
+
                 },
                 editProduct(item) {
                     this.selectedToEdit = item
@@ -347,12 +355,15 @@
                                     _this.description = "";
                                     document.getElementById("insertFilePreview").src = "/images/Noimage.png";
                                     document.querySelector("#insertFile").value = ""; // 清空檔案輸入
+                                    alert("新增商品成功");
                                     return response.text(); // 將回傳結果轉為文字
                                 } else {
+                                    _this.startSeach()
                                     alert("更新失敗，請確認資料是否完整");
+                                    return response.text();
                                 }
                             }).then(data => {
-                                alert(data);
+                                console.log(data);
                             }).catch(err => {
                                 console.log(err)
                             });
@@ -370,7 +381,7 @@
                                 alert("刪除失敗");
                             }
                         })
-                        .catch(error => console.error(error));
+                        .catch(error => console.log(error));
                 },
                 updateProduct(produt) {
                     let _this = this;
@@ -400,12 +411,15 @@
                                     _this.startSeach();
                                     document.getElementById("insertFilePreview").src = "/images/Noimage.png";
                                     document.querySelector("#insertFile").value = ""; // 清空檔案輸入
+                                    alert("更新商品成功!");
                                     return response.text(); // 將回傳結果轉為文字
                                 } else {
+                                    _this.startSeach()
                                     alert("更新失敗，請確認資料是否完整");
+                                    return response.text();
                                 }
                             }).then(data => {
-                                alert(data);
+                                console.log(data);
                             }).catch(err => {
                                 console.log(err)
                             });
