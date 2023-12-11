@@ -19,7 +19,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         private readonly IWebHostEnvironment _WebHostEnvironment;
         private readonly IUserIdentityService _userIdentityService;
         int minLength = 10;
-        int maxLength = 100;
+        int maxLength = 30;
         public UserAddressesapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IUserIdentityService userIdentityService)
         {
             _context = context;
@@ -56,7 +56,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             }
             if (userAddressesVM.UserDetailAddress.Length < minLength || userAddressesVM.UserDetailAddress.Length > maxLength)
             {
-                return $"請輸入長度為{minLength}到{maxLength}之間的地址";
+                return $"請輸入長度為{minLength}到{maxLength}字之間的地址";
             }
             if (!IsValidChineseAddress(userAddressesVM.UserDetailAddress))
             {
@@ -116,7 +116,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             }
             if (userAddressesVM.UserDetailAddress.Length < minLength || userAddressesVM.UserDetailAddress.Length > maxLength)
             {
-                return $"請輸入長度為{minLength}到{maxLength}之間的地址";
+                return $"請輸入長度為{minLength}到{maxLength}字之間的地址";
             }
             if (!IsValidChineseAddress(userAddressesVM.UserDetailAddress))
             {

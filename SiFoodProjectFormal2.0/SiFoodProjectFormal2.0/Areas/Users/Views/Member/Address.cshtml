@@ -359,7 +359,6 @@
                         form.append("UserRegion", _this.selectedRegion)
                         form.append("UserDetailAddress", combinedAddress)
                         form.append("IsDefault", _this.isDefaultAddress)
-                        form.append("UserName", _this.addresses[0].userName)
                         axios.post(`/api/UserAddressesapi`, form, {
                             headers: {
                                 "Content-Type": "multipart/form-data"

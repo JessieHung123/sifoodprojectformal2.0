@@ -28,13 +28,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
         // GET: api/RealTimeOrdersapi
         //[HttpGet]
-        //public async Task<IEnumerable<Order>> GetOrders()
-        //{
-        //    return _context.Orders;
-        //}
 
-        // GET: api/RealTimeOrdersapi/5
-        //[HttpGet("{id}")]
         [HttpGet]
         public async Task<List<OrderVM>> GetOrder()
         {
@@ -42,8 +36,6 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
             TimeZoneInfo taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
             DateTime utcNow = DateTime.UtcNow;
             DateTime taiwanTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, taiwanTimeZone);
-            //List<int> StatusIdToCheck = new List<int> {1, 2, 3, 4};
-            //var order = await _context.Orders.FindAsync(id);
             return await _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product).Where(c => c.UserId == userId && c.Status.StatusId != 5 && c.Status.StatusId != 6 && c.Status.StatusId != 7)
                  .Select(z => new OrderVM
                  {

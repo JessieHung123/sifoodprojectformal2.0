@@ -39,8 +39,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             TimeZoneInfo taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
             DateTime utcNow = DateTime.UtcNow;
             DateTime taiwanTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, taiwanTimeZone);
-            //List<int> StatusIdToCheck = new List<int> {1, 2, 3, 4};
-            //var order = await _context.Orders.FindAsync(id);
             await CheckUnconfirmedOrders();
             return await _context.Orders.AsNoTracking().Include(x => x.User).Include(x => x.OrderDetails).ThenInclude(x => x.Product)
                                                  .Where(c => c.StoreId == storeId &&
@@ -50,7 +48,6 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                                                  (status == 0 || c.Status.StatusId == status) &&
                                                  (string.IsNullOrEmpty(searchKeyWords) ||
                                                  c.OrderId.Contains(searchKeyWords) ||
-                                                 //c.OrderDate.ToString("yyyy-MM-dd").Contains(searchKeyWords) || 
                                                  c.User.UserName.ToLower().Contains(searchKeyWords.ToLower()) ||
                                                  c.OrderDetails.Any(od => od.Product.ProductName.ToLower().Contains(searchKeyWords.ToLower()))))
                  .Select(z => new OrderVM
