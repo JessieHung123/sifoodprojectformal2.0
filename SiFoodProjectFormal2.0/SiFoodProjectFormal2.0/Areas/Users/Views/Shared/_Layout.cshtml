@@ -9,10 +9,6 @@
     <link href="~/assets/libs/slick-carousel/slick/slick.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/slick-carousel/slick/slick-theme.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/assets/libs/tiny-slider/dist/tiny-slider.css" asp-append-version="true" rel="stylesheet" />
-<<<<<<< HEAD
-    <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-=======
->>>>>>> 9be891ef41ac3f28656e8b57b805f42e2856b06f
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.ico" />
     <!-- Libs CSS -->
@@ -21,7 +17,6 @@
     <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
     <!-- Theme CSS -->
     <link rel="stylesheet" href="~/assets/css/theme.min.css" />
-    
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -311,8 +306,6 @@
     <script src="~/assets/js/vendors/increment-value.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js" integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-    
     <script>
         var isLogin = ('@User.Identity.IsAuthenticated' == "True");
         var shoppingCart = Vue.createApp({
