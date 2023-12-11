@@ -190,7 +190,7 @@
 
                 @*------------------ 固定的訂單明細---------------- *@
 
-                <div class="col-6 col-md-12 col-lg-6 card shadow-sm" style="width:37rem;height:fit-content" v-if="this.checkRadio==false">
+                <div class="col-6 col-md-12 col-lg-6 card shadow-sm" style="width:40rem;height:fit-content" v-if="this.checkRadio==false">
                     <h5 class="px-6 py-4 bg-transparent mb-0">訂單明細</h5>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item px-4 py-3" v-for="item in checkoutDatas">
@@ -244,7 +244,7 @@
                     </ul>
                 </div>
 
-                <div class="col-6 col-md-12 col-lg-6 card shadow-sm" style="width:37rem;height:fit-content" v-else>
+                <div class="col-6 col-md-12 col-lg-6 card shadow-sm" style="width:40rem;height:fit-content" v-else>
                     <h5 class="px-6 py-4 bg-transparent mb-0">訂單明細</h5>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item px-4 py-3" v-for="item in checkoutDatas">
@@ -360,9 +360,13 @@
                     var _this = this;
                     axios.get(`/Transaction/GetCheckoutData`)
                         .then(response => {
-                            //alert(JSON.stringify(response.data))
-                            _this.checkoutDatas = response.data;
-                            _this.checkoutData = response.data[0];
+                            if (!response.data || response.data.length === 0) {
+                                alert("購物車沒有商品喔，請先選擇喜愛的商品");
+                                window.location.href = "/Users/Home/Main";
+                            } else {
+                                _this.checkoutDatas = response.data;
+                                _this.checkoutData = response.data[0];
+                            }
                         })
                         .catch(err => {
                             alert(err);
@@ -443,32 +447,35 @@
                 },
                 createDeliverOrder(ChannelID) {
                     var _this = this;
-                    _this.loading = true;
-                    axios.post(`/Transaction/DeliverOrder`, {
-                        StoreName: _this.sendBackStoreName,
-                        UserName: _this.sendBackUserName,
-                        ProductDetails: _this.sendBackProductDetail,
-                        TotalPrice: _this.sendBackDeliTotalPrice,
-                        UserAddress: _this.selectAddress,
-                        //ShippingFee: _this.sendBackShippingFee,
-                    }, {
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
-                    }).then(response => {
-                        var postData = {};
-                        postData['ChannelID'] = ChannelID;
-                        postData['MerchantID'] = _this.addForm.MerchantID;
-                        postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `商品名稱:${item.productName}  數量:${item.quantity}`).join(' , ');
-                        postData['Amt'] = _this.sendBackDeliTotalPrice;
-                        postData['ReturnURL'] = _this.addForm.ReturnURL;
-                        postData['NotifyURL'] = _this.addForm.NotifyURL;
-                        postData['ClientBackURL'] = _this.addForm.ClientBackURL;
-                        postData['UserName'] = _this.sendBackUserName;
-                        _this.callNewebPayApi(postData)
-                    }).catch(err => {
-                        alert(err);
-                    })
+                    if (_this.selectAddress == "") {
+                        alert("請先選擇地址，若無地址，請先至會員專區加入您想運送的地址");
+                    } else {
+                        _this.loading = true;
+                        axios.post(`/Transaction/DeliverOrder`, {
+                            StoreName: _this.sendBackStoreName,
+                            UserName: _this.sendBackUserName,
+                            ProductDetails: _this.sendBackProductDetail,
+                            TotalPrice: _this.sendBackDeliTotalPrice,
+                            UserAddress: _this.selectAddress,
+                        }, {
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        }).then(response => {
+                            var postData = {};
+                            postData['ChannelID'] = ChannelID;
+                            postData['MerchantID'] = _this.addForm.MerchantID;
+                            postData['ItemDesc'] = _this.sendBackProductDetail.map(item => `商品名稱:${item.productName}  數量:${item.quantity}`).join(' , ');
+                            postData['Amt'] = _this.sendBackDeliTotalPrice;
+                            postData['ReturnURL'] = _this.addForm.ReturnURL;
+                            postData['NotifyURL'] = _this.addForm.NotifyURL;
+                            postData['ClientBackURL'] = _this.addForm.ClientBackURL;
+                            postData['UserName'] = _this.sendBackUserName;
+                            _this.callNewebPayApi(postData)
+                        }).catch(err => {
+                            alert(err);
+                        })
+                    }
                 },
                 getOrderTime: function () {
                     var _this = this;
