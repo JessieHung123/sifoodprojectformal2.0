@@ -216,7 +216,7 @@
                 <h5 class="modal-title" id="cancelModalLabel">未登入無法加入收藏!</h5>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">好</button>
+                <button type="button" class="btn btn-primary" id="confirm" data-bs-dismiss="modal">好</button>
             </div>
         </div>
     </div>
@@ -352,8 +352,6 @@
                     else {
                         $('#cancel').modal('show'); 
                         $('#confirm').on('click', function () {
-                            // Handle confirm button click
-                            // For example, you can close the modal and redirect
                             $('#cancel').modal('hide');
                             window.location.href = '/Users/Account/LoginRegister';
                         });
