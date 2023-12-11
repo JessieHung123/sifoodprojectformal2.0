@@ -349,7 +349,15 @@
                 if (item.noHeart == false) { this.deleteFavorite(storeId); item.noHeart = !item.noHeart; }//準備被取消
                 else { this.addToFavorite(storeId); item.noHeart = !item.noHeart; }//準備被收藏
             }
-            else $('#cancel').modal('show');
+                    else {
+                        $('#cancel').modal('show'); 
+                        $('#confirm').on('click', function () {
+                            // Handle confirm button click
+                            // For example, you can close the modal and redirect
+                            $('#cancel').modal('hide');
+                            window.location.href = '/Users/Account/LoginRegister';
+                        });
+                    }
         },
         //加入收藏店家
         addToFavorite(storeId) {
