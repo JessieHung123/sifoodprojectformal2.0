@@ -1,15 +1,5 @@
 ﻿@section Styles{
 
-    <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/favicon/favicon.ico">
-
-    <!-- Libs CSS -->
-    <link href="~/assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-    <link href="~/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
-
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="~/assets/css/theme.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 
 }
@@ -25,8 +15,6 @@
                 <!-- row -->
                 <div class="row">
                     <!-- col -->
-                    @* <partial name="_MembershipPartial" /> *@
-                    @* <div class="col-lg-9 col-md-8 col-12"> *@
                     <div>
                         <div class="py-6 p-md-6 p-lg-10">
                             <!-- heading -->
@@ -99,7 +87,6 @@
                                                 <a href="#" class="text-inherit"
                                                    data-bs-toggle="collapse"
                                                    :data-bs-target="'#orderDetails' + item.orderId"
-                                                   data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
                                                    data-bs-title="View">
                                                     <i class="feather-icon icon-eye"></i>
@@ -110,9 +97,7 @@
                                         <tr>
                                             <td colspan="8" class="p-0">
                                                 <div class="collapse" :id="'orderDetails' + item.orderId">
-                                                    <!-- Include order details here -->
                                                     <div class="p-3">
-                                                        <!-- Order details content goes here -->
                                                         <!-- Order details 起點 -->
                                                         <div class="row ">
                                                             <div class="col-xl-12 col-12 mb-5">
@@ -135,7 +120,6 @@
                                                                                     <template v-else-if="item.statusId === 3||item.statusId === 4">
                                                                                         <a v-on:click="confirmCompleteOrder(item)" href="#" class="btn btn-success">完成訂單</a>
                                                                                     </template>
-                                                                                    @* <a href="#" class="btn btn-secondary" style="margin-left: 3px;">下載明細</a> *@
                                                                                     <a @@click="downloadOrderDetails(item.orderId)" class="btn btn-secondary" style="margin-left: 3px;">下載明細</a>
                                                                                 </div>
                                                                             </div>
@@ -265,8 +249,9 @@
                                                                                 <span class="d-block">{{item.paymentDate}} {{item.paymentTime}}</span>
                                                                             </div>
                                                                             <div class="col-md-3 mb-4 mb-lg-0">
-                                                                                <h6>外送員: {{item.driverFullName}}</h6>
-                                                                                <a href="#" class="btn btn-success btn-sm">聯繫外送員</a>
+                                                                                <h6>外送員</h6>
+                                                                                <span class="d-block">{{item.driverFullName}}</span>
+                                                                                @* <a href="#" class="btn btn-success btn-sm">聯繫外送員</a> *@
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -294,7 +279,6 @@
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            // var baseAddress = "https://localhost:7042";
 
             const orderApp = Vue.createApp({
                 data: function () {
@@ -334,16 +318,12 @@
                                 }
                             });
 
-                            // if (window.confirm("是否確定取消訂單?")) {
-                            //     this.cancelOrder(item);
-                            // }
                         }
                         else {
                             Swal.fire({
                                 icon: 'error',
                                 text: "取消時間已過"
                             });
-                            // alert("取消時間已過");
                             item.orderDuration = orderDuration;
                         }
                     },
@@ -363,9 +343,6 @@
                         });
 
 
-                        // if (window.confirm("是否確定完成訂單?")) {
-                        //     this.completeOrder(item);
-                        // }
                     },
                     cancelOrder(item) {
 
@@ -377,7 +354,6 @@
                             title: '成功!',
                             text: "訂單已取消!"
                         });
-                        // alert("訂單已取消!")
                     },
                     completeOrder(item) {
                         if (item.statusId === 3) {
@@ -393,7 +369,6 @@
                             title: '成功!',
                             text: "訂單已完成!"
                         });
-                        // alert("訂單已完成!")
                     },
                     // **asynchronous nature of the fetch operation**
                     updateOrderStatus(item, newStatusId) {
@@ -439,13 +414,6 @@
             }).mount("#orderApp")
         </script>
 
-        <!-- Libs JS -->
-        <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-        @* <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
-        <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
-
-        <!-- Theme JS -->
-        <script src="~/assets/js/theme.min.js"></script>
     }
 
 </body>

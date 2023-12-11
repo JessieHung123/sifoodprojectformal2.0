@@ -12,8 +12,6 @@
 
         public string? Description { get; set; }
 
-        public DateTime RealeasedTime { get; set; }
-
         public TimeSpan SuggestPickUpTime { get; set; }
 
         public TimeSpan SuggestPickEndTime { get; set; }
