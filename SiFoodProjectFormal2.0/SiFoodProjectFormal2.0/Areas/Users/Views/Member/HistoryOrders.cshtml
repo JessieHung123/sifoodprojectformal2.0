@@ -457,6 +457,16 @@
                         .then(response => response.json())
                         .then(data => {
                             this.orderDetail = data;
+                            // 檢查是否有已存在的評價
+                            if (data.commentRank && data.commentContents) {
+                                // 如果有，則設置到相關的數據屬性中
+                                this.currentRating = data.commentRank;
+                                this.comment = data.commentContents;
+                            } else {
+                                // 如果沒有，則重置評價相關的狀態
+                                this.currentRating = 0;
+                                this.comment = "";
+                            }
                         })
                         .catch(err => {
                             console.error("加載訂單明細出錯: ", err);
