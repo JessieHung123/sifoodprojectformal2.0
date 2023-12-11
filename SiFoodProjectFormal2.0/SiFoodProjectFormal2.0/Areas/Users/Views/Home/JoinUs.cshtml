@@ -106,7 +106,7 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <label asp-for="Address" class="form-label">店家地址<span class="text-danger">*</span></label>
-                            <input asp-for="Address" id="address" class="form-control" autocomplete="address-line3" placeholder="例:重慶南路一段122號" />
+                            <input asp-for="Address" id="address" class="form-control" autocomplete="address-line3" placeholder="例:臺北市中正區重慶南路一段122號" />
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -321,14 +321,8 @@
     </script>
     <script>
         document.getElementById('calculate').addEventListener('click', function (event) {
-            var selectElementCity = document.getElementById('citySelect');
-            var storeCity = selectElementCity.options[selectElementCity.selectedIndex].value;
-
-            var selectElementRegion = document.getElementById('regionSelect');
-            var storeRegion = selectElementRegion.options[selectElementRegion.selectedIndex].value;
-
             var storeAddress = document.getElementById('address').value;
-            var storeFullAddress = storeCity + storeRegion + storeAddress;
+            var storeFullAddress =storeAddress;
             event.preventDefault();
             event.stopPropagation();
             var geocoder = new google.maps.Geocoder();
