@@ -399,7 +399,9 @@
                 searchOrders() {
                     this.pageNumber = 1; // 重置到第一頁
                     this.filteredOrders = this.orders.filter(order => {
-                        return order.orderId.includes(this.searchTerm) || order.firstProductName.includes(this.searchTerm);
+                        let orderIdValid = order.orderId ? order.orderId.includes(this.searchTerm) : false;
+                        let productNameValid = order.firstProductName ? order.firstProductName.includes(this.searchTerm) : false;
+                        return orderIdValid || productNameValid;
                     });
                     this.applySort();
                 },
