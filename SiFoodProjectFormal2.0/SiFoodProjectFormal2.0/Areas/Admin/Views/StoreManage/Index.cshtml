@@ -7,13 +7,13 @@
 <div class="container">
     <div class="row mb-8">
         <div class="col-md-12">
-            <div class="d-md-flex justify-content-between align-items-center">
+            <div>
                 <div>
-                    <h2>商家管理</h2>
+                    <h2 style="text-align:center;">商家管理</h2>
                     <!-- breacrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="OrderManage" asp-action="Index" class="text-inherit">後台首頁</a></li>
+                            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="OrderManage" asp-action="Index" class="text-inherit">首頁</a></li>
                             <li class="breadcrumb-item active" aria-current="page">商家管理</li>
                         </ol>
                     </nav>
@@ -38,7 +38,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th style="text-align: left;">
+                                <th style="text-align: center;">
                                     商店ID
                                 </th>
                                 <th style="text-align: left;">
@@ -55,8 +55,8 @@
                                 </th>
                                 <th style="text-align: left;">
                                     城市
-                                </th>                                
-                                <th style="text-align: left;">
+                                </th>
+                                <th style="text-align: center;">
                                     功能
                                 </th>
                             </tr>
@@ -67,7 +67,7 @@
                                 @if (item.StoreIsAuthenticated == 1)
                                 {
                                     <tr>
-                                        <td>
+                                        <td style="text-align: center;">
                                             @Html.DisplayFor(modelItem => item.StoreId)
                                         </td>
                                         <td>
@@ -84,8 +84,8 @@
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.City)
-                                        </td>                                        
-                                        <td>
+                                        </td>
+                                        <td style="text-align: center;">
                                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#EditStore-" + item.StoreId)" data-url="@Url.Action($"Edit/{item.StoreId}")">
                                                 <i class="bi bi-pencil-square me-3"></i>修改
                                             </button>
