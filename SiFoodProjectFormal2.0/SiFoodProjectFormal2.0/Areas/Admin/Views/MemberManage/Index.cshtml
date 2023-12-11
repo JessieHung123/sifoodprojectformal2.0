@@ -17,7 +17,7 @@
                             <li class="breadcrumb-item active" aria-current="page">客戶管理</li>
                         </ol>
                     </nav>
-                </div>                
+                </div>
             </div>
         </div>
     </div>
@@ -35,23 +35,25 @@
                     </div>
                 </div>
                 <div class="card-body p-0 ">
-
                     <div class="table-responsive">
                         <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
                             <thead class="bg-light">
                                 <tr>
                                     <th style="text-align: center;">
+                                        使用者ID
+                                    </th>
+                                    <th style="text-align: center;">
                                         姓名
                                     </th>
                                     <th style="text-align: center;">
                                         信箱
-                                    </th>                                    
+                                    </th>
                                     <th style="text-align: center;">
                                         電話
                                     </th>
                                     <th style="text-align: center;">
                                         生日
-                                    </th>                                                                
+                                    </th>
                                     <th style="text-align: center;">
                                         功能
                                     </th>
@@ -62,18 +64,21 @@
                                 {
                                     <tr>
                                         <td>
+                                            @Html.DisplayFor(modelItem => item.UserId)
+                                        </td>
+                                        <td>
                                             @Html.DisplayFor(modelItem => item.UserName)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UserEmail)
-                                        </td>                                        
+                                        </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UserPhone)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UserBirthDate)
-                                        </td>                                        
-                                        <td>
+                                        </td>
+                                        <td style="text-align:center;">
                                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="@("#EditUser-" + item.UserId)" data-url="@Url.Action($"Edit1/{item.UserId}")">
                                                 <i class="bi bi-pencil-square me-3"></i>修改
                                             </button>
@@ -112,7 +117,7 @@
                                 }
                             </ul>
                         </nav>
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>
