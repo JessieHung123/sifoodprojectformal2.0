@@ -30,12 +30,24 @@
 <body >
     <header id="header">
         <nav class="navbar navbar-expand-lg  navbar-light sticky-top px-4 px-lg-5 py-lg-0">
-            <a href="@Url.Action("Main", "Home")" class="navbar-brand d-flex align-items-center">
-                <h1 class="m-0">
-                    <i class="fa fa-building text-primary me-3"></i>Sifood
-                    <img src="~/images/SiFood_logo_BGclear.png" alt="Site Logo" style="height:70px; width: 90px" class="navbar-brand"  />       
-                </h1>
-            </a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a href="@Url.Action("Main", "Home")" class="navbar-brand d-flex align-items-center">
+                    <h1 class="m-0">
+                        <i class="fa fa-building text-primary me-3"></i>Sifood
+                        <img src="~/images/SiFood_logo_BGclear.png" alt="Site Logo" style="height:70px; width: 90px" class="navbar-brand" />
+                    </h1>
+                </a>
+            }
+            else
+            {
+                <a class="navbar-brand d-flex align-items-center">
+                    <h1 class="m-0">
+                        <i class="fa fa-building text-primary me-3"></i>Sifood
+                        <img src="~/images/SiFood_logo_BGclear.png" alt="Site Logo" style="height:70px; width: 90px" class="navbar-brand" />
+                    </h1>
+                </a>
+            }
             <button type="button"
                     class="navbar-toggler"
                     data-bs-toggle="collapse"

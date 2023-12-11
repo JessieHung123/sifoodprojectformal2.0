@@ -264,18 +264,18 @@
                     fetch(`/api/InfoModifyapi/PutInfoModify/${_this.ModifyInfo.storeId}`, { method: "Put", body: form })
                         .then(response => {
                             if (response.ok) {
+                                alert("商家資料更新成功!");
                                 return response.text(); // 將回傳結果轉為文字
                             } else {
                                 alert("更新失敗，請確認資料欄位是否完整");
+                                return response.text(); // 將回傳結果轉為文字
                             }
                         })
                         .then(data => {
-                            alert(data);
+                            console.log(data);
                             _this.getModifyAPI();
                         }).catch(err => {
-                            alert(response),
-                                console.log(err),
-                                alert(err);
+                            console.log(err);
                         });
                     // $("#insertModal").modal('hide')
                 },
@@ -299,7 +299,7 @@
                             console.log(data);
                         })
                         .catch(error => {
-                            alert(error)
+                            console.log(error)
                         });
                 }
             },
