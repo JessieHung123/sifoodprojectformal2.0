@@ -434,6 +434,7 @@
                         .then(data => {
                             this.orders = data;
                             this.filteredOrders = data; // 初始化時，filteredOrders 應包含所有訂單
+                            this.totalOrdersCount = data.length; // 更新總訂單數量
                         })
                         .catch(err => console.error(err));
                 },
