@@ -285,22 +285,30 @@
                     _this.readURL(inputFile, inputFile.previousElementSibling);
                 },
                 getModifyAPI: function () {
-                    let _this = this; /* test */
-                    var uri = `/api/InfoModifyapi/GetAll`;
-                    fetch(uri, { method: "GET" })
-                        .then(response => {
-                            if (response.ok) {
-                                return response.json();
-                            }
-                            throw new Error(`HTTP error! Status: ${response.status}`)
-                        })
-                        .then(data => {
-                            _this.ModifyInfo = data[0];
-                            console.log(data);
-                        })
-                        .catch(error => {
-                            console.log(error)
-                        });
+                    var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
+                    if (!isLoggedIn) {
+                        alert("請先登入")
+                        window.location.href = "/Stores/Account/Login";
+                    }
+                    else {
+                        let _this = this; /* test */
+                        var uri = `/api/InfoModifyapi/GetAll`;
+                        fetch(uri, { method: "GET" })
+                            .then(response => {
+                                if (response.ok) {
+                                    return response.json();
+                                }
+                                throw new Error(`HTTP error! Status: ${response.status}`)
+                            })
+                            .then(data => {
+                                _this.ModifyInfo = data[0];
+                                console.log(data);
+                            })
+                            .catch(error => {
+                                console.log(error)
+                            });
+
+                    }
                 }
             },
         }).mount("#modifyapp")

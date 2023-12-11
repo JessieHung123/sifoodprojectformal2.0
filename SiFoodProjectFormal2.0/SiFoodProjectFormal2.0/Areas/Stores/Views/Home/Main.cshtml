@@ -130,25 +130,33 @@
             },
             methods: {
                 getStoreInfoAPI: function () {
-                    let _this = this; /* test */
-                    var uri = `/Stores/Home/SaleInfo`;
-                    fetch(uri, { method: "GET" })
-                        .then(response => {
-                            if (response.ok) {
-                                return response.json();
-                            }
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        })
-                        .then(data => {
-                            // 在這裡處理數據
-                            console.log(JSON.stringify(data));
-                            _this.StoreInfo = data /* test */
-                            _this.calculateTotalSales();
-                            _this.updateChartData();
-                        })
-                        .catch(error => {
-                            alert(error);
-                        });
+                    var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
+                    if (!isLoggedIn) {
+                        alert("請先登入")
+                        window.location.href = "/Stores/Account/Login";
+                    }
+                    else {
+                        let _this = this; /* test */
+                        var uri = `/Stores/Home/SaleInfo`;
+                        fetch(uri, { method: "GET" })
+                            .then(response => {
+                                if (response.ok) {
+                                    return response.json();
+                                }
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            })
+                            .then(data => {
+                                // 在這裡處理數據
+                                console.log(JSON.stringify(data));
+                                _this.StoreInfo = data /* test */
+                                _this.calculateTotalSales();
+                                _this.updateChartData();
+                            })
+                            .catch(error => {
+                                alert(error);
+                            });
+                    }
+
                 },
                 //計算各類別商品的加總
                 calculateTotalSales: function () {

@@ -270,17 +270,25 @@
                     this.page.pageNumber = num;
                 },
                 startSeach() {
-                    let _this = this;
-                    _this.page.pageNumber = 1;
-                    fetch(`/api/ProductManageapi/Filter?text=${_this.searchText}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            _this.ProductInfo = data;
-                            _this.page.pageNumber = 1;
-                            _this.itemCount = _this.ProductInfo.length;
+                    var isLoggedIn = ('@User.Identity.IsAuthenticated' == "True");
+                    if (!isLoggedIn) {
+                        alert("請先登入")
+                        window.location.href = "/Stores/Account/Login";
+                    }
+                    else {
+                        let _this = this;
+                        _this.page.pageNumber = 1;
+                        fetch(`/api/ProductManageapi/Filter?text=${_this.searchText}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                _this.ProductInfo = data;
+                                _this.page.pageNumber = 1;
+                                _this.itemCount = _this.ProductInfo.length;
 
-                        } )
-                        .catch(error => console.log(error));
+                            })
+                            .catch(error => console.log(error));
+                    }
+
                 },
                 editProduct(item) {
                     this.selectedToEdit = item
