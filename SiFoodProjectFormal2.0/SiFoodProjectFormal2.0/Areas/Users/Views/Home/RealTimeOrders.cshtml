@@ -81,9 +81,9 @@
                                             <td class="align-middle border-top-0">
                                                 ${{item.subtotal+item.shippingFee}}
                                             </td>
-                                            @* add eye collapse function *@
+                                            @* eye collapse function *@
                                             <td class="text-muted align-middle border-top-0">
-                                                <!-- Add collapse behavior to the eye button -->
+                                                <!-- collapse behavior to the eye button -->
                                                 <a href="#" class="text-inherit"
                                                    data-bs-toggle="collapse"
                                                    :data-bs-target="'#orderDetails' + item.orderId"
@@ -93,7 +93,7 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                        <!-- Add a collapsible row for order details -->
+                                        <!-- collapsible row for order details -->
                                         <tr>
                                             <td colspan="8" class="p-0">
                                                 <div class="collapse" :id="'orderDetails' + item.orderId">
@@ -248,10 +248,9 @@
                                                                                 <span class="d-block">{{item.paymentMethodＮame}}</span>
                                                                                 <span class="d-block">{{item.paymentDate}} {{item.paymentTime}}</span>
                                                                             </div>
-                                                                            <div class="col-md-3 mb-4 mb-lg-0">
+                                                                            <div class="col-md-3 mb-4 mb-lg-0" v-if="item.deliveryMethod === '外送'">
                                                                                 <h6>外送員</h6>
                                                                                 <span class="d-block">{{item.driverFullName}}</span>
-                                                                                @* <a href="#" class="btn btn-success btn-sm">聯繫外送員</a> *@
                                                                             </div>
                                                                         </div>
                                                                     </div>

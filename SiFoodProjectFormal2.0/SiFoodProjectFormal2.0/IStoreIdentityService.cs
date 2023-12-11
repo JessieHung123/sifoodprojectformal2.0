@@ -19,12 +19,7 @@ namespace SiFoodProjectFormal2._0
         public string GetStoreId()
         {
             Claim? store = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
-            if (store != null)
-            {
-                return store.Value;
-            }
-            throw new InvalidOperationException("找不到 Store ID");
+            return store?.Value;
         }
-
     }
 }
