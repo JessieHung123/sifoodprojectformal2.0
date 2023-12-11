@@ -13,13 +13,13 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
     {
         private readonly Sifood3Context _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IStoreIdentityService _storeIdentityService;
+        
 
-        public HistoryOrderapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment, IStoreIdentityService storeIdentityService)
+        public HistoryOrderapiController(Sifood3Context context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
-            _storeIdentityService = storeIdentityService;
+           
         }
 
         // 取得歷史訂單
@@ -90,7 +90,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
 
 
-        //為了改排序先註解掉----------------->
+        //為了改排序先註解掉 然後又復原----------------->
         public async Task<List<HistoryOrderVM>> GetHistoryOrders()
         {
             var loginUserId = "U002";  // 這裡應該用方法獲取當前用戶ID
@@ -293,10 +293,8 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
         //}
 
 
-        //送出評論
-        [HttpPost]
         // 處理評價提交
-        [HttpPost("SubmitRating")]
+        [HttpPost]
         public async Task<IActionResult> SubmitRating([FromBody] RatingModel ratingModel)
         {
             if (ratingModel == null || string.IsNullOrEmpty(ratingModel.OrderId))

@@ -294,7 +294,12 @@
                             <!-- heading -->
                             <h3 class="mt=3">給店家的評語</h3>
                             @* <textarea id="commentContent" class="form-control" rows="3" placeholder="請輸入您的評論"></textarea> *@
-                            <textarea v-model="comment" class="form-control" rows="3" placeholder="請輸入您的評論"></textarea>
+                            <textarea v-model="comment" 
+                                            class="form-control" 
+                                            rows="3" 
+                                            placeholder="請輸入您的評論"
+                                            v-on:input="checkCommentLength">
+                            </textarea>
                             <!--顯示剩餘字數-->
                             <div class="comment-info"> ＊評論尚有 <span :class="{ 'text-danger': remainingCharacters <= 50,'text-primary': remainingCharacters > 30 }">{{ remainingCharacters }}</span> 個字符剩餘</div>
 
@@ -316,7 +321,8 @@
 
 
 @section Scripts{
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    @* <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> *@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.min.js"></script>
     <script>
@@ -440,11 +446,22 @@
                     if (type == "自取") return "badge bg-light-danger text-dark-danger"
                 },
                 loadOrderDetails(orderId) {
-                    let _this = this;
+                    // 重置評價相關的狀態
+                    this.currentRating = 0;
+                    this.comment = "";
+                    this.hoverRating = 0;
+                    this.ratingText = "請給分";
+
+                    // 加載訂單明細
                     fetch(`/api/HistoryOrderapi/GetOrderDetails/${orderId}`)
                         .then(response => response.json())
-                        .then(data => _this.orderDetail = data)
-                        .catch(err => console.error(err));
+                        .then(data => {
+                            this.orderDetail = data;
+                        })
+                        .catch(err => {
+                            console.error("加載訂單明細出錯: ", err);
+                            // 適當的錯誤處理
+                        });
                 },
                 getStatusClass(status) {
                     switch (status) {
@@ -492,7 +509,35 @@
                     this.hoverRating = star; // 讓滑鼠離開的時候星值保留
                     this.ratingText = "您給的分數是 " + star;
                 },
+
+                //限制評論字數
+                checkCommentLength() {
+                    if (this.comment.length > 200) {
+                        // 如果字符數超過 200，顯示警告
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '字符數量限制',
+                            text: '評論不能超過 200 個字符',
+                            confirmButtonText: '確定'
+                        });
+                        // 將評論截斷到 200 個字符
+                        this.comment = this.comment.substring(0, 200);
+                    }
+                },
+
                 submitRating() {
+                    // 在提交評價之前，再次檢查字符數
+                    if (this.comment.length > 200) {
+                        // 如果字符數超過 200，顯示警告並阻止提交
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '字符數量限制',
+                            text: '評論不能超過 200 個字符',
+                            confirmButtonText: '確定'
+                        });
+                        return;
+                    }
+
                     fetch('/api/HistoryOrderapi/SubmitRating', {
                         method: 'POST',
                         headers: {
@@ -504,14 +549,42 @@
                             comment: this.comment,
                         })
                     })
-                        .then(response => response.json())
+                        .then(response => { 
+                                    if (response.ok) {
+                            return response.json();
+                        } else if (response.status === 400) {
+                            throw new Error('無效的請求數據。');
+                        } else if (response.status === 404) {
+                            throw new Error('找不到相關的訂單。');
+                        } else {
+                            throw new Error('發生未知錯誤。');
+                        }
+                        })
+                            //response.json())
                         .then(data => {
-                            alert(data.message || "評價提交成功"); // 這裡可以自定義 alert 的內容
+                            //alert(data.message || "評價提交成功"); // 這裡可以自定義 alert 的內容
+                            //sweet alert
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "成功送出評價!",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
                             $('#orderDetailModal').modal('hide'); // 這將會關閉 Modal
                         })
                         .catch(err => {
                             console.error("提交評價出錯: ", err);
-                            alert("提交評價出錯"); // 發生錯誤時的 alert
+                            //alert("提交評價出錯"); // 發生錯誤時的 alert
+                            //sweet alert
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "error",
+                                title: "發生錯誤",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
                         });
                 }
 
