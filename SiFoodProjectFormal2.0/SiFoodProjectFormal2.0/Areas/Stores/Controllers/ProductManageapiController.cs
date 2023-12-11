@@ -20,28 +20,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
             _webHostEnvironment = webHostEnvironment;
             _storeIdentityService = storeIdentityService;
         }
-        public async Task<List<ProductManageVM>> GetAll()
-        {
-            string targetStoreId = _storeIdentityService.GetStoreId();
-            return await _context.Products
-                .Include(p => p.Category)
-                .Where(e => e.StoreId == targetStoreId && e.IsDelete == 1).Select(x => new ProductManageVM
-                {
-                    StoreId = x.StoreId,
-                    UnitPrice = x.UnitPrice,
-                    ProductId = x.ProductId,
-                    ProductName = x.ProductName,
-                    CategoryId = x.CategoryId,
-                    CategoryName = x.Category.CategoryName,
-                    ReleasedQty = x.ReleasedQty,
-                    OrderedQty = x.OrderedQty,
-                    PhotoPath = x.PhotoPath,
-                    Description = x.Description,
-                    RealeasedTime = x.RealeasedTime,
-                    SuggestPickUpTime = x.SuggestPickUpTime,
-                    SuggestPickEndTime = x.SuggestPickEndTime,
-                }).ToListAsync();
-        }
+
         public async Task<List<ProductManageVM>> Filter(string? text)
         {
             string targetStoreId = _storeIdentityService.GetStoreId();
@@ -75,7 +54,7 @@ namespace SiFoodProjectFormal2._0.Areas.Stores.Controllers
                 OrderedQty = x.OrderedQty,
                 PhotoPath = x.PhotoPath,
                 Description = x.Description,
-                RealeasedTime = x.RealeasedTime,
+                RealeasedTime = x.RealeasedTime.ToString("yyyy-MM-dd HH:mm:ss"),
                 SuggestPickUpTime = x.SuggestPickUpTime,
                 SuggestPickEndTime = x.SuggestPickEndTime,
             }).ToListAsync();

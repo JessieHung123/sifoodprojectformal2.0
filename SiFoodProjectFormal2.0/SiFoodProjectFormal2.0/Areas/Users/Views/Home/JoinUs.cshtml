@@ -5,11 +5,9 @@
 <!-- 引用Layout -->
 @{
     Layout = "_Layout";
-}
-<!-- Title -->
-@{
     ViewData["Title"] = "加入我們";
 }
+
 <!-- CSS -->
 @section Styles{
     <link href="~/assets/libs/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
@@ -281,8 +279,8 @@
 </main>
 
 @section Scripts{
+
     <!-- jQuery驗證 -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN9KFcDFxucoV9IglJyqQSd_d1GLWHiYI&callback=initMap" async defer></script>
