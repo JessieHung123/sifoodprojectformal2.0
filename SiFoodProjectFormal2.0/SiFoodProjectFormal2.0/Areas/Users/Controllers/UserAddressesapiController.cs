@@ -29,10 +29,10 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
 
         // GET: api/UserAddressesapi
         [HttpGet]
-        public object GetUserAddress()
+        public async Task<List<UserAddressesVM>> GetUserAddress()
         {
             string userId = _userIdentityService.GetUserId();
-            return _context.UserAddresses.Where(u => u.UserId == userId).Select(x => new UserAddressesVM
+            return await _context.UserAddresses.Where(u => u.UserId == userId).Select(x => new UserAddressesVM
             {
                 UserAddressId = x.UserAddressId,
                 UserId = x.UserId,
@@ -42,7 +42,7 @@ namespace SiFoodProjectFormal2._0.Areas.Users.Controllers
                 UserCity = x.UserCity,
                 UserPhone = x.User.UserPhone,
                 IsDefault = x.IsDefault
-            });
+            }).ToListAsync();
         }
 
         // PUT: api/UserAddressesapi/5
